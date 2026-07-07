@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#FFF8F2;
+
+}
+
+/* Header */
+
+header{
+
+height:85px;
+
+background:#fff;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 25px;
+
+box-shadow:0 2px 15px rgba(0,0,0,.06);
+
+position:sticky;
+
+top:0;
+
+z-index:999;
+
+}
+
+/* Logo */
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.logo-box{
+
+width:55px;
+
+height:55px;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,#ff6b00,#ff914d);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:#fff;
+
+font-size:30px;
+
+font-weight:bold;
+
+}
+
+.logo-text h2{
+
+font-size:34px;
+
+font-weight:700;
+
+color:#ff6b00;
+
+line-height:1;
+
+}
+
+.logo-text span{
+
+font-size:14px;
+
+color:#777;
+
+}
+
+/* Top Location */
+
+.top-location{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+background:#fff;
+
+padding:12px 22px;
+
+border-radius:40px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+font-size:16px;
+
+font-weight:600;
+
+}
+
+.top-location i:first-child{
+
+color:#ff6b00;
+
+font-size:20px;
+
+}
+
+.top-location i:last-child{
+
+font-size:14px;
+
+color:#777;
+
+}
+
+/* Right Icons */
+
+.right-icons{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+}
+
+.icon{
+
+width:48px;
+
+height:48px;
+
+border-radius:50%;
+
+background:#fff;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+font-size:22px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.icon:hover{
+
+transform:scale(1.08);
+
+}
+
+.icon i{
+
+color:#222;
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+header{
+
+padding:12px;
+
+height:auto;
+
+flex-wrap:wrap;
+
+gap:15px;
+
+}
+
+.logo-text h2{
+
+font-size:28px;
+
+}
+
+.top-location{
+
+order:3;
+
+width:100%;
+
+justify-content:center;
+
+}
+
+}
+/* HERO */
+
+.hero{
+
+margin:20px;
+
+background:linear-gradient(135deg,#ff6b00,#ff914d);
+
+border-radius:35px;
+
+padding:35px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+position:relative;
+
+overflow:hidden;
+
+min-height:330px;
+
+box-shadow:0 15px 40px rgba(255,107,0,.25);
+
+}
+
+.hero::before{
+
+content:"";
+
+position:absolute;
+
+right:-80px;
+
+top:-80px;
+
+width:260px;
+
+height:260px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.12);
+
+}
+
+.hero-left{
+
+width:55%;
+
+z-index:2;
+
+}
+
+.hero h1{
+
+font-size:48px;
+
+line-height:58px;
+
+color:white;
+
+margin-bottom:15px;
+
+}
+
+.hero p{
+
+font-size:18px;
+
+color:white;
+
+opacity:.95;
+
+margin-bottom:30px;
+
+}
+
+.search-box{
+
+background:white;
+
+display:flex;
+
+align-items:center;
+
+padding:15px 20px;
+
+border-radius:50px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.search-box i{
+
+font-size:20px;
+
+color:#888;
+
+margin-right:12px;
+
+}
+
+.search-box input{
+
+width:100%;
+
+border:none;
+
+outline:none;
+
+font-size:16px;
+
+}
+
+.hero-right{
+
+width:45%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:flex-end;
+
+z-index:2;
+
+}
+.delivery-boy{
+
+width:520px;
+
+max-width:none;
+
+position:absolute;
+
+right:20px;
+
+bottom:-10px;
+
+z-index:5;
+
+animation:float 3s ease-in-out infinite;
+
+}
+
+@media(max-width:768px){
+
+.delivery-boy{
+
+width:260px;
+
+position:relative;
+
+right:0;
+
+bottom:0;
+
+}
+
+}
+
+@keyframes float{
+
+0%{transform:translateY(0);}
+
+50%{transform:translateY(-12px);}
+
+100%{transform:translateY(0);}
+
+}
+
+@media(max-width:768px){
+
+.hero{
+
+flex-direction:column;
+
+padding:25px;
+
+text-align:center;
+
+}
+
+.hero-left{
+
+width:100%;
+
+}
+
+.hero-right{
+
+width:100%;
+
+margin-top:20px;
+
+}
+
+.hero h1{
+
+font-size:34px;
+
+line-height:42px;
+
+}
+
+
+
+}
+.categories{
+
+padding:25px;
+
+}
+
+.section-title{
+
+font-size:28px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+color:#222;
+
+}
+
+.category-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:20px;
+
+}
+
+.category-card{
+
+background:white;
+
+border-radius:28px;
+
+padding:25px;
+
+text-align:center;
+
+cursor:pointer;
+
+box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+transition:.35s;
+
+}
+
+.category-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+
+}
+
+.category-card{
+
+position:relative;
+
+overflow:hidden;
+
+padding:0;
+
+height:260px;
+
+border-radius:28px;
+
+cursor:pointer;
+
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+.category-card img{
+
+position:absolute;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+transition:.4s;
+
+}
+
+.category-card:hover img{
+
+transform:scale(0.4s);
+
+}
+
+.category-card h3{
+
+position:absolute;
+
+left:25px;
+
+bottom:48px;
+
+color:white;
+
+font-size:34px;
+
+font-weight:700;
+
+z-index:2;
+
+}
+
+.category-card p{
+
+position:absolute;
+
+left:25px;
+
+bottom:22px;
+
+color:white;
+
+font-size:17px;
+
+z-index:2;
+
+}
+
+.category-card::after{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+width:100%;
+
+height:100%;
+
+background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,.05));
+
+}
+.category-card:hover img{
+
+transform:scale(0.35s);
+
+}
+
+.category-card h3{
+
+font-size:22px;
+
+margin-bottom:6px;
+
+}
+
+.category-card p{
+
+font-size:14px;
+
+color:#777;
+
+}
+
+@media(max-width:768px){
+
+.category-grid{
+
+grid-template-columns:repeat(3,1fr);
+
+gap:12px;
+
+}
+
+.category-card{
+
+padding:15px;
+
+}
+
+.category-card img{
+
+width:75px;
+
+height:75px;
+
+}
+
+.category-card h3{
+
+font-size:17px;
+
+}
+
+.category-card p{
+
+font-size:12px;
+
+}
+
+}
+.popular{
+
+padding:25px;
+
+}
+
+.section-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.section-header h2{
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+.section-header a{
+
+text-decoration:none;
+
+color:#ff6b00;
+
+font-weight:600;
+
+}
+
+.restaurant-list{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+
+gap:20px;
+
+}
+
+.restaurant-card{
+
+background:white;
+
+border-radius:25px;
+
+overflow:hidden;
+
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.restaurant-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.restaurant-image{
+
+height:180px;
+
+overflow:hidden;
+
+}
+
+.restaurant-image img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.restaurant-info{
+
+padding:18px;
+
+}
+
+.restaurant-info h3{
+
+font-size:22px;
+
+margin-bottom:8px;
+
+}
+
+.restaurant-info p{
+
+color:#666;
+
+margin-bottom:8px;
+
+}
+
+.restaurant-footer{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-top:12px;
+
+}
+
+.rating{
+
+background:#22c55e;
+
+color:white;
+
+padding:5px 10px;
+
+border-radius:8px;
+
+font-size:14px;
+
+}
+
+.time{
+
+color:#777;
+
+font-size:14px;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+<div class="logo-box">
+
+D
+
+</div>
+
+<div class="logo-text">
+
+<h2>DARVOZ</h2>
+
+<span>One App. Every Need.</span>
+
+</div>
+
+</div>
+
+<div class="top-location">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<span id="locationText">
+
+Ongole, Andhra Pradesh
+
+</span>
+
+<i class="fa-solid fa-chevron-down"></i>
+
+</div>
+
+<div class="right-icons">
+
+<div class="icon">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+</div>
+
+<div class="icon">
+
+<i class="fa-regular fa-user"></i>
+
+</div>
+
+</div>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-left">
+
+<h1>
+One App.<br>
+Every Need.
+</h1>
+
+<p>
+
+Food • Groceries • Meat<br>
+Delivered in minutes.
+
+</p>
+
+<div class="search-box">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input
+type="text"
+placeholder="Search restaurants, groceries...">
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<img src="images/delivery-boy.png" class="delivery-boy">
+
+</div>
+
+</section>
+
+<section class="categories">
+
+<h2 class="section-title">
+
+Browse Categories
+
+</h2>
+
+<div class="category-grid">
+    <div class="category-card" onclick="location.href='partners.html?type=Food'">
+
+<img src="images/biryani-3d.png">
+
+<h3>Food</h3>
+
+<p>Restaurants</p>
+
+</div>
+
+<div class="category-card" onclick="location.href='partners.html?type=Groceries'">
+
+<img src="images/grocery-3d.png">
+
+<h3>Groceries</h3>
+
+<p>Daily Essentials</p>
+
+</div>
+
+<div class="category-card" onclick="location.href='partners.html?type=Meat'">
+
+<img src="images/meat-3d.png">
+
+<h3>Meat</h3>
+
+<p>Fresh & Hygienic</p>
+
+</div>
+
+</div>
+
+</section>
+<section class="popular">
+
+<div class="section-header">
+
+<h2>⭐ Popular Near You</h2>
+
+<a href="#">See All</a>
+
+</div>
+
+<div id="restaurantList" class="restaurant-list">
+
+<div class="loading">
+
+Loading Restaurants...
+
+</div>
+
+</div>
+
+</section>
+<script>
+loadRestaurants();
+
+async function loadRestaurants(){
+
+const response = await fetch("http://localhost:5000/restaurant/all/list");
+
+const restaurants = await response.json();
+
+const container = document.getElementById("restaurantList");
+
+container.innerHTML="";
+
+restaurants.forEach(r=>{
+
+container.innerHTML += `
+
+<div class="restaurant-card"
+
+onclick="location.href='restaurant.html?id=${r.id}'">
+
+<div class="restaurant-image">
+
+<img src="images/restaurant-cover.jpg">
+
+</div>
+
+<div class="restaurant-info">
+
+<h3>${r.restaurant_name}</h3>
+
+<p>${r.address}</p>
+
+<div class="restaurant-footer">
+
+<div class="rating">
+
+⭐ 4.5
+
+</div>
+
+<div class="time">
+
+30 mins
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+</script>
+</body>
+
+</html>

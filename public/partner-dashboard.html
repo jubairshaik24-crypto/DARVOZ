@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Partner Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="partner-dashboard.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>DARVOZ</h2>
+
+            <span>Partner Portal</span>
+
+        </div>
+
+        <ul>
+
+            <li class="active" onclick="location.reload()">
+    <i class="fa-solid fa-house"></i>
+    Dashboard
+</li>
+
+<li onclick="window.location.href='orders.html'">
+    <i class="fa-solid fa-box"></i>
+    Orders
+</li>
+
+<li onclick="window.location.href='import-menu.html'">
+    <i class="fa-solid fa-utensils"></i>
+    Menu
+</li>
+
+<li onclick="window.location.href='partner-Products.html'">
+    <i class="fa-solid fa-cube"></i>
+    Products
+</li>
+
+<li onclick="window.location.href='earnings.html'">
+    <i class="fa-solid fa-chart-line"></i>
+    Sales
+</li>
+
+<li onclick="showProfile()">
+    <i class="fa-solid fa-store"></i>
+    Store Profile
+</li>
+
+<li onclick="window.location.href='settings.html'">
+    <i class="fa-solid fa-gear"></i>
+    Settings
+</li>
+
+<li class="logout">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+</li>
+
+        </ul>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <!-- Navbar -->
+
+        <div class="navbar">
+
+            <div class="search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                type="text"
+                placeholder="Search Orders, Customers, Menu">
+
+            </div>
+
+            <div class="top-right">
+
+                <div class="notification">
+
+<i class="fa-solid fa-bell"></i>
+
+<span id="notificationCount">
+
+0
+
+</span>
+
+</div>
+
+                <i class="fa-regular fa-message"></i>
+
+                <div class="profile">
+
+                    <img src="images/default-store.png">
+
+                    <div>
+
+                        <h4 id="storeName">
+
+                            Store Name
+
+                        </h4>
+
+                        <span id="partnerId">
+
+                            DAR0001
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Welcome -->
+
+        <section class="welcome">
+
+            <div>
+
+                <h1>
+
+                    Welcome Back,
+
+                    <span id="ownerName">
+
+                        Partner
+
+                    </span>
+
+                    👋
+
+                </h1>
+
+                <p>
+
+                    Here's today's business summary.
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- Cards -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <div class="icon orange">
+
+                    <i class="fa-solid fa-bag-shopping"></i>
+
+                </div>
+
+                <h4>Today's Orders</h4>
+
+                <h2 id="todayOrders">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <div class="icon green">
+
+                    ₹
+
+                </div>
+
+                <h4>Today's Revenue</h4>
+
+                <h2 id="todayRevenue">
+
+                    ₹0
+
+                </h2>
+
+            </div>
+
+            <div class="card">
+
+                <div class="icon blue">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                </div>
+
+                <h4>Pending Orders</h4>
+
+                <h2 id="pendingOrders">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="card">
+
+                <div class="icon purple">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+                <h4>Completed Orders</h4>
+
+                <h2 id="completedOrders">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </section>
+
+        <!-- Orders Section -->
+
+        <section class="content">
+
+            <div class="orders">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        Recent Orders
+
+                    </h2>
+
+                    <a href="#">
+
+                        View All
+
+                    </a>
+
+                </div>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Order ID</th>
+
+                            <th>Customer</th>
+
+                            <th>Amount</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="ordersTable">
+
+                        <!-- JS -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="quick">
+
+                <h2>
+
+                    Quick Actions
+
+                </h2>
+
+                <button onclick="window.location.href='menu.html'">
+🍔 Add Menu
+</button>
+
+<button onclick="window.location.href='products.html'">
+📦 Add Product
+</button>
+
+<button onclick="window.location.href='orders.html'">
+📋 View Orders
+</button>
+
+<button onclick="showProfile()">
+🏪 Store Profile
+</button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="partner-dashboard.js"></script>
+
+</body>
+
+</html>

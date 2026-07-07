@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Checkout</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#FFF8F2;
+padding-bottom:110px;
+}
+
+/* Header */
+
+header{
+
+height:72px;
+
+background:#fff;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 20px;
+
+position:sticky;
+
+top:0;
+
+z-index:999;
+
+box-shadow:0 3px 15px rgba(0,0,0,.06);
+
+}
+
+.back-btn{
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+background:#FFF3EB;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+text-decoration:none;
+
+color:#ff6b00;
+
+font-size:20px;
+
+}
+
+header h2{
+
+font-size:30px;
+
+font-weight:700;
+
+color:#222;
+
+}
+
+/* Container */
+
+.container{
+
+width:92%;
+
+max-width:900px;
+
+margin:20px auto;
+
+}
+
+/* Cards */
+
+.card{
+
+background:#fff;
+
+border-radius:18px;
+
+padding:22px;
+
+margin-bottom:18px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.06);
+
+}
+
+.card h3{
+
+font-size:22px;
+
+margin-bottom:18px;
+
+color:#222;
+
+}
+
+.card p{
+
+font-size:16px;
+
+color:#555;
+
+margin-bottom:8px;
+
+}
+
+.change-address{
+
+margin-top:15px;
+
+color:#ff6b00;
+
+font-weight:600;
+
+cursor:pointer;
+
+}
+
+/* Payment */
+
+label{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+padding:12px 0;
+
+cursor:pointer;
+
+font-size:17px;
+
+}
+
+input[type="radio"]{
+
+transform:scale(1.2);
+
+accent-color:#ff6b00;
+
+}
+
+/* Bill */
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-bottom:15px;
+
+font-size:17px;
+
+color:#444;
+
+}
+
+.total{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:18px;
+
+font-size:24px;
+
+font-weight:700;
+
+color:#ff6b00;
+
+}
+
+/* Bottom */
+
+.bottom-bar{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+background:#fff;
+
+padding:18px 22px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+box-shadow:0 -8px 20px rgba(0,0,0,.08);
+
+}
+
+.bottom-bar h2{
+
+font-size:30px;
+
+color:#ff6b00;
+
+}
+
+.bottom-bar p{
+
+font-size:14px;
+
+color:#666;
+
+}
+
+.bottom-bar button{
+
+background:#ff6b00;
+
+color:#fff;
+
+border:none;
+
+padding:16px 34px;
+
+border-radius:14px;
+
+font-size:17px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.bottom-bar button:hover{
+
+background:#e65d00;
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+header h2{
+
+font-size:24px;
+
+}
+
+.card{
+
+padding:18px;
+
+}
+
+.card h3{
+
+font-size:20px;
+
+}
+
+.total{
+
+font-size:22px;
+
+}
+
+.bottom-bar button{
+
+padding:15px 25px;
+
+font-size:16px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<a href="cart.html" class="back-btn">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</a>
+
+<h2>Checkout</h2>
+
+<div style="width:42px;"></div>
+
+</header>
+
+<div class="container">
+
+<!-- Address -->
+
+<div class="address-card">
+
+<h3>Deliver To</h3>
+
+<p id="customerName">Loading...</p>
+
+<p id="customerAddress">Loading...</p>
+
+<div onclick="location.href='profile.html'" class="change">
+Change Address >
+</div>
+
+</div>
+</p>
+
+<div class="change-address"
+
+onclick="location.href='profile.html'">
+
+Change Address >
+
+</div>
+
+</div>
+
+<!-- Payment -->
+
+<div class="card">
+
+<h3>
+
+💳 Payment Method
+
+</h3>
+
+<label>
+
+<input
+type="radio"
+name="payment"
+checked>
+
+Cash On Delivery
+
+</label>
+
+<label>
+
+<input
+type="radio"
+name="payment">
+
+UPI
+
+</label>
+
+<label>
+
+<input
+type="radio"
+name="payment">
+
+Card
+
+</label>
+
+</div>
+
+<!-- Bill -->
+
+<div class="card">
+
+<h3>
+
+Bill Details
+
+</h3>
+
+<div class="row">
+
+<span>
+
+Food Total
+
+</span>
+
+<span id="foodTotal">
+
+₹0
+
+</span>
+
+</div>
+
+<div class="row">
+
+<span>
+
+Delivery Fee
+
+</span>
+
+<span id="deliveryFee">
+
+₹20
+
+</span>
+
+</div>
+
+<div class="row">
+
+<span>
+
+Platform Fee
+
+</span>
+
+<span>
+
+₹5
+
+</span>
+
+</div>
+
+<hr>
+
+<div class="total">
+
+<span>
+
+To Pay
+
+</span>
+
+<span id="grandTotal">
+
+₹0
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom-bar">
+
+<div>
+
+<h2 id="bottomTotal">
+
+₹0
+
+</h2>
+
+<p>
+
+Total Amount
+
+</p>
+
+</div>
+
+<button class="checkout-btn" onclick="proceedOrder()">
+Place Order
+</button>
+
+</div>
+
+<script>
+
+/* PART 3 */
+// Load Cart
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Load Customer Address
+
+document.getElementById("customerName").innerHTML =
+localStorage.getItem("customerName") || "Guest";
+
+document.getElementById("customerAddress").innerHTML =
+localStorage.getItem("customerAddress") || "Please add your address";
+
+function loadCheckout(){
+
+let foodTotal = 0;
+
+cart.forEach(item=>{
+
+foodTotal += item.price * item.qty;
+
+});
+
+let deliveryFee = foodTotal >= 299 ? 0 : 20;
+
+let platformFee = 5;
+
+let grandTotal =
+
+foodTotal +
+
+deliveryFee +
+
+platformFee;
+
+document.getElementById("foodTotal").innerHTML =
+"₹"+foodTotal;
+
+document.getElementById("deliveryFee").innerHTML =
+
+deliveryFee==0 ?
+
+"<span style='color:green'>FREE</span>"
+
+:
+
+"₹"+deliveryFee;
+
+document.getElementById("grandTotal").innerHTML =
+"₹"+grandTotal;
+
+document.getElementById("bottomTotal").innerHTML =
+"₹"+grandTotal;
+
+}
+
+loadCheckout();
+
+function placeOrder(){
+
+if(cart.length==0){
+
+alert("Your cart is empty.");
+
+return;
+
+}
+
+const address =
+localStorage.getItem("customerAddress");
+
+if(!address){
+
+alert("Please add your delivery address.");
+
+location.href="profile.html";
+
+return;
+
+}
+
+const payment = document.querySelector(
+
+'input[name="payment"]:checked'
+
+).parentElement.innerText.trim();
+
+const order = {
+
+orderId:
+"DAR"+Date.now(),
+
+restaurant:
+cart[0].restaurantName,
+
+items:cart,
+
+foodTotal:
+document.getElementById("foodTotal").innerText,
+
+deliveryFee:
+document.getElementById("deliveryFee").innerText,
+
+grandTotal:
+document.getElementById("grandTotal").innerText,
+
+paymentMethod:payment,
+
+date:new Date().toLocaleString(),
+
+status:"Placed"
+
+};
+
+// Save Latest Order
+
+localStorage.setItem(
+
+"currentOrder",
+
+JSON.stringify(order)
+
+);
+
+// Save Order History
+
+let history = JSON.parse(
+
+localStorage.getItem("orders")
+
+) || [];
+
+history.unshift(order);
+
+localStorage.setItem(
+
+"orders",
+
+JSON.stringify(history)
+
+);
+
+// Clear Cart
+
+localStorage.removeItem("cart");
+
+// Go Success
+
+location.href="order-success.html";
+
+}
+function loadCustomer(){
+
+const customer = JSON.parse(localStorage.getItem("customer"));
+
+if(customer){
+
+document.getElementById("customerName").textContent =
+customer.name || "Guest";
+
+document.getElementById("customerAddress").textContent =
+customer.address || "Please add address";
+
+}else{
+
+location.href="customer-login.html";
+
+}
+
+}
+
+loadCustomer();
+</script>
+
+</body>
+
+</html>

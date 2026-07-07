@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>DARVOZ | Orders</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+header a{
+color:white;
+text-decoration:none;
+}
+
+.container{
+width:90%;
+max-width:800px;
+margin:30px auto;
+}
+
+.order-card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.order-card h2{
+color:#ff6b00;
+margin-bottom:20px;
+}
+
+.info{
+margin:12px 0;
+font-size:17px;
+}
+
+.status{
+margin:20px 0;
+padding:12px;
+background:#fff4eb;
+border-radius:8px;
+font-weight:bold;
+color:#ff6b00;
+text-align:center;
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+color:white;
+}
+
+.accept{
+background:#28a745;
+}
+
+.prepare{
+background:#007bff;
+display:none;
+}
+
+.ready{
+background:#ff6b00;
+display:none;
+}
+
+.reject{
+background:#dc3545;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>📦 Orders</h2>
+
+<a href="dashboard.html">← Dashboard</a>
+
+</header>
+
+<div class="container">
+
+<div class="order-card">
+
+<h2>New Order</h2>
+
+<div class="info"><b>Order ID :</b> <span id="orderId"></span></div>
+
+<div class="info"><b>Customer :</b> Jubair</div>
+
+<div class="info"><b>Phone :</b> 8333995837</div>
+
+<div class="info"><b>Items :</b></div>
+
+<ul id="orderItems" style="margin-left:25px;line-height:30px;"></ul>
+
+<div class="info">
+
+<b>Total :</b>
+
+₹<span id="amount"></span>
+
+</div>
+
+<div class="info">
+
+<b>Payment :</b>
+
+UPI ✅
+
+</div>
+
+<div class="status" id="status">
+
+Waiting for Restaurant Response
+
+</div>
+
+<button class="accept"
+id="acceptBtn"
+onclick="acceptOrder()">
+
+Accept Order
+
+</button>
+
+<button class="prepare"
+id="prepareBtn"
+onclick="prepareOrder()">
+
+Start Preparing
+
+</button>
+
+<button class="ready"
+id="readyBtn"
+onclick="readyOrder()">
+
+Ready for Pickup
+
+</button>
+
+<button class="reject">
+
+Reject Order
+
+</button>
+<script>
+
+// Load Order ID
+let orderId = localStorage.getItem("orderId");
+
+if(!orderId){
+    orderId = "DV" + Math.floor(100000 + Math.random() * 900000);
+    localStorage.setItem("orderId", orderId);
+}
+
+document.getElementById("orderId").innerHTML = orderId;
+
+
+// Load Total Amount
+let amount = localStorage.getItem("totalAmount") || "0";
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+let list = document.getElementById("orderItems");
+
+list.innerHTML = "";
+
+for(let item in cart){
+
+    list.innerHTML += `<li>${item} × ${cart[item].qty}</li>`;
+
+}
+
+document.getElementById("amount").innerHTML = amount;
+
+
+// Accept Order
+function acceptOrder(){
+
+document.getElementById("status").innerHTML="✅ Order Accepted";
+
+document.getElementById("acceptBtn").style.display="none";
+
+document.getElementById("prepareBtn").style.display="block";
+
+}
+
+
+// Preparing
+function prepareOrder(){
+
+document.getElementById("status").innerHTML="👨‍🍳 Preparing Your Order";
+
+document.getElementById("prepareBtn").style.display="none";
+
+document.getElementById("readyBtn").style.display="block";
+
+}
+
+
+// Ready for Pickup
+function readyOrder(){
+
+document.getElementById("status").innerHTML="📦 Ready for Pickup";
+
+localStorage.removeItem("newOrder");
+
+setTimeout(function(){
+
+window.location.href="delivery.html";
+
+},1500);
+
+}
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("Service Worker Registered", registration);
+      })
+      .catch((error) => {
+        console.log("Registration Failed", error);
+      });
+  });
+}
+</script>
+
+</div>
+
+</div>
+
+</body>
+</html>

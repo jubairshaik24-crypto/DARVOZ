@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Track Order | DARVOZ</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:white;
+padding:18px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+width:90%;
+max-width:700px;
+margin:30px auto;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.order{
+text-align:center;
+font-size:24px;
+font-weight:bold;
+margin-bottom:30px;
+color:#ff6b00;
+}
+
+.step{
+display:flex;
+align-items:center;
+margin:25px 0;
+}
+
+.circle{
+width:40px;
+height:40px;
+border-radius:50%;
+background:#ccc;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:bold;
+margin-right:20px;
+}
+
+.active{
+background:#28a745;
+}
+
+.text h3{
+margin-bottom:5px;
+}
+
+.text p{
+color:#777;
+font-size:14px;
+}
+
+.home{
+width:100%;
+padding:15px;
+margin-top:30px;
+background:#ff6b00;
+border:none;
+color:white;
+font-size:18px;
+border-radius:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+Track Order
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<div class="order">
+
+Order #
+<span id="orderId"></span>
+
+</div>
+
+<div class="step">
+
+<div id="s1" class="circle active">✓</div>
+
+<div class="text">
+
+<h3>Order Placed</h3>
+
+<p>Your order has been received.</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div id="s2" class="circle">2</div>
+
+<div class="text">
+
+<h3>Restaurant Accepted</h3>
+
+<p>Restaurant accepted your order.</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div id="s3" class="circle">3</div>
+
+<div class="text">
+
+<h3>Preparing Food</h3>
+
+<p>Your food is being prepared.</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div id="s4" class="circle">4</div>
+
+<div class="text">
+
+<h3>Ready for Pickup</h3>
+
+<p>Waiting for delivery partner.</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div id="s5" class="circle">5</div>
+
+<div class="text">
+
+<h3>Out for Delivery</h3>
+
+<p>Your order is on the way.</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div id="s6" class="circle">6</div>
+
+<div class="text">
+
+<h3>Delivered</h3>
+
+<p>Enjoy your meal ❤️</p>
+
+</div>
+
+</div>
+
+<button
+class="home"
+onclick="window.location.href='index.html'">
+
+Back To Home
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const params=new URLSearchParams(window.location.search);
+
+const id=params.get("id");
+
+document.getElementById("orderId").innerHTML=id;
+
+// Demo Status
+// Later this comes from MySQL
+
+let status="Pending";
+
+// Status Simulation
+
+if(status=="Accepted"){
+
+document.getElementById("s2").classList.add("active");
+
+}
+
+if(status=="Preparing"){
+
+document.getElementById("s2").classList.add("active");
+document.getElementById("s3").classList.add("active");
+
+}
+
+if(status=="Ready"){
+
+document.getElementById("s2").classList.add("active");
+document.getElementById("s3").classList.add("active");
+document.getElementById("s4").classList.add("active");
+
+}
+
+if(status=="Out For Delivery"){
+
+document.getElementById("s2").classList.add("active");
+document.getElementById("s3").classList.add("active");
+document.getElementById("s4").classList.add("active");
+document.getElementById("s5").classList.add("active");
+
+}
+
+if(status=="Delivered"){
+
+document.getElementById("s2").classList.add("active");
+document.getElementById("s3").classList.add("active");
+document.getElementById("s4").classList.add("active");
+document.getElementById("s5").classList.add("active");
+document.getElementById("s6").classList.add("active");
+
+}
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("Service Worker Registered", registration);
+      })
+      .catch((error) => {
+        console.log("Registration Failed", error);
+      });
+  });
+}
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+
+<title>DARVOZ | Delivery Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+
+background:#ff6b00;
+color:white;
+padding:18px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+header h2{
+
+font-size:26px;
+
+}
+
+.logout{
+
+background:white;
+color:#ff6b00;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+
+}
+
+.container{
+
+width:90%;
+max-width:1100px;
+margin:25px auto;
+
+}
+
+.profile{
+
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+margin-bottom:25px;
+
+}
+
+.profile h3{
+
+margin-bottom:8px;
+
+}
+
+.status{
+
+display:inline-block;
+background:#28a745;
+color:white;
+padding:6px 15px;
+border-radius:20px;
+font-size:14px;
+margin-top:10px;
+
+}
+
+.wallet{
+
+margin-top:15px;
+font-size:22px;
+font-weight:bold;
+color:#ff6b00;
+
+}
+
+.card{
+
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+margin-bottom:20px;
+
+}
+
+.card h3{
+
+color:#ff6b00;
+margin-bottom:15px;
+
+}
+
+.row{
+
+display:flex;
+justify-content:space-between;
+margin:10px 0;
+
+}
+
+.actions{
+
+display:flex;
+gap:10px;
+margin-top:20px;
+flex-wrap:wrap;
+
+}
+
+.actions button{
+
+border:none;
+padding:12px 18px;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:bold;
+
+}
+
+.accept{
+
+background:#28a745;
+color:white;
+
+}
+
+.navigate{
+
+background:#007bff;
+color:white;
+
+}
+
+.pickup{
+
+background:#ffc107;
+color:black;
+
+}
+
+.delivery{
+
+background:#17a2b8;
+color:white;
+
+}
+
+.complete{
+
+background:#ff6b00;
+color:white;
+
+}
+
+.empty{
+
+background:white;
+padding:80px;
+text-align:center;
+font-size:22px;
+border-radius:15px;
+color:#666;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>🚴 DARVOZ Delivery</h2>
+
+<button
+class="logout"
+onclick="logout()">
+
+Logout
+
+</button>
+
+</header>
+
+<div class="container">
+
+<div class="profile">
+
+<h3 id="riderName">
+
+Welcome
+
+</h3>
+
+<div id="mobile">
+
+</div>
+
+<div class="status">
+
+🟢 Available
+
+</div>
+
+<div class="wallet">
+
+Today's Earnings :
+₹<span id="todayEarning">
+
+0
+
+</span>
+
+</div>
+
+</div>
+
+<div id="orders">
+
+<div class="empty">
+
+Loading Available Orders...
+
+</div>
+
+</div>
+
+</div>
+<script>
+
+const rider = JSON.parse(localStorage.getItem("deliveryPartner"));
+
+if(!rider){
+
+window.location.href="delivery-login.html";
+
+}
+
+document.getElementById("riderName").innerHTML =
+"Welcome, " + rider.name;
+
+document.getElementById("mobile").innerHTML =
+"📱 " + rider.mobile;
+
+
+// Load Orders
+
+async function loadOrders(){
+
+try{
+
+const response = await fetch(
+"http://localhost:5000/orders/available"
+);
+
+const orders = await response.json();
+
+let html="";
+
+if(orders.length==0){
+
+html=`
+<div class="empty">
+No Delivery Orders Available
+</div>
+`;
+
+}else{
+
+orders.forEach(order=>{
+
+html+=`
+
+<div class="card">
+
+<h3>
+Order #${order.id}
+</h3>
+
+<div class="row">
+<span><b>Restaurant</b></span>
+<span>${order.restaurant_name}</span>
+</div>
+
+<div class="row">
+<span><b>Customer</b></span>
+<span>${order.customer_name}</span>
+</div>
+
+<div class="row">
+<span><b>Mobile</b></span>
+<span>${order.mobile}</span>
+</div>
+
+<div class="row">
+<span><b>Pickup</b></span>
+<span>${order.restaurant_name}</span>
+</div>
+
+<div class="row">
+<span><b>Delivery Address</b></span>
+<span>${order.address}</span>
+</div>
+
+<div class="row">
+<span><b>Order Amount</b></span>
+<span>₹${order.grand_total}</span>
+</div>
+
+<div class="row">
+<span><b>Delivery Fee</b></span>
+<span style="color:green;font-weight:bold;">
+₹25
+</span>
+</div>
+
+<div class="actions">
+
+<button
+class="accept"
+onclick="acceptOrder(${order.id})">
+
+✅ Accept
+
+</button>
+
+<button
+class="navigate"
+onclick="navigateOrder('${order.address}')">
+
+📍 Navigate
+
+</button>
+
+<button
+class="pickup"
+onclick="pickedUp(${order.id})">
+
+🍽 Picked Up
+
+</button>
+
+<button
+class="delivery"
+onclick="outForDelivery(${order.id})">
+
+🚚 Out For Delivery
+
+</button>
+
+<button
+class="complete"
+onclick="delivered(${order.id})">
+
+✅ Delivered
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+document.getElementById("orders").innerHTML=html;
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+
+// Logout
+
+function logout(){
+
+localStorage.removeItem("deliveryPartner");
+
+window.location.href="delivery-login.html";
+
+}
+
+
+// Google Maps
+
+function navigateOrder(address){
+
+window.open(
+
+"https://www.google.com/maps/search/?api=1&query="+
+encodeURIComponent(address),
+
+"_blank"
+
+);
+
+}
+
+
+// Accept Order
+
+async function acceptOrder(id){
+
+await fetch(
+
+"http://localhost:5000/orders/accept/"+id,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+alert("Order Accepted");
+
+loadOrders();
+
+}
+
+
+// Picked Up
+
+async function pickedUp(id){
+
+await fetch(
+
+"http://localhost:5000/orders/pickup/"+id,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+alert("Order Picked Up");
+
+loadOrders();
+
+}
+
+
+// Out For Delivery
+
+async function outForDelivery(id){
+
+await fetch(
+
+"http://localhost:5000/orders/outfordelivery/"+id,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+alert("Out For Delivery");
+
+loadOrders();
+
+}
+
+
+// Delivered
+
+async function acceptOrder(id){
+
+await fetch(
+
+"http://localhost:5000/orders/accept/"+id,
+
+{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+partner_id:rider.id
+
+})
+
+}
+
+);
+
+alert("Order Accepted");
+
+loadOrders();
+
+}
+
+
+loadOrders();
+
+
+// PWA
+
+if ("serviceWorker" in navigator) {
+
+window.addEventListener("load",()=>{
+
+navigator.serviceWorker.register("/service-worker.js");
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | My Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#FFF8F2;
+}
+
+header{
+
+height:70px;
+
+background:#fff;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 20px;
+
+position:sticky;
+
+top:0;
+
+box-shadow:0 3px 15px rgba(0,0,0,.06);
+
+z-index:999;
+
+}
+
+.back-btn{
+
+width:42px;
+
+height:42px;
+
+background:#FFF3EB;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+text-decoration:none;
+
+color:#ff6b00;
+
+font-size:20px;
+
+}
+
+header h2{
+
+font-size:28px;
+
+font-weight:700;
+
+color:#222;
+
+}
+
+.container{
+
+width:92%;
+
+max-width:650px;
+
+margin:25px auto;
+
+}
+
+.card{
+
+background:#fff;
+
+padding:22px;
+
+border-radius:18px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.06);
+
+margin-bottom:20px;
+
+}
+
+.card h3{
+
+margin-bottom:18px;
+
+font-size:22px;
+
+color:#222;
+
+}
+
+input{
+
+width:100%;
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+font-size:16px;
+
+margin-bottom:15px;
+
+outline:none;
+
+transition:.3s;
+
+}
+
+input:focus{
+
+border-color:#ff6b00;
+
+}
+
+.location-btn{
+
+width:100%;
+
+padding:15px;
+
+background:#FFF3EB;
+
+border:none;
+
+border-radius:12px;
+
+color:#ff6b00;
+
+font-size:17px;
+
+font-weight:600;
+
+cursor:pointer;
+
+margin-top:5px;
+
+transition:.3s;
+
+}
+
+.location-btn:hover{
+
+background:#ffe4d1;
+
+}
+
+#locationStatus{
+
+margin-top:15px;
+
+font-size:15px;
+
+color:#666;
+
+text-align:center;
+
+}
+
+.save-btn{
+
+width:100%;
+
+padding:17px;
+
+background:#ff6b00;
+
+color:#fff;
+
+border:none;
+
+border-radius:14px;
+
+font-size:18px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.save-btn:hover{
+
+background:#e65d00;
+
+}
+
+@media(max-width:768px){
+
+.container{
+
+width:94%;
+
+}
+
+header h2{
+
+font-size:24px;
+
+}
+
+.card{
+
+padding:18px;
+
+}
+
+.card h3{
+
+font-size:20px;
+
+}
+
+input{
+
+font-size:15px;
+
+}
+
+.save-btn{
+
+font-size:17px;
+
+}
+
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<a href="cart.html" class="back-btn">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</a>
+
+<h2>My Profile</h2>
+
+<div style="width:42px;"></div>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h3>Personal Details</h3>
+
+<input
+type="text"
+id="name"
+placeholder="Full Name">
+
+<input
+type="text"
+id="mobile"
+placeholder="Mobile Number"
+readonly>
+
+</div>
+
+<div class="card">
+
+<h3>Delivery Address</h3>
+
+<input
+type="text"
+id="house"
+placeholder="House / Flat No">
+
+<input
+type="text"
+id="street"
+placeholder="Street">
+
+<input
+type="text"
+id="area"
+placeholder="Area / Landmark">
+
+<input
+type="text"
+id="city"
+placeholder="City">
+
+<input
+type="text"
+id="state"
+placeholder="State">
+
+<input
+type="text"
+id="pincode"
+placeholder="Pincode">
+
+<button
+class="location-btn"
+onclick="getLocation()">
+
+📍 Use Current Location
+
+</button>
+
+<p id="locationStatus">
+
+Location not selected
+
+</p>
+
+</div>
+
+<button
+class="save-btn"
+onclick="saveProfile()">
+
+Save Address
+
+</button>
+
+</div>
+
+<script>
+
+let latitude = "";
+let longitude = "";
+
+// Load Customer Details
+
+const customer = JSON.parse(
+localStorage.getItem("customer")
+);
+
+if(customer){
+
+document.getElementById("name").value =
+customer.name || "";
+
+document.getElementById("mobile").value =
+customer.mobile || "";
+
+if(customer.house)
+document.getElementById("house").value =
+customer.house;
+
+if(customer.street)
+document.getElementById("street").value =
+customer.street;
+
+if(customer.area)
+document.getElementById("area").value =
+customer.area;
+
+if(customer.city)
+document.getElementById("city").value =
+customer.city;
+
+if(customer.state)
+document.getElementById("state").value =
+customer.state;
+
+if(customer.pincode)
+document.getElementById("pincode").value =
+customer.pincode;
+
+latitude = customer.latitude || "";
+longitude = customer.longitude || "";
+
+}
+
+// Current Location
+
+async function getLocation(){
+
+if(!navigator.geolocation){
+
+alert("Geolocation not supported");
+
+return;
+
+}
+
+document.getElementById("locationStatus").innerHTML =
+"Getting Current Location...";
+
+navigator.geolocation.getCurrentPosition(
+
+async(position)=>{
+
+latitude = position.coords.latitude;
+longitude = position.coords.longitude;
+
+try{
+
+const response = await fetch(
+
+`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+
+);
+
+const data = await response.json();
+
+const address = data.address;
+
+// Auto Fill Address
+
+document.getElementById("house").value = "";
+
+document.getElementById("street").value =
+address.road || "";
+
+document.getElementById("area").value =
+address.suburb ||
+address.village ||
+address.neighbourhood ||
+"";
+
+document.getElementById("city").value =
+address.city ||
+address.town ||
+address.county ||
+"";
+
+document.getElementById("state").value =
+address.state || "";
+
+document.getElementById("pincode").value =
+address.postcode || "";
+
+document.getElementById("locationStatus").innerHTML =
+"✅ Current Location Added";
+
+}catch(e){
+
+alert("Unable to fetch address");
+
+}
+
+},
+
+()=>{
+
+alert("Location Permission Denied");
+
+}
+
+);
+
+}
+
+// Save Profile
+
+function saveProfile(){
+
+const updatedCustomer={
+
+...customer,
+
+name:
+document.getElementById("name").value.trim(),
+
+mobile:
+document.getElementById("mobile").value.trim(),
+
+house:
+document.getElementById("house").value.trim(),
+
+street:
+document.getElementById("street").value.trim(),
+
+area:
+document.getElementById("area").value.trim(),
+
+city:
+document.getElementById("city").value.trim(),
+
+state:
+document.getElementById("state").value.trim(),
+
+pincode:
+document.getElementById("pincode").value.trim(),
+address: [
+
+document.getElementById("house").value,
+
+document.getElementById("street").value,
+
+document.getElementById("area").value,
+
+document.getElementById("city").value,
+
+document.getElementById("state").value,
+
+document.getElementById("pincode").value
+
+].filter(Boolean).join(", "),
+
+
+latitude:latitude,
+
+longitude:longitude
+
+};
+
+localStorage.setItem(
+
+"customer",
+
+JSON.stringify(updatedCustomer)
+
+);
+
+alert("Address Saved Successfully");
+
+window.location.href="cart.html";
+
+}
+</script>
+
+</body>
+
+</html>

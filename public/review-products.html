@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Review Products</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:#fff;
+padding:18px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+width:95%;
+max-width:1100px;
+margin:25px auto;
+}
+
+.topBar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.topBar input{
+width:320px;
+padding:12px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+.saveBtn{
+background:#ff6b00;
+color:#fff;
+padding:12px 25px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+table{
+width:100%;
+background:#fff;
+border-collapse:collapse;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+th{
+background:#ff6b00;
+color:#fff;
+padding:15px;
+}
+
+td{
+padding:15px;
+border-bottom:1px solid #eee;
+text-align:center;
+}
+
+img{
+width:70px;
+height:70px;
+border-radius:10px;
+object-fit:cover;
+}
+
+input[type=text],
+input[type=number],
+select{
+
+width:100%;
+padding:8px;
+border:1px solid #ddd;
+border-radius:6px;
+
+}
+
+.deleteBtn{
+
+background:red;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+.changeBtn{
+
+background:#007bff;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:6px;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+DARVOZ Review Products
+
+</header>
+
+<div class="container">
+
+<div class="topBar">
+
+<input
+type="text"
+id="search"
+placeholder="Search Product...">
+
+<button
+class="saveBtn"
+onclick="saveProducts()">
+
+Save Products
+
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Image</th>
+
+<th>Product Name</th>
+
+<th>Price</th>
+
+<th>Category</th>
+
+<th>Image</th>
+
+<th>Delete</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableBody">
+
+</tbody>
+
+</table>
+
+</div>
+<div style="text-align:center;margin:30px 0;">
+
+<button
+class="saveBtn"
+onclick="saveProducts()">
+
+💾 Save Products
+
+</button>
+
+</div>
+
+
+
+<script>
+
+const products =
+JSON.parse(localStorage.getItem("products")) || [];
+
+const defaultImages = {
+
+"Biryani":"images/default/biryani.jpg",
+"Starters":"images/default/starter.jpg",
+"Breads":"images/default/bread.jpg",
+"Beverages":"images/default/beverage.jpg",
+"Desserts":"images/default/dessert.jpg",
+"Other":"images/default/other.jpg"
+
+};
+
+let html="";
+
+products.forEach((product,index)=>{
+
+const image =
+defaultImages[product.category] ||
+defaultImages["Other"];
+
+html+=`
+
+<tr>
+
+<td>
+
+<img src="${image}">
+
+</td>
+
+<td>
+
+<input
+type="text"
+id="name${index}"
+value="${product.name}">
+
+</td>
+
+<td>
+
+<input
+type="number"
+id="price${index}"
+value="${product.price}">
+
+</td>
+
+<td>
+
+<select id="category${index}">
+
+<option ${product.category=="Biryani"?"selected":""}>Biryani</option>
+
+<option ${product.category=="Starters"?"selected":""}>Starters</option>
+
+<option ${product.category=="Breads"?"selected":""}>Breads</option>
+
+<option ${product.category=="Beverages"?"selected":""}>Beverages</option>
+
+<option ${product.category=="Desserts"?"selected":""}>Desserts</option>
+
+<option ${product.category=="Other"?"selected":""}>Other</option>
+
+</select>
+
+</td>
+
+<td>
+
+<button class="changeBtn">
+
+Change
+
+</button>
+
+</td>
+
+<td>
+
+<button
+class="deleteBtn"
+onclick="deleteProduct(${index})">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("tableBody").innerHTML=html;
+// ----------------------------
+// Search Products
+// ----------------------------
+
+document.getElementById("search").addEventListener("keyup", function(){
+
+    const value = this.value.toLowerCase();
+
+    const rows = document.querySelectorAll("#tableBody tr");
+
+    rows.forEach(row=>{
+
+        if(row.innerText.toLowerCase().includes(value)){
+
+            row.style.display="";
+
+        }else{
+
+            row.style.display="none";
+
+        }
+
+    });
+
+});
+
+// ----------------------------
+// Delete Product
+// ----------------------------
+
+function deleteProduct(index){
+
+    if(!confirm("Delete this product?")) return;
+
+    products.splice(index,1);
+
+    localStorage.setItem(
+
+        "products",
+
+        JSON.stringify(products)
+
+    );
+
+    location.reload();
+
+}
+
+// ----------------------------
+// Change Default Image
+// ----------------------------
+
+document.addEventListener("change",(e)=>{
+
+    if(e.target.tagName==="SELECT"){
+
+        const row=e.target.closest("tr");
+
+        const img=row.querySelector("img");
+
+        img.src=defaultImages[e.target.value];
+
+    }
+
+});
+
+// ----------------------------
+// Save Products
+// ----------------------------
+
+async function saveProducts(){
+    
+
+    const partner=JSON.parse(
+
+        localStorage.getItem("partner")
+
+    );
+
+    if(!partner){
+
+        alert("Partner not logged in.");
+
+        return;
+
+    }
+
+    const list=[];
+
+    products.forEach((p,index)=>{
+
+        list.push({
+
+            partner_id:partner.id,
+
+            name:document.getElementById("name"+index).value,
+
+            price:document.getElementById("price"+index).value,
+
+            category:document.getElementById("category"+index).value,
+
+            image:defaultImages[
+                document.getElementById("category"+index).value
+            ]
+
+        });
+
+    });
+
+    try{
+          
+        const response=await fetch(
+            
+
+        "http://localhost:5000/products/import",
+          
+        {
+
+            method:"POST",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify({
+
+                products:list
+
+            })
+
+        });
+        
+
+        const data=await response.json();
+
+        if(data.success){
+
+            alert("Products Imported Successfully.");
+
+            localStorage.removeItem("products");
+
+            window.location.href="partner-products.html";
+
+        }else{
+
+            alert(data.message);
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+        alert("Server Error");
+
+    }
+
+}
+
+</script>
+
+</body>
+</html

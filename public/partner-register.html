@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Partner Registration</title>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="partner-register.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+DARVOZ
+
+</div>
+
+<div class="title">
+
+Partner Registration
+
+</div>
+
+</header>
+
+<div class="container">
+
+<form id="partnerForm">
+
+<h2>
+
+Become a DARVOZ Partner
+
+</h2>
+
+<p class="subtitle">
+
+Register your business and start receiving online orders.
+
+</p>
+
+<!-- Business Category -->
+
+<label>
+
+Business Category
+
+</label>
+
+<select id="category">
+
+<option value="">Select Category</option>
+
+<option value="Food">🍔 Food</option>
+
+<option value="Groceries">🛒 Groceries</option>
+
+<option value="Meat">🥩 Meat</option>
+
+</select>
+
+<!-- Store -->
+
+<label>
+
+Store Name
+
+</label>
+
+<input
+type="text"
+id="storeName"
+placeholder="Store Name">
+
+<label>
+
+Owner Name
+
+</label>
+
+<input
+type="text"
+id="ownerName"
+placeholder="Owner Name">
+
+<label>
+
+Mobile Number
+
+</label>
+
+<input
+type="tel"
+id="mobile"
+maxlength="10"
+placeholder="10 Digit Mobile Number">
+
+<label>
+
+Email Address
+
+</label>
+
+<input
+type="email"
+id="email"
+placeholder="Email Address">
+
+<label>
+
+Password
+
+</label>
+
+<input
+type="password"
+id="password"
+placeholder="Create Password">
+
+<label>
+
+Confirm Password
+
+</label>
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm Password">
+
+<!-- Food Timings -->
+
+<div id="foodSection">
+
+<h3>
+
+🍔 Food Availability
+
+</h3>
+
+<div class="meal">
+
+<input
+type="checkbox"
+id="breakfast">
+
+<label for="breakfast">
+
+Breakfast
+
+</label>
+
+<div class="mealTime" id="breakfastTime">
+
+<label>
+
+Available From
+
+</label>
+
+<input
+type="time"
+id="breakfastFrom">
+
+<label>
+
+Available To
+
+</label>
+
+<input
+type="time"
+id="breakfastTo">
+
+</div>
+
+</div>
+
+<div class="meal">
+
+<input
+type="checkbox"
+id="lunch">
+
+<label for="lunch">
+
+Lunch
+
+</label>
+
+<div class="mealTime" id="lunchTime">
+
+<label>
+
+Available From
+
+</label>
+
+<input
+type="time"
+id="lunchFrom">
+
+<label>
+
+Available To
+
+</label>
+
+<input
+type="time"
+id="lunchTo">
+
+</div>
+
+</div>
+
+<div class="meal">
+
+<input
+type="checkbox"
+id="dinner">
+
+<label for="dinner">
+
+Dinner
+
+</label>
+
+<div class="mealTime" id="dinnerTime">
+
+<label>
+
+Available From
+
+</label>
+
+<input
+type="time"
+id="dinnerFrom">
+
+<label>
+
+Available To
+
+</label>
+
+<input
+type="time"
+id="dinnerTo">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Grocery / Meat -->
+
+<div id="store24">
+
+<h3>
+
+Store Availability
+
+</h3>
+
+<p>
+
+✅ Open 24 Hours
+
+</p>
+
+</div>
+
+<!-- Address -->
+
+<label>
+
+Store Address
+
+</label>
+
+<input
+type="text"
+id="address"
+readonly
+placeholder="Select Store Location">
+
+
+<button
+type="button"
+id="locationBtn"
+onclick="window.location.href='partner-location.html'">
+
+📍 Select Store Location
+
+</button>
+<!-- Documents -->
+
+<label>
+
+Store Image
+
+</label>
+
+<input
+type="file"
+id="image"
+accept="image/*">
+
+<label>
+
+FSSAI Number (Optional)
+
+</label>
+
+<input
+type="text"
+id="fssai">
+
+<label>
+
+GST Number (Optional)
+
+</label>
+
+<input
+type="text"
+id="gst">
+
+<button
+type="button"
+id="registerBtn"
+onclick="registerPartner()">
+
+Register Partner
+
+</button>
+
+</form>
+
+</div>
+<!-- MAP MODAL -->
+
+<div id="mapModal">
+
+<div class="searchBox">
+
+<input
+type="text"
+id="searchInput"
+placeholder="🔍 Search location">
+
+<div id="searchResults"></div>
+
+</div>
+
+<div id="map"></div>
+
+<div id="centerPin">
+
+📍
+
+</div>
+
+<div class="bottomSheet">
+
+<h3>
+
+Selected Address
+
+</h3>
+
+<p id="selectedLocation">
+
+Move the map...
+
+</p>
+
+<button id="confirmLocation">
+
+Confirm Location
+
+</button>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="partner-register.js"></script>
+</body>
+
+</html>

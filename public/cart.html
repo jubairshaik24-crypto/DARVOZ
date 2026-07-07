@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | My Cart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#FFF8F2;
+padding-bottom:120px;
+}
+
+/* Header */
+
+header{
+height:70px;
+background:#fff;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+position:sticky;
+top:0;
+z-index:999;
+box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.back-btn{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#FFF3EB;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#ff6b00;
+font-size:20px;
+text-decoration:none;
+}
+
+header h2{
+font-size:32px;
+font-weight:700;
+}
+
+.profile{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#FFF3EB;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#ff6b00;
+font-size:20px;
+}
+
+/* Container */
+
+.container{
+width:92%;
+max-width:900px;
+margin:auto;
+padding-top:20px;
+}
+
+/* Restaurant */
+
+.restaurant-card{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+margin-bottom:18px;
+}
+
+.restaurant-card h3{
+font-size:28px;
+margin-bottom:8px;
+}
+
+.restaurant-card p{
+color:#777;
+}
+
+/* Cart Item */
+
+.cart-item{
+background:white;
+border-radius:18px;
+padding:18px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+.item-name{
+font-size:22px;
+font-weight:600;
+margin-bottom:8px;
+}
+
+.item-price{
+font-size:20px;
+font-weight:700;
+color:#ff6b00;
+}
+
+/* Qty */
+
+.qty-box{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.qty-btn{
+width:38px;
+height:38px;
+border:none;
+border-radius:50%;
+background:#ff6b00;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+.qty-count{
+font-size:20px;
+font-weight:600;
+min-width:20px;
+text-align:center;
+}
+
+/* Add More */
+
+.add-more{
+background:white;
+padding:18px;
+border-radius:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin:22px 0;
+cursor:pointer;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+.add-more h3{
+font-size:22px;
+}
+
+/* Bill */
+
+.bill{
+background:white;
+padding:22px;
+border-radius:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+margin-bottom:18px;
+}
+
+.bill h3{
+margin-bottom:18px;
+font-size:26px;
+}
+
+.bill-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:14px;
+font-size:18px;
+}
+
+.bill-total{
+display:flex;
+justify-content:space-between;
+margin-top:18px;
+padding-top:18px;
+border-top:1px solid #eee;
+font-size:24px;
+font-weight:700;
+color:#ff6b00;
+}
+
+/* Address */
+
+.address{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+margin-bottom:18px;
+}
+
+.address h3{
+margin-bottom:10px;
+}
+
+.change{
+color:#ff6b00;
+font-weight:600;
+cursor:pointer;
+margin-top:10px;
+display:inline-block;
+}
+
+/* Payment */
+
+.payment{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+margin-bottom:120px;
+}
+
+.payment h3{
+margin-bottom:15px;
+}
+
+.payment label{
+display:block;
+margin-bottom:12px;
+font-size:18px;
+cursor:pointer;
+}
+
+/* Bottom */
+
+.bottom-bar{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+background:white;
+padding:18px 22px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 -5px 20px rgba(0,0,0,.08);
+}
+
+.total-price h2{
+color:#ff6b00;
+font-size:32px;
+}
+
+.total-price p{
+color:#666;
+}
+
+.checkout-btn{
+background:#ff6b00;
+color:white;
+border:none;
+padding:16px 34px;
+border-radius:14px;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.checkout-btn:hover{
+background:#e65d00;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<a href="restaurant.html" class="back-btn">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</a>
+
+<h2>
+
+My Cart
+
+</h2>
+
+<div class="profile">
+
+<i class="fa-regular fa-user"></i>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<!-- Restaurant -->
+
+<div class="restaurant-card">
+
+<h3 id="restaurantName">
+
+Restaurant Name
+
+</h3>
+
+<p>
+
+⭐ 4.6
+
+</p>
+
+</div>
+
+<!-- Cart Items -->
+
+<div id="cartItems">
+
+<!-- Products Load Here -->
+
+</div>
+
+<!-- Add More -->
+
+<div class="add-more"
+
+onclick="history.back()">
+
+<h3>
+
++ Add More Items
+
+</h3>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+<!-- Bill -->
+
+<div class="bill">
+
+<h3>
+
+Bill Details
+
+</h3>
+
+<div class="bill-row">
+
+<span>
+
+Food Total
+
+</span>
+
+<span id="foodTotal">
+
+₹0
+
+</span>
+
+</div>
+
+<div class="bill-row">
+
+<span>
+
+Delivery Fee
+
+</span>
+
+<span id="deliveryFee">
+
+₹20
+
+</span>
+
+</div>
+
+<div class="bill-row">
+
+<span>
+
+Platform Fee
+
+</span>
+
+<span>
+
+₹5
+
+</span>
+
+</div>
+
+<div class="bill-total">
+
+<span>
+
+To Pay
+
+</span>
+
+<span id="grandTotal">
+
+₹0
+
+</span>
+
+</div>
+
+</div>
+
+<!-- Address -->
+
+<div class="address">
+
+<h3>
+
+Deliver To
+
+</h3>
+
+<p id="customerName">
+
+Loading...
+
+</p>
+
+<p id="customerAddress">
+
+Please add address
+
+</p>
+
+<div
+class="change"
+onclick="location.href='profile.html'">
+
+Change Address >
+
+</div>
+
+</div>
+
+<!-- Payment -->
+
+<div class="payment">
+
+<h3>
+
+Payment Method
+
+</h3>
+
+<label>
+
+<input
+type="radio"
+name="payment"
+checked>
+
+Cash on Delivery
+
+</label>
+
+<label>
+
+<input
+type="radio"
+name="payment">
+
+UPI
+
+</label>
+
+<label>
+
+<input
+type="radio"
+name="payment">
+
+Card
+
+</label>
+
+</div>
+
+</div>
+
+<!-- Bottom -->
+
+<div class="bottom-bar">
+
+<div class="total-price">
+
+<h2 id="bottomTotal">
+
+₹0
+
+</h2>
+
+<p>
+
+Total Amount
+
+</p>
+
+</div>
+
+<button
+class="checkout-btn"
+onclick="location.href='checkout.html'">
+
+Proceed →
+
+</button>
+
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function loadCart(){
+
+const container = document.getElementById("cartItems");
+
+container.innerHTML = "";
+
+if(cart.length==0){
+
+container.innerHTML=`
+
+<div style="text-align:center;
+padding:60px;
+color:#888;
+font-size:22px;">
+
+🛒 Your Cart is Empty
+
+</div>
+
+`;
+
+updateBill();
+
+return;
+
+}
+
+// Restaurant Name
+
+document.getElementById("restaurantName").innerHTML=
+
+cart[0].restaurantName || "DARVOZ Partner";
+
+cart.forEach((item,index)=>{
+
+container.innerHTML += `
+
+<div class="cart-item">
+
+<div>
+
+<div class="item-name">
+
+${item.name}
+
+</div>
+
+<div class="item-price">
+
+₹${item.price}
+
+</div>
+
+</div>
+
+<div class="qty-box">
+
+<button
+class="qty-btn"
+onclick="minus(${index})">
+
+-
+
+</button>
+
+<div class="qty-count">
+
+${item.qty}
+
+</div>
+
+<button
+class="qty-btn"
+onclick="plus(${index})">
+
++
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+updateBill();
+
+}
+
+function plus(index){
+
+cart[index].qty++;
+
+saveCart();
+
+}
+
+function minus(index){
+
+cart[index].qty--;
+
+if(cart[index].qty<=0){
+
+cart.splice(index,1);
+
+}
+
+saveCart();
+
+}
+
+function saveCart(){
+
+localStorage.setItem(
+
+"cart",
+
+JSON.stringify(cart)
+
+);
+
+loadCart();
+
+}
+
+function updateBill(){
+
+let foodTotal=0;
+
+cart.forEach(item=>{
+
+foodTotal += item.price * item.qty;
+
+});
+
+let delivery = foodTotal>=299 ? 0 : 20;
+
+let platform = 5;
+
+let grandTotal =
+
+foodTotal +
+
+delivery +
+
+platform;
+
+document.getElementById("foodTotal").innerHTML=
+
+"₹"+foodTotal;
+
+document.getElementById("deliveryFee").innerHTML=
+
+delivery==0 ?
+
+"<span style='color:green'>FREE</span>"
+
+:
+
+"₹"+delivery;
+
+document.getElementById("grandTotal").innerHTML=
+
+"₹"+grandTotal;
+
+document.getElementById("bottomTotal").innerHTML=
+
+"₹"+grandTotal;
+
+}
+
+loadCart();
+function loadCustomer(){
+
+const customer = JSON.parse(localStorage.getItem("customer"));
+
+if(customer){
+
+document.getElementById("customerName").textContent =
+customer.name || "Guest";
+
+document.getElementById("customerAddress").textContent =
+customer.address || "Please add address";
+
+}else{
+
+document.getElementById("customerName").textContent =
+"Guest";
+
+document.getElementById("customerAddress").textContent =
+"Please add address";
+
+}
+
+}
+
+loadCustomer();
+</script>
+
+</body>
+
+</html>

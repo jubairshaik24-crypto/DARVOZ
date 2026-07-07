@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>DARVOZ | Address</title>
+
+<link rel="manifest" href="/manifest.json">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:#fff;
+padding:18px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+}
+
+.container{
+width:92%;
+max-width:700px;
+margin:20px auto;
+}
+
+.card{
+background:#fff;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+label{
+font-weight:600;
+display:block;
+margin-top:18px;
+margin-bottom:8px;
+}
+
+input,
+textarea{
+
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+
+}
+
+textarea{
+
+height:90px;
+resize:none;
+
+}
+
+.location-btn{
+
+width:100%;
+padding:15px;
+margin-top:15px;
+
+background:#007bff;
+color:white;
+
+border:none;
+border-radius:10px;
+
+font-size:16px;
+
+cursor:pointer;
+
+}
+
+.location-btn:hover{
+
+background:#005fd1;
+
+}
+
+.save{
+
+margin-top:20px;
+display:flex;
+align-items:center;
+gap:10px;
+
+}
+
+.save input{
+
+width:20px;
+height:20px;
+
+}
+
+.confirm{
+
+width:100%;
+margin-top:25px;
+padding:16px;
+
+background:#ff6b00;
+color:white;
+
+border:none;
+border-radius:10px;
+
+font-size:18px;
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.confirm:hover{
+
+background:#e65c00;
+
+}
+
+/* MAP */
+
+#mapModal{
+
+display:none;
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:#fff;
+
+z-index:9999;
+
+}
+
+#map{
+
+width:100%;
+height:100%;
+
+}
+
+.searchBar{
+
+position:absolute;
+
+top:15px;
+
+left:15px;
+right:15px;
+
+z-index:1000;
+
+}
+
+.searchBar input{
+
+padding:15px;
+font-size:16px;
+
+}
+
+.bottomCard{
+
+position:absolute;
+
+bottom:0;
+
+left:0;
+right:0;
+
+background:white;
+
+padding:20px;
+
+border-radius:20px 20px 0 0;
+
+z-index:1000;
+
+box-shadow:0 -5px 20px rgba(0,0,0,.2);
+
+}
+
+.bottomCard h3{
+
+margin-bottom:10px;
+
+}
+
+.selectedAddress{
+
+color:#555;
+line-height:1.6;
+
+margin-bottom:20px;
+
+}
+
+.confirmLocation{
+
+width:100%;
+
+padding:16px;
+
+background:#ff6b00;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+font-size:18px;
+
+cursor:pointer;
+
+}
+
+.marker{
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-100%);
+
+font-size:40px;
+
+z-index:900;
+
+pointer-events:none;
+
+}
+#searchResults{
+
+position:absolute;
+
+top:60px;
+
+left:15px;
+right:15px;
+
+background:white;
+
+border-radius:10px;
+
+max-height:220px;
+
+overflow-y:auto;
+
+z-index:1001;
+
+box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+display:none;
+
+}
+
+.searchItem{
+
+padding:15px;
+
+border-bottom:1px solid #eee;
+
+cursor:pointer;
+
+}
+
+.searchItem:hover{
+
+background:#f5f5f5;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+Delivery Address
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<label>Name</label>
+
+<input
+id="name"
+readonly>
+
+<label>Mobile</label>
+
+<input
+id="mobile"
+readonly>
+
+<label>Address</label>
+
+<input
+id="address"
+readonly
+placeholder="Select your delivery location">
+
+<button
+class="location-btn"
+onclick="openMap()">
+
+📍 Use Current Location
+
+</button>
+
+<label>Landmark</label>
+
+<input
+id="landmark"
+placeholder="Optional">
+
+<label>Delivery Instructions</label>
+
+<textarea
+id="instructions"
+placeholder="Example: Ring the bell, Near Temple"></textarea>
+
+<div class="save">
+
+<input
+type="checkbox"
+id="saveAddress">
+
+<label for="saveAddress">
+
+Save this address
+
+</label>
+
+</div>
+
+<button
+class="confirm">
+
+Confirm Address
+
+</button>
+
+</div>
+
+</div>
+
+<!-- MAP -->
+
+<div id="mapModal">
+
+<div class="searchBar">
+
+<input
+id="searchBox"
+<div id="searchResults"></div>
+placeholder="Search address...">
+
+</div>
+
+<div id="map"></div>
+
+<div class="marker">
+
+📍
+
+</div>
+
+<div class="bottomCard">
+
+<h3>Selected Address</h3>
+
+<div
+class="selectedAddress"
+id="selectedAddress">
+
+Move the map to select location
+
+</div>
+
+<button
+class="confirmLocation">
+
+Confirm Location
+
+</button>
+
+</div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+ <script>
+
+let map;
+let marker;
+let selectedLat = null;
+let selectedLng = null;
+
+// Open Map
+function openMap(){
+
+document.getElementById("mapModal").style.display="block";
+
+setTimeout(()=>{
+
+if(!map){
+
+navigator.geolocation.getCurrentPosition(
+
+(position)=>{
+
+selectedLat=position.coords.latitude;
+selectedLng=position.coords.longitude;
+
+loadMap(selectedLat,selectedLng);
+
+},
+
+()=>{
+
+// Default Location (Ongole)
+
+selectedLat=15.5057;
+selectedLng=80.0499;
+
+loadMap(selectedLat,selectedLng);
+
+}
+
+);
+
+}
+
+map.invalidateSize();
+
+},300);
+
+}
+
+
+// Load Leaflet Map
+
+function loadMap(lat,lng){
+
+map=L.map('map').setView([lat,lng],16);
+
+L.tileLayer(
+
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+{
+
+maxZoom:19
+
+}
+
+).addTo(map);
+
+
+// Whenever map moves
+
+map.on("moveend",()=>{
+
+const center=map.getCenter();
+
+selectedLat=center.lat;
+selectedLng=center.lng;
+
+reverseGeocode(center.lat,center.lng);
+
+});
+
+reverseGeocode(lat,lng);
+
+}
+
+
+
+// Convert LatLng → Address
+
+async function reverseGeocode(lat,lng){
+
+try{
+
+const response=await fetch(
+
+`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+
+);
+
+const data=await response.json();
+
+document.getElementById("selectedAddress").innerHTML=
+
+data.display_name;
+
+}catch{
+
+document.getElementById("selectedAddress").innerHTML=
+
+"Unable to fetch address.";
+
+}
+
+}
+
+
+
+// Search Address
+
+const search=document.getElementById("searchBox");
+
+let timer;
+
+search.addEventListener("keyup",()=>{
+
+clearTimeout(timer);
+
+timer=setTimeout(searchLocation,500);
+
+});
+
+
+async function searchLocation(){
+
+const keyword=search.value.trim();
+
+if(keyword.length<3){
+
+document.getElementById("searchResults").style.display="none";
+
+return;
+
+}
+
+const response=await fetch(
+
+`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(keyword)}&countrycodes=in&limit=5`
+
+);
+
+const data=await response.json();
+
+const box=document.getElementById("searchResults");
+
+box.innerHTML="";
+
+if(data.length==0){
+
+box.style.display="none";
+
+return;
+
+}
+
+box.style.display="block";
+
+data.forEach(place=>{
+
+const div=document.createElement("div");
+
+div.className="searchItem";
+
+div.innerHTML="📍 "+place.display_name;
+
+div.onclick=function(){
+
+map.setView(
+
+[place.lat,place.lon],
+
+18
+
+);
+
+selectedLat=place.lat;
+
+selectedLng=place.lon;
+
+search.value=place.display_name;
+
+box.style.display="none";
+
+reverseGeocode(place.lat,place.lon);
+
+};
+
+box.appendChild(div);
+
+});
+
+}
+document.addEventListener("click",(e)=>{
+
+if(!document.getElementById("searchBox").contains(e.target)){
+
+document.getElementById("searchResults").style.display="none";
+
+}
+
+});
+
+// -----------------------------
+// Confirm Location
+// -----------------------------
+
+let finalAddress = "";
+
+document.querySelector(".confirmLocation").onclick = function(){
+
+    if(!selectedLat || !selectedLng){
+
+        alert("Please select a location.");
+
+        return;
+
+    }
+
+    finalAddress = document.getElementById("selectedAddress").innerHTML;
+
+    // Fill Address Field
+    document.getElementById("address").value = finalAddress;
+
+    // Save in localStorage
+    localStorage.setItem(
+        "customerLocation",
+        JSON.stringify({
+
+            address: finalAddress,
+            latitude: selectedLat,
+            longitude: selectedLng
+
+        })
+    );
+
+    // Close Map
+    document.getElementById("mapModal").style.display="none";
+
+}
+
+
+
+// -----------------------------
+// Auto Fill Customer Details
+// -----------------------------
+
+const customer = JSON.parse(localStorage.getItem("customer"));
+
+if(customer){
+
+    document.getElementById("name").value = customer.name;
+
+    document.getElementById("mobile").value = customer.mobile;
+
+}
+
+
+
+// -----------------------------
+// Confirm Address
+// -----------------------------
+
+document.querySelector(".confirm").onclick = function(){
+
+    const house = document.getElementById("address").value.trim();
+
+    if(house==""){
+
+        alert("Please select your address.");
+
+        return;
+
+    }
+
+    const landmark = document.getElementById("landmark").value.trim();
+
+    const instructions = document.getElementById("instructions").value.trim();
+
+    const save = document.getElementById("saveAddress").checked;
+
+    const location = JSON.parse(
+        localStorage.getItem("customerLocation")
+    );
+
+    const address = {
+
+        customer_id: customer.id,
+
+        name: customer.name,
+
+        mobile: customer.mobile,
+
+        address: house,
+
+        landmark,
+
+        instructions,
+
+        save,
+
+        latitude: location.latitude,
+
+        longitude: location.longitude
+
+    };
+
+    localStorage.setItem(
+
+        "customerAddress",
+
+        JSON.stringify(address)
+
+    );
+
+    window.location.href="checkout.html";
+
+}
+
+
+</script>
+
+</body>
+</html>

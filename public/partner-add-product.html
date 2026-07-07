@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>DARVOZ Partner Dashboard</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:white;
+padding:20px;
+font-size:24px;
+font-weight:bold;
+text-align:center;
+}
+
+.container{
+width:90%;
+max-width:900px;
+margin:30px auto;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+margin-bottom:20px;
+}
+
+.card h2{
+color:#ff6b00;
+margin-bottom:10px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.box{
+background:white;
+padding:25px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+cursor:pointer;
+transition:.3s;
+}
+
+.box:hover{
+transform:translateY(-5px);
+}
+
+.box h3{
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+DARVOZ Partner Dashboard
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2 id="storeName">Restaurant Name</h2>
+
+<p id="businessType">Business Type</p>
+
+<p id="storeAddress">Address</p>
+
+<p><b>Status :</b> ✅ Approved</p>
+
+</div>
+
+<div class="grid">
+
+<div class="box" onclick="location.href='upload-menu.html'">
+📸
+<h3>Upload Menu</h3>
+</div>
+
+<div class="box" onclick="location.href='add-product.html'">
+➕
+<h3>Add Product</h3>
+</div>
+
+<div class="box" onclick="location.href='my-products.html'">
+📦
+<h3>My Products</h3>
+</div>
+
+<div class="box">
+🛒
+<h3>Orders</h3>
+</div>
+
+<div class="box">
+📈
+<h3>Sales</h3>
+</div>
+
+<div class="box">
+⚙
+<h3>Profile</h3>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+async function loadStore(){
+
+const response = await fetch("http://localhost:5000/partner/1");
+
+const store = await response.json();
+
+document.getElementById("storeName").innerHTML = store.restaurant_name;
+document.getElementById("businessType").innerHTML = store.business_type;
+document.getElementById("storeAddress").innerHTML = store.address;
+
+}
+
+loadStore();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("Service Worker Registered", registration);
+      })
+      .catch((error) => {
+        console.log("Registration Failed", error);
+      });
+  });
+}
+
+
+</script>
+
+</body>
+</html>

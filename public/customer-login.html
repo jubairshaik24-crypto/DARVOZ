@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Customer Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:400px;
+background:white;
+padding:35px;
+border-radius:18px;
+box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+h1{
+text-align:center;
+color:#ff6b00;
+margin-bottom:5px;
+}
+
+p{
+text-align:center;
+color:#666;
+margin-bottom:25px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:15px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#ff6b00;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#e65c00;
+}
+
+.bottom{
+text-align:center;
+margin-top:20px;
+}
+
+.bottom a{
+color:#ff6b00;
+text-decoration:none;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>DARVOZ</h1>
+
+<p>Customer Login</p>
+
+<input
+type="text"
+id="mobile"
+placeholder="Mobile Number">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button onclick="login()">
+
+Login
+
+</button>
+
+<div class="bottom">
+
+New Customer?
+
+<a href="customer-register.html">
+
+Register
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+async function login(){
+
+const mobile=document.getElementById("mobile").value.trim();
+const password=document.getElementById("password").value.trim();
+
+if(mobile==""||password==""){
+
+alert("Enter Mobile Number & Password");
+
+return;
+
+}
+
+const response=await fetch(
+
+"http://localhost:5000/customer/login",
+
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+mobile,
+password
+
+})
+
+}
+
+);
+
+const result=await response.json();
+
+if(result.success){
+
+localStorage.setItem(
+"customer",
+JSON.stringify(result.customer)
+);
+
+alert("Login Successful");
+
+// Address not added
+if(
+!result.customer.address ||
+result.customer.address.trim()==""
+){
+
+window.location.href="profile.html";
+
+}else{
+
+window.location.href="cart.html";
+
+}
+
+}else{
+
+alert(result.message);
+
+}
+
+}
+
+// PWA
+
+if ("serviceWorker" in navigator) {
+
+window.addEventListener("load",()=>{
+
+navigator.serviceWorker.register("/service-worker.js");
+
+});
+
+}
+if(result.success){
+
+localStorage.setItem(
+"customer",
+JSON.stringify(result.customer)
+);
+
+alert("Login Successful");
+
+window.location.href="profile.html";
+
+}else{
+
+alert(result.message);
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Partner Approvals</title>
+
+<style>
+
+body{
+
+font-family:Poppins,sans-serif;
+
+background:#f5f5f5;
+
+padding:20px;
+
+}
+
+.card{
+
+background:white;
+
+padding:20px;
+
+margin-bottom:15px;
+
+border-radius:12px;
+
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+
+}
+
+button{
+
+padding:10px 15px;
+
+border:none;
+
+margin-top:10px;
+
+margin-right:10px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+.approve{
+
+background:green;
+
+color:white;
+
+}
+
+.reject{
+
+background:red;
+
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Pending Partner Approvals</h2>
+
+<div id="partners"></div>
+
+<script>
+
+async function loadPartners(){
+
+const response=await fetch(
+
+"http://localhost:5000/admin/pending-partners"
+
+);
+
+const data=await response.json();
+
+let html="";
+
+data.forEach(partner=>{
+
+html+=`
+
+<div class="card">
+
+<h3>${partner.restaurant_name}</h3>
+
+<p><b>Owner:</b> ${partner.owner_name}</p>
+
+<p><b>Category:</b> ${partner.business_type}</p>
+
+<p><b>Mobile:</b> ${partner.mobile}</p>
+
+<p><b>Email:</b> ${partner.email}</p>
+
+<button
+class="approve"
+onclick="approve(${partner.id})">
+
+Approve
+
+</button>
+
+<button
+class="reject"
+onclick="rejectPartner(${partner.id})">
+
+Reject
+
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("partners").innerHTML=html;
+
+}
+
+async function approve(id){
+
+await fetch(
+
+"http://localhost:5000/admin/approve-partner/"+id,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+loadPartners();
+
+}
+
+async function rejectPartner(id){
+
+await fetch(
+
+"http://localhost:5000/admin/reject-partner/"+id,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+loadPartners();
+
+}
+
+loadPartners();
+
+</script>
+
+</body>
+</html>

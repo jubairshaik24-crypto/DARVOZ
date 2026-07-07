@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARVOZ | Delivery Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login{
+width:380px;
+background:#fff;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+h2{
+text-align:center;
+margin-bottom:25px;
+color:#ff6b00;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#ff6b00;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#e65c00;
+}
+
+p{
+text-align:center;
+margin-top:15px;
+}
+
+a{
+color:#ff6b00;
+text-decoration:none;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login">
+
+<h2>🚴 Delivery Login</h2>
+
+<input
+type="text"
+id="mobile"
+placeholder="Mobile Number">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button onclick="login()">
+
+Login
+
+</button>
+
+<p>
+
+Don't have an account?
+
+<a href="delivery-registration.html">
+
+Register
+
+</a>
+
+</p>
+
+</div>
+
+<script>
+
+async function login(){
+
+const mobile=document.getElementById("mobile").value.trim();
+const password=document.getElementById("password").value.trim();
+
+if(mobile==""||password==""){
+
+alert("Enter Mobile Number & Password");
+
+return;
+
+}
+
+const response=await fetch(
+
+"http://localhost:5000/delivery/login",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+mobile,
+password
+
+})
+
+}
+
+);
+
+const result=await response.json();
+
+if(result.success){
+
+localStorage.setItem(
+
+"deliveryPartner",
+
+JSON.stringify(result.partner)
+
+);
+
+window.location.href="delivery-dashboard.html";
+
+}else{
+
+alert(result.message);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

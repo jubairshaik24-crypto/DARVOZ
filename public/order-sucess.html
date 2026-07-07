@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>Order Successful | DARVOZ</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+
+background:#f5f5f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+
+}
+
+.card{
+
+background:white;
+width:90%;
+max-width:500px;
+padding:35px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+text-align:center;
+
+}
+
+.success{
+
+font-size:80px;
+color:#28a745;
+
+}
+
+h1{
+
+margin-top:10px;
+margin-bottom:10px;
+color:#28a745;
+
+}
+
+p{
+
+color:#666;
+margin-bottom:15px;
+
+}
+
+.order{
+
+background:#fff7e6;
+padding:15px;
+border-radius:10px;
+margin:20px 0;
+font-size:18px;
+font-weight:bold;
+
+}
+
+.time{
+
+font-size:17px;
+margin-bottom:20px;
+
+}
+
+button{
+
+width:100%;
+padding:15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:17px;
+margin-top:10px;
+
+}
+
+.track{
+
+background:#ff6b00;
+color:white;
+
+}
+
+.home{
+
+background:#28a745;
+color:white;
+
+}
+
+button:hover{
+
+opacity:.9;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="success">
+
+✅
+
+</div>
+
+<h1>
+
+Order Placed Successfully
+
+</h1>
+
+<p>
+
+Thank you for ordering with DARVOZ.
+
+</p>
+
+<div class="order">
+
+Order ID :
+<span id="orderId">
+
+Loading...
+
+</span>
+
+</div>
+
+<div class="time">
+
+Estimated Delivery
+
+<b>
+
+25 - 35 Minutes
+
+</b>
+
+</div>
+
+<button
+class="track"
+onclick="trackOrder()">
+
+📍 Track Order
+
+</button>
+
+<button
+class="home"
+onclick="goHome()">
+
+🏠 Back To Home
+
+</button>
+
+</div>
+
+<script>
+
+// Get Order ID
+
+const params =
+new URLSearchParams(window.location.search);
+
+const id =
+params.get("id");
+
+document.getElementById("orderId").innerHTML =
+"#"+id;
+
+// Track Order
+
+function trackOrder(){
+
+window.location.href=
+"track.html?id="+id;
+
+}
+
+// Home
+
+function goHome(){
+
+window.location.href="index.html";
+
+}
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("Service Worker Registered", registration);
+      })
+      .catch((error) => {
+        console.log("Registration Failed", error);
+      });
+  });
+}
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>DARVOZ - Select Store Location</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+  *{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f5f5;
+overflow:hidden;
+}
+
+header{
+height:60px;
+background:#ff6b00;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:22px;
+font-weight:bold;
+}
+
+.searchBar{
+position:absolute;
+top:75px;
+left:15px;
+right:15px;
+z-index:1000;
+}
+
+#searchInput{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+font-size:16px;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+outline:none;
+}
+
+#searchResults{
+display:none;
+background:white;
+border-radius:10px;
+margin-top:8px;
+max-height:220px;
+overflow-y:auto;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.searchItem{
+padding:12px;
+cursor:pointer;
+border-bottom:1px solid #eee;
+}
+
+.searchItem:hover{
+background:#f3f3f3;
+}
+
+#map{
+position:absolute;
+top:60px;
+left:0;
+right:0;
+bottom:0;
+z-index:1;
+}
+
+#centerPin{
+position:absolute;
+left:50%;
+top:45%;
+transform:translate(-50%,-100%);
+font-size:42px;
+pointer-events:none;
+z-index:900;
+}
+
+.bottomCard{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+background:white;
+padding:20px;
+border-radius:20px 20px 0 0;
+box-shadow:0 -5px 15px rgba(0,0,0,.15);
+z-index:1000;
+}
+
+.bottomCard h3{
+color:#ff6b00;
+margin-bottom:10px;
+}
+
+#address{
+font-size:14px;
+color:#555;
+line-height:22px;
+max-height:70px;
+overflow:hidden;
+}
+
+.bottomCard button{
+width:100%;
+padding:15px;
+margin-top:12px;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+font-weight:600;
+}
+
+#currentBtn{
+background:#2196F3;
+color:white;
+}
+
+#confirmBtn{
+background:#ff6b00;
+color:white;
+}
+
+button:hover{
+opacity:.9;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+📍 Select Store Location
+
+</header>
+
+<div class="searchBar">
+
+<input
+
+type="text"
+
+id="searchInput"
+
+placeholder="Search your store location">
+
+<div id="searchResults"></div>
+
+</div>
+
+<div id="map">
+
+</div>
+
+<div id="centerPin">
+
+📍
+
+</div>
+
+<div class="bottomCard">
+
+<h3>
+
+Selected Address
+
+</h3>
+
+<p id="address">
+
+Fetching location...
+
+</p>
+
+<button id="currentBtn">
+
+📍 Use Current Location
+
+</button>
+
+<button id="confirmBtn">
+
+✅ Confirm Location
+
+</button>
+
+</div>
+
+<script src="partner-location.js"></script>
+
+</body>
+</html>

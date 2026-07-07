@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Restaurant</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#FFF8F2;
+}
+
+/* Header */
+
+header{
+
+height:70px;
+
+background:#ff6b00;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 25px;
+
+color:#fff;
+
+position:sticky;
+
+top:0;
+
+z-index:100;
+
+}
+
+header h2{
+
+font-size:30px;
+
+}
+
+.back{
+
+color:white;
+
+text-decoration:none;
+
+font-size:18px;
+
+}
+
+/* Cover */
+
+.cover{
+
+height:280px;
+
+margin:20px;
+
+border-radius:30px;
+
+overflow:hidden;
+
+position:relative;
+
+box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+.cover img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.cover::after{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+height:120px;
+
+background:linear-gradient(to top,rgba(0,0,0,.75),transparent);
+
+}
+
+/* Restaurant Info */
+
+.restaurant-info{
+
+margin:-85px 35px 25px;
+
+position:relative;
+
+z-index:10;
+
+color:white;
+
+}
+
+.restaurant-info h1{
+
+font-size:38px;
+
+margin-bottom:8px;
+
+}
+
+.restaurant-meta{
+
+display:flex;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+font-size:16px;
+
+}
+
+.restaurant-meta span{
+
+background:rgba(255,255,255,.18);
+
+padding:8px 16px;
+
+border-radius:30px;
+
+backdrop-filter:blur(10px);
+
+}
+
+/* Search */
+
+.search{
+
+margin:25px;
+
+background:white;
+
+border-radius:50px;
+
+padding:15px 22px;
+
+display:flex;
+
+align-items:center;
+
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.search i{
+
+color:#888;
+
+margin-right:12px;
+
+font-size:18px;
+
+}
+
+.search input{
+
+border:none;
+
+outline:none;
+
+width:100%;
+
+font-size:17px;
+
+}
+
+/* Products */
+
+#products{
+
+padding:25px;
+
+}
+
+@media(max-width:768px){
+
+.cover{
+
+height:220px;
+
+}
+
+.restaurant-info h1{
+
+font-size:30px;
+
+}
+
+.restaurant-meta{
+
+font-size:14px;
+
+}
+
+}
+.menu-section{
+
+padding:25px;
+
+}
+
+.menu-section h2{
+
+font-size:28px;
+
+margin-bottom:20px;
+
+}
+
+.product-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.product-card{
+
+background:white;
+
+border-radius:22px;
+
+padding:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+transition:.25s;
+
+}
+
+.product-card:hover{
+
+transform:translateY(-4px);
+
+}
+
+.product-left{
+
+display:flex;
+
+gap:15px;
+
+align-items:center;
+
+}
+
+.product-left img{
+
+width:95px;
+
+height:95px;
+
+border-radius:18px;
+
+object-fit:cover;
+
+}
+
+.product-info h3{
+
+font-size:22px;
+
+margin-bottom:6px;
+
+}
+
+.product-info p{
+
+color:#666;
+
+font-size:14px;
+
+margin-bottom:8px;
+
+}
+
+.price{
+
+font-size:20px;
+
+font-weight:700;
+
+color:#ff6b00;
+
+}
+
+.add-btn{
+
+background:#ff6b00;
+
+color:white;
+
+border:none;
+
+padding:12px 22px;
+
+border-radius:12px;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.add-btn:hover{
+
+background:#e65d00;
+
+}
+
+.loading{
+
+text-align:center;
+
+padding:40px;
+
+font-size:18px;
+
+color:#888;
+
+}
+
+.cart-bar{
+
+position:fixed;
+
+left:20px;
+
+right:20px;
+
+bottom:20px;
+
+background:#ff6b00;
+
+color:white;
+
+padding:18px 25px;
+
+border-radius:18px;
+
+display:none;
+
+justify-content:space-between;
+
+align-items:center;
+
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+
+z-index:999;
+
+}
+
+.cart-bar button{
+
+background:white;
+
+color:#ff6b00;
+
+border:none;
+
+padding:12px 25px;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>DARVOZ</h2>
+
+<a href="index.html" class="back">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Back
+
+</a>
+
+</header>
+
+<div class="cover">
+
+<img id="restaurantCover" src="images/restaurant-cover.jpg">
+
+</div>
+
+<div class="restaurant-info">
+
+<h1 id="restaurantName">
+
+Loading...
+
+</h1>
+
+<div class="restaurant-meta">
+
+<span>⭐ 4.6</span>
+
+<span>🚴 25 mins</span>
+
+<span id="restaurantAddress">
+
+Loading Address...
+
+</span>
+
+</div>
+
+</div>
+
+<div class="search">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input
+
+type="text"
+
+placeholder="Search in menu...">
+
+</div>
+
+<div class="menu-section">
+
+<h2>Menu</h2>
+
+<div id="products" class="product-list">
+
+<div class="loading">
+
+Loading Menu...
+
+</div>
+
+</div>
+
+</div>
+<div id="cartBar" class="cart-bar">
+
+<div>
+
+<b id="cartItems">
+
+0 Items
+
+</b>
+
+<br>
+
+₹ <span id="cartTotal">
+
+0
+
+</span>
+
+</div>
+
+<button onclick="goToCart()">
+
+View Cart
+
+</button>
+
+</div>
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const restaurantId = params.get("id");
+
+// Load Restaurant Details
+async function loadRestaurant(){
+
+try{
+
+const response = await fetch(`http://localhost:5000/restaurant/${restaurantId}`);
+
+const restaurant = await response.json();
+
+document.getElementById("restaurantName").innerText =
+restaurant.restaurant_name;
+
+document.getElementById("restaurantAddress").innerText =
+restaurant.address;
+
+// If you add cover_image column later
+if(restaurant.cover_image){
+
+document.getElementById("restaurantCover").src =
+restaurant.cover_image;
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+loadRestaurant();
+loadProducts();
+
+async function loadProducts(){
+
+try{
+
+const response = await fetch(
+
+`http://localhost:5000/products/partner/${restaurantId}`
+
+);
+
+const data = await response.json();
+
+const container = document.getElementById("products");
+
+container.innerHTML="";
+
+if(!data.success){
+
+container.innerHTML="<h3>No Products Found</h3>";
+
+return;
+
+}
+
+data.products.forEach(product=>{
+
+container.innerHTML += `
+
+<div class="product-card"
+
+data-id="${product.id}"
+
+data-name="${product.product_name}"
+
+data-price="${product.price}"
+
+data-image="${product.image}">
+
+<div class="product-left">
+
+<img src="images/products/${product.image}">
+
+<div class="product-info">
+
+<h3>${product.product_name}</h3>
+
+<p>${product.category}</p>
+
+<div class="price">
+
+₹${product.price}
+
+</div>
+
+</div>
+
+</div>
+
+<button
+
+class="add-btn"
+
+onclick="addToCart(${product.id})">
+
+ADD
+
+</button>
+
+</div>
+
+
+
+`;
+
+});
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(productId){
+
+const product = document.querySelector(`[data-id="${productId}"]`);
+
+const name = product.dataset.name;
+
+const price = Number(product.dataset.price);
+
+const image = product.dataset.image;
+
+const existing = cart.find(item=>item.id==productId);
+
+if(existing){
+
+existing.qty++;
+
+}else{
+
+cart.push({
+
+id:productId,
+
+restaurantId:restaurantId,
+
+restaurantName:document.getElementById("restaurantName").innerText,
+
+name:name,
+
+price:price,
+
+image:image,
+
+qty:1
+
+});
+
+}
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+updateCartBar();
+
+}
+function updateCartBar(){
+
+cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+const items = cart.reduce((a,b)=>a+b.qty,0);
+
+const total = cart.reduce((a,b)=>a+(b.price*b.qty),0);
+
+const bar=document.getElementById("cartBar");
+
+if(items==0){
+
+bar.style.display="none";
+
+return;
+
+}
+
+bar.style.display="flex";
+
+document.getElementById("cartItems").innerHTML=items+" Items";
+
+document.getElementById("cartTotal").innerHTML=total;
+
+}
+
+updateCartBar();
+function goToCart(){
+
+const customer = JSON.parse(
+localStorage.getItem("customer")
+);
+
+// Not logged in
+if(!customer){
+
+location.href="customer-login.html";
+
+return;
+
+}
+
+// Address not added
+if(
+!customer.address ||
+customer.address.trim()==""
+){
+
+location.href="profile.html";
+
+return;
+
+}
+
+// Open Cart
+location.href="cart.html";
+
+}
+</script>
+</body>
+
+</html>

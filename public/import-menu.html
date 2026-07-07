@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Import Menu</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:white;
+padding:18px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+width:92%;
+max-width:700px;
+margin:30px auto;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+h2{
+text-align:center;
+color:#ff6b00;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#666;
+margin-bottom:25px;
+line-height:1.6;
+}
+
+.uploadBox{
+
+border:3px dashed #ff6b00;
+
+border-radius:15px;
+
+padding:40px;
+
+text-align:center;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.uploadBox:hover{
+
+background:#fff8f2;
+
+}
+
+.uploadIcon{
+
+font-size:70px;
+
+margin-bottom:15px;
+
+}
+
+.chooseBtn{
+
+display:inline-block;
+
+margin-top:20px;
+
+padding:12px 30px;
+
+background:#ff6b00;
+
+color:white;
+
+border-radius:8px;
+
+font-weight:bold;
+
+}
+
+input[type=file]{
+
+display:none;
+
+}
+
+#preview{
+
+margin-top:25px;
+
+display:none;
+
+}
+
+#preview img{
+
+width:100%;
+
+border-radius:12px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+.fileName{
+
+margin-top:15px;
+
+text-align:center;
+
+font-weight:bold;
+
+}
+
+.importBtn{
+
+width:100%;
+
+padding:16px;
+
+margin-top:30px;
+
+background:#ff6b00;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.importBtn:hover{
+
+background:#e65a00;
+
+}
+
+.note{
+
+margin-top:25px;
+
+background:#fff8e6;
+
+padding:15px;
+
+border-radius:10px;
+
+line-height:1.8;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+DARVOZ Smart Menu
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>🍽 Import Restaurant Menu</h2>
+
+<p class="subtitle">
+
+Upload your restaurant menu image (JPG).<br>
+
+DARVOZ AI will automatically create products.
+
+</p>
+
+<label class="uploadBox" for="menuImage">
+
+<div class="uploadIcon">
+
+📷
+
+</div>
+
+<h3>Upload Menu Image</h3>
+
+<p>Only JPG Image Supported</p>
+
+<div class="chooseBtn">
+
+Choose Image
+
+</div>
+
+</label>
+
+<input
+
+type="file"
+
+id="menuImage"
+
+accept=".jpg,.jpeg">
+
+<div id="preview">
+
+<img id="previewImage">
+
+<div
+
+class="fileName"
+
+id="fileName">
+
+</div>
+
+</div>
+
+<button
+
+class="importBtn"
+
+onclick="importMenu()">
+
+🤖 Import Menu
+
+</button>
+
+<div class="note">
+
+<b>Instructions</b>
+
+<ul>
+
+<li>✔ Upload only JPG image</li>
+
+<li>✔ Image should be clear</li>
+
+<li>✔ Keep the menu straight</li>
+
+<li>✔ Maximum size 10 MB</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const input=document.getElementById("menuImage");
+
+input.addEventListener("change",()=>{
+
+const file=input.files[0];
+
+if(!file)return;
+
+document.getElementById("preview").style.display="block";
+
+document.getElementById("previewImage").src=
+
+URL.createObjectURL(file);
+
+document.getElementById("fileName").innerHTML=
+
+file.name;
+
+});
+
+async function importMenu(){
+
+    const file = input.files[0];
+
+    if(!file){
+
+        alert("Please select a menu image.");
+
+        return;
+
+    }
+
+    if(file.size > 10 * 1024 * 1024){
+
+        alert("Maximum file size is 10 MB.");
+
+        return;
+
+    }
+
+    const partner = JSON.parse(localStorage.getItem("partner"));
+
+    if(!partner){
+
+        alert("Please login first.");
+
+        window.location.href="partner-login.html";
+
+        return;
+
+    }
+
+    const btn=document.querySelector(".importBtn");
+
+    btn.disabled=true;
+    btn.innerHTML="Uploading...";
+
+    const formData=new FormData();
+
+    formData.append("partner_id",partner.id);
+
+    formData.append("menuImage",file);
+
+    try{
+
+        const response=await fetch(
+
+        "http://localhost:5000/import-menu/upload",
+
+        {
+
+            method:"POST",
+
+            body:formData
+
+        });
+
+        const data=await response.json();
+        console.log(data);
+        if(data.success){
+
+            alert("Menu uploaded successfully.");
+
+           localStorage.setItem(
+"products",
+JSON.stringify(data.products)
+);
+
+window.location.href="review-products.html";
+
+        }else{
+
+            alert(data.message);
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+        alert("Unable to connect to server.");
+
+    }
+
+    btn.disabled=false;
+
+    btn.innerHTML="🤖 Import Menu";
+
+}
+
+</script>
+
+</body>
+
+</html>
