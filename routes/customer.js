@@ -288,135 +288,86 @@ Date.now()+path.extname(file.originalname)
 const upload=multer({storage});
 
 // ===============================
-// Update Profile
+// UPDATE PROFILE
 // ===============================
-
 router.post(
+    "/update-profile",
+    upload.single("profileImage"),
+    (req, res) => {
 
-"/update-profile",
+        const {
+            customerId,
+            name,
+            email,
+            house,
+            street,
+            area,
+            city,
+            state,
+            pincode
+        } = req.body;
 
-upload.single("profileImage"),
+        let image = "";
 
-(req,res)=>{
+        if (req.file) {
+            image = req.file.filename;
+        }
 
-const{
+        const sql = `
+            UPDATE customers
+            SET
+                name = ?,
+                email = ?,
+                house = ?,
+                street = ?,
+                area = ?,
+                city = ?,
+                state = ?,
+                pincode = ?,
+                profile_image = IF(
+                    ? = '',
+                    profile_image,
+                    ?
+                )
+            WHERE id = ?
+        `;
 
-customerId,
+        db.query(
+            sql,
+            [
+                name,
+                email,
+                house,
+                street,
+                area,
+                city,
+                state,
+                pincode,
+                image,
+                image,
+                customerId
+            ],
+            (err) => {
 
-name,
+                if (err) {
+                    console.log(
+                        "UPDATE PROFILE ERROR:",
+                        err
+                    );
 
-email,
+                    return res.status(500).json({
+                        success: false,
+                        message: "Profile update failed"
+                    });
+                }
 
-house,
-
-street,
-
-area,
-
-city,
-
-state,
-
-pincode
-
-}=req.body;
-
-let image="";
-
-if(req.file){
-
-image=req.file.filename;
-
-}
-
-const sql=`
-
-UPDATE customers
-
-SET
-
-name=?,
-
-email=?,
-
-house=?,
-
-street=?,
-
-area=?,
-
-city=?,
-
-state=?,
-
-pincode=?,
-
-profile_image=
-
-IF(?='',profile_image,?)
-
-WHERE id=?
-
-`;
-
-db.query(
-
-sql,
-
-[
-
-name,
-
-email,
-
-house,
-
-street,
-
-area,
-
-city,
-
-state,
-
-pincode,
-
-image,
-
-image,
-
-customerId
-
-],
-
-(err)=>{
-
-if(err){
-
-console.log(err);
-
-return res.json({
-
-success:false
-
-});
-
-}
-
-res.json({
-
-success:true,
-
-message:"Profile Updated Successfully"
-
-});
-
-}
-
-);
-
-}
-
+                return res.json({
+                    success: true,
+                    message: "Profile Updated Successfully"
+                });
+            }
+        );
+    }
 );
  
 router.post("/favorite", (req, res) => {

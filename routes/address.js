@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
+
 const db = require("../config/db");
 
 // ======================================
 // ADD NEW ADDRESS
 // ======================================
-
 router.post("/add", (req, res) => {
 
     const {
@@ -21,15 +21,28 @@ router.post("/add", (req, res) => {
         longitude
     } = req.body;
 
-    // Remove old default if this is first/default address
+    // Remove old default address
     db.query(
         "UPDATE customer_addresses SET is_default=0 WHERE customer_id=?",
         [customer_id],
-        () => {
+        (updateError) => {
 
+            if (updateError) {
+                console.log(
+                    "REMOVE OLD DEFAULT ERROR:",
+                    updateError
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to save address"
+                });
+            }
+
+            // Add new address as default
             db.query(
-
-                `INSERT INTO customer_addresses
+                `
+                INSERT INTO customer_addresses
                 (
                     customer_id,
                     title,
@@ -43,8 +56,8 @@ router.post("/add", (req, res) => {
                     longitude,
                     is_default
                 )
-                VALUES(?,?,?,?,?,?,?,?,?,?,1)`,
-
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                `,
                 [
                     customer_id,
                     title,
@@ -57,106 +70,107 @@ router.post("/add", (req, res) => {
                     latitude,
                     longitude
                 ],
-
                 (err, result) => {
 
                     if (err) {
-                        console.log(err);
+                        console.log(
+                            "ADD ADDRESS ERROR:",
+                            err
+                        );
 
-                        return res.json({
+                        return res.status(500).json({
                             success: false,
                             message: "Unable to save address"
                         });
                     }
 
-                    res.json({
+                    return res.json({
                         success: true,
                         message: "Address Saved",
                         addressId: result.insertId
                     });
-
                 }
-
             );
-
         }
-
     );
-
 });
+
+
 // ======================================
 // GET DEFAULT ADDRESS
 // ======================================
+router.get("/default/:customerId", (req, res) => {
 
-router.get("/default/:customerId",(req,res)=>{
-
-db.query(
-
-`SELECT *
-FROM customer_addresses
-WHERE customer_id=?
-AND is_default=1
-LIMIT 1`,
-
-[req.params.customerId],
-
-(err,result)=>{
-
-if(err){
-
-console.log(err);
-
-return res.json(null);
-
-}
-
-if(result.length===0){
-
-return res.json(null);
-
-}
-
-res.json(result[0]);
-
-}
-
-);
-
-});
-// ======================================
-// GET CUSTOMER ADDRESSES
-// ======================================
-
-router.get("/:customerId", (req, res) => {
+    const sql = `
+        SELECT *
+        FROM customer_addresses
+        WHERE customer_id = ?
+        AND is_default = 1
+        LIMIT 1
+    `;
 
     db.query(
-
-        `SELECT *
-         FROM customer_addresses
-         WHERE customer_id=?
-         ORDER BY is_default DESC,id DESC`,
-
+        sql,
         [req.params.customerId],
-
         (err, result) => {
 
             if (err) {
-                console.log(err);
-                return res.json([]);
+                console.log(
+                    "GET DEFAULT ADDRESS ERROR:",
+                    err
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to get default address"
+                });
             }
 
-            res.json(result);
+            if (!result || result.length === 0) {
+                return res.json(null);
+            }
 
+            return res.json(result[0]);
         }
-
     );
-
 });
+
+
+// ======================================
+// GET CUSTOMER ADDRESSES
+// ======================================
+router.get("/:customerId", (req, res) => {
+
+    const sql = `
+        SELECT *
+        FROM customer_addresses
+        WHERE customer_id = ?
+        ORDER BY is_default DESC, id DESC
+    `;
+
+    db.query(
+        sql,
+        [req.params.customerId],
+        (err, result) => {
+
+            if (err) {
+                console.log(
+                    "GET ADDRESSES ERROR:",
+                    err
+                );
+
+                return res.status(500).json([]);
+            }
+
+            return res.json(result);
+        }
+    );
+});
+
 
 // ======================================
 // SET DEFAULT ADDRESS
 // ======================================
-
 router.put("/default/:id", (req, res) => {
 
     const addressId = req.params.id;
@@ -165,41 +179,60 @@ router.put("/default/:id", (req, res) => {
     db.query(
         "UPDATE customer_addresses SET is_default=0 WHERE customer_id=?",
         [customerId],
-        () => {
+        (resetError) => {
+
+            if (resetError) {
+                console.log(
+                    "RESET DEFAULT ADDRESS ERROR:",
+                    resetError
+                );
+
+                return res.status(500).json({
+                    success: false
+                });
+            }
 
             db.query(
-                "UPDATE customer_addresses SET is_default=1 WHERE id=?",
-                [addressId],
-                (err) => {
+                `
+                UPDATE customer_addresses
+                SET is_default = 1
+                WHERE id = ?
+                AND customer_id = ?
+                `,
+                [addressId, customerId],
+                (err, result) => {
 
                     if (err) {
+                        console.log(
+                            "SET DEFAULT ADDRESS ERROR:",
+                            err
+                        );
 
-                        console.log(err);
-
-                        return res.json({
+                        return res.status(500).json({
                             success: false
                         });
-
                     }
 
-                    res.json({
+                    if (result.affectedRows === 0) {
+                        return res.status(404).json({
+                            success: false,
+                            message: "Address not found"
+                        });
+                    }
+
+                    return res.json({
                         success: true
                     });
-
                 }
-
             );
-
         }
-
     );
-
 });
+
 
 // ======================================
 // UPDATE ADDRESS
 // ======================================
-
 router.put("/update/:id", (req, res) => {
 
     const {
@@ -214,21 +247,23 @@ router.put("/update/:id", (req, res) => {
         longitude
     } = req.body;
 
+    const sql = `
+        UPDATE customer_addresses
+        SET
+            title = ?,
+            house = ?,
+            street = ?,
+            area = ?,
+            city = ?,
+            state = ?,
+            pincode = ?,
+            latitude = ?,
+            longitude = ?
+        WHERE id = ?
+    `;
+
     db.query(
-
-        `UPDATE customer_addresses
-         SET
-         title=?,
-         house=?,
-         street=?,
-         area=?,
-         city=?,
-         state=?,
-         pincode=?,
-         latitude=?,
-         longitude=?
-         WHERE id=?`,
-
+        sql,
         [
             title,
             house,
@@ -241,61 +276,54 @@ router.put("/update/:id", (req, res) => {
             longitude,
             req.params.id
         ],
-
         (err) => {
 
             if (err) {
+                console.log(
+                    "UPDATE ADDRESS ERROR:",
+                    err
+                );
 
-                console.log(err);
-
-                return res.json({
+                return res.status(500).json({
                     success: false
                 });
-
             }
 
-            res.json({
+            return res.json({
                 success: true
             });
-
         }
-
     );
-
 });
+
 
 // ======================================
 // DELETE ADDRESS
 // ======================================
-
 router.delete("/:id", (req, res) => {
 
     db.query(
-
         "DELETE FROM customer_addresses WHERE id=?",
-
         [req.params.id],
-
         (err) => {
 
             if (err) {
+                console.log(
+                    "DELETE ADDRESS ERROR:",
+                    err
+                );
 
-                console.log(err);
-
-                return res.json({
+                return res.status(500).json({
                     success: false
                 });
-
             }
 
-            res.json({
+            return res.json({
                 success: true
             });
-
         }
-
     );
-
 });
+
 
 module.exports = router;
