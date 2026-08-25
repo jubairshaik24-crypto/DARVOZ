@@ -5,6 +5,7 @@ const {
     sendWhatsAppOTP
 } = require("../services/whatsappService");
 
+const Customer = require("../models/Customer");
 const otpStore = new Map();
 
 
@@ -274,6 +275,8 @@ router.post("/check-customer", async (req, res) => {
 
         const mobile = normalizePhone(req.body.phone);
 
+        console.log("CHECKING CUSTOMER:", mobile);
+
         if (!mobile) {
             return res.status(400).json({
                 success: false,
@@ -283,19 +286,14 @@ router.post("/check-customer", async (req, res) => {
 
         const customer = await Customer.findOne({
             mobile: mobile
-        });
+        }).lean();
 
-        if (customer) {
-            return res.json({
-                success: true,
-                exists: true,
-                customer: customer
-            });
-        }
+        console.log("CUSTOMER FOUND:", customer);
 
         return res.json({
             success: true,
-            exists: false
+            exists: !!customer,
+            customer: customer || null
         });
 
     } catch (error) {
@@ -307,8 +305,10 @@ router.post("/check-customer", async (req, res) => {
 
         return res.status(500).json({
             success: false,
-            message: "Unable to check customer"
+            message: "Unable to check customer",
+            error: error.message
         });
     }
 });
+
 module.exports = router;
