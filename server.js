@@ -114,7 +114,6 @@ console.log("typeof searchRoutes =", typeof searchRoutes);
 const adminRoutes = require("./routes/admin");
 const customerRoutes = require("./routes/customer");
 const walletRoutes = require("./routes/wallet");
-
 const deliveryPartnerRoutes = require("./routes/deliveryPartnerRoutes");
 const adminDeliveryRoutes = require("./routes/adminDelivery");
 const partnerOrderRoutes = require("./routes/partnerOrders");
