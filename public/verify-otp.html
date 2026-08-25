@@ -336,46 +336,84 @@ h1{
 
 <script>
 
-const inputs =
-    document.querySelectorAll(".otp-input");
+    const API = window.location.origin;
+
+// ==========================================
+// GET MOBILE
+// ==========================================
+const mobile = localStorage.getItem("otpMobile");
+
+if (!mobile) {
+    alert("Mobile number not found. Please enter it again.");
+    window.location.href = "customer-login.html";
+}
 
 
-/* ==============================
-   GET MOBILE FROM LOCAL STORAGE
-============================== */
+// ==========================================
+// NORMALIZE WHATSAPP PHONE
+// Always: 8333995837 -> 918333995837
+// ==========================================
+function getWhatsAppPhone() {
+    if (!mobile) return "";
 
-const mobile =
-    localStorage.getItem("otpMobile");
+    const cleanMobile = mobile.replace(/\D/g, "");
+
+    if (
+        cleanMobile.startsWith("91") &&
+        cleanMobile.length === 12
+    ) {
+        return cleanMobile;
+    }
+
+    return "91" + cleanMobile;
+}
 
 
-/* ==============================
-   SHOW MOBILE NUMBER
-============================== */
+// ==========================================
+// DISPLAY MOBILE + OTP INPUTS
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById(
-    "mobileDisplay"
-).textContent =
-    mobile
-        ? "+91 " + mobile
-        : "your mobile number";
+    const mobileDisplay =
+        document.getElementById("mobileDisplay");
+
+    if (mobileDisplay) {
+
+        let displayMobile =
+            mobile.replace(/\D/g, "");
+
+        // Remove 91 for display only
+        if (
+            displayMobile.startsWith("91") &&
+            displayMobile.length === 12
+        ) {
+            displayMobile =
+                displayMobile.substring(2);
+        }
+
+        mobileDisplay.textContent =
+            `+91 ${displayMobile}`;
+    }
 
 
-/* ==============================
-   OTP INPUT AUTO MOVE
-============================== */
+    const inputs =
+        document.querySelectorAll(".otp-input");
 
-inputs.forEach(
-    (input, index) => {
+
+    // ======================================
+    // OTP INPUT
+    // ======================================
+    inputs.forEach((input, index) => {
 
         input.addEventListener(
             "input",
-            () => {
+            function () {
 
-                input.value =
-                    input.value.replace(/\D/g, "");
+                this.value =
+                    this.value.replace(/[^0-9]/g, "");
 
                 if (
-                    input.value &&
+                    this.value &&
                     index < inputs.length - 1
                 ) {
                     inputs[index + 1].focus();
@@ -385,13 +423,16 @@ inputs.forEach(
         );
 
 
+        // ==================================
+        // BACKSPACE
+        // ==================================
         input.addEventListener(
             "keydown",
-            event => {
+            function (event) {
 
                 if (
                     event.key === "Backspace" &&
-                    !input.value &&
+                    !this.value &&
                     index > 0
                 ) {
                     inputs[index - 1].focus();
@@ -400,39 +441,48 @@ inputs.forEach(
             }
         );
 
-    }
-);
+    });
 
 
-/* ==============================
-   VERIFY OTP
-============================== */
-
-async function verifyOTP(){
-
-    if(!mobile){
-
-        alert(
-            "Mobile number not found. Please enter your number again."
-        );
-
-        window.location.href =
-            "customer-login.html";
-
-        return;
+    // Focus first OTP box
+    if (inputs.length > 0) {
+        inputs[0].focus();
     }
 
-
-    const otp =
-        Array.from(inputs)
-            .map(input => input.value)
-            .join("");
+});
 
 
-    if(otp.length !== 6){
+// ==========================================
+// GET OTP
+// ==========================================
+function getOTP() {
+
+    const inputs =
+        document.querySelectorAll(".otp-input");
+
+    let otp = "";
+
+    inputs.forEach(input => {
+        otp += input.value;
+    });
+
+    return otp;
+}
+
+
+// ==========================================
+// VERIFY OTP
+// ==========================================
+async function verifyOTP() {
+
+    const otp = getOTP();
+
+
+    // Check OTP length
+    if (otp.length !== 6) {
 
         alert(
-            "Please enter the complete 6-digit OTP"
+            "Please enter the complete 6-digit OTP."
         );
 
         return;
@@ -442,77 +492,163 @@ async function verifyOTP(){
     const button =
         document.querySelector(".verify-btn");
 
-
-    button.disabled = true;
-
-    button.textContent =
-        "Verifying...";
+    const originalText =
+        button.innerHTML;
 
 
-    try{
+    try {
 
-        const response =
+        button.disabled = true;
+
+        button.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Verifying...
+        `;
+
+
+        // ==================================
+        // GET SAME PHONE FORMAT
+        // ==================================
+        const whatsappPhone =
+            getWhatsAppPhone();
+
+        console.log(
+            "VERIFYING PHONE:",
+            whatsappPhone
+        );
+
+
+        // ==================================
+        // VERIFY OTP API
+        // ==================================
+        const verifyResponse =
             await fetch(
-                "/otp/verify-otp",
+                `${API}/api/whatsapp/verify-otp`,
                 {
-                    method:"POST",
+                    method: "POST",
 
-                    headers:{
+                    headers: {
                         "Content-Type":
                             "application/json"
                     },
 
-                    body:
-                        JSON.stringify({
-                            phone: mobile,
-                            otp: otp
-                        })
+                    body: JSON.stringify({
+                        phone: whatsappPhone,
+                        otp: otp
+                    })
                 }
             );
 
 
-        const data =
-            await response.json();
+        const verifyData =
+            await verifyResponse.json();
 
 
-        if(!response.ok || !data.success){
+        console.log(
+            "VERIFY OTP RESPONSE:",
+            verifyData
+        );
 
-            throw new Error(
-                data.message ||
-                "OTP verification failed"
+
+        // ==================================
+        // OTP FAILED
+        // ==================================
+        if (
+            !verifyResponse.ok ||
+            !verifyData.success
+        ) {
+
+            alert(
+                verifyData.message ||
+                "Invalid OTP. Please try again."
             );
 
+            return;
         }
 
 
-        alert(
-            "Phone number verified successfully!"
-        );
+        // ==================================
+        // EXISTING CUSTOMER
+        // ==================================
+        if (
+            verifyData.isNewCustomer === false
+        ) {
+
+            const customer =
+                verifyData.customer;
 
 
-        /* SAVE VERIFIED NUMBER */
+            localStorage.setItem(
+                "customerId",
+                String(customer._id)
+            );
 
+
+            localStorage.setItem(
+                "customerName",
+                customer.name || ""
+            );
+
+
+            localStorage.setItem(
+                "mobile",
+                customer.mobile || mobile
+            );
+
+
+            localStorage.setItem(
+                "customerEmail",
+                customer.email || ""
+            );
+
+
+            localStorage.setItem(
+                "customerLoggedIn",
+                "true"
+            );
+
+
+            localStorage.setItem(
+                "customerLoginTime",
+                Date.now().toString()
+            );
+
+
+            // Remove temporary OTP mobile
+            localStorage.removeItem(
+                "otpMobile"
+            );
+
+
+            // Go home
+            window.location.href =
+                "index.html";
+
+            return;
+        }
+
+
+        // ==================================
+        // NEW CUSTOMER
+        // ==================================
         localStorage.setItem(
-            "verifiedMobile",
-            data.mobile
+            "registerMobile",
+            verifyData.mobile || mobile
         );
 
 
-        /* REMOVE OTP TEMP DATA */
-
+        // Remove temporary OTP mobile
         localStorage.removeItem(
             "otpMobile"
         );
 
 
-        /* REDIRECT */
-
+        // Go registration
         window.location.href =
             "customer-register.html";
 
 
-    }
-    catch(error){
+    } catch (error) {
 
         console.error(
             "VERIFY OTP ERROR:",
@@ -520,68 +656,76 @@ async function verifyOTP(){
         );
 
         alert(
-            error.message ||
-            "OTP verification failed"
+            "Unable to verify OTP. Please try again."
         );
 
-    }
-    finally{
+    } finally {
 
         button.disabled = false;
 
-        button.textContent =
-            "Verify & Continue";
-
+        button.innerHTML =
+            originalText;
     }
 
 }
 
 
-/* ==============================
-   RESEND OTP
-============================== */
-
-async function resendOTP(){
-
-    if(!mobile){
-
-        alert(
-            "Mobile number not found"
-        );
-
-        return;
-    }
-
+// ==========================================
+// RESEND OTP
+// ==========================================
+async function resendOTP() {
 
     const resendButton =
-        document.querySelector(
-            ".resend button"
+        document.querySelector(".resend button");
+
+
+    const originalText =
+        resendButton
+            ? resendButton.innerHTML
+            : "";
+
+
+    try {
+
+        if (resendButton) {
+
+            resendButton.disabled = true;
+
+            resendButton.innerHTML =
+                "Sending...";
+        }
+
+
+        // ==================================
+        // USE SAME PHONE FORMAT
+        // ==================================
+        const whatsappPhone =
+            getWhatsAppPhone();
+
+
+        console.log(
+            "RESENDING TO:",
+            whatsappPhone
         );
 
 
-    resendButton.disabled = true;
-
-    resendButton.textContent =
-        "Sending...";
-
-
-    try{
-
+        // ==================================
+        // SEND OTP AGAIN
+        // ==================================
         const response =
             await fetch(
-                "/otp/send-otp",
+                `${API}/api/whatsapp/send-otp`,
                 {
-                    method:"POST",
+                    method: "POST",
 
-                    headers:{
+                    headers: {
                         "Content-Type":
                             "application/json"
                     },
 
-                    body:
-                        JSON.stringify({
-                            phone: mobile
-                        })
+                    body: JSON.stringify({
+                        phone: whatsappPhone
+                    })
                 }
             );
 
@@ -590,86 +734,97 @@ async function resendOTP(){
             await response.json();
 
 
-        if(!response.ok || !data.success){
+        console.log(
+            "RESEND OTP RESPONSE:",
+            data
+        );
 
-            throw new Error(
+
+        // ==================================
+        // FAILED
+        // ==================================
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            alert(
                 data.message ||
-                "Failed to resend OTP"
+                "Failed to resend OTP."
             );
+
+            return;
+        }
+
+
+        // ==================================
+        // CLEAR OLD OTP
+        // ==================================
+        document
+            .querySelectorAll(".otp-input")
+            .forEach(input => {
+
+                input.value = "";
+
+            });
+
+
+        const firstInput =
+            document.querySelector(".otp-input");
+
+
+        if (firstInput) {
+
+            firstInput.focus();
 
         }
 
 
-        inputs.forEach(
-            input => {
-                input.value = "";
-            }
-        );
-
-
-        inputs[0].focus();
-
-
         alert(
-            "New OTP sent successfully!"
+            "A new OTP has been sent to your WhatsApp."
         );
 
-    }
-    catch(error){
+
+    } catch (error) {
 
         console.error(
             "RESEND OTP ERROR:",
             error
         );
 
+
         alert(
-            error.message ||
-            "Failed to resend OTP"
+            "Unable to resend OTP."
         );
 
-    }
-    finally{
 
-        resendButton.disabled = false;
+    } finally {
 
-        resendButton.textContent =
-            "Resend OTP";
+        if (resendButton) {
+
+            resendButton.disabled = false;
+
+            resendButton.innerHTML =
+                originalText;
+        }
 
     }
 
 }
 
 
-/* ==============================
-   GO BACK
-============================== */
-
-function goBack(){
+// ==========================================
+// BACK
+// ==========================================
+function goBack() {
 
     localStorage.removeItem(
         "otpMobile"
     );
 
-    window.history.back();
-
+    window.location.href =
+        "customer-login.html";
 }
-
-
-/* ==============================
-   AUTO FOCUS FIRST OTP
-============================== */
-
-window.addEventListener(
-    "load",
-    () => {
-
-        if(inputs.length){
-            inputs[0].focus();
-        }
-
-    }
-);
-
 </script>
 
 </body>
