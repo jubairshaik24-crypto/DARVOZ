@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="theme-color"
+    content="#ff5a00"
+>
+
+<link
+    rel="manifest"
+    href="/manifest.json"
+>
+
+<title>DARVOZ | Wallet</title>
+
+
+<!-- FONT -->
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+
+<!-- ICONS -->
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: Poppins, sans-serif;
+
+}
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body {
+
+    background: #f6f6f6;
+
+    color: #222;
+
+    min-height: 100vh;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+
+    background: #ff5a00;
+
+    color: white;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 16px;
+
+    gap: 14px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.15);
+
+}
+
+
+.back-btn {
+
+    width: 40px;
+
+    height: 40px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.18);
+
+    color: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+}
+
+
+.header-title {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container {
+
+    width: 100%;
+
+    max-width: 650px;
+
+    margin: auto;
+
+    padding: 18px 14px 40px;
+
+}
+
+
+/* =====================================================
+   BALANCE CARD
+===================================================== */
+
+.balance-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff5a00,
+            #ff8a3d
+        );
+
+    color: white;
+
+    border-radius: 22px;
+
+    padding: 25px 20px;
+
+    box-shadow:
+        0 10px 25px rgba(255,90,0,.25);
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+.balance-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.08);
+
+    right: -70px;
+
+    top: -70px;
+
+}
+
+
+.balance-label {
+
+    font-size: 14px;
+
+    opacity: .9;
+
+}
+
+
+.balance {
+
+    font-size: 42px;
+
+    font-weight: 800;
+
+    margin-top: 5px;
+
+}
+
+
+.balance-subtitle {
+
+    font-size: 12px;
+
+    opacity: .85;
+
+    margin-top: 3px;
+
+}
+
+
+/* =====================================================
+   WITHDRAW BUTTON
+===================================================== */
+
+.withdraw-main {
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    background: white;
+
+    color: #ff5a00;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.withdraw-main:active {
+
+    transform: scale(.98);
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 16px;
+
+}
+
+
+.stat-card {
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 17px;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.06);
+
+}
+
+
+.stat-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 11px;
+
+    background: #fff1e8;
+
+    color: #ff5a00;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+}
+
+
+.stat-title {
+
+    font-size: 12px;
+
+    color: #777;
+
+}
+
+
+.stat-value {
+
+    margin-top: 3px;
+
+    color: #ff5a00;
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section {
+
+    margin-top: 22px;
+
+}
+
+
+.section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+
+}
+
+
+.section-title {
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+}
+
+
+.section-link {
+
+    border: none;
+
+    background: none;
+
+    color: #ff5a00;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+/* =====================================================
+   PENDING WITHDRAWAL
+===================================================== */
+
+.pending-card {
+
+    background: #fff8ef;
+
+    border: 1px solid #ffe0c7;
+
+    border-radius: 16px;
+
+    padding: 15px;
+
+    display: none;
+
+}
+
+
+.pending-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.pending-title {
+
+    font-weight: 800;
+
+    color: #ff5a00;
+
+}
+
+
+.pending-status {
+
+    background: #fff0df;
+
+    color: #ff5a00;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.pending-amount {
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    margin-top: 8px;
+
+}
+
+
+.pending-date {
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-top: 4px;
+
+}
+
+
+/* =====================================================
+   TRANSACTION CARD
+===================================================== */
+
+.transactions {
+
+    background: white;
+
+    border-radius: 17px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.06);
+
+}
+
+
+.transaction {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+
+.transaction:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.transaction-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+}
+
+
+.credit-icon {
+
+    background: #eafaf2;
+
+    color: #18a66a;
+
+}
+
+
+.debit-icon {
+
+    background: #fff0f0;
+
+    color: #e04444;
+
+}
+
+
+.transaction-info {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.transaction-title {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.transaction-date {
+
+    font-size: 10px;
+
+    color: #888;
+
+    margin-top: 3px;
+
+}
+
+
+.transaction-amount {
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+}
+
+
+.credit {
+
+    color: #18a66a;
+
+}
+
+
+.debit {
+
+    color: #e04444;
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty {
+
+    padding: 28px 15px;
+
+    text-align: center;
+
+    color: #888;
+
+    font-size: 13px;
+
+}
+
+
+.empty i {
+
+    font-size: 30px;
+
+    margin-bottom: 8px;
+
+    color: #ccc;
+
+}
+
+
+/* =====================================================
+   WITHDRAWAL HISTORY
+===================================================== */
+
+.withdrawal-card {
+
+    background: white;
+
+    border-radius: 17px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.06);
+
+}
+
+
+.withdrawal-row {
+
+    padding: 14px;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+
+.withdrawal-row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.withdrawal-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+}
+
+
+.withdrawal-amount {
+
+    font-weight: 800;
+
+}
+
+
+.withdrawal-status {
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+}
+
+
+.status-pending {
+
+    background: #fff1df;
+
+    color: #ff8a00;
+
+}
+
+
+.status-completed {
+
+    background: #eafaf2;
+
+    color: #15945e;
+
+}
+
+
+.status-rejected {
+
+    background: #ffecec;
+
+    color: #d93636;
+
+}
+
+
+.withdrawal-date {
+
+    font-size: 10px;
+
+    color: #888;
+
+    margin-top: 5px;
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.55);
+
+    display: none;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    z-index: 9999;
+
+}
+
+
+.modal.show {
+
+    display: flex;
+
+}
+
+
+.modal-box {
+
+    background: white;
+
+    width: 100%;
+
+    max-width: 650px;
+
+    border-radius:
+        22px 22px 0 0;
+
+    padding: 22px 18px 28px;
+
+    animation:
+        slideUp .25s ease;
+
+}
+
+
+@keyframes slideUp {
+
+    from {
+
+        transform:
+            translateY(100%);
+
+    }
+
+    to {
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.modal-title {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+}
+
+
+.close-btn {
+
+    width: 36px;
+
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f3f3f3;
+
+    cursor: pointer;
+
+}
+
+
+.modal-balance {
+
+    background: #fff5ee;
+
+    color: #ff5a00;
+
+    border-radius: 13px;
+
+    padding: 14px;
+
+    margin-top: 18px;
+
+}
+
+
+.modal-balance small {
+
+    display: block;
+
+    color: #777;
+
+}
+
+
+.modal-balance strong {
+
+    display: block;
+
+    font-size: 25px;
+
+    margin-top: 2px;
+
+}
+
+
+.amount-label {
+
+    display: block;
+
+    margin-top: 18px;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.amount-input {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    padding: 0 14px;
+
+    font-size: 18px;
+
+    outline: none;
+
+}
+
+
+.amount-input:focus {
+
+    border-color: #ff5a00;
+
+}
+
+
+.min-text {
+
+    font-size: 11px;
+
+    color: #888;
+
+    margin-top: 6px;
+
+}
+
+
+.submit-withdraw {
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #ff5a00;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+}
+
+
+.submit-withdraw:disabled {
+
+    opacity: .6;
+
+}
+
+
+/* =====================================================
+   SUCCESS MESSAGE
+===================================================== */
+
+.toast {
+
+    position: fixed;
+
+    left: 14px;
+
+    right: 14px;
+
+    bottom: 20px;
+
+    background: #222;
+
+    color: white;
+
+    padding: 14px 16px;
+
+    border-radius: 13px;
+
+    font-size: 13px;
+
+    display: none;
+
+    z-index: 10000;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.25);
+
+}
+
+
+.toast.show {
+
+    display: block;
+
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media (min-width: 700px) {
+
+    .container {
+
+        padding-top: 25px;
+
+    }
+
+    .modal {
+
+        align-items: center;
+
+    }
+
+    .modal-box {
+
+        border-radius: 20px;
+
+        max-width: 480px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <button
+        class="back-btn"
+        onclick="goDashboard()"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+    </button>
+
+
+    <div class="header-title">
+
+        DARVOZ Wallet
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+
+    <!-- =================================================
+         BALANCE
+    ================================================== -->
+
+    <section class="balance-card">
+
+        <div class="balance-label">
+
+            Available Balance
+
+        </div>
+
+
+        <div class="balance">
+
+            ₹<span id="balance">0.00</span>
+
+        </div>
+
+
+        <div class="balance-subtitle">
+
+            Money available for withdrawal
+
+        </div>
+
+
+        <button
+            class="withdraw-main"
+            onclick="openWithdraw()"
+        >
+
+            <i class="fa-solid fa-wallet"></i>
+
+            &nbsp; Withdraw Money
+
+        </button>
+
+    </section>
+
+
+    <!-- =================================================
+         STATS
+    ================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-calendar-day"></i>
+
+            </div>
+
+            <div class="stat-title">
+
+                Today's Earnings
+
+            </div>
+
+            <div class="stat-value">
+
+                ₹<span id="today">0.00</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+            <div class="stat-title">
+
+                This Week
+
+            </div>
+
+            <div class="stat-value">
+
+                ₹<span id="week">0.00</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-calendar"></i>
+
+            </div>
+
+            <div class="stat-title">
+
+                This Month
+
+            </div>
+
+            <div class="stat-value">
+
+                ₹<span id="month">0.00</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-sack-dollar"></i>
+
+            </div>
+
+            <div class="stat-title">
+
+                Total Earnings
+
+            </div>
+
+            <div class="stat-value">
+
+                ₹<span id="total">0.00</span>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =================================================
+         PENDING WITHDRAWAL
+    ================================================== -->
+
+    <section
+        class="section"
+        id="pendingSection"
+        style="display:none"
+    >
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                Pending Withdrawal
+
+            </div>
+
+        </div>
+
+
+        <div class="pending-card" id="pendingCard">
+
+            <div class="pending-top">
+
+                <div class="pending-title">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    Withdrawal Request
+
+                </div>
+
+
+                <div class="pending-status">
+
+                    Pending
+
+                </div>
+
+            </div>
+
+
+            <div class="pending-amount">
+
+                ₹<span id="pendingAmount">0.00</span>
+
+            </div>
+
+
+            <div class="pending-date">
+
+                Requested:
+                <span id="pendingDate">-</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         TRANSACTIONS
+    ================================================== -->
+
+    <section class="section">
+
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                Recent Transactions
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="transactions"
+            id="transactions"
+        >
+
+            <div class="empty">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <br>
+
+                Loading transactions...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         WITHDRAWAL HISTORY
+    ================================================== -->
+
+    <section class="section">
+
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                Withdrawal History
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="withdrawal-card"
+            id="withdrawals"
+        >
+
+            <div class="empty">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <br>
+
+                Loading withdrawals...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     WITHDRAW MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="withdrawModal"
+>
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+
+                Withdraw Money
+
+            </div>
+
+
+            <button
+                class="close-btn"
+                onclick="closeWithdraw()"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="modal-balance">
+
+            <small>
+
+                Available Balance
+
+            </small>
+
+            <strong>
+
+                ₹<span id="modalBalance">0.00</span>
+
+            </strong>
+
+        </div>
+
+
+        <label class="amount-label">
+
+            Enter Withdrawal Amount
+
+        </label>
+
+
+        <input
+            id="withdrawAmount"
+            class="amount-input"
+            type="number"
+            inputmode="decimal"
+            min="100"
+            step="0.01"
+            placeholder="Enter amount"
+        >
+
+
+        <div class="min-text">
+
+            Minimum withdrawal amount: ₹100
+
+        </div>
+
+
+        <button
+            id="withdrawButton"
+            class="submit-withdraw"
+            onclick="submitWithdrawal()"
+        >
+
+            Withdraw Money
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =====================================================
+   API
+===================================================== */
+
+const API =
+    window.location.origin;
+
+
+/* =====================================================
+   RIDER
+===================================================== */
+
+const rider =
+    JSON.parse(
+        localStorage.getItem(
+            "deliveryPartner"
+        )
+    );
+
+
+/* =====================================================
+   LOGIN CHECK
+===================================================== */
+
+if (!rider) {
+
+    window.location.href =
+        "delivery-login.html";
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function money(value) {
+
+    return Number(
+        value || 0
+    ).toFixed(2);
+
+}
+
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value == null
+            ? ""
+            : String(value);
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function goDashboard() {
+
+    window.location.href =
+        "delivery-dashboard.html";
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.innerHTML =
+        escapeHTML(message);
+
+    toast.classList.add(
+        "show"
+    );
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        3000
+    );
+
+}
+
+
+/* =====================================================
+   LOAD WALLET
+===================================================== */
+
+async function loadWallet() {
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API}/wallet/delivery/${rider.id}`
+
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Wallet API error"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "WALLET:",
+            data
+        );
+
+
+        if (!data.success) {
+
+            showToast(
+                data.message ||
+                "Unable to load wallet."
+            );
+
+            return;
+
+        }
+
+
+        // =========================================
+        // BALANCE
+        // =========================================
+
+        document.getElementById(
+            "balance"
+        ).textContent =
+            money(data.balance);
+
+
+        document.getElementById(
+            "modalBalance"
+        ).textContent =
+            money(data.balance);
+
+
+        // =========================================
+        // STATS
+        // =========================================
+
+        document.getElementById(
+            "today"
+        ).textContent =
+            money(data.today);
+
+
+        document.getElementById(
+            "week"
+        ).textContent =
+            money(data.week);
+
+
+        document.getElementById(
+            "month"
+        ).textContent =
+            money(data.month);
+
+
+        document.getElementById(
+            "total"
+        ).textContent =
+            money(data.total);
+
+
+        // =========================================
+        // TRANSACTIONS
+        // =========================================
+
+        renderTransactions(
+            data.transactions || []
+        );
+
+
+        // =========================================
+        // PENDING WITHDRAWAL
+        // =========================================
+
+        await loadWithdrawals();
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "WALLET ERROR:",
+            error
+        );
+
+
+        document.getElementById(
+            "transactions"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <br>
+
+                Unable to load wallet.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   TRANSACTIONS
+===================================================== */
+
+function renderTransactions(
+    transactions
+) {
+
+    const container =
+        document.getElementById(
+            "transactions"
+        );
+
+
+    if (
+        !transactions ||
+        transactions.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <i class="fa-solid fa-receipt"></i>
+
+                <br>
+
+                No transactions yet.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    transactions.forEach(
+        item => {
+
+
+            const type =
+                String(
+                    item.type || "Credit"
+                ).toLowerCase();
+
+
+            const isCredit =
+                type === "credit";
+
+
+            const amount =
+                money(item.amount);
+
+
+            const orderText =
+                item.order_id
+                    ? `Order #${escapeHTML(
+                        item.order_id
+                    )}`
+                    : "Wallet Withdrawal";
+
+
+            const title =
+                isCredit
+                    ? "Delivery Earnings"
+                    : "Withdrawal";
+
+
+            let date =
+                "-";
+
+
+            if (
+                item.created_at
+            ) {
+
+                date =
+                    new Date(
+                        item.created_at
+                    ).toLocaleString(
+                        "en-IN",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    );
+
+            }
+
+
+            html += `
+
+                <div class="transaction">
+
+
+                    <div
+                        class="transaction-icon
+                        ${
+                            isCredit
+                                ? "credit-icon"
+                                : "debit-icon"
+                        }"
+                    >
+
+                        <i class="fa-solid
+                            ${
+                                isCredit
+                                    ? "fa-arrow-down"
+                                    : "fa-arrow-up"
+                            }"
+                        ></i>
+
+                    </div>
+
+
+                    <div class="transaction-info">
+
+                        <div class="transaction-title">
+
+                            ${title}
+
+                        </div>
+
+
+                        <div class="transaction-date">
+
+                            ${
+                                isCredit
+                                    ? orderText
+                                    : "Money withdrawn"
+                            }
+
+                            • ${escapeHTML(date)}
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="transaction-amount
+                        ${
+                            isCredit
+                                ? "credit"
+                                : "debit"
+                        }"
+                    >
+
+                        ${
+                            isCredit
+                                ? "+"
+                                : "-"
+                        }
+
+                        ₹${amount}
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   LOAD WITHDRAWALS
+===================================================== */
+
+async function loadWithdrawals() {
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API}/wallet/withdrawals/delivery/${rider.id}`
+
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Withdrawal API error"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "WITHDRAWALS:",
+            data
+        );
+
+
+        if (!data.success) {
+
+            return;
+
+        }
+
+
+        renderWithdrawals(
+            data.withdrawals || []
+        );
+
+
+        updatePendingWithdrawal(
+            data.withdrawals || []
+        );
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "WITHDRAWAL HISTORY ERROR:",
+            error
+        );
+
+
+        document.getElementById(
+            "withdrawals"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                Unable to load withdrawal history.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER WITHDRAWALS
+===================================================== */
+
+function renderWithdrawals(
+    withdrawals
+) {
+
+    const container =
+        document.getElementById(
+            "withdrawals"
+        );
+
+
+    if (
+        !withdrawals ||
+        withdrawals.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <i class="fa-solid fa-money-bill-transfer"></i>
+
+                <br>
+
+                No withdrawal requests yet.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    withdrawals.forEach(
+        item => {
+
+
+            const status =
+                String(
+                    item.status || "Pending"
+                );
+
+
+            const normalizedStatus =
+                status.toLowerCase();
+
+
+            let statusClass =
+                "status-pending";
+
+
+            if (
+                normalizedStatus ===
+                "completed"
+            ) {
+
+                statusClass =
+                    "status-completed";
+
+            }
+
+
+            if (
+                normalizedStatus ===
+                "rejected"
+            ) {
+
+                statusClass =
+                    "status-rejected";
+
+            }
+
+
+            let date =
+                "-";
+
+
+            if (
+                item.requested_at
+            ) {
+
+                date =
+                    new Date(
+                        item.requested_at
+                    ).toLocaleString(
+                        "en-IN",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    );
+
+            }
+
+
+            html += `
+
+                <div class="withdrawal-row">
+
+
+                    <div class="withdrawal-top">
+
+                        <div class="withdrawal-amount">
+
+                            ₹${money(
+                                item.amount
+                            )}
+
+                        </div>
+
+
+                        <div
+                            class="
+                                withdrawal-status
+                                ${statusClass}
+                            "
+                        >
+
+                            ${escapeHTML(
+                                status
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="withdrawal-date">
+
+                        Requested:
+                        ${escapeHTML(date)}
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   PENDING WITHDRAWAL
+===================================================== */
+
+function updatePendingWithdrawal(
+    withdrawals
+) {
+
+    const pending =
+        withdrawals.find(
+            item =>
+                String(
+                    item.status
+                ).toLowerCase()
+                === "pending"
+        );
+
+
+    const section =
+        document.getElementById(
+            "pendingSection"
+        );
+
+
+    const card =
+        document.getElementById(
+            "pendingCard"
+        );
+
+
+    if (!pending) {
+
+        section.style.display =
+            "none";
+
+        card.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    section.style.display =
+        "block";
+
+
+    card.style.display =
+        "block";
+
+
+    document.getElementById(
+        "pendingAmount"
+    ).textContent =
+        money(
+            pending.amount
+        );
+
+
+    document.getElementById(
+        "pendingDate"
+    ).textContent =
+        pending.requested_at
+            ? new Date(
+                pending.requested_at
+            ).toLocaleString(
+                "en-IN"
+            )
+            : "-";
+
+}
+
+
+/* =====================================================
+   OPEN WITHDRAW
+===================================================== */
+
+function openWithdraw() {
+
+    const balance =
+        Number(
+            document.getElementById(
+                "balance"
+            ).textContent
+        );
+
+
+    if (balance < 100) {
+
+        showToast(
+            "Minimum available balance for withdrawal is ₹100."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "modalBalance"
+    ).textContent =
+        money(balance);
+
+
+    document.getElementById(
+        "withdrawAmount"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "withdrawModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE WITHDRAW
+===================================================== */
+
+function closeWithdraw() {
+
+    document.getElementById(
+        "withdrawModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   SUBMIT WITHDRAWAL
+===================================================== */
+
+async function submitWithdrawal() {
+
+    const input =
+        document.getElementById(
+            "withdrawAmount"
+        );
+
+
+    const button =
+        document.getElementById(
+            "withdrawButton"
+        );
+
+
+    const amount =
+        Number(
+            input.value
+        );
+
+
+    const balance =
+        Number(
+            document.getElementById(
+                "balance"
+            ).textContent
+        );
+
+
+    // =========================================
+    // VALIDATE
+    // =========================================
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+
+        showToast(
+            "Please enter a valid amount."
+        );
+
+        return;
+
+    }
+
+
+    if (amount < 100) {
+
+        showToast(
+            "Minimum withdrawal amount is ₹100."
+        );
+
+        return;
+
+    }
+
+
+    if (amount > balance) {
+
+        showToast(
+            "Insufficient wallet balance."
+        );
+
+        return;
+
+    }
+
+
+    // =========================================
+    // BUTTON
+    // =========================================
+
+    button.disabled =
+        true;
+
+
+    button.innerHTML =
+        "Submitting...";
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                `${API}/wallet/withdraw`,
+
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            userType:
+                                "delivery",
+
+                            userId:
+                                rider.id,
+
+                            amount:
+                                amount
+
+                        })
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "WITHDRAW RESPONSE:",
+            data
+        );
+
+
+        if (!data.success) {
+
+            showToast(
+                data.message ||
+                "Withdrawal failed."
+            );
+
+            return;
+
+        }
+
+
+        // =========================================
+        // SUCCESS
+        // =========================================
+
+        closeWithdraw();
+
+
+        showToast(
+            `Withdrawal request of ₹${money(amount)} submitted.`
+        );
+
+
+        // =========================================
+        // UPDATE BALANCE IMMEDIATELY
+        // =========================================
+
+        if (
+            data.newBalance !== undefined
+        ) {
+
+            document.getElementById(
+                "balance"
+            ).textContent =
+                money(
+                    data.newBalance
+                );
+
+
+            document.getElementById(
+                "modalBalance"
+            ).textContent =
+                money(
+                    data.newBalance
+                );
+
+        }
+
+
+        // =========================================
+        // RELOAD EVERYTHING
+        // =========================================
+
+        await loadWallet();
+
+    }
+
+    catch (error) {
+
+        console.log(
+            "WITHDRAW ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Server error. Please try again."
+        );
+
+    }
+
+    finally {
+
+        button.disabled =
+            false;
+
+
+        button.innerHTML = `
+
+            <i class="fa-solid fa-money-bill-transfer"></i>
+
+            &nbsp;
+
+            Withdraw Money
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL WHEN CLICKING BACKGROUND
+===================================================== */
+
+document
+    .getElementById(
+        "withdrawModal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeWithdraw();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeWithdraw();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SERVICE WORKER
+===================================================== */
+
+if (
+    "serviceWorker" in navigator
+) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register(
+                    "/service-worker.js"
+                )
+                .catch(
+                    error => {
+
+                        console.log(
+                            "Service Worker Error:",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
+
+loadWallet();
+
+
+setInterval(
+    loadWallet,
+    30000
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+console.log(
+    "💰 DARVOZ Delivery Wallet Loaded"
+);
+
+</script>
+
+</body>
+
+</html>

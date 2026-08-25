@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Bank Details</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#ececec;
+display:flex;
+justify-content:center;
+}
+
+.app{
+width:100%;
+max-width:390px;
+min-height:100vh;
+background:#fff;
+box-shadow:0 0 35px rgba(0,0,0,.12);
+}
+
+.header{
+padding:20px;
+display:flex;
+align-items:center;
+gap:15px;
+background:#fff;
+box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.back{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#fff3eb;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#ff6b00;
+cursor:pointer;
+font-size:18px;
+}
+
+.header h2{
+font-size:24px;
+font-weight:700;
+}
+
+.form{
+padding:22px;
+}
+
+.progress{
+height:8px;
+background:#eee;
+border-radius:12px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress div{
+width:80%;
+height:100%;
+background:#ff6b00;
+}
+
+.step{
+font-size:14px;
+font-weight:600;
+color:#ff6b00;
+margin-bottom:8px;
+}
+
+.title{
+font-size:28px;
+font-weight:800;
+margin-bottom:8px;
+}
+
+.sub{
+font-size:14px;
+color:#777;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+label{
+display:block;
+font-size:15px;
+font-weight:600;
+margin-top:18px;
+margin-bottom:8px;
+}
+
+input{
+width:100%;
+height:55px;
+border:1px solid #ddd;
+border-radius:16px;
+padding:0 18px;
+font-size:16px;
+outline:none;
+transition:.3s;
+}
+
+input:focus{
+border-color:#ff6b00;
+}
+
+button{
+width:100%;
+height:56px;
+margin-top:30px;
+border:none;
+border-radius:18px;
+background:#ff6b00;
+color:white;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#e85d00;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="header">
+
+<div class="back" onclick="history.back()">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+
+<h2>Bank Details</h2>
+
+</div>
+
+<div class="form">
+
+<div class="progress">
+<div></div>
+</div>
+
+<div class="step">
+Step 4 of 5
+</div>
+
+<div class="title">
+Payment Details
+</div>
+
+<div class="sub">
+Enter your bank account details to receive payments from DARVOZ.
+</div>
+
+<label>Account Holder Name</label>
+<input
+type="text"
+id="accountName"
+placeholder="Shaik Jubair">
+
+<label>Bank Name</label>
+<input
+type="text"
+id="bankName"
+placeholder="State Bank of India">
+
+<label>Account Number</label>
+<input
+type="text"
+id="accountNumber"
+placeholder="123456789012">
+
+<label>IFSC Code</label>
+<input
+type="text"
+id="ifsc"
+placeholder="SBIN0001234">
+
+<label>UPI ID (Optional)</label>
+<input
+type="text"
+id="upi"
+placeholder="jubair@upi">
+
+<button onclick="nextPage()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function nextPage(){
+
+const accountName=document.getElementById("accountName").value.trim();
+
+const bankName=document.getElementById("bankName").value.trim();
+
+const accountNumber=document.getElementById("accountNumber").value.trim();
+
+const ifsc=document.getElementById("ifsc").value.trim();
+
+const upi=document.getElementById("upi").value.trim();
+
+if(
+accountName==="" ||
+bankName==="" ||
+accountNumber==="" ||
+ifsc===""){
+
+alert("Please fill all required bank details.");
+
+return;
+
+}
+
+localStorage.setItem("accountName",accountName);
+
+localStorage.setItem("bankName",bankName);
+
+localStorage.setItem("accountNumber",accountNumber);
+
+localStorage.setItem("ifsc",ifsc);
+
+localStorage.setItem("upi",upi);
+
+window.location.href="partner-review.html";
+
+}
+
+</script>
+
+</body>
+</html>

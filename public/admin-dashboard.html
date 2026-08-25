@@ -1,0 +1,5260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<style>
+
+/* =========================================
+DARVOZ ADMIN DASHBOARD
+Professional Responsive CSS - PART 1
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f5f7fb;
+    overflow-x:hidden;
+    color:#111827;
+}
+
+/* ==========================
+SCROLLBAR
+========================== */
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#94a3b8;
+}
+
+/* ==========================
+SIDEBAR
+========================== */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:260px;
+    height:100vh;
+    background:#111827;
+    color:#fff;
+    overflow-y:auto;
+    transition:.35s ease;
+    z-index:9999;
+}
+
+.logo{
+    padding:22px;
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    background:#0f172a;
+    letter-spacing:1px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo span{
+    color:#00d084;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:15px 0;
+}
+
+.sidebar ul li{
+    padding:16px 24px;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.sidebar ul li:hover{
+    background:#1f2937;
+    padding-left:30px;
+}
+
+.sidebar ul li.active{
+    background:#2563eb;
+}
+
+/* ==========================
+MAIN
+========================== */
+
+.main{
+    margin-left:260px;
+    min-height:100vh;
+    transition:.35s ease;
+}
+
+/* ==========================
+HEADER
+========================== */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:500;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 25px;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+.header h2{
+    font-size:26px;
+    color:#111827;
+    font-weight:700;
+}
+
+.menu-btn{
+    display:none;
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:30px;
+    color:#111827;
+}
+
+.header strong{
+    font-size:15px;
+    color:#374151;
+}
+/* ==========================
+CARDS
+========================== */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+    padding:25px;
+}
+
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.card h3{
+    font-size:15px;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+.card h1{
+    font-size:34px;
+    color:#111827;
+    font-weight:700;
+}
+
+/* ==========================
+CONTENT
+========================== */
+
+.content{
+    padding:25px;
+}
+
+.content h2{
+    color:#111827;
+    margin-bottom:15px;
+}
+
+/* ==========================
+TABLE
+========================== */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+thead{
+    background:#2563eb;
+    color:#fff;
+}
+
+th{
+    padding:15px;
+    font-size:15px;
+    text-align:left;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+}
+
+tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* ==========================
+INPUTS
+========================== */
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:11px 14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    outline:none;
+    transition:.25s;
+    font-size:15px;
+    background:#fff;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+textarea{
+    resize:none;
+}
+
+/* ==========================
+BUTTONS
+========================== */
+
+button{
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    color:#fff;
+    cursor:pointer;
+    font-weight:600;
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.green{
+    background:#16a34a;
+}
+
+.red{
+    background:#dc2626;
+}
+
+.blue{
+    background:#2563eb;
+}
+
+.yellow{
+    background:#facc15;
+    color:#000;
+}
+
+.purple{
+    background:#7c3aed;
+}
+
+/* ==========================
+OVERLAY
+========================== */
+
+.overlay{
+    display:none;
+}
+
+.overlay.active{
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:9998;
+}
+
+/* ==========================
+RESPONSIVE
+========================== */
+
+@media(max-width:992px){
+
+.cards{
+    grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:768px){
+
+.sidebar{
+    left:-260px;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.main{
+    margin-left:0;
+    width:100%;
+}
+
+.header{
+    padding:15px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.header h2{
+    font-size:20px;
+}
+
+.menu-btn{
+    display:block;
+}
+
+.cards{
+    grid-template-columns:1fr 1fr;
+    padding:15px;
+    gap:15px;
+}
+
+.card{
+    padding:18px;
+}
+
+.card h1{
+    font-size:28px;
+}
+
+.content{
+    padding:15px;
+}
+
+table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+}
+
+button{
+    padding:10px 15px;
+}
+
+}
+
+@media(max-width:480px){
+
+.cards{
+    grid-template-columns:1fr;
+}
+
+.header h2{
+    font-size:18px;
+}
+
+.card h1{
+    font-size:24px;
+}
+
+.logo{
+    font-size:22px;
+}
+
+button{
+    width:100%;
+}
+
+table{
+    font-size:13px;
+}
+
+th,
+td{
+    padding:10px;
+}
+
+.content{
+    padding:12px;
+}
+
+}
+
+/* ==========================
+MODAL
+========================== */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+    padding:20px;
+}
+
+.modal-box{
+    background:#fff;
+    width:100%;
+    max-width:700px;
+    border-radius:18px;
+    overflow:hidden;
+    animation:popup .3s ease;
+    box-shadow:0 15px 45px rgba(0,0,0,.25);
+    max-height:90vh;
+    overflow-y:auto;
+}
+
+@keyframes popup{
+    from{
+        transform:translateY(30px) scale(.95);
+        opacity:0;
+    }
+    to{
+        transform:translateY(0) scale(1);
+        opacity:1;
+    }
+}
+
+.modal-header{
+    background:#2563eb;
+    color:#fff;
+    padding:18px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-header h2{
+    font-size:22px;
+}
+
+.close-btn{
+    font-size:30px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.close-btn:hover{
+    transform:rotate(90deg);
+}
+
+.modal-body{
+    padding:22px;
+}
+
+.modal-body label{
+    display:block;
+    margin-top:16px;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.modal-footer{
+    padding:20px;
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    border-top:1px solid #eee;
+    background:#fafafa;
+}
+
+/* ==========================
+STATUS BADGES
+========================== */
+
+.status{
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.status.pending{
+    background:#FEF3C7;
+    color:#B45309;
+}
+
+.status.accepted{
+    background:#DBEAFE;
+    color:#1D4ED8;
+}
+
+.status.preparing{
+    background:#E9D5FF;
+    color:#7C3AED;
+}
+
+.status.pickup{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+.status.delivered{
+    background:#BBF7D0;
+    color:#166534;
+}
+
+.status.cancelled{
+    background:#FECACA;
+    color:#B91C1C;
+}
+
+/* ==========================
+PROFILE IMAGE
+========================== */
+
+table img{
+    width:45px;
+    height:45px;
+    object-fit:cover;
+    border-radius:50%;
+    border:2px solid #e5e7eb;
+}
+
+/* ==========================
+SEARCH BOX
+========================== */
+
+input[type=text],
+input[type=search]{
+    background:#fff;
+}
+
+/* ==========================
+NOTIFICATION
+========================== */
+
+.notification{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#16a34a;
+    color:#fff;
+    padding:15px 22px;
+    border-radius:12px;
+    font-weight:600;
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
+    animation:slideIn .3s ease;
+    z-index:15000;
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateX(120%);
+    }
+    to{
+        transform:translateX(0);
+    }
+}
+
+/* ==========================
+SMOOTH EFFECTS
+========================== */
+
+button,
+.card,
+.sidebar,
+.modal-box,
+input,
+select,
+textarea{
+    transition:.3s ease;
+}
+
+/* ==========================
+MOBILE
+========================== */
+
+@media(max-width:768px){
+
+    .modal{
+        padding:10px;
+        align-items:flex-end;
+    }
+
+    .modal-box{
+        width:100%;
+        max-width:100%;
+        border-radius:18px 18px 0 0;
+        max-height:92vh;
+    }
+
+    .modal-header h2{
+        font-size:18px;
+    }
+
+    .modal-body{
+        padding:16px;
+    }
+
+    .modal-footer{
+        flex-direction:column;
+    }
+
+    .modal-footer button{
+        width:100%;
+    }
+
+    .notification{
+        left:10px;
+        right:10px;
+        top:10px;
+        text-align:center;
+    }
+
+    table img{
+        width:38px;
+        height:38px;
+    }
+}
+
+/* ==========================
+SMALL MOBILE
+========================== */
+
+@media(max-width:480px){
+
+    .modal-header{
+        padding:15px;
+    }
+
+    .modal-body{
+        padding:14px;
+    }
+
+    .modal-footer{
+        padding:15px;
+    }
+
+    .close-btn{
+        font-size:26px;
+    }
+}
+
+/* ==========================================
+   OFFERS MANAGEMENT
+========================================== */
+
+.offer-toolbar{
+    background:#fff;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 5px 18px rgba(0,0,0,.06);
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.offer-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(280px,1fr));
+    gap:20px;
+}
+
+.offer-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.offer-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.offer-image{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+    display:block;
+}
+
+.offer-info{
+    padding:16px;
+}
+
+.offer-title{
+    font-size:17px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.offer-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.offer-actions{
+    display:flex;
+    gap:8px;
+}
+
+.offer-actions button{
+    flex:1;
+}
+
+.offer-status{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.offer-active{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+.offer-inactive{
+    background:#FEE2E2;
+    color:#B91C1C;
+}
+
+.offer-upload-preview{
+    width:100%;
+    max-height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-top:12px;
+    display:none;
+}
+
+@media(max-width:480px){
+
+    .offer-grid{
+        grid-template-columns:1fr;
+    }
+
+    .offer-image{
+        height:190px;
+    }
+
+}
+
+.admin-wallet{
+    background:#ecfdf5;
+    color:#047857;
+    padding:9px 16px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:500;
+    border:1px solid #a7f3d0;
+}
+
+.admin-wallet strong{
+    color:#047857;
+    font-size:17px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- Overlay -->
+
+<div class="overlay"
+id="overlay"
+onclick="closeSidebar()">
+</div>
+
+
+<!-- Sidebar -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="logo">
+        DAR<span>VOZ</span>
+    </div>
+
+    <ul>
+
+        <li onclick="showDashboard()">
+            🏠 Dashboard
+        </li>
+
+        <li onclick="showRestaurants()">
+            🍽 Restaurants
+        </li>
+
+        <li onclick="showOrders()">
+            📦 Orders
+        </li>
+
+        <li onclick="showCustomers()">
+            👥 Customers
+        </li>
+
+        <li onclick="showDelivery()">
+            🛵 Delivery Partners
+        </li>
+
+        <li onclick="loadWithdrawals()">
+   💰  Withdrawals
+</li>
+
+        <li onclick="showRevenue()">
+            💰 Revenue
+        </li>
+
+        <li onclick="showReports()">
+            📊 Reports
+        </li>
+
+        <li onclick="showOffers()">
+    🎁 Offers
+</li>
+
+        <li onclick="showSettings()">
+            ⚙ Settings
+        </li>
+
+        <li onclick="logout()">
+            🚪 Logout
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- Main -->
+
+<div class="main">
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <button
+        class="menu-btn"
+        onclick="toggleSidebar()">
+
+        ☰
+
+        </button>
+
+        <h2>
+            DARVOZ Admin Dashboard
+        </h2>
+
+<div class="admin-wallet">
+
+    💰 Wallet:
+    <strong>
+        ₹<span id="adminWallet">0.00</span>
+    </strong>
+
+</div>
+
+    </div>
+
+
+    <!-- Dashboard -->
+
+    <div id="dashboardPage">
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Total Restaurants</h3>
+
+                <h1 id="restaurants">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Pending Approvals</h3>
+
+                <h1 id="pending">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Total Orders</h3>
+
+                <h1 id="orders">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Total Customers</h3>
+
+                <h1 id="customers">
+                    0
+                </h1>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Delivery Partners</h3>
+
+                <h1 id="delivery">
+                    0
+                </h1>
+
+            </div>
+
+            
+
+            <div class="card">
+
+                <h3>Total Revenue</h3>
+
+                <h1>
+
+                    ₹<span id="revenue">
+
+                    0
+
+                    </span>
+
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+            <h2>
+
+                Latest Orders
+
+            </h2>
+
+            <br>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order ID</th>
+
+                        <th>Restaurant</th>
+
+                        <th>Customer</th>
+
+                        <th>Total</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="latestOrders">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+
+<!-- ==========================================
+     WITHDRAWAL PAGE
+========================================== -->
+
+<div id="withdrawPage" style="display:none;">
+
+    <div class="content">
+
+        <!-- HEADER -->
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:15px;
+            margin-bottom:20px;
+        ">
+
+            <div>
+
+                <h2>💰 Withdrawal Requests</h2>
+
+                <p style="
+                    color:#6b7280;
+                    margin-top:5px;
+                ">
+                    Manage partner and delivery partner wallet withdrawals
+                </p>
+
+            </div>
+
+            <button
+                class="blue"
+                onclick="loadWithdrawals()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>Pending Withdrawals</h3>
+
+                <h1 id="pendingWithdrawals">
+                    0
+                </h1>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Pending Amount</h3>
+
+                <h1>
+                    ₹<span id="pendingWithdrawalAmount">0</span>
+                </h1>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Approved Withdrawals</h3>
+
+                <h1 id="approvedWithdrawals">
+                    0
+                </h1>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Total Withdrawn</h3>
+
+                <h1>
+                    ₹<span id="totalWithdrawn">0</span>
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTER -->
+
+        <div style="
+            background:#fff;
+            padding:20px;
+            border-radius:15px;
+            box-shadow:0 5px 18px rgba(0,0,0,.06);
+            margin-bottom:20px;
+        ">
+
+            <div style="
+                display:flex;
+                gap:15px;
+                flex-wrap:wrap;
+            ">
+
+                <input
+                    type="text"
+                    id="withdrawSearch"
+                    placeholder="Search name, mobile or ID..."
+                    onkeyup="filterWithdrawals()"
+                    style="
+                        max-width:350px;
+                    ">
+
+
+                <select
+                    id="withdrawStatusFilter"
+                    onchange="filterWithdrawals()"
+                    style="
+                        max-width:220px;
+                    ">
+
+                    <option value="All">
+                        All Status
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="Approved">
+                        Approved
+                    </option>
+
+                    <option value="Rejected">
+                        Rejected
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="withdrawTypeFilter"
+                    onchange="filterWithdrawals()"
+                    style="
+                        max-width:220px;
+                    ">
+
+                    <option value="All">
+                        All Users
+                    </option>
+
+                    <option value="delivery">
+                        Delivery Partners
+                    </option>
+
+                    <option value="partner">
+                        Partners
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div style="
+            overflow-x:auto;
+        ">
+
+            <table id="withdrawTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>User Type</th>
+
+                        <th>User</th>
+
+                        <th>Mobile</th>
+
+                        <th>Wallet Balance</th>
+
+<th>Withdrawal Amount</th>
+
+<th>Requested At</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="withdrawTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="pageContent"></div>
+
+
+
+<!-- ===========================================
+EDIT RESTAURANT MODAL
+=========================================== -->
+
+<div id="editRestaurantModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Edit Restaurant</h2>
+
+            <span
+                class="close-btn"
+                onclick="closeRestaurantModal()">
+
+                &times;
+
+            </span>
+
+        </div>
+
+        <div class="modal-body">
+
+            <input type="hidden" id="editId">
+
+            <label>Restaurant Name</label>
+
+            <input
+                type="text"
+                id="editRestaurantName">
+
+            <label>Owner Name</label>
+
+            <input
+                type="text"
+                id="editOwnerName">
+
+            <label>Mobile</label>
+
+            <input
+                type="text"
+                id="editMobile">
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="editEmail">
+
+            <label>Address</label>
+
+            <textarea
+                id="editAddress"></textarea>
+
+            <label>City</label>
+
+            <input
+                type="text"
+                id="editCity">
+
+            <label>State</label>
+
+            <input
+                type="text"
+                id="editState">
+
+            <label>Pincode</label>
+
+            <input
+                type="text"
+                id="editPincode">
+
+            <label>Delivery Time</label>
+
+            <input
+                type="text"
+                id="editDeliveryTime">
+
+            <label>Rating</label>
+
+            <input
+                type="number"
+                step="0.1"
+                min="1"
+                max="5"
+                id="editRating">
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="green"
+                onclick="saveRestaurant()">
+
+                Save Changes
+
+            </button>
+
+            <button
+                class="red"
+                onclick="closeRestaurantModal()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =======================================
+ORDER DETAILS MODAL
+======================================= -->
+
+<div id="orderModal" class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>📦 Order Details</h2>
+
+            <span
+                class="close-btn"
+                onclick="closeOrderModal()">
+
+                &times;
+
+            </span>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="orderModalBody">
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="blue"
+                onclick="closeOrderModal()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="partnerViewModal" class="modal">
+
+    <div
+        class="modal-box"
+        style="max-width:900px;">
+
+        <div class="modal-header">
+
+            <h2>
+                🍽 Partner Details
+            </h2>
+
+            <span
+                class="close-btn"
+                onclick="closePartnerView()">
+
+                &times;
+
+            </span>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="partnerViewBody">
+
+        </div>
+
+    </div>
+
+</div>
+<audio id="deliverySound">
+
+<source
+
+src="/sounds/new-order.mp3"
+
+type="audio/mpeg">
+
+</audio>
+
+<!-- ==========================================
+     ADD / EDIT OFFER MODAL
+========================================== -->
+
+<div
+    id="offerModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2 id="offerModalTitle">
+                ➕ Add New Offer
+            </h2>
+
+            <span
+                class="close-btn"
+                onclick="closeOfferModal()">
+
+                &times;
+
+            </span>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <input
+                type="hidden"
+                id="offerId">
+
+
+            <label>
+                Offer Title
+            </label>
+
+            <input
+                type="text"
+                id="offerTitle"
+                placeholder="Example: Weekend Special">
+
+
+            <label>
+                Banner Image
+            </label>
+
+            <input
+                type="file"
+                id="offerImage"
+                accept="image/*">
+
+
+            <img
+                id="offerPreview"
+                class="offer-upload-preview">
+
+
+            <label>
+                Display Order
+            </label>
+
+            <input
+                type="number"
+                id="offerOrder"
+                value="0"
+                min="0">
+
+
+            <p style="
+                margin-top:10px;
+                color:#6b7280;
+                font-size:13px;
+            ">
+
+                Lower order numbers appear first.
+
+            </p>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="green"
+                onclick="saveOffer()">
+
+                💾 Save Offer
+
+            </button>
+
+
+            <button
+                class="red"
+                onclick="closeOfferModal()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const socket=io();
+
+socket.on("new-order",()=>{
+
+    loadOrders();
+
+    showNotification();
+
+});
+
+socket.on("order-updated",()=>{
+
+    loadOrders();
+
+});
+
+socket.on("partner-assigned",()=>{
+
+    loadOrders();
+
+});
+</script>
+
+<audio id="orderSound">
+
+<source
+src="/sounds/new-order.mp3"
+type="audio/mpeg">
+
+</audio>
+<script>
+
+    socket.on("new-order",()=>{
+
+    loadOrders();
+
+    showNotification();
+
+});
+
+function showNotification(){
+    document.getElementById("orderSound").play();
+    const div=document.createElement("div");
+
+    div.innerHTML="🛒 New Order Received";
+
+    div.style.position="fixed";
+    div.style.top="20px";
+    div.style.right="20px";
+    div.style.background="#16A34A";
+    div.style.color="#fff";
+    div.style.padding="15px 20px";
+    div.style.borderRadius="10px";
+    div.style.fontWeight="bold";
+    div.style.zIndex="9999";
+    div.style.boxShadow="0 8px 20px rgba(0,0,0,.2)";
+
+    document.body.appendChild(div);
+
+    setTimeout(()=>{
+
+        div.remove();
+
+    },3000);
+
+}
+
+
+// ==========================================
+// OPEN EDIT MODAL
+// ==========================================
+
+async function editRestaurant(id){
+
+    try{
+
+        const res = await fetch("/admin/restaurant/" + id);
+
+        const r = await res.json();
+
+        document.getElementById("editId").value = r.id;
+
+        document.getElementById("editRestaurantName").value =
+        r.restaurant_name || "";
+
+        document.getElementById("editOwnerName").value =
+        r.owner_name || "";
+
+        document.getElementById("editMobile").value =
+        r.mobile || "";
+
+        document.getElementById("editEmail").value =
+        r.email || "";
+
+        document.getElementById("editAddress").value =
+        r.address || "";
+
+        document.getElementById("editCity").value =
+        r.city || "";
+
+        document.getElementById("editState").value =
+        r.state || "";
+
+        document.getElementById("editPincode").value =
+        r.pincode || "";
+
+        document.getElementById("editDeliveryTime").value =
+        r.delivery_time || "";
+
+        document.getElementById("editRating").value =
+        r.rating || "";
+
+        document.getElementById("editRestaurantModal")
+        .style.display = "flex";
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Unable to load restaurant.");
+
+    }
+
+}
+
+
+
+// ==========================================
+// CLOSE MODAL
+// ==========================================
+
+function closeRestaurantModal(){
+
+    document.getElementById("editRestaurantModal")
+    .style.display = "none";
+
+}
+
+
+
+// ==========================================
+// CLOSE WHEN CLICKING OUTSIDE
+// ==========================================
+
+window.addEventListener("click",function(e){
+
+    const modal =
+    document.getElementById("editRestaurantModal");
+
+    if(e.target===modal){
+
+        closeRestaurantModal();
+
+    }
+
+});
+
+// ==========================================
+// SAVE RESTAURANT
+// ==========================================
+
+async function saveRestaurant(){
+
+    const id = document.getElementById("editId").value;
+
+    const data = {
+
+        restaurant_name: document.getElementById("editRestaurantName").value.trim(),
+
+        owner_name: document.getElementById("editOwnerName").value.trim(),
+
+        mobile: document.getElementById("editMobile").value.trim(),
+
+        email: document.getElementById("editEmail").value.trim(),
+
+        address: document.getElementById("editAddress").value.trim(),
+
+        city: document.getElementById("editCity").value.trim(),
+
+        state: document.getElementById("editState").value.trim(),
+
+        pincode: document.getElementById("editPincode").value.trim(),
+
+        delivery_time: document.getElementById("editDeliveryTime").value.trim(),
+
+        rating: document.getElementById("editRating").value
+
+    };
+
+
+    // Validation
+
+    if(
+        !data.restaurant_name ||
+        !data.owner_name ||
+        !data.mobile ||
+        !data.email
+    ){
+
+        alert("Please fill all required fields.");
+
+        return;
+
+    }
+
+    try{
+
+        const res = await fetch(
+
+            "/admin/restaurant/" + id,
+
+            {
+
+                method:"PUT",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify(data)
+
+            }
+
+        );
+
+        const result = await res.json();
+
+        if(res.ok){
+
+            alert(result.message || "Restaurant Updated Successfully");
+
+            closeRestaurantModal();
+
+            loadRestaurants();
+
+        }
+
+        else{
+
+            alert(result.message || "Update Failed");
+
+        }
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        alert("Server Error");
+
+    }
+
+}
+const API = "/admin";
+
+// ==============================
+// Sidebar
+// ==============================
+
+function toggleSidebar(){
+
+    document
+    .getElementById("sidebar")
+    .classList.toggle("active");
+
+    document
+    .getElementById("overlay")
+    .classList.toggle("active");
+
+}
+
+function closeSidebar(){
+
+    document
+    .getElementById("sidebar")
+    .classList.remove("active");
+
+    document
+    .getElementById("overlay")
+    .classList.remove("active");
+
+}
+
+// ==============================
+// Dashboard
+// ==============================
+
+async function loadDashboard(){
+
+    try{
+
+        const res =
+        await fetch(API + "/dashboard");
+
+        const data =
+        await res.json();
+
+        document
+        .getElementById("restaurants")
+        .innerText =
+        data.totalRestaurants;
+
+        document
+        .getElementById("pending")
+        .innerText =
+        data.pending;
+
+        document
+        .getElementById("orders")
+        .innerText =
+        data.totalOrders;
+
+        document
+        .getElementById("customers")
+        .innerText =
+        data.totalCustomers;
+
+        document
+        .getElementById("delivery")
+        .innerText =
+        data.totalDeliveryPartners;
+
+        document
+        .getElementById("revenue")
+        .innerText =
+        data.revenue;
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+// ==============================
+// Latest Orders
+// ==============================
+
+async function loadLatestOrders(){
+
+    try{
+
+        const res =
+        await fetch(API + "/latest-orders");
+
+        const orders =
+        await res.json();
+
+        let html = "";
+
+        orders.forEach(order=>{
+
+            html += `
+
+            <tr>
+
+                <td>${order.id}</td>
+
+                <td>${order.restaurant_name}</td>
+
+                <td>${order.customer_name}</td>
+
+                <td>₹${order.grand_total}</td>
+
+                <td>${order.status}</td>
+
+            </tr>
+
+            `;
+
+        });
+
+        document
+        .getElementById("latestOrders")
+        .innerHTML = html;
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+// ==============================
+// Pages
+// ==============================
+
+function showDashboard(){
+
+    document
+    .getElementById("dashboardPage")
+    .style.display="block";
+
+    document
+    .getElementById("pageContent")
+    .innerHTML="";
+
+    document.getElementById("withdrawPage").style.display = "none";
+
+    closeSidebar();
+
+    loadDashboard();
+
+    loadLatestOrders();
+
+}
+
+// =======================================
+// RESTAURANTS PAGE
+// =======================================
+
+async function showRestaurants() {
+
+    document.getElementById("dashboardPage").style.display = "none";
+
+    document.getElementById("pageContent").innerHTML = `
+
+    <div class="content">
+
+        <h2>🍽 Restaurants</h2>
+
+        <br>
+
+        <input
+            type="text"
+            id="restaurantSearch"
+            placeholder="Search Restaurant..."
+            onkeyup="searchRestaurants()"
+            style="
+                width:100%;
+                max-width:350px;
+                padding:10px;
+                margin-bottom:20px;
+                border:1px solid #ddd;
+                border-radius:8px;
+            ">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Logo</th>
+                    <th>Restaurant</th>
+                    <th>Owner</th>
+                    <th>Mobile</th>
+                    <th>City</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="restaurantTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+    closeSidebar();
+
+    loadRestaurants();
+
+}
+
+
+// =======================================
+// LOAD RESTAURANTS
+// =======================================
+
+let restaurantData = [];
+
+async function loadRestaurants() {
+
+    try {
+
+        const res = await fetch("/admin/restaurants");
+
+        restaurantData = await res.json();
+
+        renderRestaurants(restaurantData);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
+}
+
+
+// =======================================
+// RENDER TABLE
+// =======================================
+
+function renderRestaurants(data) {
+
+    let html = "";
+
+    data.forEach(r => {
+
+        html += `
+
+        <tr>
+
+            <td>${r.id}</td>
+
+            <td>
+
+                <img
+                    src="${r.logo || '/images/default-restaurant.png'}"
+                    width="45"
+                    height="45"
+                    style="border-radius:50%;object-fit:cover;">
+
+            </td>
+
+            <td>${r.restaurant_name}</td>
+
+            <td>${r.owner_name}</td>
+
+            <td>${r.mobile}</td>
+
+            <td>${r.city}</td>
+
+            <td>${r.status}</td>
+
+           
+                
+
+                <td>
+
+    <button
+        class="blue"
+        onclick="viewPartner(${r.id})">
+
+        👁 View
+
+    </button>
+
+    <button
+        class="blue"
+        onclick="editRestaurant(${r.id})">
+
+        Edit
+
+    </button>
+
+    <button
+        class="green"
+        onclick="toggleRestaurant(${r.id})">
+
+        Toggle
+
+    </button>
+
+    <button
+        class="red"
+        onclick="deleteRestaurant(${r.id})">
+
+        Delete
+
+    </button>
+
+</td>
+
+
+
+    
+
+        </tr>
+
+        `;
+
+    });
+
+    document.getElementById("restaurantTable").innerHTML = html;
+
+}
+
+
+// =======================================
+// SEARCH
+// =======================================
+
+function searchRestaurants() {
+
+    const text = document
+        .getElementById("restaurantSearch")
+        .value
+        .toLowerCase();
+
+    const filtered = restaurantData.filter(r =>
+
+        r.restaurant_name.toLowerCase().includes(text) ||
+
+        r.owner_name.toLowerCase().includes(text) ||
+
+        r.city.toLowerCase().includes(text)
+
+    );
+
+    renderRestaurants(filtered);
+
+}
+
+// =======================================
+// TOGGLE RESTAURANT
+// =======================================
+
+async function toggleRestaurant(id){
+
+    if(!confirm("Change Restaurant Status?"))
+        return;
+
+    try{
+
+        const res = await fetch(
+
+            "/admin/toggle-restaurant/" + id,
+
+            {
+                method:"PUT"
+            }
+
+        );
+
+        const data = await res.json();
+
+        alert(data.status || data.message);
+
+        loadRestaurants();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+
+
+// =======================================
+// DELETE RESTAURANT
+// =======================================
+
+async function deleteRestaurant(id){
+
+    if(!confirm("Delete this restaurant?"))
+        return;
+
+    try{
+
+        await fetch(
+
+            "/admin/delete-restaurant/" + id,
+
+            {
+                method:"DELETE"
+            }
+
+        );
+
+        alert("Restaurant Deleted");
+
+        loadRestaurants();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+
+
+
+// =======================================
+// ORDERS PAGE
+// =======================================
+
+function showOrders(){
+
+    document.getElementById("dashboardPage").style.display="none";
+
+    document.getElementById("pageContent").innerHTML=`
+
+    <div class="content">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:15px;
+            margin-bottom:20px;
+        ">
+
+            <h2>📦 Orders Management</h2>
+
+            <button
+                class="blue"
+                onclick="loadOrders()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+
+        <input
+            type="text"
+            id="orderSearch"
+            placeholder="Search by Order ID, Customer or Restaurant..."
+            onkeyup="searchOrders()"
+            style="
+                width:100%;
+                max-width:420px;
+                padding:10px;
+                border:1px solid #ddd;
+                border-radius:8px;
+                margin-bottom:20px;
+            ">
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Order ID</th>
+
+                    <th>Restaurant</th>
+
+                    <th>Customer</th>
+
+                    <th>Total</th>
+
+                    <th>Payment</th>
+
+                    <th>Status</th>
+
+                    <th>Delivery</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="ordersTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+    closeSidebar();
+
+    loadOrders();
+
+}
+
+// =======================================
+// ORDERS DATA
+// =======================================
+
+let ordersData=[];
+
+
+// =======================================
+// SEARCH
+// =======================================
+
+function searchOrders(){
+
+    const text=document
+    .getElementById("orderSearch")
+    .value
+    .toLowerCase();
+
+    const filtered=ordersData.filter(o=>
+
+        String(o.id).includes(text)||
+
+        o.customer_name.toLowerCase().includes(text)||
+
+        o.restaurant_name.toLowerCase().includes(text)
+
+    );
+
+    renderOrders(filtered);
+
+}
+
+
+
+
+// =======================================
+// TEMP RENDER
+// =======================================
+
+function renderOrders(data){
+
+    let html="";
+
+    data.forEach(order=>{
+
+        html+=`
+
+        <tr>
+
+            <td>#${order.id}</td>
+
+            <td>${order.restaurant_name}</td>
+
+            <td>${order.customer_name}</td>
+
+            <td>₹${order.grand_total}</td>
+
+            <td>${order.payment}</td>
+
+            <td>
+
+                <span style="
+                    padding:6px 10px;
+                    border-radius:20px;
+                    background:#dbeafe;
+                    color:#1d4ed8;
+                    font-size:13px;
+                ">
+
+                ${order.status}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                ${order.delivery_partner_id || "-"}
+
+            </td>
+
+            <td>
+
+                <button
+class="blue"
+onclick="viewOrder(${order.id})">
+
+View
+
+</button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    document.getElementById("ordersTable").innerHTML=html;
+
+}
+
+// =======================================
+// LOAD ORDERS
+// =======================================
+
+async function loadOrders(){
+
+    try{
+
+        const res = await fetch("/admin/orders");
+
+        ordersData = await res.json();
+
+        renderOrders(ordersData);
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Unable to load orders.");
+
+    }
+
+}
+// =======================================
+// STATUS COLORS
+// =======================================
+
+function statusColor(status){
+
+    switch(status){
+
+        case "Pending":
+
+            return {
+
+                bg:"#FEF3C7",
+
+                color:"#B45309"
+
+            };
+
+        case "Accepted":
+
+            return {
+
+                bg:"#DBEAFE",
+
+                color:"#1D4ED8"
+
+            };
+
+        case "Preparing":
+
+            return {
+
+                bg:"#E9D5FF",
+
+                color:"#7C3AED"
+
+            };
+
+        case "Picked Up":
+
+            return {
+
+                bg:"#DCFCE7",
+
+                color:"#15803D"
+
+            };
+
+        case "Delivered":
+
+            return {
+
+                bg:"#BBF7D0",
+
+                color:"#166534"
+
+            };
+
+        case "Cancelled":
+
+            return {
+
+                bg:"#FECACA",
+
+                color:"#B91C1C"
+
+            };
+
+        default:
+
+            return {
+
+                bg:"#E5E7EB",
+
+                color:"#374151"
+
+            };
+
+    }
+
+}
+
+// =======================================
+// VIEW ORDER
+// =======================================
+
+async function viewOrder(id){
+
+    try{
+
+        const res =
+        await fetch("/admin/order/" + id);
+
+        const order =
+        await res.json();
+
+        let items="";
+
+        order.items.forEach(item=>{
+
+            items+=`
+
+            <tr>
+
+                <td>${item.item_name}</td>
+
+                <td>${item.quantity}</td>
+
+                <td>₹${item.price}</td>
+
+            </tr>
+
+            `;
+
+        });
+
+        document
+        .getElementById("orderModalBody")
+        .innerHTML=`
+
+        <h3>Customer Details</h3>
+
+        <br>
+
+        <p><b>Name :</b> ${order.customer_name}</p>
+
+        <p><b>Mobile :</b> ${order.mobile}</p>
+
+        <p><b>Address :</b> ${order.address}</p>
+
+        <br>
+
+        <h3>Restaurant</h3>
+
+        <br>
+
+        <p>${order.restaurant_name}</p>
+
+        <br>
+
+        <h3>Ordered Items</h3>
+
+        <br>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Item</th>
+
+                    <th>Qty</th>
+
+                    <th>Price</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            ${items}
+
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <p><b>Payment :</b> ${order.payment}</p>
+
+
+        
+        <h3>Order Status</h3>
+
+<br>
+
+<div
+style="
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+">
+
+<button class="yellow"
+onclick="updateOrderStatus(${order.id},'Pending')">
+
+Pending
+
+</button>
+
+<button class="blue"
+onclick="updateOrderStatus(${order.id},'Accepted')">
+
+Accepted
+
+</button>
+
+<button class="purple"
+onclick="updateOrderStatus(${order.id},'Preparing')">
+
+Preparing
+
+</button>
+
+<button class="green"
+onclick="updateOrderStatus(${order.id},'Picked Up')">
+
+Picked Up
+
+</button>
+
+<button class="green"
+onclick="updateOrderStatus(${order.id},'Delivered')">
+
+Delivered
+
+</button>
+
+<button class="red"
+onclick="updateOrderStatus(${order.id},'Cancelled')">
+
+Cancelled
+
+</button>
+
+</div>
+
+<br>
+
+<p>
+
+<b>Current Status :</b>
+
+${order.status}
+
+</p>
+
+<h3>Assign Delivery Partner</h3>
+
+<br>
+
+<div style="
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+">
+
+<select
+id="partnerSelect"
+style="
+padding:10px;
+border:1px solid #ddd;
+border-radius:8px;
+min-width:220px;
+">
+
+<option value="">Select Delivery Partner</option>
+
+</select>
+
+<button
+class="green"
+onclick="assignPartner(${order.id})">
+
+Assign
+
+</button>
+
+</div>
+
+<br>
+
+<p>
+
+<b>Assigned Partner :</b>
+
+<span id="assignedPartner">
+
+${order.delivery_partner_id || "Not Assigned"}
+
+</span>
+
+</p>
+
+        <p><b>Food Total :</b> ₹${order.food_total}</p>
+
+        <p><b>Delivery Fee :</b> ₹${order.delivery_fee}</p>
+
+        <p><b>Platform Fee :</b> ₹${order.platform_fee}</p>
+
+        <h2>
+
+        Grand Total :
+
+        ₹${order.grand_total}
+
+        </h2>
+
+        `;
+
+        document
+        .getElementById("orderModal")
+        .style.display="flex";
+
+        loadPartners(order.delivery_partner_id);
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+
+// =======================================
+// LOAD DELIVERY PARTNERS
+// =======================================
+
+async function loadPartners(selected=""){
+
+    try{
+
+        const res=await fetch("/admin/delivery-partners");
+
+        const partners=await res.json();
+
+        let html="<option value=''>Select Delivery Partner</option>";
+
+        partners.forEach(p=>{
+
+            html+=`
+
+            <option
+
+            value="${p.id}"
+
+            ${selected==p.id?"selected":""}
+
+            >
+
+            ${p.name} (${p.mobile})
+
+            </option>
+
+            `;
+
+        });
+
+        document.getElementById("partnerSelect").innerHTML=html;
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+// =======================================
+// UPDATE ORDER STATUS
+// =======================================
+
+async function updateOrderStatus(id,status){
+
+    try{
+
+        const res = await fetch("/admin/order/status",{
+
+            method:"PUT",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify({
+
+                id,
+
+                status
+
+            })
+
+        });
+
+        const data=await res.json();
+
+        alert(data.message);
+
+        closeOrderModal();
+
+        loadOrders();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Unable to update status.");
+
+    }
+
+}
+
+
+
+// =======================================
+// ASSIGN DELIVERY PARTNER
+// =======================================
+
+async function assignPartner(orderId){
+
+    const partnerId=document.getElementById("partnerSelect").value;
+
+    if(partnerId==""){
+
+        return alert("Select a delivery partner.");
+
+    }
+
+    try{
+
+        const res=await fetch("/admin/order/assign",{
+
+            method:"PUT",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify({
+
+                orderId,
+
+                partnerId
+
+            })
+
+        });
+
+        const data=await res.json();
+
+        alert(data.message);
+
+        loadOrders();
+
+        closeOrderModal();
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+
+// =======================================
+// CLOSE MODAL
+// =======================================
+
+function closeOrderModal(){
+
+    document
+    .getElementById("orderModal")
+    .style.display="none";
+
+}
+
+let customerData=[];
+
+async function showCustomers(){
+
+    document.getElementById("dashboardPage").style.display="none";
+
+    document.getElementById("pageContent").innerHTML=`
+
+    <div class="content">
+
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        flex-wrap:wrap;
+        gap:15px;">
+
+            <h2>👥 Customers</h2>
+
+            <button
+            class="blue"
+            onclick="loadCustomers()">
+
+            🔄 Refresh
+
+            </button>
+
+        </div>
+
+        <input
+        id="customerSearch"
+        type="text"
+        placeholder="Search Customer..."
+        onkeyup="searchCustomers()"
+        style="
+        width:100%;
+        max-width:350px;
+        padding:10px;
+        border:1px solid #ddd;
+        border-radius:8px;
+        margin-bottom:20px;">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="customerTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+    closeSidebar();
+
+    loadCustomers();
+
+}
+
+async function loadCustomers(){
+
+    const res=await fetch("/admin/customers");
+
+    customerData=await res.json();
+
+    renderCustomers(customerData);
+
+}
+
+function renderCustomers(data){
+
+    let html="";
+
+    data.forEach(c=>{
+
+        html+=`
+
+        <tr>
+
+            <td>${c.id}</td>
+
+            <td>${c.name}</td>
+
+            <td>${c.mobile}</td>
+
+            <td>${c.email}</td>
+
+            <td>${c.city || "-"}</td>
+
+            <td>
+
+                ${c.is_verified ? "Verified ✅" : "Not Verified ❌"}
+
+            </td>
+
+            <td>
+
+                <button
+                class="red"
+                onclick="deleteCustomer(${c.id})">
+
+                Delete
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    document.getElementById("customerTable").innerHTML=html;
+
+}
+
+function searchCustomers(){
+
+    const text=document
+    .getElementById("customerSearch")
+    .value
+    .toLowerCase();
+
+    const filtered=customerData.filter(c=>
+
+        c.name.toLowerCase().includes(text) ||
+
+        c.mobile.includes(text) ||
+
+        c.email.toLowerCase().includes(text)
+
+    );
+
+    renderCustomers(filtered);
+
+}
+
+async function deleteCustomer(id){
+
+    if(!confirm("Delete this customer?")) return;
+
+    const res=await fetch("/admin/customer/"+id,{
+
+        method:"DELETE"
+
+    });
+
+    const data=await res.json();
+
+    alert(data.message);
+
+    loadCustomers();
+
+}
+
+let deliveryData=[];
+
+async function showDelivery(){
+
+    document.getElementById("dashboardPage").style.display="none";
+
+    document.getElementById("pageContent").innerHTML=`
+
+    <div class="content">
+
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        flex-wrap:wrap;
+        gap:15px;">
+
+            <h2>🛵 Delivery Partners</h2>
+
+            <button
+            class="blue"
+            onclick="loadDeliveryPartners()">
+
+            🔄 Refresh
+
+            </button>
+
+        </div>
+
+        <input
+        id="deliverySearch"
+        type="text"
+        placeholder="Search Delivery Partner..."
+        onkeyup="searchDelivery()"
+        style="
+        width:100%;
+        max-width:350px;
+        padding:10px;
+        border:1px solid #ddd;
+        border-radius:8px;
+        margin-bottom:20px;">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Vehicle</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="deliveryTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+    closeSidebar();
+
+    loadDeliveryPartners();
+
+}
+async function loadDeliveryPartners(){
+
+    const res=await fetch("/admin/delivery-partners");
+
+    deliveryData=await res.json();
+
+    renderDeliveryPartners(deliveryData);
+
+}
+
+function renderDeliveryPartners(data){
+
+    let html="";
+
+    data.forEach(d=>{
+
+        html+=`
+
+        <tr>
+
+            <td>${d.id}</td>
+
+            <td>${d.name}</td>
+
+            <td>${d.mobile}</td>
+
+            <td>${d.vehicle}</td>
+
+            <td>${d.status}</td>
+
+            <td>
+
+                <button
+                class="green"
+                onclick="toggleDelivery(${d.id})">
+
+                Toggle
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    document.getElementById("deliveryTable").innerHTML=html;
+
+}
+
+function searchDelivery(){
+
+    const text=document.getElementById("deliverySearch").value.toLowerCase();
+
+    const filtered=deliveryData.filter(d=>
+
+        d.name.toLowerCase().includes(text) ||
+
+        d.mobile.includes(text)
+
+    );
+
+    renderDeliveryPartners(filtered);
+
+}
+
+async function toggleDelivery(id){
+
+    await fetch("/admin/delivery/toggle/"+id,{
+
+        method:"PUT"
+
+    });
+
+    loadDeliveryPartners();
+
+}
+async function showRevenue(){
+
+    document.getElementById("dashboardPage").style.display="none";
+
+    document.getElementById("pageContent").innerHTML=`
+
+    <div class="content">
+
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;">
+
+            <h2>💰 Revenue</h2>
+
+            <button
+            class="blue"
+            onclick="loadRevenue()">
+
+            🔄 Refresh
+
+            </button>
+
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Revenue</h3>
+                <h1 id="totalRevenue">₹0</h1>
+            </div>
+
+            <div class="card">
+                <h3>Today's Revenue</h3>
+                <h1 id="todayRevenue">₹0</h1>
+            </div>
+
+            <div class="card">
+                <h3>Total Orders</h3>
+                <h1 id="revenueOrders">0</h1>
+            </div>
+
+            <div class="card">
+                <h3>Platform Fee</h3>
+                <h1 id="platformRevenue">₹0</h1>
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+    closeSidebar();
+
+    loadRevenue();
+
+}
+async function loadRevenue(){
+
+    const res=await fetch("/admin/revenue");
+
+    const data=await res.json();
+
+    document.getElementById("totalRevenue").innerHTML=
+    "₹"+data.totalRevenue;
+
+    document.getElementById("todayRevenue").innerHTML=
+    "₹"+data.todayRevenue;
+
+    document.getElementById("revenueOrders").innerHTML=
+    data.totalOrders;
+
+    document.getElementById("platformRevenue").innerHTML=
+    "₹"+data.platformRevenue;
+
+}
+
+async function showReports(){
+
+    document.getElementById("dashboardPage").style.display="none";
+
+    document.getElementById("pageContent").innerHTML=`
+
+    <div class="content">
+
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;">
+
+            <h2>📊 Reports</h2>
+
+            <button
+            class="blue"
+            onclick="loadReports()">
+
+            🔄 Refresh
+
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Report</th>
+
+                    <th>Value</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="reportTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+    closeSidebar();
+
+    loadReports();
+
+}
+async function loadReports(){
+
+    const res=await fetch("/admin/reports");
+
+    const data=await res.json();
+
+    document.getElementById("reportTable").innerHTML=`
+
+        <tr>
+            <td>Total Restaurants</td>
+            <td>${data.restaurants}</td>
+        </tr>
+
+        <tr>
+            <td>Total Customers</td>
+            <td>${data.customers}</td>
+        </tr>
+
+        <tr>
+            <td>Total Delivery Partners</td>
+            <td>${data.deliveryPartners}</td>
+        </tr>
+
+        <tr>
+            <td>Total Orders</td>
+            <td>${data.orders}</td>
+        </tr>
+
+        <tr>
+            <td>Delivered Orders</td>
+            <td>${data.delivered}</td>
+        </tr>
+
+        <tr>
+            <td>Cancelled Orders</td>
+            <td>${data.cancelled}</td>
+        </tr>
+
+        <tr>
+            <td>Total Revenue</td>
+            <td>₹${data.revenue}</td>
+        </tr>
+
+    `;
+
+}
+function showSettings(){
+
+    document
+    .getElementById("dashboardPage")
+    .style.display="none";
+
+    document
+    .getElementById("pageContent")
+    .innerHTML="<h2>⚙ Settings</h2>";
+
+    closeSidebar();
+
+}
+
+function logout(){
+
+    if(confirm("Logout from Admin Panel?")){
+
+        location.href="admin-login.html";
+
+    }
+
+}
+
+// ==============================
+// Load Dashboard
+// ==============================
+
+loadDashboard();
+
+loadLatestOrders();
+
+loadAdminWallet();
+// =====================================================
+// WITHDRAWAL MANAGEMENT
+// =====================================================
+
+let withdrawalData = [];
+
+
+// =====================================================
+// OPEN WITHDRAWAL PAGE
+// =====================================================
+
+async function loadWithdrawals(){
+
+    document.getElementById("dashboardPage").style.display = "none";
+
+    document.getElementById("pageContent").style.display = "none";
+
+    document.getElementById("withdrawPage").style.display = "block";
+
+    closeSidebar();
+
+    try{
+
+        const res = await fetch("/admin/withdrawals");
+
+        if(!res.ok){
+
+            throw new Error("Failed to load withdrawals");
+
+        }
+
+        const data = await res.json();
+
+        /*
+        Backend can return either:
+
+        [
+            ...
+        ]
+
+        OR
+
+        {
+            success:true,
+            withdrawals:[...]
+        }
+        */
+
+        if(Array.isArray(data)){
+
+            withdrawalData = data;
+
+        }
+
+        else{
+
+            withdrawalData =
+                data.withdrawals || [];
+
+        }
+
+
+        renderWithdrawals(withdrawalData);
+
+        updateWithdrawalSummary(withdrawalData);
+
+    }
+
+    catch(err){
+
+        console.error(
+            "WITHDRAWAL LOAD ERROR:",
+            err
+        );
+
+        document.getElementById(
+            "withdrawTableBody"
+        ).innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="9"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                        color:#dc2626;
+                    "
+                >
+
+                    ❌ Unable to load withdrawal requests.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+// =====================================================
+// RENDER WITHDRAWALS
+// =====================================================
+
+function renderWithdrawals(data){
+
+    const tbody =
+        document.getElementById(
+            "withdrawTableBody"
+        );
+
+    if(!tbody){
+
+        return;
+
+    }
+
+
+    if(!data || data.length === 0){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="9"
+                    style="
+                        text-align:center;
+                        padding:40px;
+                        color:#6b7280;
+                    "
+                >
+
+                    💰 No withdrawal requests found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    data.forEach(r => {
+
+        const type =
+            String(r.user_type || "")
+            .toLowerCase();
+
+
+        const typeLabel =
+            type === "delivery"
+                ? "🛵 Delivery"
+                : "🍽 Partner";
+
+
+        const typeStyle =
+            type === "delivery"
+                ? `
+                    background:#DBEAFE;
+                    color:#1D4ED8;
+                  `
+                : `
+                    background:#EDE9FE;
+                    color:#6D28D9;
+                  `;
+
+
+        const status =
+            r.status || "Pending";
+
+
+        let statusStyle = `
+            background:#FEF3C7;
+            color:#B45309;
+        `;
+
+
+        if(status === "Approved"){
+
+            statusStyle = `
+                background:#DCFCE7;
+                color:#15803D;
+            `;
+
+        }
+
+
+        if(status === "Rejected"){
+
+            statusStyle = `
+                background:#FECACA;
+                color:#B91C1C;
+            `;
+
+        }
+
+
+        const name =
+            r.name ||
+            r.partner_name ||
+            r.delivery_name ||
+            "Unknown";
+
+
+        const mobile =
+            r.mobile ||
+            "-";
+
+
+        const amount =
+            Number(r.amount || 0)
+            .toFixed(2);
+
+            const walletBalance =
+    Number(
+        r.wallet_balance ??
+        r.balance ??
+        0
+    ).toFixed(2);
+
+
+        const requestedAt =
+            r.requested_at
+            ? formatWithdrawDate(r.requested_at)
+            : "-";
+
+
+        let action = `
+
+            <span style="
+                color:#6b7280;
+                font-weight:600;
+            ">
+                No Action
+            </span>
+
+        `;
+
+
+        if(status === "Pending"){
+
+            action = `
+
+                <div style="
+                    display:flex;
+                    gap:8px;
+                    flex-wrap:wrap;
+                ">
+
+                    <button
+                        class="green"
+                        onclick="
+                            updateWithdraw(
+                                ${r.id},
+                                'Approved'
+                            )
+                        "
+                    >
+                        ✅ Approve
+                    </button>
+
+
+                    <button
+                        class="red"
+                        onclick="
+                            updateWithdraw(
+                                ${r.id},
+                                'Rejected'
+                            )
+                        "
+                    >
+                        ❌ Reject
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        html += `
+
+            <tr>
+
+                <!-- ID -->
+
+                <td>
+
+                    <strong>
+                        #${r.id}
+                    </strong>
+
+                </td>
+
+
+                <!-- USER TYPE -->
+
+                <td>
+
+                    <span
+                        style="
+                            display:inline-block;
+                            padding:6px 12px;
+                            border-radius:20px;
+                            font-size:12px;
+                            font-weight:600;
+                            ${typeStyle}
+                        "
+                    >
+
+                        ${typeLabel}
+
+                    </span>
+
+                </td>
+
+
+                <!-- USER -->
+
+                <td>
+
+                    <strong>
+                        ${escapeHTML(name)}
+                    </strong>
+
+                    <br>
+
+                    <small
+                        style="
+                            color:#6b7280;
+                        "
+                    >
+                        User ID: ${r.user_id}
+                    </small>
+
+                </td>
+
+
+                <!-- MOBILE -->
+
+                <td>
+
+                    ${escapeHTML(mobile)}
+
+                </td>
+
+
+                <!-- AMOUNT -->
+
+               <!-- WALLET BALANCE -->
+
+<td>
+
+    <strong
+        style="
+            color:#2563EB;
+            font-size:16px;
+        "
+    >
+
+        ₹${walletBalance}
+
+    </strong>
+
+</td>
+
+
+<!-- WITHDRAWAL AMOUNT -->
+
+ <!-- WALLET BALANCE -->
+
+<td>
+
+    <strong
+        style="
+            color:#2563EB;
+            font-size:16px;
+        "
+    >
+
+        ₹${Number(r.wallet_balance || 0).toFixed(2)}
+
+    </strong>
+
+</td>
+
+
+<!-- WITHDRAWAL AMOUNT -->
+
+<td>
+
+    <strong
+        style="
+            color:#16A34A;
+            font-size:16px;
+        "
+    >
+
+        ₹${amount}
+
+    </strong>
+
+</td>
+
+
+                <!-- REQUESTED -->
+
+                <td>
+
+                    ${requestedAt}
+
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                    <span
+                        style="
+                            display:inline-block;
+                            padding:6px 12px;
+                            border-radius:20px;
+                            font-size:12px;
+                            font-weight:600;
+                            ${statusStyle}
+                        "
+                    >
+
+                        ${status}
+
+                    </span>
+
+                </td>
+
+
+                <!-- ACTION -->
+
+                <td>
+
+                    ${action}
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    tbody.innerHTML = html;
+
+}
+
+
+// =====================================================
+// SEARCH + FILTER
+// =====================================================
+
+function filterWithdrawals(){
+
+    const search =
+        document
+        .getElementById("withdrawSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const status =
+        document
+        .getElementById("withdrawStatusFilter")
+        .value;
+
+
+    const type =
+        document
+        .getElementById("withdrawTypeFilter")
+        .value;
+
+
+    const filtered =
+        withdrawalData.filter(r => {
+
+            const name =
+                String(
+                    r.name ||
+                    r.partner_name ||
+                    r.delivery_name ||
+                    ""
+                )
+                .toLowerCase();
+
+
+            const mobile =
+                String(
+                    r.mobile || ""
+                )
+                .toLowerCase();
+
+
+            const id =
+                String(
+                    r.id || ""
+                );
+
+
+            const matchesSearch =
+
+                name.includes(search) ||
+
+                mobile.includes(search) ||
+
+                id.includes(search);
+
+
+            const matchesStatus =
+
+                status === "All" ||
+
+                r.status === status;
+
+
+            const matchesType =
+
+                type === "All" ||
+
+                String(
+                    r.user_type || ""
+                ).toLowerCase() === type;
+
+
+            return (
+                matchesSearch &&
+                matchesStatus &&
+                matchesType
+            );
+
+        });
+
+
+    renderWithdrawals(filtered);
+
+}
+
+
+// =====================================================
+// SUMMARY
+// =====================================================
+
+function updateWithdrawalSummary(data){
+
+    let pendingCount = 0;
+
+    let pendingAmount = 0;
+
+    let approvedCount = 0;
+
+    let totalWithdrawn = 0;
+
+
+    data.forEach(r => {
+
+        const amount =
+            Number(r.amount || 0);
+
+
+        if(r.status === "Pending"){
+
+            pendingCount++;
+
+            pendingAmount += amount;
+
+        }
+
+
+        if(r.status === "Approved"){
+
+            approvedCount++;
+
+            totalWithdrawn += amount;
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "pendingWithdrawals"
+    ).innerText =
+        pendingCount;
+
+
+    document.getElementById(
+        "pendingWithdrawalAmount"
+    ).innerText =
+        pendingAmount.toFixed(2);
+
+
+    document.getElementById(
+        "approvedWithdrawals"
+    ).innerText =
+        approvedCount;
+
+
+    document.getElementById(
+        "totalWithdrawn"
+    ).innerText =
+        totalWithdrawn.toFixed(2);
+
+}
+
+
+// =====================================================
+// APPROVE / REJECT WITHDRAWAL
+// =====================================================
+
+async function updateWithdraw(id,status){
+
+    const action =
+        status === "Approved"
+            ? "approve"
+            : "reject";
+
+
+    const message =
+        status === "Approved"
+
+            ? "Approve this withdrawal request?"
+
+            : "Reject this withdrawal request?";
+
+
+    if(!confirm(message)){
+
+        return;
+
+    }
+
+
+    try{
+
+        const res =
+            await fetch(
+                "/admin/withdrawal/" + id,
+                {
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        status:status
+                    })
+                }
+            );
+
+
+        const data =
+            await res.json();
+
+
+        if(!res.ok){
+
+            alert(
+                data.message ||
+                "Unable to update withdrawal."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            data.message ||
+            "Withdrawal updated successfully."
+        );
+
+
+        await loadWithdrawals();
+
+    }
+
+    catch(err){
+
+        console.error(
+            "WITHDRAW UPDATE ERROR:",
+            err
+        );
+
+        alert(
+            "Server error while updating withdrawal."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// DATE FORMAT
+// =====================================================
+
+function formatWithdrawDate(date){
+
+    try{
+
+        return new Date(date)
+            .toLocaleString(
+                "en-IN",
+                {
+                    dateStyle:"medium",
+                    timeStyle:"short"
+                }
+            );
+
+    }
+
+    catch(err){
+
+        return date;
+
+    }
+
+}
+
+
+// =====================================================
+// BASIC HTML ESCAPE
+// =====================================================
+
+function escapeHTML(value){
+
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+// ==========================================
+// VIEW PARTNER
+// ==========================================
+async function viewPartner(id) {
+
+    try {
+
+        const res = await fetch("/admin/restaurant/" + id);
+
+        const data = await res.json();
+
+        console.log("VIEW PARTNER RESPONSE:", data);
+
+        if (!res.ok) {
+
+            alert(
+                data.message ||
+                "Unable to load partner"
+            );
+
+            return;
+
+        }
+
+        // Support both response formats:
+        // 1. { success:true, partner:{...} }
+        // 2. { id, restaurant_name, owner_name, ... }
+
+        const p = data.partner || data;
+
+        if (!p || !p.id) {
+
+            console.error("Invalid partner response:", data);
+
+            alert("Partner details not found.");
+
+            return;
+
+        }
+
+       
+
+        const logo =
+            p.logo ||
+            "/images/default-restaurant.png";
+
+        const storePhoto =
+            p.storePhoto ||
+            "/images/default-restaurant.png";
+
+
+        document.getElementById(
+            "partnerViewBody"
+        ).innerHTML = `
+
+            <div style="
+                display:grid;
+                grid-template-columns:
+                repeat(auto-fit,minmax(250px,1fr));
+                gap:20px;
+            ">
+
+                <!-- PARTNER INFORMATION -->
+
+                <div style="
+                    background:#f8fafc;
+                    padding:20px;
+                    border-radius:15px;
+                ">
+
+                    <h3>
+                        Partner Information
+                    </h3>
+
+                    <br>
+
+                    <p>
+                        <b>Partner ID:</b>
+                        ${escapeHTML(
+                            p.restaurant_id
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Restaurant:</b>
+                        ${escapeHTML(
+                            p.restaurant_name
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Owner:</b>
+                        ${escapeHTML(
+                            p.owner_name
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Mobile:</b>
+                        ${escapeHTML(
+                            p.mobile
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Email:</b>
+                        ${escapeHTML(
+                            p.email
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Business:</b>
+                        ${escapeHTML(
+                            p.business_type
+                        )}
+                    </p>
+
+                    <p>
+                        <b>City:</b>
+                        ${escapeHTML(
+                            p.city
+                        )}
+                    </p>
+
+                    <p>
+                        <b>State:</b>
+                        ${escapeHTML(
+                            p.state
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Status:</b>
+                        ${escapeHTML(
+                            p.status
+                        )}
+                    </p>
+
+                </div>
+
+
+                <!-- LOGO -->
+
+                <div style="
+                    background:#f8fafc;
+                    padding:20px;
+                    border-radius:15px;
+                    text-align:center;
+                ">
+
+                    <h3>
+                        Restaurant Logo
+                    </h3>
+
+                    <br>
+
+                    <img
+                        src="${logo}"
+                        style="
+                            width:180px;
+                            height:180px;
+                            object-fit:contain;
+                            border-radius:15px;
+                            border:1px solid #ddd;
+                            background:#fff;
+                        "
+                        onerror="
+                            this.src='/images/default-restaurant.png'
+                        "
+                    >
+
+                    <br><br>
+
+                    <a
+                        href="${logo}"
+                        target="_blank">
+
+                        Open Logo
+
+                    </a>
+
+                </div>
+
+
+                <!-- STORE PHOTO -->
+
+                <div style="
+                    background:#f8fafc;
+                    padding:20px;
+                    border-radius:15px;
+                    text-align:center;
+                ">
+
+                    <h3>
+                        Store Photo
+                    </h3>
+
+                    <br>
+
+                    <img
+                        src="${storePhoto}"
+                        style="
+                            width:100%;
+                            max-width:350px;
+                            height:220px;
+                            object-fit:cover;
+                            border-radius:15px;
+                            border:1px solid #ddd;
+                        "
+                    >
+
+                    <br><br>
+
+                    <a
+                        href="${storePhoto}"
+                        target="_blank">
+
+                        Open Store Photo
+
+                    </a>
+
+                </div>
+
+
+                <!-- DOCUMENTS -->
+
+                <div style="
+                    background:#f8fafc;
+                    padding:20px;
+                    border-radius:15px;
+                    grid-column:1/-1;
+                ">
+
+                    <h3>
+                        📄 Verification Documents
+                    </h3>
+
+                    <br>
+
+                    <div style="
+                        display:flex;
+                        gap:15px;
+                        flex-wrap:wrap;
+                    ">
+
+                        ${
+                            p.fssai
+                            ?
+
+                            `<a
+                                href="${p.fssai}"
+                                target="_blank"
+                                class="blue"
+                                style="
+                                    display:inline-block;
+                                    color:white;
+                                    text-decoration:none;
+                                    padding:10px 18px;
+                                    border-radius:10px;
+                                ">
+
+                                📄 View FSSAI
+
+                            </a>`
+
+                            :
+
+                            `<span>
+                                FSSAI not uploaded
+                            </span>`
+                        }
+
+
+                        ${
+                            p.gst
+                            ?
+
+                            `<a
+                                href="${p.gst}"
+                                target="_blank"
+                                class="purple"
+                                style="
+                                    display:inline-block;
+                                    color:white;
+                                    text-decoration:none;
+                                    padding:10px 18px;
+                                    border-radius:10px;
+                                ">
+
+                                📄 View GST
+
+                            </a>`
+
+                            :
+
+                            `<span>
+                                GST not uploaded
+                            </span>`
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "partnerViewModal"
+        ).style.display = "flex";
+
+    }
+
+    catch(err) {
+
+        console.error(
+            "VIEW PARTNER ERROR:",
+            err
+        );
+
+        alert(
+            "Unable to load partner details."
+        );
+
+    }
+
+}
+
+function closePartnerView() {
+
+    document.getElementById(
+        "partnerViewModal"
+    ).style.display = "none";
+
+}
+
+// ==========================================
+// OFFERS MANAGEMENT
+// ==========================================
+
+let offersData = [];
+
+
+// ==========================================
+// SHOW OFFERS PAGE
+// ==========================================
+
+function showOffers(){
+
+    document.getElementById("dashboardPage").style.display = "none";
+
+    document.getElementById("withdrawPage").style.display = "none";
+
+    document.getElementById("pageContent").style.display = "block";
+
+    document.getElementById("pageContent").innerHTML = `
+
+        <div class="content">
+
+            <div class="offer-toolbar">
+
+                <div>
+
+                    <h2>🎁 Offers & Banners</h2>
+
+                    <p style="
+                        color:#6b7280;
+                        margin-top:5px;
+                    ">
+                        Manage promotional banners shown on the customer home page.
+                    </p>
+
+                </div>
+
+                <button
+                    class="blue"
+                    onclick="openAddOffer()">
+
+                    ➕ Add New Offer
+
+                </button>
+
+            </div>
+
+
+            <div id="offersGrid" class="offer-grid">
+
+                <div style="
+                    background:#fff;
+                    padding:40px;
+                    text-align:center;
+                    border-radius:15px;
+                    grid-column:1/-1;
+                ">
+
+                    Loading offers...
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    closeSidebar();
+
+    loadOffers();
+
+}
+
+
+// ==========================================
+// LOAD OFFERS
+// ==========================================
+
+async function loadOffers(){
+
+    try{
+
+        const res = await fetch("/admin/offers");
+
+        const data = await res.json();
+
+        offersData =
+            Array.isArray(data)
+                ? data
+                : data.offers || [];
+
+        renderOffers(offersData);
+
+    }
+
+    catch(err){
+
+        console.error("OFFERS LOAD ERROR:",err);
+
+        document.getElementById("offersGrid").innerHTML = `
+
+            <div style="
+                background:#fff;
+                padding:40px;
+                text-align:center;
+                border-radius:15px;
+                color:#dc2626;
+                grid-column:1/-1;
+            ">
+
+                ❌ Unable to load offers.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ==========================================
+// RENDER OFFERS
+// ==========================================
+
+function renderOffers(data){
+
+    const grid =
+        document.getElementById("offersGrid");
+
+    if(!grid) return;
+
+    if(!data || data.length === 0){
+
+        grid.innerHTML = `
+
+            <div style="
+                background:#fff;
+                padding:50px;
+                text-align:center;
+                border-radius:18px;
+                grid-column:1/-1;
+            ">
+
+                <div style="
+                    font-size:50px;
+                    margin-bottom:10px;
+                ">
+                    🎁
+                </div>
+
+                <h3>No Offers Added</h3>
+
+                <p style="
+                    color:#6b7280;
+                    margin:10px 0 20px;
+                ">
+                    Add your first promotional banner.
+                </p>
+
+                <button
+                    class="blue"
+                    onclick="openAddOffer()">
+
+                    ➕ Add New Offer
+
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    data.forEach(offer => {
+
+        const active =
+            Number(offer.is_active) === 1;
+
+
+        html += `
+
+            <div class="offer-card">
+
+                <img
+    class="offer-image"
+    src="${offer.image_url || '/images/restaurant-placeholder.png'}"
+    alt="${escapeHTML(offer.title || 'DARVOZ Offer')}"
+    onerror="this.style.display='none'"
+>
+
+
+                <div class="offer-info">
+
+                    <div class="offer-title">
+
+                        ${escapeHTML(
+                            offer.title || "DARVOZ Offer"
+                        )}
+
+                    </div>
+
+
+                    <div class="offer-meta">
+
+                        <span class="
+                            offer-status
+                            ${active
+                                ? "offer-active"
+                                : "offer-inactive"}
+                        ">
+
+                            ${active
+                                ? "● Active"
+                                : "● Inactive"}
+
+                        </span>
+
+
+                        <span style="
+                            color:#6b7280;
+                            font-size:13px;
+                        ">
+
+                            Order:
+                            ${offer.display_order || 0}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="offer-actions">
+
+                        <button
+                            class="blue"
+                            onclick="
+                                editOffer(${offer.id})
+                            ">
+
+                            ✏ Edit
+
+                        </button>
+
+
+                        <button
+                            class="${active ? "yellow" : "green"}"
+                            onclick="
+                                toggleOffer(${offer.id})
+                            ">
+
+                            ${active
+                                ? "Disable"
+                                : "Enable"}
+
+                        </button>
+
+
+                        <button
+                            class="red"
+                            onclick="
+                                deleteOffer(${offer.id})
+                            ">
+
+                            🗑
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    grid.innerHTML = html;
+
+}
+
+
+// ==========================================
+// ADD OFFER MODAL
+// ==========================================
+
+function openAddOffer(){
+
+    document.getElementById("offerModal").style.display = "flex";
+
+    document.getElementById("offerModalTitle").innerText =
+        "➕ Add New Offer";
+
+    document.getElementById("offerId").value = "";
+
+    document.getElementById("offerTitle").value = "";
+
+    document.getElementById("offerOrder").value = "0";
+
+    document.getElementById("offerImage").value = "";
+
+    document.getElementById("offerPreview").style.display = "none";
+
+}
+
+
+// ==========================================
+// IMAGE PREVIEW
+// ==========================================
+
+document.addEventListener("change",function(e){
+
+    if(e.target.id !== "offerImage")
+        return;
+
+    const file = e.target.files[0];
+
+    if(!file)
+        return;
+
+    const preview =
+        document.getElementById("offerPreview");
+
+    preview.src =
+        URL.createObjectURL(file);
+
+    preview.style.display = "block";
+
+});
+
+
+// ==========================================
+// CLOSE OFFER MODAL
+// ==========================================
+
+function closeOfferModal(){
+
+    document.getElementById("offerModal").style.display =
+        "none";
+
+}
+
+
+// ==========================================
+// SAVE OFFER
+// ==========================================
+
+async function saveOffer(){
+
+    const id =
+        document.getElementById("offerId").value;
+
+    const title =
+        document.getElementById("offerTitle")
+        .value
+        .trim();
+
+    const order =
+        document.getElementById("offerOrder")
+        .value || 0;
+
+    const image =
+        document.getElementById("offerImage")
+        .files[0];
+
+
+    if(!title){
+
+        alert("Please enter offer title.");
+
+        return;
+
+    }
+
+
+    if(!id && !image){
+
+        alert("Please select an offer image.");
+
+        return;
+
+    }
+
+
+    const formData = new FormData();
+
+    formData.append("title",title);
+
+    formData.append("display_order",order);
+
+
+    if(image){
+
+        formData.append("image",image);
+
+    }
+
+
+    try{
+
+        const url =
+            id
+                ? "/admin/offers/" + id
+                : "/admin/offers";
+
+
+        const method =
+            id
+                ? "PUT"
+                : "POST";
+
+
+        const res = await fetch(url,{
+
+            method:method,
+
+            body:formData
+
+        });
+
+
+        const data = await res.json();
+
+
+        if(!res.ok){
+
+            alert(
+                data.message ||
+                "Unable to save offer."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            data.message ||
+            "Offer saved successfully."
+        );
+
+
+        closeOfferModal();
+
+        loadOffers();
+
+    }
+
+    catch(err){
+
+        console.error(
+            "SAVE OFFER ERROR:",
+            err
+        );
+
+        alert("Server error.");
+
+    }
+
+}
+
+
+// ==========================================
+// EDIT OFFER
+// ==========================================
+
+function editOffer(id){
+
+    const offer =
+        offersData.find(
+            x => Number(x.id) === Number(id)
+        );
+
+
+    if(!offer){
+
+        alert("Offer not found.");
+
+        return;
+
+    }
+
+
+    document.getElementById("offerModal").style.display =
+        "flex";
+
+
+    document.getElementById("offerModalTitle").innerText =
+        "✏ Edit Offer";
+
+
+    document.getElementById("offerId").value =
+        offer.id;
+
+
+    document.getElementById("offerTitle").value =
+        offer.title || "";
+
+
+    document.getElementById("offerOrder").value =
+        offer.display_order || 0;
+
+
+    document.getElementById("offerImage").value =
+        "";
+
+
+    const preview =
+        document.getElementById("offerPreview");
+
+
+    preview.src =
+        offer.image_url;
+
+
+    preview.style.display =
+        "block";
+
+}
+
+
+// ==========================================
+// TOGGLE OFFER
+// ==========================================
+
+async function toggleOffer(id){
+
+    try{
+
+        const res = await fetch(
+            "/admin/offers/toggle/" + id,
+            {
+                method:"PUT"
+            }
+        );
+
+
+        const data =
+            await res.json();
+
+
+        alert(
+            data.message ||
+            "Offer status updated."
+        );
+
+
+        loadOffers();
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        alert("Unable to update offer.");
+
+    }
+
+}
+
+
+// ==========================================
+// DELETE OFFER
+// ==========================================
+
+async function deleteOffer(id){
+
+    if(!confirm(
+        "Delete this offer permanently?"
+    )){
+
+        return;
+
+    }
+
+
+    try{
+
+        const res =
+            await fetch(
+                "/admin/offers/" + id,
+                {
+                    method:"DELETE"
+                }
+            );
+
+
+        const data =
+            await res.json();
+
+
+        alert(
+            data.message ||
+            "Offer deleted."
+        );
+
+
+        loadOffers();
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        alert("Unable to delete offer.");
+
+    }
+
+}
+
+async function loadAdminWallet(){
+
+    try{
+
+        const res = await fetch("/admin/wallet");
+
+        const data = await res.json();
+
+        document.getElementById("adminWallet").innerText =
+            Number(data.balance || 0).toFixed(2);
+
+    }
+    catch(err){
+
+        console.error("ADMIN WALLET ERROR:", err);
+
+        document.getElementById("adminWallet").innerText =
+            "0.00";
+
+    }
+
+}
+</script>
+
+</body>
+
+</html>

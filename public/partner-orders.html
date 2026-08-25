@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>DARVOZ | Partner Orders</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+
+background:#ff6b00;
+color:white;
+padding:18px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+header h2{
+
+font-size:28px;
+
+}
+
+header button{
+
+background:white;
+color:#ff6b00;
+border:none;
+padding:10px 18px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+
+}
+
+.container{
+
+width:90%;
+max-width:1000px;
+margin:30px auto;
+
+}
+
+.card{
+
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+margin-bottom:25px;
+
+}
+
+.card h3{
+
+margin-bottom:12px;
+
+}
+
+.row{
+
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+
+}
+
+.status{
+
+display:inline-block;
+padding:6px 15px;
+background:orange;
+color:white;
+border-radius:20px;
+font-size:14px;
+margin-top:10px;
+
+}
+
+.actions{
+
+display:flex;
+gap:12px;
+margin-top:20px;
+flex-wrap:wrap;
+
+}
+
+.actions button{
+
+padding:12px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:600;
+
+}
+
+.accept{
+
+background:#28a745;
+color:white;
+
+}
+
+.reject{
+
+background:red;
+color:white;
+
+}
+
+/* =====================================================
+   REJECTED ORDER CARD
+===================================================== */
+
+.card.rejected-card{
+    position:relative;
+    overflow:hidden;
+    filter:grayscale(0.4);
+}
+
+.card.rejected-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,0.60);
+    backdrop-filter:blur(3px);
+    z-index:5;
+}
+
+.rejected-overlay{
+    position:absolute;
+    inset:0;
+    z-index:10;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    pointer-events:none;
+}
+
+.rejected-badge{
+    background:#dc3545;
+    color:white;
+
+    padding:14px 30px;
+
+    border-radius:12px;
+
+    font-size:20px;
+    font-weight:800;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.25);
+
+    transform:rotate(-5deg);
+}
+
+
+/* =====================================================
+   DELIVERED ORDER CARD
+===================================================== */
+
+.card.delivered-card{
+    position:relative;
+    overflow:hidden;
+    filter:grayscale(0.4);
+}
+
+.card.delivered-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,0.65);
+    backdrop-filter:blur(3px);
+    z-index:5;
+}
+
+.delivered-overlay{
+    position:absolute;
+    inset:0;
+    z-index:10;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    pointer-events:none;
+}
+
+.delivered-badge{
+    background:#198754;
+    color:white;
+
+    padding:14px 30px;
+    border-radius:12px;
+
+    font-size:20px;
+    font-weight:800;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.25);
+
+    transform:rotate(-5deg);
+}  
+.prepare{
+
+background:#007bff;
+color:white;
+
+}
+
+.ready{
+
+background:#ff6b00;
+color:white;
+
+}
+
+.empty{
+
+background:white;
+padding:70px;
+text-align:center;
+font-size:22px;
+border-radius:15px;
+color:#777;
+
+}
+
+.pickup-alert {
+    background: #fff3e8;
+    border: 1px solid #ffb27a;
+    padding: 14px 18px;
+    border-radius: 10px;
+    color: #333;
+    flex: 1;
+    min-width: 250px;
+}
+
+.pickup-alert strong {
+    color: #ff6b00;
+    font-size: 16px;
+}
+
+.pickup-alert span {
+    font-size: 14px;
+    color: #666;
+}
+
+.confirm-pickup {
+    background: #ff6b00;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.confirm-pickup:hover {
+    background: #e85f00;
+}
+
+.pickup-confirmed {
+    background: #e8f8ee;
+    color: #198754;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>🍽 Partner Orders</h2>
+
+<button onclick="window.location.href='partner-dashboard.html'">
+
+← Dashboard
+
+</button>
+
+</header>
+
+<div class="container">
+
+<div id="orders">
+
+<div class="empty">
+
+Loading Orders...
+
+</div>
+
+</div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script>
+
+
+const API = window.location.origin;
+const partner = JSON.parse(localStorage.getItem("partner"));
+
+if (!partner) {
+    window.location.href = "partner-login.html";
+}
+
+const partnerId = partner.id;
+
+// =====================================================
+// SOCKET.IO
+// =====================================================
+
+const socket = io(API);
+
+socket.on("connect", () => {
+
+    console.log(
+        "✅ Partner Socket Connected:",
+        socket.id
+    );
+
+    socket.emit(
+        "joinPartner",
+        partnerId
+    );
+
+    console.log(
+        "Joined:",
+        `partner_${partnerId}`
+    );
+
+});
+
+socket.on(
+    "riderReachedRestaurant",
+    (data) => {
+
+        console.log(
+            "🚴 RIDER REACHED RESTAURANT:",
+            data
+        );
+
+        if (!data || !data.orderId) {
+
+            return;
+
+        }
+
+        loadOrders();
+
+    }
+);
+
+socket.on(
+    "orderStatusUpdated",
+    (data) => {
+
+        console.log(
+            "📦 PARTNER ORDER STATUS:",
+            data
+        );
+
+        if (!data || !data.orderId) {
+
+            return;
+
+        }
+
+        if (
+            data.status ===
+            "Picked Up"
+        ) {
+
+            loadOrders();
+
+        }
+
+    }
+);
+
+async function loadOrders(){
+
+    console.log("================================");
+    console.log("DARVOZ PARTNER ORDERS");
+    console.log("API:", API);
+    console.log("Partner ID:", partnerId);
+    console.log("URL:", `${API}/partner-orders/${partnerId}`);
+    console.log("================================");
+
+    try{
+
+        const response = await fetch(
+            `${API}/partner-orders/${partnerId}`
+        );
+
+        console.log(
+            "ORDER API STATUS:",
+            response.status
+        );
+
+        const text = await response.text();
+
+        console.log(
+            "RAW ORDER RESPONSE:",
+            text
+        );
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP ${response.status}: ${text}`
+            );
+
+        }
+
+        const orders = JSON.parse(text);
+
+        console.log(
+            "ORDERS:",
+            orders
+        );
+
+        let html = "";
+
+        if(!Array.isArray(orders) || orders.length === 0){
+
+            html = `
+            <div class="empty">
+                No Orders Available
+            </div>
+            `;
+
+        }
+        else{
+
+            orders.forEach(order=>{
+
+                const orderStatus =
+    String(
+        order.status || ""
+    )
+    .trim()
+    .toLowerCase();
+const rejected =
+    orderStatus === "rejected" ||
+    String(order.partner_response || "")
+        .trim()
+        .toLowerCase() === "rejected";
+
+
+const deliveryStatus =
+    String(
+        order.delivery_status || ""
+    )
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]+/g, "");
+
+const riderReached =
+    deliveryStatus === "reachedrestaurant";
+
+const pickedUp =
+    deliveryStatus === "pickedup";
+
+const delivered =
+    deliveryStatus === "delivered" ||
+    deliveryStatus === "completed" ||
+    orderStatus === "delivered" ||
+    orderStatus === "completed";
+                html += `
+
+<div class="card ${
+    rejected
+        ? "rejected-card"
+        : delivered
+        ? "delivered-card"
+        : ""
+}">
+
+                    <h3>
+                        Order #${order.id}
+                    </h3>
+
+                    <div class="row">
+                        <span>
+                            <b>Customer</b>
+                        </span>
+
+                        <span>
+                            ${order.customer_name || "-"}
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span>
+                            <b>Mobile</b>
+                        </span>
+
+                        <span>
+                            ${order.mobile || "-"}
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span>
+                            <b>Restaurant</b>
+                        </span>
+
+                        <span>
+                            ${order.restaurant_name || "-"}
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span>
+                            <b>Address</b>
+                        </span>
+
+                        <span>
+                            ${order.address || "-"}
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span>
+                            <b>Total</b>
+                        </span>
+
+                        <span>
+                            ₹${order.grand_total || 0}
+                        </span>
+                    </div>
+
+                    <div class="status">
+                        ${order.status || "Pending"}
+                    </div>
+
+         <div class="actions">
+
+${
+    rejected
+    ? `
+        <div class="rejected-overlay">
+
+            <div class="rejected-badge">
+                ❌ ORDER REJECTED
+            </div>
+
+        </div>
+    `
+    : delivered
+    ? `
+        <div class="delivered-overlay">
+
+            <div class="delivered-badge">
+                ✅ ORDER DELIVERED
+            </div>
+
+        </div>
+    `
+    : riderReached
+    ? `
+        <div class="pickup-alert">
+
+            🚴 <strong>Delivery Partner Arrived</strong>
+
+            <br>
+
+            <span>
+                Rider is waiting at the restaurant.
+            </span>
+
+        </div>
+
+        <button
+            class="confirm-pickup"
+            onclick="confirmPickup(event, ${order.id})"
+        >
+            📦 Confirm Pickup
+        </button>
+    `
+    : `
+        <button
+            class="accept"
+            onclick="acceptOrder(${order.id})"
+        >
+            ✅ Accept
+        </button>
+
+        <button
+            class="reject"
+            onclick="rejectOrder(${order.id})"
+        >
+            ❌ Reject
+        </button>
+    `
+}
+
+${
+    pickedUp
+    ? `
+        <div class="pickup-confirmed">
+            ✅ Pickup Confirmed
+        </div>
+    `
+    : ""
+}
+
+</div>           
+
+</div>
+
+                `;
+
+            });
+
+        }
+
+        document.getElementById("orders").innerHTML =
+            html;
+
+    }
+
+    catch(error){
+
+        console.error(
+            "LOAD ORDERS ERROR:",
+            error
+        );
+
+        document.getElementById("orders").innerHTML = `
+
+            <div class="empty">
+
+                ❌ Unable to load orders
+
+                <br><br>
+
+                <small>
+                    ${error.message}
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
+// Update Status
+
+async function updateStatus(id, status) {
+
+    console.log(
+        "Updating order:",
+        id,
+        "Status:",
+        status
+    );
+
+    try {
+
+        const response = await fetch(
+            `${API}/partner-orders/status/${id}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    status: status
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(
+            "STATUS UPDATE RESPONSE:",
+            data
+        );
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Unable to update order status."
+            );
+
+            return;
+
+        }
+
+        await loadOrders();
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "STATUS UPDATE ERROR:",
+            error
+        );
+
+        alert(
+            "Server error while updating order."
+        );
+
+    }
+
+}
+
+loadOrders();
+// =====================================================
+// ACCEPT ORDER
+// =====================================================
+
+async function acceptOrder(orderId) {
+
+    const confirmAccept = confirm(
+        "Accept this order?"
+    );
+
+    if (!confirmAccept) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `${API}/partner-orders/accept/${orderId}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    partnerId: partnerId
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(
+            "ACCEPT RESPONSE:",
+            data
+        );
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Unable to accept order."
+            );
+
+            return;
+        }
+
+        alert(
+            "✅ Order Accepted"
+        );
+
+        await loadOrders();
+
+    }
+    catch(error) {
+
+        console.error(
+            "ACCEPT ERROR:",
+            error
+        );
+
+        alert(
+            "Server error while accepting order."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// REJECT ORDER
+// =====================================================
+
+async function rejectOrder(orderId) {
+
+    const confirmReject = confirm(
+        "Are you sure you want to reject this order?\n\n" +
+        "After rejection, you cannot accept this order again."
+    );
+
+    if (!confirmReject) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `${API}/partner-orders/reject/${orderId}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    partnerId: partnerId
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(
+            "REJECT RESPONSE:",
+            data
+        );
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Unable to reject order."
+            );
+
+            return;
+        }
+
+        alert(
+            "❌ Order rejected.\n\n" +
+            "Admin has been notified."
+        );
+
+        await loadOrders();
+
+    }
+    catch(error) {
+
+        console.error(
+            "REJECT ERROR:",
+            error
+        );
+
+        alert(
+            "Server error while rejecting order."
+        );
+
+    }
+
+}
+
+// =====================================================
+// CONFIRM PICKUP
+// =====================================================
+
+async function confirmPickup(event, orderId) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    console.log("=================================");
+    console.log("📦 CONFIRM PICKUP");
+    console.log("Order ID:", orderId);
+    console.log("Partner ID:", partnerId);
+    console.log("=================================");
+
+    try {
+
+        const response = await fetch(
+            `${API}/partner-orders/confirm-pickup/${orderId}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    partnerId: partnerId
+                })
+            }
+        );
+
+        console.log(
+            "PICKUP HTTP STATUS:",
+            response.status
+        );
+
+        const data = await response.json();
+
+        console.log(
+            "📦 PICKUP RESPONSE:",
+            data
+        );
+
+        if (!response.ok || !data.success) {
+
+            alert(
+                data.message ||
+                "Unable to confirm pickup."
+            );
+
+            return;
+        }
+
+        console.log(
+            "✅ PICKUP CONFIRMED SUCCESSFULLY"
+        );
+
+        // Refresh partner orders
+        await loadOrders();
+
+    }
+    catch (error) {
+
+        console.error(
+            "❌ CONFIRM PICKUP ERROR:",
+            error
+        );
+
+        alert(
+            "Server error while confirming pickup."
+        );
+
+    }
+
+}
+</script>
+
+
+</body>
+
+</html>

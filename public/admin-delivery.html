@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>DARVOZ Admin - Delivery Requests</title>
+
+<style>
+
+body{
+font-family:Poppins,sans-serif;
+background:#f5f5f5;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+img{
+width:80px;
+height:80px;
+object-fit:cover;
+border-radius:10px;
+margin-right:10px;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-right:10px;
+font-weight:bold;
+}
+
+.approve{
+background:#28a745;
+color:white;
+}
+
+.reject{
+background:red;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>🚴 Delivery Partner Requests</h2>
+
+<div id="list">
+
+Loading...
+
+</div>
+
+<script>
+
+const API="https://darvoz-app.onrender.com";
+
+loadRequests();
+
+async function loadRequests(){
+
+const res=await fetch(`${API}/admin/delivery/pending`);
+
+const data=await res.json();
+
+let html="";
+
+data.forEach(d=>{
+
+html+=`
+
+<div class="card">
+
+<h3>${d.name}</h3>
+
+<p>📱 ${d.mobile}</p>
+
+<p>🚴 ${d.vehicle}</p>
+
+<p>Status : ${d.account_status}</p>
+
+<img src="${API}/uploads/delivery/${d.photo}">
+
+<br><br>
+
+<a href="${API}/uploads/delivery/${d.license}" target="_blank">
+Driving License
+</a>
+
+<br>
+
+<a href="${API}/uploads/delivery/${d.aadhaar}" target="_blank">
+Aadhaar
+</a>
+
+<br>
+
+<a href="${API}/uploads/delivery/${d.rc}" target="_blank">
+Vehicle RC
+</a>
+
+<br><br>
+
+<button
+class="approve"
+onclick="approve(${d.id})">
+
+Approve
+
+</button>
+
+<button
+class="reject"
+onclick="rejectDelivery(${d.id})">
+
+Reject
+
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("list").innerHTML=html;
+
+}
+
+async function approve(id){
+
+await fetch(
+
+`${API}/admin/delivery/approve/${id}`,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+alert("Approved");
+
+loadRequests();
+
+}
+
+async function rejectDelivery(id){
+
+await fetch(
+
+`${API}/admin/delivery/reject/${id}`,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+alert("Rejected");
+
+loadRequests();
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Business Details</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#ececec;
+display:flex;
+justify-content:center;
+}
+
+.app{
+width:100%;
+max-width:390px;
+min-height:100vh;
+background:#fff;
+box-shadow:0 0 35px rgba(0,0,0,.12);
+}
+
+.header{
+padding:20px;
+display:flex;
+align-items:center;
+gap:15px;
+background:#fff;
+box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.back{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#fff3eb;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#ff6b00;
+cursor:pointer;
+font-size:18px;
+}
+
+.header h2{
+font-size:24px;
+font-weight:700;
+}
+
+.form{
+padding:22px;
+}
+
+.progress{
+height:8px;
+background:#eee;
+border-radius:10px;
+margin-bottom:25px;
+overflow:hidden;
+}
+
+.progress div{
+width:20%;
+height:100%;
+background:#ff6b00;
+}
+
+.step{
+font-size:14px;
+color:#ff6b00;
+font-weight:600;
+margin-bottom:8px;
+}
+
+.title{
+font-size:28px;
+font-weight:800;
+margin-bottom:8px;
+}
+
+.sub{
+color:#777;
+font-size:14px;
+margin-bottom:25px;
+line-height:1.6;
+}
+
+/* ============================= */
+/* BUSINESS CATEGORY SELECTOR */
+/* ============================= */
+
+.category-selector{
+width:100%;
+height:62px;
+border:1.5px solid #ff6b00;
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 18px;
+cursor:pointer;
+background:#fff;
+transition:.3s;
+}
+
+.category-selector:hover{
+background:#fff8f2;
+}
+
+.category-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.category-icon{
+width:38px;
+height:38px;
+border-radius:12px;
+background:#fff3eb;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#ff6b00;
+font-size:18px;
+}
+
+.category-text{
+font-size:15px;
+font-weight:600;
+}
+
+.category-arrow{
+color:#777;
+font-size:18px;
+}
+
+.selected-count{
+font-size:13px;
+color:#ff6b00;
+font-weight:600;
+margin-top:7px;
+}
+
+/* ============================= */
+/* CATEGORY POPUP */
+/* ============================= */
+
+.category-popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+display:none;
+align-items:flex-end;
+justify-content:center;
+z-index:9999;
+}
+
+.category-popup.active{
+display:flex;
+}
+
+.category-modal{
+width:100%;
+max-width:390px;
+max-height:90vh;
+background:#fff;
+border-radius:25px 25px 0 0;
+padding:20px;
+display:flex;
+flex-direction:column;
+animation:popupUp .25s ease;
+}
+
+@keyframes popupUp{
+from{
+transform:translateY(100%);
+}
+to{
+transform:translateY(0);
+}
+}
+
+.modal-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:15px;
+}
+
+.modal-header h3{
+font-size:21px;
+font-weight:700;
+}
+
+.close-btn{
+width:38px;
+height:38px;
+border-radius:50%;
+border:none;
+background:#f3f3f3;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+color:#333;
+font-size:17px;
+}
+
+.modal-sub{
+font-size:13px;
+color:#777;
+margin-bottom:15px;
+}
+
+/* Search */
+
+.category-search{
+width:100%;
+height:50px;
+border:1px solid #ddd;
+border-radius:14px;
+padding:0 16px;
+font-size:14px;
+margin-bottom:15px;
+}
+
+.category-search:focus{
+border-color:#ff6b00;
+}
+
+/* Category options */
+
+.category-options{
+overflow-y:auto;
+padding-right:3px;
+}
+
+.popup-category{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:13px 12px;
+border:1px solid #eee;
+border-radius:14px;
+margin-bottom:9px;
+cursor:pointer;
+transition:.2s;
+}
+
+.popup-category:hover{
+border-color:#ff6b00;
+background:#fff8f2;
+}
+
+.popup-category-left{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:15px;
+font-weight:600;
+}
+
+.popup-category-icon{
+font-size:21px;
+width:28px;
+text-align:center;
+}
+
+.popup-category input{
+width:20px;
+height:20px;
+accent-color:#ff6b00;
+cursor:pointer;
+}
+
+/* Selected area */
+
+.selected-box{
+margin-top:12px;
+padding:12px;
+background:#fff5ee;
+border-radius:14px;
+}
+
+.selected-title{
+font-size:13px;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.selected-icons{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+}
+
+.selected-tag{
+background:#fff;
+border:1px solid #ffd5bd;
+border-radius:9px;
+padding:5px 8px;
+font-size:12px;
+}
+
+/* Done */
+
+.done-btn{
+height:54px;
+margin-top:15px;
+border:none;
+border-radius:16px;
+background:#ff6b00;
+color:#fff;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+}
+
+.done-btn:hover{
+background:#e65f00;
+}
+
+label{
+display:block;
+font-size:15px;
+font-weight:600;
+margin-top:18px;
+margin-bottom:8px;
+}
+
+input{
+width:100%;
+height:55px;
+border:1px solid #ddd;
+border-radius:16px;
+padding:0 18px;
+font-size:16px;
+outline:none;
+transition:.3s;
+}
+
+input:focus{
+border-color:#ff6b00;
+}
+
+
+
+button{
+width:100%;
+height:56px;
+margin-top:35px;
+border:none;
+border-radius:18px;
+background:#ff6b00;
+color:white;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#e65f00;
+}
+
+@media(max-width:400px){
+
+.form{
+padding:18px;
+}
+
+.title{
+font-size:25px;
+}
+
+
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="app">
+
+<div class="header">
+
+<div class="back" onclick="history.back()">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+
+<h2>Business Details</h2>
+
+</div>
+
+<div class="form">
+
+<div class="progress">
+<div></div>
+</div>
+
+<div class="step">
+Step 1 of 5
+</div>
+
+<div class="title">
+Business Information
+</div>
+
+<div class="sub">
+Tell us about your business and select the categories you serve.
+</div>
+
+<label>Select Business Categories</label>
+
+<div class="category-selector" onclick="openCategoryPopup()">
+
+<div class="category-left">
+
+<div class="category-icon">
+<i class="fa-solid fa-table-cells-large"></i>
+</div>
+
+<div class="category-text">
+Choose Categories
+</div>
+
+</div>
+
+<div class="category-arrow">
+<i class="fa-solid fa-chevron-right"></i>
+</div>
+
+</div>
+
+<div class="selected-count" id="selectedCount">
+0 selected
+</div>
+
+<label>Business Name</label>
+<input
+type="text"
+id="businessName"
+placeholder="BUSINESS NAME ">
+
+<label>Owner Name</label>
+<input
+type="text"
+id="ownerName"
+placeholder="NAME ">
+
+<label>Mobile Number</label>
+<input
+type="tel"
+id="mobile"
+placeholder="MOBILE NUMBER">
+
+<label>Email</label>
+<input
+type="email"
+id="email"
+placeholder="example@gmail.com">
+
+<label>Password</label>
+
+<input
+type="password"
+id="password"
+placeholder="Create Password">
+<div style="margin-top:8px;color:#666;font-size:13px;line-height:22px;">
+<b>Password Requirements:</b><br>
+✔ At least 8 characters<br>
+✔ One uppercase letter (A-Z)<br>
+✔ One lowercase letter (a-z)<br>
+✔ One number (0-9)<br>
+✔ One special character (@ # $ % & !)<br>
+Example: <b>Darvoz@123</b>
+</div>
+
+<label>Confirm Password</label>
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm Password">
+
+<button onclick="nextPage()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+<!-- CATEGORY POPUP -->
+
+<div class="category-popup" id="categoryPopup">
+
+<div class="category-modal">
+
+<div class="modal-header">
+
+<h3>Select Business Categories</h3>
+
+<button class="close-btn" onclick="closeCategoryPopup()">
+<i class="fa-solid fa-xmark"></i>
+</button>
+
+</div>
+
+<div class="modal-sub">
+Choose all categories that apply to your business.
+</div>
+
+<input
+type="text"
+class="category-search"
+id="categorySearch"
+placeholder="🔍 Search categories..."
+oninput="searchCategories()"
+>
+
+<div class="category-options" id="categoryOptions">
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍛</span>
+<span>Biryani</span>
+</div>
+
+<input type="checkbox" value="Biryani">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🛒</span>
+<span>Groceries</span>
+</div>
+
+<input type="checkbox" value="Groceries">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🥩</span>
+<span>Meat</span>
+</div>
+
+<input type="checkbox" value="Meat">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍽️</span>
+<span>Tiffins</span>
+</div>
+
+<input type="checkbox" value="Tiffins">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍦</span>
+<span>Ice Cream</span>
+</div>
+
+<input type="checkbox" value="Ice Cream">
+</label>
+
+
+
+
+
+
+
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🎂</span>
+<span>Cakes</span>
+</div>
+
+<input type="checkbox" value="Cakes">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🥤</span>
+<span>juices</span>
+</div>
+
+<input type="checkbox" value="juices">
+</label>
+
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍔</span>
+<span>fastfood</span>
+</div>
+
+<input type="checkbox" value="fastfood">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍕</span>
+<span>Pizzas</span>
+</div>
+
+<input type="checkbox" value="Pizzas">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍱</span>
+<span>Meals</span>
+</div>
+
+<input type="checkbox" value="Meals">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🥨</span>
+<span>paratha</span>
+</div>
+
+<input type="checkbox" value="paratha">
+</label>
+
+
+<label class="popup-category">
+
+<div class="popup-category-left">
+<span class="popup-category-icon">🍓</span>
+<span>fruits</span>
+</div>
+
+<input type="checkbox" value="fruits">
+</label>
+
+
+
+
+</div>
+
+<div class="selected-box">
+
+<div class="selected-title">
+Selected Categories
+</div>
+
+<div class="selected-icons" id="selectedTags">
+No categories selected
+</div>
+
+</div>
+
+<button class="done-btn" onclick="closeCategoryPopup()">
+Done
+</button>
+
+</div>
+
+</div>
+  
+<script>
+    function openCategoryPopup(){
+
+document.getElementById("categoryPopup").classList.add("active");
+
+updateSelectedCategories();
+
+}
+
+
+function closeCategoryPopup(){
+
+document.getElementById("categoryPopup").classList.remove("active");
+
+updateSelectedCategories();
+
+}
+
+
+function updateSelectedCategories(){
+
+const checked =
+document.querySelectorAll(".popup-category input:checked");
+
+const count = checked.length;
+
+document.getElementById("selectedCount").innerText =
+count + (count === 1 ? " selected" : " selected");
+
+
+const selectedTags =
+document.getElementById("selectedTags");
+
+if(count === 0){
+
+selectedTags.innerHTML =
+"No categories selected";
+
+return;
+
+}
+
+let html="";
+
+checked.forEach(cb=>{
+
+html += `
+<span class="selected-tag">
+${cb.value}
+</span>
+`;
+
+});
+
+selectedTags.innerHTML=html;
+
+}
+
+
+function searchCategories(){
+
+const search =
+document.getElementById("categorySearch")
+.value
+.toLowerCase()
+.trim();
+
+document.querySelectorAll(".popup-category")
+.forEach(item=>{
+
+const text =
+item.innerText.toLowerCase();
+
+if(text.includes(search)){
+
+item.style.display="flex";
+
+}else{
+
+item.style.display="none";
+
+}
+
+});
+
+}
+
+document.addEventListener("change", function(e){
+
+if(e.target.closest(".popup-category")){
+
+updateSelectedCategories();
+
+}
+
+});
+function nextPage(){
+
+const business=document.getElementById("businessName").value.trim();
+
+const owner=document.getElementById("ownerName").value.trim();
+
+const mobile=document.getElementById("mobile").value.trim();
+
+const email=document.getElementById("email").value.trim();
+
+const password = document.getElementById("password").value.trim();
+
+const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+const passwordRegex =
+/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&!])[A-Za-z\d@#$%&!]{8,}$/;
+
+const categories=[];
+
+document.querySelectorAll(".popup-category input:checked").forEach(cb=>{
+
+categories.push(cb.value);
+
+});
+
+if(
+business==="" ||
+owner==="" ||
+mobile==="" ||
+email==="" ||
+categories.length===0
+){
+
+alert("Please fill all fields and select at least one category.");
+
+return;
+
+}
+if(!passwordRegex.test(password)){
+    alert("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character (@ # $ % & !).");
+    return;
+}
+
+if(password !== confirmPassword){
+    alert("Password and Confirm Password do not match.");
+    return;
+}
+
+localStorage.setItem("businessName",business);
+
+localStorage.setItem("ownerName",owner);
+
+localStorage.setItem("mobile",mobile);
+
+localStorage.setItem("email",email);
+
+localStorage.setItem("password", password);
+
+/* Save categories */
+
+localStorage.setItem(
+"business_type",
+categories.join(",")
+);
+
+location.href="partner-address.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
+<title>DARVOZ — Favorites</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f7f7f7;
+    color:#222;
+}
+
+button{
+    font-family:'Poppins',sans-serif;
+    cursor:pointer;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+:root{
+    --orange:#ff5a00;
+    --green:#159447;
+    --red:#dc2626;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    height:210px;
+    background:
+        linear-gradient(
+            135deg,
+            #ff9700,
+            #ff6b00,
+            #f84c00
+        );
+    color:#fff;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+    position:relative;
+    overflow:hidden;
+}
+
+.header::before{
+    content:"";
+    position:absolute;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    left:-160px;
+    top:-180px;
+    background:rgba(255,255,255,.08);
+}
+
+.header::after{
+    content:"";
+    position:absolute;
+    width:400px;
+    height:400px;
+    border-radius:50%;
+    right:-170px;
+    top:-130px;
+    background:rgba(255,255,255,.07);
+}
+
+.topbar{
+    position:relative;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px max(16px,4vw);
+}
+
+.back-btn,
+.cart-btn{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.2);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+}
+
+.cart-btn{
+    position:relative;
+}
+
+.cart-badge{
+    position:absolute;
+    right:-4px;
+    top:-5px;
+    min-width:19px;
+    height:19px;
+    padding:0 5px;
+    border-radius:20px;
+    background:#fff;
+    color:var(--orange);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:800;
+}
+
+.header-content{
+    position:relative;
+    z-index:5;
+    text-align:center;
+    padding:22px 20px 0;
+}
+
+.header-content h1{
+    font-size:32px;
+    font-weight:800;
+}
+
+.header-content p{
+    margin-top:5px;
+    font-size:12px;
+    opacity:.9;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    width:min(1200px,100%);
+    margin:auto;
+    padding:25px max(14px,4vw) 120px;
+}
+
+.page-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.page-heading h2{
+    font-size:22px;
+    font-weight:800;
+}
+
+.page-heading span{
+    font-size:11px;
+    color:#777;
+    font-weight:600;
+}
+
+/* ================= GRID ================= */
+
+.favorite-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    gap:15px;
+}
+
+.food-card{
+    background:#fff;
+    border:1px solid #ededed;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 4px 16px rgba(0,0,0,.05);
+}
+
+.food-image{
+    height:230px;
+    background:#eee;
+    position:relative;
+    overflow:hidden;
+}
+
+.food-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.food-type{
+    position:absolute;
+    left:10px;
+    top:10px;
+    width:20px;
+    height:20px;
+    background:#fff;
+    border:2px solid var(--green);
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.food-type::after{
+    content:"";
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+}
+
+.food-type.nonveg{
+    border-color:var(--red);
+}
+
+.food-type.nonveg::after{
+    background:var(--red);
+}
+
+.remove-favorite{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:35px;
+    height:35px;
+    border:none;
+    border-radius:50%;
+    background:#fff;
+    color:#e63946;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.food-info{
+    padding:11px 12px 13px;
+}
+
+.food-name{
+    font-size:14px;
+    font-weight:800;
+    line-height:1.3;
+    min-height:37px;
+}
+
+.food-description{
+    color:#777;
+    font-size:10px;
+    line-height:1.45;
+    min-height:29px;
+    margin-top:3px;
+
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.food-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:10px;
+}
+
+.food-price{
+    font-size:16px;
+    font-weight:800;
+}
+
+.add-button{
+    height:36px;
+    border:1px solid var(--orange);
+    border-radius:10px;
+    background:#fff;
+    color:var(--orange);
+    padding:0 14px;
+    font-size:10px;
+    font-weight:800;
+}
+
+.quantity-control{
+    height:36px;
+    border:1px solid var(--orange);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+}
+
+.quantity-control button{
+    width:29px;
+    height:100%;
+    border:none;
+    background:#fff;
+    color:var(--orange);
+    font-size:18px;
+}
+
+.quantity-control span{
+    min-width:28px;
+    text-align:center;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+    text-align:center;
+    padding:70px 20px;
+    color:#777;
+}
+
+.empty i{
+    font-size:55px;
+    color:#ffb38a;
+    margin-bottom:18px;
+}
+
+.empty h3{
+    font-size:18px;
+    color:#333;
+    font-weight:800;
+}
+
+.empty p{
+    font-size:11px;
+    margin-top:5px;
+}
+
+/* ================= CART BAR ================= */
+
+.cart-bar{
+    position:fixed;
+    z-index:1000;
+    left:50%;
+    bottom:15px;
+    transform:translateX(-50%);
+    width:min(680px,calc(100% - 28px));
+    min-height:65px;
+    padding:8px 10px 8px 17px;
+    border-radius:16px;
+    background:
+        linear-gradient(
+            135deg,
+            #ff6b00,
+            #ff4d00
+        );
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 12px 35px rgba(0,0,0,.22);
+
+    opacity:0;
+    visibility:hidden;
+    transition:.25s;
+}
+
+.cart-bar.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.cart-summary{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.cart-icon{
+    font-size:20px;
+    width:35px;
+    text-align:center;
+}
+
+.cart-text strong{
+    display:block;
+    font-size:12px;
+}
+
+.cart-text small{
+    display:block;
+    font-size:10px;
+}
+
+.view-cart{
+    height:44px;
+    border:none;
+    border-radius:11px;
+    background:#fff;
+    color:var(--orange);
+    padding:0 17px;
+    font-size:10px;
+    font-weight:800;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .header{
+        height:190px;
+        border-bottom-left-radius:25px;
+        border-bottom-right-radius:25px;
+    }
+
+    .topbar{
+        padding:11px 12px;
+    }
+
+    .back-btn,
+    .cart-btn{
+        width:40px;
+        height:40px;
+    }
+
+    .header-content{
+        padding-top:17px;
+    }
+
+    .header-content h1{
+        font-size:26px;
+    }
+
+    .header-content p{
+        font-size:10px;
+    }
+
+    .main{
+        padding:20px 10px 110px;
+    }
+
+    .page-heading h2{
+        font-size:19px;
+    }
+
+    .favorite-grid{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .food-image{
+        height:145px;
+    }
+
+    .food-info{
+        padding:8px;
+    }
+
+    .food-name{
+        font-size:11px;
+        min-height:30px;
+    }
+
+    .food-description{
+        font-size:8px;
+        min-height:24px;
+    }
+
+    .food-price{
+        font-size:14px;
+    }
+
+    .add-button{
+        height:33px;
+        padding:0 9px;
+        font-size:9px;
+    }
+
+    .quantity-control{
+        height:33px;
+    }
+
+    .quantity-control button{
+        width:27px;
+    }
+
+    .quantity-control span{
+        min-width:23px;
+    }
+
+    .remove-favorite{
+        width:31px;
+        height:31px;
+        right:7px;
+        top:7px;
+        font-size:14px;
+    }
+
+    .food-type{
+        left:7px;
+        top:7px;
+    }
+
+}
+
+@media(max-width:380px){
+
+    .food-image{
+        height:130px;
+    }
+
+    .food-name{
+        font-size:10px;
+    }
+
+    .food-description{
+        display:none;
+    }
+
+    .food-price{
+        font-size:13px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="topbar">
+
+        <a
+            href="javascript:history.back()"
+            class="back-btn"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <button
+            class="cart-btn"
+            onclick="window.location.href='cart.html'"
+        >
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <span
+                class="cart-badge"
+                id="cartBadge"
+            >
+                0
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <div class="header-content">
+
+        <h1>
+            <i class="fa-solid fa-heart"></i>
+            Favorites
+        </h1>
+
+        <p>
+            Your favorite food, all in one place
+        </p>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <div class="page-heading">
+
+        <h2>
+            My Favorites
+        </h2>
+
+        <span id="favoriteCount">
+            0 Items
+        </span>
+
+    </div>
+
+
+    <div
+        class="favorite-grid"
+        id="favoriteContainer"
+    ></div>
+
+</main>
+
+
+<!-- ================= CART BAR ================= -->
+
+<div
+    class="cart-bar"
+    id="cartBar"
+>
+
+    <div class="cart-summary">
+
+        <div class="cart-icon">
+
+            <i class="fa-solid fa-bag-shopping"></i>
+
+        </div>
+
+        <div class="cart-text">
+
+            <strong id="cartItems">
+                0 Items
+            </strong>
+
+            <small id="cartTotal">
+                ₹0
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="view-cart"
+        onclick="window.location.href='cart.html'"
+    >
+
+        VIEW CART
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </button>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const restaurantId =
+    params.get("id");
+
+const API =
+    window.location.origin;
+
+let menuData = [];
+
+let favorites = [];
+
+let cart = [];
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+function getProductPrice(item){
+
+    if(!item){
+        return 0;
+    }
+
+    const fields = [
+
+        "offer_price",
+        "offerPrice",
+
+        "selling_price",
+        "sellingPrice",
+
+        "sale_price",
+        "salePrice",
+
+        "discount_price",
+        "discountPrice",
+
+        "final_price",
+        "finalPrice",
+
+        "unit_price",
+        "unitPrice",
+
+        "amount",
+
+        "price"
+
+    ];
+
+    for(const field of fields){
+
+        const value =
+            Number(
+                String(
+                    item[field] ?? ""
+                )
+                .replace(/[₹,\s]/g,"")
+            );
+
+        if(
+            Number.isFinite(value) &&
+            value >= 0
+        ){
+
+            return value;
+
+        }
+
+    }
+
+    return 0;
+
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+function getProductImage(item){
+
+    const images = [
+
+        item.image,
+        item.image_url,
+        item.imageUrl,
+
+        item.product_image,
+        item.productImage,
+
+        item.photo,
+        item.photo_url,
+        item.photoUrl,
+
+        item.thumbnail,
+        item.thumbnail_url,
+
+        item.img,
+        item.picture
+
+    ];
+
+    for(const image of images){
+
+        if(
+            image !== null &&
+            image !== undefined &&
+            String(image).trim()
+        ){
+
+            return String(image).trim();
+
+        }
+
+    }
+
+    return "/images/other.jpg";
+
+}
+
+
+/* =========================================================
+   LOAD FAVORITES
+========================================================= */
+
+function loadFavorites(){
+
+    try{
+
+        favorites =
+            JSON.parse(
+                localStorage.getItem(
+                    "favorites"
+                )
+            ) || [];
+
+        if(!Array.isArray(favorites)){
+            favorites = [];
+        }
+
+    }
+    catch(error){
+
+        favorites = [];
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD CART
+========================================================= */
+
+function loadCart(){
+
+    try{
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "cart"
+                )
+            ) || [];
+
+        if(!Array.isArray(cart)){
+            cart = [];
+        }
+
+    }
+    catch(error){
+
+        cart = [];
+
+    }
+
+    updateCartUI();
+
+}
+
+
+/* =========================================================
+   SAVE CART
+========================================================= */
+
+function saveCart(){
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    updateCartUI();
+
+}
+
+
+/* =========================================================
+   LOAD MENU
+========================================================= */
+
+async function loadMenu(){
+
+    if(!restaurantId){
+
+        showEmpty(
+            "Restaurant ID is missing"
+        );
+
+        return;
+
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `/partner/menu/${restaurantId}`,
+                {
+                    method:"GET",
+                    cache:"no-store"
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            data &&
+            Array.isArray(
+                data.products
+            )
+        ){
+
+            menuData =
+                data.products;
+
+        }
+        else if(
+            Array.isArray(data)
+        ){
+
+            menuData =
+                data;
+
+        }
+        else{
+
+            menuData = [];
+
+        }
+
+
+        displayFavorites();
+
+    }
+    catch(error){
+
+        console.error(
+            "FAVORITES MENU ERROR:",
+            error
+        );
+
+        showEmpty(
+            "Unable to load favorites"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY FAVORITES
+========================================================= */
+
+function displayFavorites(){
+
+    const container =
+        document.getElementById(
+            "favoriteContainer"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    const favoriteProducts =
+        menuData.filter(
+            item =>
+                favorites.some(
+                    id =>
+                        String(id) ===
+                        String(item.id)
+                )
+        );
+
+
+    document.getElementById(
+        "favoriteCount"
+    ).textContent =
+
+        `${favoriteProducts.length} Item${
+            favoriteProducts.length === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    if(!favoriteProducts.length){
+
+        showEmpty(
+            "No favorite items yet"
+        );
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    favoriteProducts.forEach(item => {
+
+        const cartItem =
+            cart.find(
+                x =>
+                    String(
+                        x.product_id
+                    ) ===
+                    String(item.id) &&
+                    !x.cart_id
+            );
+
+
+        const price =
+            getProductPrice(item);
+
+
+        const image =
+            getProductImage(item);
+
+
+        const foodType =
+            String(
+                item.food_type ||
+                item.type ||
+                ""
+            )
+            .toLowerCase();
+
+
+        const nonVeg =
+            foodType.includes("non");
+
+
+        let actionHTML;
+
+
+        if(cartItem){
+
+            actionHTML = `
+
+                <div class="quantity-control">
+
+                    <button
+                        onclick="decreaseQty(${item.id})"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${cartItem.quantity}
+                    </span>
+
+                    <button
+                        onclick="increaseQty(${item.id})"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+        else{
+
+            actionHTML = `
+
+                <button
+                    class="add-button"
+                    onclick="addToCart(${item.id})"
+                >
+
+                    ADD +
+
+                </button>
+
+            `;
+
+        }
+
+
+        container.innerHTML += `
+
+            <article class="food-card">
+
+                <div class="food-image">
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(
+                            item.product_name ||
+                            item.name ||
+                            "Food"
+                        )}"
+                        onerror="
+                            this.onerror=null;
+                            this.src='/images/other.jpg';
+                        "
+                    >
+
+
+                    <span
+                        class="food-type ${
+                            nonVeg
+                                ? "nonveg"
+                                : ""
+                        }"
+                    ></span>
+
+
+                    <button
+                        class="remove-favorite"
+                        onclick="
+                            removeFavorite(
+                                ${item.id}
+                            )
+                        "
+                        title="Remove from favorites"
+                    >
+
+                        <i
+                            class="fa-solid fa-heart"
+                        ></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="food-info">
+
+                    <div class="food-name">
+
+                        ${escapeHTML(
+                            item.product_name ||
+                            item.name ||
+                            "Food Item"
+                        )}
+
+                    </div>
+
+
+                    <div class="food-description">
+
+                        ${escapeHTML(
+                            item.description ||
+                            item.short_description ||
+                            "Freshly prepared and delicious."
+                        )}
+
+                    </div>
+
+
+                    <div class="food-bottom">
+
+                        <strong
+                            class="food-price"
+                        >
+
+                            ₹${price}
+
+                        </strong>
+
+                        ${actionHTML}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================================
+   REMOVE FAVORITE
+========================================================= */
+
+function removeFavorite(productId){
+
+    favorites =
+        favorites.filter(
+            id =>
+                String(id) !==
+                String(productId)
+        );
+
+
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(favorites)
+    );
+
+
+    displayFavorites();
+
+}
+
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+function addToCart(productId){
+
+    const product =
+        menuData.find(
+            item =>
+                String(item.id) ===
+                String(productId)
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    const existing =
+        cart.find(
+            item =>
+                String(
+                    item.product_id
+                ) ===
+                String(productId) &&
+                !item.cart_id
+        );
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }
+    else{
+
+        cart.push({
+
+            product_id:
+                product.id,
+
+            quantity:1,
+
+            product_name:
+                product.product_name ||
+                product.name,
+
+            price:
+                getProductPrice(product),
+
+            image:
+                getProductImage(product),
+
+            partner_id:
+                restaurantId,
+
+            item_type:
+                "food"
+
+        });
+
+    }
+
+
+    saveCart();
+
+    displayFavorites();
+
+}
+
+
+/* =========================================================
+   INCREASE
+========================================================= */
+
+function increaseQty(productId){
+
+    const item =
+        cart.find(
+            x =>
+                String(
+                    x.product_id
+                ) ===
+                String(productId)
+        );
+
+
+    if(item){
+
+        item.quantity++;
+
+        saveCart();
+
+        displayFavorites();
+
+    }
+
+}
+
+
+/* =========================================================
+   DECREASE
+========================================================= */
+
+function decreaseQty(productId){
+
+    const index =
+        cart.findIndex(
+            x =>
+                String(
+                    x.product_id
+                ) ===
+                String(productId)
+        );
+
+
+    if(index === -1){
+        return;
+    }
+
+
+    if(
+        Number(
+            cart[index].quantity
+        ) > 1
+    ){
+
+        cart[index].quantity--;
+
+    }
+    else{
+
+        cart.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    saveCart();
+
+    displayFavorites();
+
+}
+
+
+/* =========================================================
+   CART UI
+========================================================= */
+
+function updateCartUI(){
+
+    let totalItems = 0;
+
+    let totalPrice = 0;
+
+
+    cart.forEach(item => {
+
+        const quantity =
+            Number(
+                item.quantity || 0
+            );
+
+        const price =
+            Number(
+                item.price || 0
+            );
+
+
+        totalItems += quantity;
+
+        totalPrice +=
+            quantity * price;
+
+    });
+
+
+    const badge =
+        document.getElementById(
+            "cartBadge"
+        );
+
+
+    if(badge){
+
+        badge.textContent =
+            totalItems;
+
+        badge.style.display =
+            totalItems > 0
+                ? "flex"
+                : "none";
+
+    }
+
+
+    document.getElementById(
+        "cartItems"
+    ).textContent =
+
+        `${totalItems} Item${
+            totalItems === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent =
+        `₹${totalPrice}`;
+
+
+    document.getElementById(
+        "cartBar"
+    ).classList.toggle(
+        "show",
+        totalItems > 0
+    );
+
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+function showEmpty(message){
+
+    const container =
+        document.getElementById(
+            "favoriteContainer"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    document.getElementById(
+        "favoriteCount"
+    ).textContent =
+        "0 Items";
+
+
+    container.innerHTML = `
+
+        <div
+            class="empty"
+            style="
+                grid-column:1/-1;
+            "
+        >
+
+            <i
+                class="fa-regular fa-heart"
+            ></i>
+
+            <h3>
+                ${escapeHTML(message)}
+            </h3>
+
+            <p>
+                Add items to your favorites
+                and they will appear here.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+async function initialize(){
+
+    loadFavorites();
+
+    loadCart();
+
+    await loadMenu();
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initialize
+);
+
+</script>
+
+</body>
+</html>

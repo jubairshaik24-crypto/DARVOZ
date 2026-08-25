@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Restaurants</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f6f6f6;
+color:#222;
+}
+
+/* ==========================
+HEADER
+========================== */
+
+.header{
+
+position:sticky;
+top:0;
+z-index:999;
+
+height:70px;
+
+background:#fff;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 18px;
+
+box-shadow:0 3px 10px rgba(0,0,0,.06);
+
+}
+
+.back,
+.cart{
+
+width:46px;
+height:46px;
+
+border-radius:50%;
+
+background:#f5f5f5;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:20px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.back:hover,
+.cart:hover{
+
+background:#ff6200;
+color:#fff;
+
+}
+
+.header-text{
+
+flex:1;
+
+margin-left:15px;
+
+}
+
+.header-text h3{
+
+font-size:22px;
+font-weight:700;
+
+}
+
+.header-text p{
+
+font-size:13px;
+color:#777;
+
+margin-top:2px;
+
+}
+
+/* ==========================
+SEARCH
+========================== */
+
+.search-section{
+
+padding:18px;
+
+background:#fff;
+
+}
+
+.search-box{
+
+display:flex;
+align-items:center;
+
+background:#f7f7f7;
+
+border-radius:18px;
+
+padding:14px 18px;
+
+}
+
+.search-box i{
+
+font-size:18px;
+color:#888;
+
+margin-right:12px;
+
+}
+
+.search-box input{
+
+flex:1;
+
+border:none;
+outline:none;
+
+background:none;
+
+font-size:16px;
+
+}
+
+/* ==========================
+FILTERS
+========================== */
+
+.filters{
+
+display:flex;
+
+overflow-x:auto;
+
+gap:12px;
+
+padding:18px;
+
+background:#fff;
+
+}
+
+.filters::-webkit-scrollbar{
+
+display:none;
+
+}
+
+.filter{
+
+border:none;
+
+background:#fff;
+
+padding:11px 22px;
+
+border-radius:40px;
+
+white-space:nowrap;
+
+cursor:pointer;
+
+font-size:14px;
+
+font-weight:600;
+
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.filter:hover{
+
+background:#ff6200;
+color:#fff;
+
+}
+
+.filter.active{
+
+background:#ff6200;
+color:#fff;
+
+}
+
+/* ==========================
+CATEGORIES
+========================== */
+
+.categories{
+
+display:flex;
+
+overflow-x:auto;
+
+gap:18px;
+
+padding:20px 18px;
+
+background:#fff;
+
+margin-top:10px;
+
+}
+
+.categories::-webkit-scrollbar{
+
+display:none;
+
+}
+
+.category{
+
+min-width:90px;
+
+background:#fff;
+
+border-radius:18px;
+
+padding:18px 10px;
+
+text-align:center;
+
+cursor:pointer;
+
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.category:hover{
+
+transform:translateY(-5px);
+
+}
+
+.category{
+
+font-size:30px;
+
+}
+
+.category span{
+
+display:block;
+
+margin-top:10px;
+
+font-size:14px;
+
+font-weight:600;
+
+}
+
+/* ==========================
+TITLE
+========================== */
+
+.section-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:25px 18px 15px;
+
+}
+
+.section-title h2{
+
+font-size:24px;
+font-weight:700;
+
+}
+
+.section-title span{
+
+font-size:14px;
+color:#777;
+
+}
+
+/* ==========================
+RESTAURANT LIST
+========================== */
+
+.restaurant-list{
+
+    padding:0 18px 25px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:18px;
+
+}
+
+/* ==========================
+CARD
+========================== */
+
+.restaurant-card{
+
+background:#fff;
+
+border-radius:22px;
+
+overflow:hidden;
+
+cursor:pointer;
+
+box-shadow:0 6px 18px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.restaurant-card:hover{
+
+transform:translateY(-5px);
+
+}
+
+.restaurant-image{
+
+    width:100%;
+
+    height:180px;
+
+    object-fit:cover;
+
+}
+
+.restaurant-content{
+
+padding:14px;
+
+}
+
+.restaurant-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:flex-start;
+
+margin-bottom:12px;
+
+}
+
+.restaurant-name{
+
+font-size:18px;
+
+font-weight:700;
+
+}
+
+.rating{
+
+background:#16a34a;
+
+color:#fff;
+
+padding:6px 10px;
+
+border-radius:8px;
+
+font-size:13px;
+
+font-weight:700;
+
+}
+
+.restaurant-type{
+
+color:#666;
+
+font-size:13px;
+
+margin-bottom:8px;
+
+}
+
+.restaurant-bottom{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-top:12px;
+
+}
+
+.distance{
+
+font-size:13px;
+
+font-weight:600;
+
+color:#444;
+
+}
+
+.time{
+
+font-size:13px;
+
+color:#ff6200;
+
+font-weight:700;
+
+}
+
+.offer{
+
+display:inline-block;
+
+margin-top:12px;
+
+padding:6px 10px;
+
+background:#fff3e8;
+
+color:#ff6200;
+
+font-size:11px;
+
+font-weight:700;
+
+border-radius:20px;
+
+}
+
+/* ==========================
+LOADING
+========================== */
+
+.loading{
+
+padding:50px;
+
+text-align:center;
+
+font-size:18px;
+
+color:#777;
+
+}
+
+/* ==========================
+EMPTY
+========================== */
+
+.empty{
+
+padding:80px 20px;
+
+text-align:center;
+
+}
+
+.empty i{
+
+font-size:70px;
+
+color:#ff6200;
+
+margin-bottom:20px;
+
+}
+
+.empty h3{
+
+font-size:28px;
+
+margin-bottom:10px;
+
+}
+
+.empty p{
+
+color:#777;
+
+font-size:16px;
+
+}
+
+/* ==========================
+MOBILE
+========================== */
+
+@media(max-width:768px){
+
+    .restaurant-list{
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap:10px;
+
+        padding:0 10px 20px;
+    }
+
+    .restaurant-image{
+        height:130px;
+    }
+
+    .restaurant-content{
+        padding:10px;
+    }
+
+    .restaurant-name{
+        font-size:15px;
+    }
+
+    .restaurant-type{
+        font-size:11px;
+    }
+
+    .distance,
+    .time{
+        font-size:11px;
+    }
+
+    .rating{
+        padding:4px 6px;
+        font-size:10px;
+    }
+
+    .offer{
+        font-size:9px;
+        padding:5px 8px;
+    }
+
+}
+.rating{
+    background:#16a34a;
+    color:#fff;
+    padding:6px 9px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:3px;
+}
+
+.rating i{
+    font-size:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- ==========================
+HEADER
+========================== -->
+
+<div class="header">
+
+<div class="back"
+onclick="history.back()">
+
+<i class="fa fa-arrow-left"></i>
+
+</div>
+
+<div class="header-text">
+
+<h3>Restaurants</h3>
+
+<p id="currentLocation">
+Loading location...
+</p>
+
+</div>
+
+<div class="cart">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+</div>
+
+</div>
+
+<!-- ==========================
+SEARCH
+========================== -->
+
+<div class="search-section">
+
+<div class="search-box">
+
+<i class="fa fa-search"></i>
+
+<input
+type="text"
+id="searchRestaurant"
+placeholder="Search restaurants or food...">
+
+</div>
+
+</div>
+
+<!-- ==========================
+FILTERS
+========================== -->
+
+<div class="filters">
+
+<button class="filter active">
+Nearby
+</button>
+
+<button class="filter">
+Top Rated
+</button>
+
+<button class="filter">
+Fast Delivery
+</button>
+
+<button class="filter">
+Offers
+</button>
+
+<button class="filter">
+Pure Veg
+</button>
+
+</div>
+
+
+
+<!-- ==========================
+TITLE
+========================== -->
+
+<div class="section-title">
+
+<h2 id="pageTitle">
+Restaurants Near You
+</h2>
+
+<span id="restaurantCount">
+
+0 Restaurants
+
+</span>
+
+</div>
+
+<!-- ==========================
+RESTAURANTS
+========================== -->
+
+<div
+id="restaurantList"
+class="restaurant-list">
+
+<!-- Dynamic Cards -->
+
+</div>
+
+<!-- ==========================
+LOADING
+========================== -->
+
+<div
+id="loading"
+class="loading">
+
+Loading Restaurants...
+
+</div>
+
+<!-- ==========================
+NO RESTAURANTS
+========================== -->
+
+<div
+id="empty"
+class="empty"
+style="display:none;">
+
+<i class="fa-solid fa-store-slash"></i>
+
+<h3>
+
+No Restaurants Found
+
+</h3>
+
+<p>
+
+No restaurants are available within 10 km.
+
+</p>
+
+</div>
+
+<script>
+
+// ==========================
+// CONFIG
+// ==========================
+
+const API = window.location.origin;
+
+const customerId = localStorage.getItem("customerId");
+
+const latitude = localStorage.getItem("latitude");
+const longitude = localStorage.getItem("longitude");
+
+
+/* =====================================================
+   SELECTED CATEGORY FROM HOME
+===================================================== */
+
+const urlParams =
+new URLSearchParams(window.location.search);
+
+const selectedCategory =
+(urlParams.get("category") ||
+localStorage.getItem("darvozSelectedCategory") ||
+"").toLowerCase().trim();
+
+const restaurantList = document.getElementById("restaurantList");
+const loading = document.getElementById("loading");
+const empty = document.getElementById("empty");
+const restaurantCount = document.getElementById("restaurantCount");
+const currentLocation = document.getElementById("currentLocation");
+
+let restaurants = [];
+
+
+/* =====================================================
+   CATEGORY PAGE TITLE
+===================================================== */
+
+const pageTitle =
+document.getElementById("pageTitle");
+
+
+if(selectedCategory){
+
+    const categoryName =
+        selectedCategory
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, c => c.toUpperCase());
+
+    pageTitle.textContent =
+        categoryName + " Restaurants";
+
+}
+
+// ==========================
+// PAGE LOAD
+// ==========================
+
+window.onload = () => {
+
+loadLocation();
+
+loadRestaurants();
+
+};
+
+// ==========================
+// LOAD LOCATION
+// ==========================
+
+function loadLocation(){
+
+const location = localStorage.getItem("locationName");
+
+if(location){
+
+currentLocation.innerHTML = location;
+
+}else{
+
+currentLocation.innerHTML = "Select Address";
+
+}
+
+}
+
+// ==========================
+// LOAD RESTAURANTS
+// ==========================
+
+async function loadRestaurants(){
+
+loading.style.display = "block";
+
+restaurantList.innerHTML = "";
+
+empty.style.display = "none";
+
+try{
+
+const response = await fetch(
+
+`${API}/restaurants/nearby`,
+
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+    latitude,
+    longitude,
+
+    radius:10,
+
+    category:selectedCategory
+
+})
+
+}
+
+);
+
+const apiData = await response.json();
+
+console.log("RAW API RESPONSE:", apiData);
+
+if(Array.isArray(apiData)){
+
+    restaurants = apiData;
+
+}else if(Array.isArray(apiData.restaurants)){
+
+    restaurants = apiData.restaurants;
+
+}else if(Array.isArray(apiData.data)){
+
+    restaurants = apiData.data;
+
+}else{
+
+    console.error(
+        "Restaurant API did not return an array:",
+        apiData
+    );
+
+    restaurants = [];
+
+}
+
+console.log("ALL RESTAURANTS FROM API:", restaurants);
+
+console.log("SELECTED CATEGORY:", selectedCategory);
+
+loading.style.display = "none";
+
+
+
+
+
+/* =====================================================
+   NO MATCHING RESTAURANTS
+===================================================== */
+
+if(!restaurants.length){
+
+    empty.style.display = "block";
+
+    restaurantCount.innerHTML =
+        "0 Restaurants";
+
+    return;
+
+}
+
+
+restaurantCount.innerHTML =
+    restaurants.length + " Restaurants";
+
+
+renderRestaurants(restaurants);
+
+}catch(err){
+
+console.log(err);
+
+loading.innerHTML="Unable to load restaurants.";
+
+}
+
+}
+
+// ==========================
+// SHOW RESTAURANTS
+// ==========================
+function renderRestaurants(data){
+
+    restaurantList.innerHTML = "";
+
+    data.forEach(r => {
+
+        // ============================
+        // RESTAURANT IMAGE
+        // ============================
+
+        let logoUrl = "default.png";
+
+        if (r.logo) {
+
+            if (
+                r.logo.startsWith("http://") ||
+                r.logo.startsWith("https://")
+            ) {
+
+                // Cloudinary / full URL
+                logoUrl = r.logo;
+
+            } else {
+
+                // Old local upload
+                logoUrl = `${API}/uploads/${r.logo}`;
+            }
+        }
+
+        // ============================
+        // MINIMUM ORDER
+        // ============================
+
+        let minimumOrder = "";
+
+        if (
+            r.minimum_order !== undefined &&
+            r.minimum_order !== null &&
+            r.minimum_order !== "" &&
+            Number(r.minimum_order) > 0
+        ) {
+
+            minimumOrder =
+                `Minimum ₹${Number(r.minimum_order).toFixed(0)}`;
+        }
+
+        // ============================
+        // OFFER
+        // ============================
+
+        let offerHTML = "";
+
+        if (
+            r.offer &&
+            String(r.offer).trim() !== ""
+        ) {
+
+            offerHTML = `
+                <div class="offer">
+                    🎉 ${r.offer}
+                </div>
+            `;
+        }
+
+        // ============================
+        // OPEN / CLOSED
+        // ============================
+
+        const statusHTML = r.isOpen
+            ?
+            `
+            <span style="
+                color:#16a34a;
+                font-weight:700;
+            ">
+                🟢 Open
+            </span>
+            `
+            :
+            `
+            <span style="
+                color:#ef4444;
+                font-weight:700;
+            ">
+                🔴 Closed
+            </span>
+            `;
+
+        // ============================
+        // CARD
+        // ============================
+
+        restaurantList.innerHTML += `
+
+            <div
+                class="restaurant-card"
+                onclick="openRestaurant(${r.id})"
+            >
+
+                <img
+                    class="restaurant-image"
+                    src="${logoUrl}"
+                    onerror="this.src='default.png'"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-top">
+
+                        <div>
+
+                            <div class="restaurant-name">
+                                ${r.restaurant_name || "Restaurant"}
+                            </div>
+
+                            <div class="restaurant-type">
+                                ${r.business_type || ""}
+                            </div>
+
+                        </div>
+
+                        ${
+    r.rating !== null &&
+    r.rating !== undefined &&
+    r.rating !== ""
+    ?
+    `
+    <div class="rating">
+        ${r.rating}
+        <i class="fa-solid fa-star"></i>
+    </div>
+    `
+    :
+    ""
+}
+
+                    </div>
+
+
+                    <div class="restaurant-bottom">
+
+                        <div class="distance">
+                            📍 ${Number(r.distance || 0).toFixed(1)} km
+                        </div>
+
+                        <div class="time">
+                            🛵 ${r.deliveryTime || "25"} min
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                        margin-top:12px;
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        gap:8px;
+                    ">
+
+                        <div>
+                            ${statusHTML}
+                        </div>
+
+                        ${
+                            minimumOrder
+                            ?
+                            `
+                            <div style="
+                                color:#666;
+                                font-weight:600;
+                                font-size:11px;
+                            ">
+                                ${minimumOrder}
+                            </div>
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+
+                    ${offerHTML}
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+// ==========================
+// SEARCH
+// ==========================
+
+document
+
+.getElementById("searchRestaurant")
+
+.addEventListener("keyup",function(){
+
+const keyword = this.value.toLowerCase();
+
+const filtered = restaurants.filter(r=>{
+
+return (
+
+r.restaurant_name.toLowerCase().includes(keyword)
+
+||
+
+r.business_type.toLowerCase().includes(keyword)
+
+);
+
+});
+
+restaurantCount.innerHTML =
+
+filtered.length + " Restaurants";
+
+renderRestaurants(filtered);
+
+});
+
+// ==========================
+// OPEN RESTAURANT
+// ==========================
+
+/* =====================================================
+   OPEN RESTAURANT
+===================================================== */
+
+function openRestaurant(id){
+
+    if(selectedCategory){
+
+        window.location.href =
+        `restaurant.html?id=${id}&category=${encodeURIComponent(selectedCategory)}`;
+
+    }else{
+
+        const selectedCategory =
+    new URLSearchParams(
+        window.location.search
+    ).get("category") ||
+    localStorage.getItem(
+        "darvozSelectedCategory"
+    ) ||
+    "";
+
+window.location.href =
+    `restaurant.html?id=${restaurant.id}&category=${encodeURIComponent(selectedCategory)}`;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

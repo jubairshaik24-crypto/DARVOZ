@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Delivery Partners</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ff6b00">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b00;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+header a{
+color:white;
+text-decoration:none;
+}
+
+.container{
+width:90%;
+max-width:900px;
+margin:30px auto;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+.card h2{
+color:#ff6b00;
+margin-bottom:20px;
+}
+
+.info{
+margin:10px 0;
+font-size:17px;
+}
+
+.status{
+margin-top:15px;
+padding:10px;
+background:#fff4eb;
+color:#ff6b00;
+border-radius:8px;
+font-weight:bold;
+text-align:center;
+}
+
+.buttons{
+display:flex;
+gap:15px;
+margin-top:20px;
+}
+
+button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+color:white;
+}
+
+.approve{
+background:#28a745;
+}
+
+.reject{
+background:#dc3545;
+}
+
+.back{
+width:100%;
+margin-top:20px;
+background:#ff6b00;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>🚴 Delivery Partners</h2>
+
+<a href="admin-dashboard.html">← Dashboard</a>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Partner Request</h2>
+
+<div class="info">
+<b>Name :</b>
+Rahul Kumar
+</div>
+
+<div class="info">
+<b>Mobile :</b>
+9876543210
+</div>
+
+<div class="info">
+<b>City :</b>
+Hyderabad
+</div>
+
+<div class="info">
+<b>Vehicle :</b>
+Bike
+</div>
+
+<div class="info">
+<b>Driving License :</b>
+TS09DL123456
+</div>
+
+<div class="status" id="status">
+
+Pending Approval
+
+</div>
+
+<div class="buttons">
+
+<button class="approve" onclick="approvePartner()">
+
+Approve
+
+</button>
+
+<button class="reject" onclick="rejectPartner()">
+
+Reject
+
+</button>
+
+</div>
+
+</div>
+
+<button class="back"
+onclick="window.location.href='admin-dashboard.html'">
+
+Back to Dashboard
+
+</button>
+
+</div>
+
+<script>
+
+function approvePartner(){
+
+document.getElementById("status").innerHTML="✅ Partner Approved";
+
+document.getElementById("status").style.background="#d4edda";
+
+document.getElementById("status").style.color="green";
+
+alert("Delivery Partner Approved Successfully!");
+
+}
+
+function rejectPartner(){
+
+document.getElementById("status").innerHTML="❌ Partner Rejected";
+
+document.getElementById("status").style.background="#f8d7da";
+
+document.getElementById("status").style.color="red";
+
+alert("Delivery Partner Rejected.");
+
+}
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then((registration) => {
+        console.log("Service Worker Registered", registration);
+      })
+      .catch((error) => {
+        console.log("Registration Failed", error);
+      });
+  });
+}
+
+</script>
+
+</body>
+</html>

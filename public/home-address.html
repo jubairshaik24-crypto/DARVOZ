@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Select Address</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f6f7fb;
+color:#222;
+}
+
+.container{
+width:100%;
+max-width:900px;
+margin:auto;
+min-height:100vh;
+background:#fff;
+}
+
+/*====================
+HEADER
+====================*/
+
+header{
+
+position:sticky;
+top:0;
+
+background:#fff;
+
+z-index:100;
+
+box-shadow:0 3px 15px rgba(0,0,0,.08);
+
+}
+
+.header{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+padding:20px;
+
+}
+
+.back{
+
+width:45px;
+height:45px;
+
+border-radius:50%;
+
+background:#fff3eb;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+cursor:pointer;
+
+color:#ff6200;
+
+font-size:20px;
+
+}
+
+.back:hover{
+
+background:#ff6200;
+color:#fff;
+
+}
+
+.header h2{
+
+font-size:28px;
+font-weight:700;
+
+}
+
+/*====================
+SEARCH
+====================*/
+
+.search{
+
+padding:20px;
+
+}
+
+.search-box{
+
+display:flex;
+
+align-items:center;
+
+background:#fff;
+
+border-radius:18px;
+
+overflow:hidden;
+
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+}
+
+.search-box input{
+
+flex:1;
+
+border:none;
+
+outline:none;
+
+padding:18px;
+
+font-size:15px;
+
+}
+
+.search-box button{
+
+width:65px;
+
+height:60px;
+
+border:none;
+
+background:#ff6200;
+
+color:#fff;
+
+font-size:20px;
+
+cursor:pointer;
+
+}
+
+/*====================
+QUICK ACTIONS
+====================*/
+
+.quick-actions{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:18px;
+
+padding:0 20px 25px;
+
+}
+
+.action-card{
+
+background:#fff;
+
+border-radius:18px;
+
+padding:25px 20px;
+
+text-align:center;
+
+cursor:pointer;
+
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.action-card:hover{
+
+transform:translateY(-4px);
+
+}
+
+.action-card i{
+
+font-size:34px;
+
+color:#ff6200;
+
+margin-bottom:15px;
+
+}
+
+.action-card h3{
+
+font-size:18px;
+
+margin-bottom:6px;
+
+}
+
+.action-card p{
+
+font-size:13px;
+
+color:#777;
+
+}
+
+/*====================
+ADDRESS LIST
+====================*/
+
+.address-section{
+
+padding:0 20px 30px;
+
+}
+
+.address-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+}
+
+.address-title h3{
+
+font-size:24px;
+
+font-weight:700;
+
+}
+
+#addressList{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+/*====================
+RESPONSIVE
+====================*/
+
+@media(max-width:768px){
+
+.container{
+
+max-width:430px;
+
+}
+
+.header h2{
+
+font-size:22px;
+
+}
+
+.quick-actions{
+
+grid-template-columns:1fr;
+
+}
+
+}
+.address-card{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:18px;
+
+background:#fff;
+
+border-radius:18px;
+
+box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.address-card:hover{
+
+transform:translateY(-3px);
+
+}
+
+.left{
+
+display:flex;
+
+gap:15px;
+
+align-items:flex-start;
+
+}
+
+.left i{
+
+width:50px;
+height:50px;
+
+background:#fff3eb;
+
+color:#ff6200;
+
+border-radius:14px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:20px;
+
+}
+
+.right{
+
+font-size:18px;
+color:#999;
+
+}
+
+.left h4{
+
+margin-bottom:5px;
+
+font-size:18px;
+
+}
+
+.left p{
+
+font-size:14px;
+
+color:#666;
+
+line-height:1.5;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<div class="header">
+
+<div class="back"
+onclick="history.back()">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+</div>
+
+<h2>Select Address</h2>
+
+</div>
+
+</header>
+
+<div class="search">
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchAddress"
+placeholder="Search area, street or landmark">
+
+<button>
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<div class="quick-actions">
+
+<div class="action-card"
+onclick="useCurrentLocation()">
+
+<i class="fa-solid fa-location-crosshairs"></i>
+
+<h3>Current Location</h3>
+
+<p>Use GPS Location</p>
+
+</div>
+
+<div class="action-card"
+onclick="window.location='add-address.html'">
+
+<i class="fa-solid fa-plus"></i>
+
+<h3>Add Address</h3>
+
+<p>Create New Address</p>
+
+</div>
+
+<div class="action-card"
+onclick="loadAddresses()">
+
+<i class="fa-solid fa-bookmark"></i>
+
+<h3>Refresh</h3>
+
+<p>Saved Addresses</p>
+
+</div>
+
+</div>
+
+<section class="address-section">
+
+<div class="address-title">
+
+<h3>Saved Addresses</h3>
+
+</div>
+
+<div id="addressList">
+
+<!-- Addresses from database will appear here -->
+
+</div>
+
+</section>
+<script>
+
+const API = window.location.origin;
+
+const customerId = localStorage.getItem("customerId");
+
+/*==========================
+LOAD SAVED ADDRESSES
+==========================*/
+
+async function loadAddresses(){
+
+try{
+
+const response = await fetch(
+
+`${API}/customer/address/list`,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+customerId
+
+})
+
+}
+
+);
+
+const addresses = await response.json();
+
+let html="";
+
+addresses.forEach(address=>{
+
+html += `
+
+<div class="address-card"
+onclick="selectAddress('${address.full_address}',
+'${address.latitude}',
+'${address.longitude}')">
+
+<div class="left">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<div>
+
+<h4>${address.address_type}</h4>
+
+<p>
+
+${address.full_address}
+
+</p>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+</div>
+
+`;
+
+});
+if(addresses.length===0){
+
+document.getElementById("addressList").innerHTML=`
+
+<div style="
+padding:60px;
+text-align:center;
+color:#777;
+">
+
+<i class="fa-solid fa-location-dot"
+style="
+font-size:60px;
+color:#ff6200;
+margin-bottom:20px;
+"></i>
+
+<h3>No Saved Address</h3>
+
+<p>Add your first address.</p>
+
+</div>
+
+`;
+
+}else{
+
+document.getElementById("addressList").innerHTML=html;
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+/*==========================
+SELECT ADDRESS
+==========================*/
+
+function selectAddress(address,lat,long){
+
+localStorage.setItem("locationName",address);
+
+localStorage.setItem("latitude",lat);
+
+localStorage.setItem("longitude",long);
+
+window.location.href="index.html";
+
+}
+
+/*==========================
+CURRENT LOCATION
+==========================*/
+
+function useCurrentLocation(){
+
+if(!navigator.geolocation){
+
+alert("Geolocation not supported");
+
+return;
+
+}
+
+navigator.geolocation.getCurrentPosition(
+
+async(position)=>{
+
+const latitude = position.coords.latitude;
+
+const longitude = position.coords.longitude;
+
+localStorage.setItem("latitude",latitude);
+
+localStorage.setItem("longitude",longitude);
+
+window.location.href="index.html";
+
+},
+
+()=>{
+
+alert("Unable to fetch current location.");
+
+}
+
+);
+
+}
+
+loadAddresses();
+
+</script>

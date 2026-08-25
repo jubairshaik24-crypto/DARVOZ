@@ -1,0 +1,5500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>DARVOZ | One App. Every Need.</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<script
+async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ">
+</script>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Poppins",sans-serif;
+    background:#f7f7f7;
+    color:#171717;
+    overflow-x:hidden;
+    padding-bottom:80px;
+}
+
+:root{
+    --orange:#ff6500;
+    --orange2:#ff7a00;
+    --green:#20b64b;
+    --gray:#777;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+.app{
+    width:100%;
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.top-header{
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff5b00,
+            #ff7800
+        );
+
+    color:#fff;
+
+    padding:
+        18px
+        15px
+        38px;
+
+    border-bottom-left-radius:50% 10%;
+    border-bottom-right-radius:50% 10%;
+
+    overflow:hidden;
+}
+
+.top-header::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:190px;
+    height:190px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.07);
+
+    right:-90px;
+    top:-80px;
+}
+
+.top-header::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:170px;
+    height:170px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.07);
+
+    left:-100px;
+    top:80px;
+}
+
+
+/* =====================================================
+   HEADER TOP
+===================================================== */
+
+.header-top{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.location{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    cursor:pointer;
+}
+
+.location-icon{
+
+    width:38px;
+    height:38px;
+
+    background:#fff;
+
+    color:var(--orange);
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:18px;
+}
+
+.location-text{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    max-width:230px;
+}
+
+.location-text small{
+    font-size:9px;
+    opacity:.9;
+    white-space:nowrap;
+}
+
+.location-text strong{
+    font-size:12px;
+    font-weight:600;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    display:block;
+    max-width:230px;
+}
+
+.profile-btn{
+
+    width:38px;
+    height:38px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:var(--orange);
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    font-size:17px;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   WELCOME
+===================================================== */
+.welcome{
+    position:relative;
+    z-index:2;
+    margin-top:20px;
+}
+
+.welcome h2{
+
+    font-size:18px;
+
+    font-weight:700;
+}
+
+.welcome p{
+
+    font-size:10px;
+
+    margin-top:3px;
+
+    opacity:.9;
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search-box{
+
+    position:relative;
+
+    z-index:5;
+
+    margin-top:15px;
+
+    background:#fff;
+
+    height:52px;
+
+    border-radius:13px;
+
+    display:flex;
+
+    align-items:center;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.12);
+
+    overflow:hidden;
+}
+
+.search-box i{
+
+    color:#999;
+
+    margin-left:15px;
+
+    font-size:18px;
+}
+
+.search-box input{
+
+    flex:1;
+
+    border:0;
+
+    outline:0;
+
+    padding:0 12px;
+
+    font-family:Poppins;
+
+    font-size:12px;
+}
+
+.filter-btn{
+
+    width:48px;
+
+    height:100%;
+
+    border:0;
+
+    background:#fff;
+
+    font-size:16px;
+
+    color:#555;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+
+    padding:20px 15px 30px;
+
+}
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:13px;
+}
+
+.section-header h2{
+
+    font-size:17px;
+
+    font-weight:800;
+}
+
+.section-header a{
+
+    color:var(--orange);
+
+    font-size:11px;
+
+    font-weight:600;
+
+    text-decoration:none;
+}
+
+
+/* =====================================================
+   CATEGORIES
+===================================================== */
+
+.category-wrapper{
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    scrollbar-width:none;
+
+    margin-right:-15px;
+
+    padding-right:15px;
+}
+
+.category-wrapper::-webkit-scrollbar{
+    display:none;
+}
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-rows:105px 105px;
+
+    grid-auto-flow:column;
+
+    grid-auto-columns:72px;
+
+    column-gap:12px;
+
+    width:max-content;
+}
+
+.category{
+
+    width:72px;
+
+    text-align:center;
+
+    cursor:pointer;
+}
+
+.category-image{
+
+    width:65px;
+    height:65px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#f8f8f8;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    border:1px solid #eee;
+}
+
+.category-image img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+.category-name{
+
+    margin-top:6px;
+
+    font-size:9px;
+
+    line-height:11px;
+
+    font-weight:600;
+
+    color:#333;
+}
+
+
+/* =====================================================
+   PROMO
+===================================================== */
+
+.promo{
+
+    margin-top:15px;
+
+    width:100%;
+
+    height:125px;
+
+    border-radius:13px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6500,
+            #ff7c00
+        );
+
+    color:#fff;
+}
+
+.promo-content{
+
+    position:absolute;
+
+    left:15px;
+    top:14px;
+
+    z-index:2;
+}
+
+.promo h2{
+
+    font-size:18px;
+
+    line-height:22px;
+
+    font-weight:800;
+
+    max-width:170px;
+}
+
+.promo p{
+
+    font-size:9px;
+
+    margin-top:8px;
+}
+
+.promo button{
+
+    margin-top:9px;
+
+    background:#fff;
+
+    color:var(--orange);
+
+    border:0;
+
+    padding:7px 12px;
+
+    border-radius:7px;
+
+    font-family:Poppins;
+
+    font-size:9px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.promo-image{
+
+    position:absolute;
+
+    right:-10px;
+    bottom:-20px;
+
+    width:240px;
+    height:145px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+}
+
+
+/* =====================================================
+   RESTAURANTS
+   ONE RESTAURANT PER ROW
+   IMAGE ON TOP
+   INFORMATION BELOW
+===================================================== */
+
+.restaurant-scroll{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+    width:100%;
+}
+
+
+/* =====================================================
+   RESTAURANT CARD
+===================================================== */
+
+.restaurant-card{
+
+    width:100%;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    border:1px solid #eee;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.07);
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.restaurant-card:active{
+
+    transform:scale(.99);
+}
+
+.restaurant-card:hover{
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.12);
+}
+
+
+/* =====================================================
+   RESTAURANT IMAGE
+===================================================== */
+
+.restaurant-image-wrap{
+
+    width:100%;
+
+    height:180px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:#f2f2f2;
+}
+
+.restaurant-img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+
+/* =====================================================
+   TIME BADGE
+===================================================== */
+
+.time-badge{
+
+    position:absolute;
+
+    right:10px;
+
+    top:10px;
+
+    background:#fff;
+
+    padding:6px 10px;
+
+    border-radius:20px;
+
+    font-size:10px;
+
+    font-weight:600;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.15);
+}
+
+
+/* =====================================================
+   RESTAURANT INFO
+===================================================== */
+
+.restaurant-info{
+
+    padding:14px;
+}
+
+.restaurant-info h3{
+
+    font-size:16px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.restaurant-type{
+
+    color:#777;
+
+    font-size:11px;
+
+    margin-top:4px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.restaurant-details{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-top:8px;
+}
+
+.restaurant-rating{
+
+    color:#159447;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+.restaurant-distance{
+
+    color:#666;
+
+    font-size:10px;
+
+    font-weight:500;
+}
+
+.restaurant-price{
+
+    color:var(--orange);
+
+    font-size:12px;
+
+    font-weight:700;
+
+    margin-top:7px;
+}
+
+.restaurant-status{
+
+    margin-top:8px;
+
+    font-size:10px;
+
+    font-weight:600;
+}
+
+.status-open{
+
+    color:#16a34a;
+}
+
+.status-closed{
+
+    color:#ef4444;
+}
+
+
+/* =====================================================
+   BENEFITS
+===================================================== */
+
+.benefits{
+
+    margin-top:20px;
+
+    background:#fff;
+
+    border:1px solid #eee;
+
+    border-radius:13px;
+
+    padding:13px 8px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:4px;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.04);
+}
+
+.benefit{
+
+    text-align:center;
+}
+
+.benefit i{
+
+    font-size:18px;
+
+    color:var(--orange);
+
+    margin-bottom:5px;
+}
+
+.benefit strong{
+
+    display:block;
+
+    font-size:7px;
+}
+
+.benefit span{
+
+    display:block;
+
+    color:#777;
+
+    font-size:6px;
+
+    line-height:9px;
+
+    margin-top:2px;
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    bottom:0;
+
+    width:100%;
+
+    max-width:600px;
+
+    height:70px;
+
+    background:#fff;
+
+    border-top:1px solid #eee;
+
+    box-shadow:
+        0 -5px 20px rgba(0,0,0,.08);
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    z-index:9999;
+}
+
+.bottom-nav a{
+
+    text-decoration:none;
+
+    color:#777;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:4px;
+
+    font-size:9px;
+
+    font-weight:600;
+
+    width:20%;
+}
+
+.bottom-nav i{
+
+    font-size:19px;
+}
+
+.bottom-nav a.active{
+
+    color:var(--orange);
+}
+
+/* =========================================
+   SPECIAL RIDER BOTTOM NAV BUTTON
+========================================= */
+
+.bottom-nav .rider-nav {
+    position: relative;
+    transform: translateY(-8px);
+}
+
+.bottom-nav .rider-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ff6b00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2px;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+    border: 3px solid #fff;
+}
+
+.bottom-nav .rider-icon i {
+    font-size: 20px;
+    color: #fff;
+}
+
+.bottom-nav .rider-nav span {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* =====================================================
+   ACTIVE ORDER POPUP
+===================================================== */
+
+.active-order-popup{
+
+    position:fixed;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    bottom:78px;
+
+    width:calc(100% - 24px);
+
+    max-width:570px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:14px 16px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.18);
+
+    border:1px solid #eee;
+
+    z-index:9998;
+
+    display:none;
+}
+
+.active-order-content{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.active-order-icon{
+
+    width:48px;
+    height:48px;
+
+    min-width:48px;
+
+    border-radius:50%;
+
+    background:#fff1e8;
+
+    color:var(--orange);
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    font-size:21px;
+}
+
+.active-order-text{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.active-order-text h3{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#222;
+}
+
+.active-order-text p{
+
+    margin-top:3px;
+
+    font-size:9px;
+
+    color:#777;
+}
+
+.active-order-text strong{
+
+    color:var(--orange);
+}
+
+.track-order-btn{
+
+    border:none;
+
+    background:var(--orange);
+
+    color:#fff;
+
+    padding:10px 14px;
+
+    border-radius:10px;
+
+    font-family:Poppins,sans-serif;
+
+    font-size:10px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media(min-width:901px){
+
+    body{
+
+        background:#f5f5f5;
+
+        padding-bottom:0;
+    }
+
+    .app{
+
+        max-width:1500px;
+
+        min-height:100vh;
+
+        background:#fff;
+    }
+
+    .top-header{
+
+        padding:
+            22px
+            55px
+            45px;
+
+        border-bottom-left-radius:50% 12%;
+        border-bottom-right-radius:50% 12%;
+    }
+
+    .header-top{
+
+        max-width:1400px;
+
+        margin:auto;
+    }
+
+    .location-icon{
+
+        width:42px;
+        height:42px;
+    }
+
+    .location-text small{
+
+        font-size:11px;
+    }
+
+    .location-text strong{
+
+        font-size:14px;
+    }
+
+    .welcome{
+    max-width:1400px;
+    margin:28px auto 0;
+}
+
+    .welcome h2{
+
+        font-size:28px;
+    }
+
+    .welcome p{
+
+        font-size:14px;
+    }
+
+    .search-box{
+
+        max-width:900px;
+
+        margin:22px auto 0;
+
+        height:58px;
+
+        border-radius:16px;
+    }
+
+    .search-box input{
+
+        font-size:15px;
+    }
+
+    .content{
+
+        max-width:1400px;
+
+        margin:auto;
+
+        padding:45px 55px 70px;
+    }
+
+    .section-header{
+
+        margin-bottom:20px;
+    }
+
+    .section-header h2{
+
+        font-size:27px;
+    }
+
+    .section-header a{
+
+        font-size:14px;
+    }
+
+
+    /* =================================================
+       CATEGORIES
+    ================================================= */
+
+    .category-wrapper{
+
+        overflow:visible;
+
+        margin:0;
+
+        padding:0;
+    }
+
+    .category-grid{
+
+        width:100%;
+
+        display:grid;
+
+        grid-template-columns:
+            repeat(12,minmax(80px,1fr));
+
+        grid-template-rows:auto;
+
+        grid-auto-flow:initial;
+
+        gap:20px;
+    }
+
+    .category{
+
+        width:100%;
+    }
+
+    .category-image{
+
+        width:90px;
+        height:90px;
+
+        margin:auto;
+
+        transition:.25s;
+    }
+
+    .category:hover .category-image{
+
+        transform:translateY(-6px);
+
+        box-shadow:
+            0 10px 25px rgba(255,101,0,.15);
+    }
+
+    .category-name{
+
+        margin-top:10px;
+
+        font-size:13px;
+
+        line-height:16px;
+    }
+
+
+    /* =================================================
+       PROMO
+    ================================================= */
+
+    .promo{
+
+        height:230px;
+
+        margin-top:45px;
+
+        border-radius:22px;
+    }
+
+    .promo-content{
+
+        left:40px;
+
+        top:35px;
+    }
+
+    .promo h2{
+
+        font-size:32px;
+
+        line-height:40px;
+
+        max-width:400px;
+    }
+
+    .promo p{
+
+        font-size:14px;
+
+        margin-top:12px;
+    }
+
+    .promo button{
+
+        padding:11px 20px;
+
+        font-size:12px;
+    }
+
+    .promo-image{
+
+        width:430px;
+
+        height:260px;
+
+        right:80px;
+
+        bottom:-45px;
+    }
+
+
+    /* =================================================
+       RESTAURANTS
+       ONE PER ROW
+    ================================================= */
+
+    .restaurant-scroll{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:20px;
+
+        width:100%;
+    }
+
+    .restaurant-card{
+
+        width:100%;
+
+        border-radius:20px;
+    }
+
+    .restaurant-image-wrap{
+
+        width:100%;
+
+        height:300px;
+    }
+
+    .restaurant-info{
+
+        padding:20px;
+    }
+
+    .restaurant-info h3{
+
+        font-size:21px;
+    }
+
+    .restaurant-type{
+
+        font-size:13px;
+    }
+
+    .restaurant-rating{
+
+        font-size:13px;
+    }
+
+    .restaurant-distance{
+
+        font-size:12px;
+    }
+
+    .restaurant-price{
+
+        font-size:14px;
+    }
+
+    .restaurant-status{
+
+        font-size:12px;
+    }
+
+
+    /* =================================================
+       BENEFITS
+    ================================================= */
+
+    .benefits{
+
+        margin-top:45px;
+
+        padding:25px 20px;
+
+        grid-template-columns:
+            repeat(4,1fr);
+
+        border-radius:18px;
+    }
+
+    .benefit i{
+
+        font-size:25px;
+
+        margin-bottom:8px;
+    }
+
+    .benefit strong{
+
+        font-size:12px;
+    }
+
+    .benefit span{
+
+        font-size:10px;
+
+        line-height:14px;
+    }
+
+
+    /* =================================================
+       DESKTOP NAV
+    ================================================= */
+
+    .bottom-nav{
+
+        position:fixed;
+
+        left:50%;
+
+        transform:translateX(-50%);
+
+        bottom:20px;
+
+        width:650px;
+
+        max-width:90%;
+
+        height:65px;
+
+        border-radius:20px;
+
+        border:1px solid #eee;
+
+        box-shadow:
+            0 8px 35px rgba(0,0,0,.15);
+
+        background:#fff;
+    }
+
+    .bottom-nav a{
+
+        font-size:11px;
+    }
+
+    .bottom-nav i{
+
+        font-size:20px;
+    }
+
+    .active-order-popup{
+
+        bottom:100px;
+
+        max-width:600px;
+    }
+
+    .active-order-text h3{
+
+        font-size:15px;
+    }
+
+    .active-order-text p{
+
+        font-size:11px;
+    }
+
+    .track-order-btn{
+
+        font-size:12px;
+
+        padding:11px 17px;
+    }
+
+}
+
+
+/* =====================================================
+   LARGE DESKTOP
+===================================================== */
+
+@media(min-width:1200px){
+
+    .category-grid{
+
+        grid-template-columns:
+            repeat(12,1fr);
+
+        gap:25px;
+    }
+
+    .category-image{
+
+        width:100px;
+        height:100px;
+    }
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(min-width:601px) and (max-width:900px){
+
+    .app{
+
+        max-width:900px;
+    }
+
+    .category-grid{
+
+        grid-template-rows:
+            105px 105px;
+
+        grid-auto-columns:85px;
+    }
+
+    .category-image{
+
+        width:75px;
+        height:75px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE RESTAURANT IMAGE
+===================================================== */
+
+@media(max-width:600px){
+
+    .restaurant-image-wrap{
+
+        height:180px;
+    }
+
+    .restaurant-info{
+
+        padding:14px;
+    }
+
+
+.location{
+    max-width:calc(100% - 50px);
+    min-width:0;
+}
+
+.location-text{
+    max-width:190px;
+    min-width:0;
+}
+
+.location-text strong{
+    max-width:190px;
+}
+
+.location > .fa-chevron-down{
+    flex-shrink:0;
+    font-size:11px;
+}
+
+
+}
+/* =====================================================
+   DARVOZ PICKS
+===================================================== */
+
+.picks-section{
+    margin-top:24px;
+}
+
+.picks-scroll{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    margin-right:-15px;
+    padding-right:15px;
+    padding-bottom:5px;
+}
+
+.picks-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.pick-card{
+    width:150px;
+    min-width:150px;
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 4px 14px rgba(0,0,0,.07);
+}
+
+.pick-image-wrap{
+    position:relative;
+    width:100%;
+    height:125px;
+    background:#f5f5f5;
+}
+
+.pick-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.pick-add-btn{
+    position:absolute;
+    right:8px;
+    bottom:8px;
+
+    width:34px;
+    height:34px;
+
+    border:none;
+    border-radius:9px;
+
+    background:#fff;
+    color:var(--orange);
+
+    font-size:18px;
+    font-weight:700;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.18);
+
+    cursor:pointer;
+}
+
+.pick-info{
+    padding:9px;
+}
+
+.pick-name{
+    font-size:12px;
+    font-weight:700;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.pick-price{
+    margin-top:4px;
+
+    color:#222;
+    font-size:11px;
+    font-weight:700;
+}
+
+.pick-restaurant{
+    margin-top:3px;
+
+    color:#777;
+    font-size:8px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+@media(min-width:901px){
+
+    .picks-section{
+        margin-top:35px;
+    }
+
+    .picks-scroll{
+        gap:18px;
+        margin:0;
+        padding:0;
+    }
+
+    .pick-card{
+        width:190px;
+        min-width:190px;
+        border-radius:17px;
+    }
+
+    .pick-image-wrap{
+        height:160px;
+    }
+
+    .pick-info{
+        padding:12px;
+    }
+
+    .pick-name{
+        font-size:14px;
+    }
+
+    .pick-price{
+        font-size:13px;
+    }
+
+    .pick-restaurant{
+        font-size:10px;
+    }
+
+}
+
+/* =====================================================
+   DESKTOP NAV LINKS
+===================================================== */
+
+.desktop-nav{
+
+    display:none;
+}
+/* =====================================================
+   CUSTOMER OFFERS
+===================================================== */
+
+.offers-section{
+
+    margin-top:20px;
+
+}
+
+.offers-scroll{
+    display:flex;
+    flex-direction:row;
+
+    width:100%;
+
+    gap:0;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scrollbar-width:none;
+
+    margin-right:0;
+    padding-right:0;
+
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+}
+
+.offers-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+
+/* =====================================================
+   OFFER SWIPE DOTS
+===================================================== */
+
+.offer-dots{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    margin-top:9px;
+
+}
+
+.offer-dot{
+
+    width:7px;
+
+    height:7px;
+
+    border-radius:50%;
+
+    background:#d5d5d5;
+
+    transition:all .25s ease;
+
+}
+
+.offer-dot.active{
+
+    width:20px;
+
+    border-radius:10px;
+
+    background:var(--orange);
+
+}
+
+
+/* =====================================================
+   OFFER CARD
+===================================================== */
+
+.offer-card{
+    flex:0 0 100%;
+    width:100%;
+    min-width:100%;
+
+    aspect-ratio:350/ 170;
+    height:auto;
+
+    border-radius:15px;
+    overflow:hidden;
+    position:relative;
+
+    background:#f2f2f2;
+
+    cursor:pointer;
+    scroll-snap-align:start;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:#f2f2f2;
+
+    cursor:pointer;
+
+    scroll-snap-align:start;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.08);
+
+}
+
+.offer-card img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
+
+/* =====================================================
+   OFFER LOADING
+===================================================== */
+
+.offers-loading{
+
+    width:100%;
+
+    padding:30px 20px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:11px;
+
+}
+
+.offers-loading i{
+
+    color:var(--orange);
+
+    font-size:22px;
+
+    margin-bottom:7px;
+
+}
+
+
+/* =====================================================
+   OFFER EMPTY
+===================================================== */
+
+.offers-empty{
+
+    width:100%;
+
+    padding:25px 20px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:11px;
+
+}
+
+
+/* =====================================================
+   DESKTOP OFFERS
+===================================================== */
+
+@media (min-width:901px){
+
+    .offers-section{
+        margin-top:35px;
+        width:100%;
+    }
+
+    .offers-scroll{
+        display:flex;
+        flex-direction:row;
+
+        width:100%;
+        gap:0;
+
+        margin:0;
+        padding:0;
+
+        overflow-x:auto;
+        overflow-y:hidden;
+
+        scrollbar-width:none;
+
+        scroll-snap-type:x mandatory;
+        scroll-behavior:smooth;
+    }
+
+    .offers-scroll::-webkit-scrollbar{
+        display:none;
+    }
+
+   .offer-card{
+    flex:0 0 100%;
+    width:100%;
+    min-width:100%;
+    max-width:100%;
+
+    aspect-ratio:280 / 170;
+    height:auto;
+
+    border-radius:15px;
+    overflow:hidden;
+    position:relative;
+
+    background:#f2f2f2;
+
+    cursor:pointer;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+
+
+    .offer-card img{
+        display:block;
+
+        width:100%;
+        height:100%;
+
+        max-width:100%;
+
+        object-fit:cover;
+    }
+
+    .offer-dots{
+        margin-top:12px;
+    }
+
+}
+
+html,
+body{
+    overflow-x:hidden;
+}
+
+.offers-scroll{
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- =====================================================
+     ORANGE HEADER
+===================================================== -->
+
+<header class="top-header">
+
+
+    <div class="header-top">
+
+
+        <!-- LOCATION -->
+
+        <div
+            class="location"
+            onclick="window.location.href='address.html'"
+        >
+
+            <div class="location-icon">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+            </div>
+
+            <div class="location-text">
+
+                <small>
+                    Deliver to
+                </small>
+  
+                
+            <strong id="currentLocation">
+    Detecting location...
+</strong>  
+            </div>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div
+            class="profile-btn"
+            onclick="window.location.href='profile.html'"
+        >
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+    <h2>
+        Hello, Welcome <span id="customerName">👋</span>
+    </h2>
+
+    <p>
+    What do you want to order today?
+</p>
+
+</div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search food, groceries, meat..."
+        >
+
+        <button class="filter-btn">
+
+            <i class="fa-solid fa-sliders"></i>
+
+        </button>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<main class="content">
+
+
+<!-- =====================================================
+     CATEGORIES
+===================================================== -->
+
+<div class="section-header">
+
+    <h2>
+        Explore Categories
+    </h2>
+
+    <a href="categories.html">
+        See All
+    </a>
+
+</div>
+
+
+<div class="category-wrapper">
+
+<div class="category-grid">
+
+
+<!-- BIRYANI -->
+
+<div
+class="category"
+onclick="openCategory('biryani')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/biryani.png"
+alt="Biryani"
+>
+
+</div>
+
+<div class="category-name">
+Biryani
+</div>
+
+</div>
+
+
+<!-- GROCERIES -->
+
+<div
+class="category"
+onclick="openCategory('grocery')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/groceries.png"
+alt="Groceries"
+>
+
+</div>
+
+<div class="category-name">
+Groceries
+</div>
+
+</div>
+
+
+<!-- MEAT -->
+
+<div
+class="category"
+onclick="openCategory('meat')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/meat.png"
+alt="Meat"
+>
+
+</div>
+
+<div class="category-name">
+Meat
+</div>
+
+</div>
+
+
+<!-- TIFFINS -->
+
+<div
+class="category"
+onclick="openCategory('tiffins')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/tiffins.png"
+alt="Tiffins"
+>
+
+</div>
+
+<div class="category-name">
+Tiffins
+</div>
+
+</div>
+
+
+<!-- ICECREAMS -->
+
+<div
+class="category"
+onclick="openCategory('icecreams')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/icecreams.png"
+alt="Icecreams"
+>
+
+</div>
+
+<div class="category-name">
+Icecreams
+</div>
+
+</div>
+
+
+<!-- CAKES -->
+
+<div
+class="category"
+onclick="openCategory('cakes')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/cakes.png"
+alt="Cakes"
+>
+
+</div>
+
+<div class="category-name">
+Cakes
+</div>
+
+</div>
+
+
+<!-- PIZZAS -->
+
+<div
+class="category"
+onclick="openCategory('pizzas')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/pizzas.png"
+alt="Pizzas"
+>
+
+</div>
+
+<div class="category-name">
+Pizzas
+</div>
+
+</div>
+
+
+<!-- FAST FOOD -->
+
+<div
+class="category"
+onclick="openCategory('fastfood')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/fastfood.png"
+alt="Fast Food"
+>
+
+</div>
+
+<div class="category-name">
+Fast Food
+</div>
+
+</div>
+
+
+<!-- JUICE -->
+
+<div
+class="category"
+onclick="openCategory('juice')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/juice.png"
+alt="Juice"
+>
+
+</div>
+
+<div class="category-name">
+Juice
+</div>
+
+</div>
+
+
+<!-- SHAWARMA -->
+
+<div
+class="category"
+onclick="openCategory('shawarma')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/shawarma.png"
+alt="Shawarma"
+>
+
+</div>
+
+<div class="category-name">
+Shawarma
+</div>
+
+</div>
+
+
+<!-- PARATHA -->
+
+<div
+class="category"
+onclick="openCategory('paratha')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/paratha.png"
+alt="Paratha"
+>
+
+</div>
+
+<div class="category-name">
+Paratha
+</div>
+
+</div>
+
+
+<!-- ROLLS -->
+
+<div
+class="category"
+onclick="openCategory('rolls-sandwich')"
+>
+
+<div class="category-image">
+
+<img
+src="images/categories/rolls-sandwich.png"
+alt="Rolls and Sandwich"
+>
+
+</div>
+
+<div class="category-name">
+
+Rolls &<br>
+Sandwich
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DARVOZ OFFERS
+===================================================== -->
+
+<div id="offersSection" class="offers-section">
+
+    <div class="section-header">
+
+        <h2>
+            Offers for You 🔥
+        </h2>
+
+        <a href="offers.html">
+            See All
+        </a>
+
+    </div>
+
+
+    <div
+        id="customerOffers"
+        class="offers-scroll"
+    >
+
+        <div class="offers-loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <div>
+                Loading offers...
+            </div>
+
+        </div>
+
+    </div>
+<div id="offerDots" class="offer-dots"></div>
+</div>
+
+
+<!-- =====================================================
+     DARVOZ PICKS
+===================================================== -->
+
+<div id="picksSection" class="picks-section">
+
+    <div class="section-header">
+
+        <h2>
+            DARVOZ Picks ✨
+        </h2>
+
+        <a href="search.html">
+            See All
+        </a>
+
+    </div>
+
+
+    <div
+        id="darvozPicks"
+        class="picks-scroll"
+    >
+
+        <div style="
+            width:100%;
+            padding:25px;
+            text-align:center;
+            color:#777;
+            font-size:11px;
+        ">
+
+            <i
+                class="fa-solid fa-spinner fa-spin"
+                style="
+                    color:#ff6500;
+                    font-size:20px;
+                "
+            ></i>
+
+            <div style="margin-top:6px;">
+                Finding something delicious...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     POPULAR NEAR YOU
+===================================================== -->
+
+<div id="restaurantsSection" style="margin-top:22px;"></div>
+
+
+<div class="section-header">
+
+    <h2>
+        Popular Near You
+    </h2>
+
+    <a href="restaurants.html">
+        See All
+    </a>
+
+</div>
+
+
+<div
+id="restaurants"
+class="restaurant-scroll"
+>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     BENEFITS
+===================================================== -->
+
+<div class="benefits">
+
+
+<div class="benefit">
+
+<i class="fa-solid fa-motorcycle"></i>
+
+<strong>
+Free Delivery
+</strong>
+
+<span>
+On orders above ₹199
+</span>
+
+</div>
+
+
+<div class="benefit">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<strong>
+Safe & Secure
+</strong>
+
+<span>
+100% safe payments
+</span>
+
+</div>
+
+
+<div class="benefit">
+
+<i class="fa-solid fa-shield-heart"></i>
+
+<strong>
+Best Quality
+</strong>
+
+<span>
+Fresh & Hygienic
+</span>
+
+</div>
+
+
+<div class="benefit">
+
+<i class="fa-solid fa-headset"></i>
+
+<strong>
+24/7 Support
+</strong>
+
+<span>
+we are here for uh 
+</span>
+
+</div>
+
+
+</div>
+
+
+</main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     ACTIVE ORDER POPUP
+===================================================== -->
+
+<div
+id="activeOrderPopup"
+class="active-order-popup"
+>
+
+<div class="active-order-content">
+
+
+<div class="active-order-icon">
+
+<i class="fa-solid fa-motorcycle"></i>
+
+</div>
+
+
+<div class="active-order-text">
+
+<h3>
+Your order is on the way
+</h3>
+
+<p>
+
+Estimated delivery:
+
+<strong id="activeOrderEta">
+Calculating...
+</strong>
+
+</p>
+
+</div>
+
+
+<button
+class="track-order-btn"
+onclick="openActiveOrder()"
+>
+
+Track
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+    BOTTOM NAV
+===================================================== -->
+
+<nav class="bottom-nav">
+
+    <!-- Home -->
+    <a href="index.html" class="active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <!-- Categories -->
+    <a href="categories.html">
+        <i class="fa-solid fa-grip"></i>
+        <span>Categories</span>
+    </a>
+
+    <!-- Special Rider Button -->
+    <a href="rider.html" class="rider-nav">
+        <div class="rider-icon">
+            <i class="fa-solid fa-motorcycle"></i>
+        </div>
+        <span>Rider</span>
+    </a>
+
+    <!-- Cart -->
+    <a href="cart.html">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+    </a>
+
+    <!-- Profile -->
+    <a href="profile.html">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+    </a>
+
+</nav>
+
+
+
+<script>
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const API = window.location.origin;
+
+const customerId =
+localStorage.getItem("customerId");
+
+
+/* =====================================================
+   CUSTOMER OFFERS
+===================================================== */
+
+async function loadCustomerOffers(){
+
+    const offersBox =
+        document.getElementById(
+            "customerOffers"
+        );
+
+
+    if(!offersBox){
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/admin/offers/active`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Offers API failed: ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "CUSTOMER OFFERS:",
+            data
+        );
+
+
+        /*
+         * Support:
+         *
+         * {
+         *   success:true,
+         *   offers:[]
+         * }
+         *
+         * OR
+         *
+         * []
+         */
+
+        const offers =
+            Array.isArray(data)
+                ? data
+                : (
+                    Array.isArray(data.offers)
+                        ? data.offers
+                        : []
+                );
+
+
+        /*
+         * No active offers
+         */
+
+        if(offers.length === 0){
+
+            offersBox.innerHTML = `
+
+                <div class="offers-empty">
+
+                    <i
+                        class="fa-solid fa-tag"
+                        style="
+                            color:#ff6500;
+                            font-size:25px;
+                            margin-bottom:7px;
+                        "
+                    ></i>
+
+                    <div>
+                        No offers available right now.
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /*
+         * Build offer cards
+         */
+
+        let html = "";
+
+
+        offers.forEach(offer => {
+
+
+            let image =
+                offer.image_url ||
+                offer.image ||
+                offer.banner ||
+                "";
+
+
+            /*
+             * If backend stores only filename
+             */
+
+            if(
+                image &&
+                !image.startsWith("http") &&
+                !image.startsWith("/")
+            ){
+
+                image =
+                    `${API}/uploads/${image}`;
+
+            }
+
+
+            /*
+             * If no image exists,
+             * don't show broken image.
+             */
+
+            if(!image){
+
+                image =
+                    "images/product-placeholder.png";
+
+            }
+
+
+            /*
+             * Offer ID
+             */
+
+            const offerId =
+                offer.id ||
+                "";
+
+
+            html += `
+
+                <div
+                    class="offer-card"
+                    onclick="openCustomerOffer('${offerId}')"
+                >
+
+                    <img
+                        src="${image}"
+                        alt="${offer.title || "DARVOZ Offer"}"
+                        loading="lazy"
+
+                        onerror="
+                            this.onerror=null;
+                            this.src='images/product-placeholder.png';
+                        "
+                    >
+
+                </div>
+
+            `;
+
+        });
+
+
+        offersBox.innerHTML =
+            html;
+
+
+        /*
+         * Start automatic sliding
+         */
+
+        startOfferAutoSlide();
+
+        setupOfferSwipe();
+
+    }
+    catch(error){
+
+        console.error(
+            "CUSTOMER OFFERS ERROR:",
+            error
+        );
+
+
+        offersBox.innerHTML = `
+
+            <div class="offers-empty">
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="
+                        color:#ff6500;
+                        font-size:25px;
+                        margin-bottom:7px;
+                    "
+                ></i>
+
+                <div>
+                    Unable to load offers.
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   OFFER CLICK
+===================================================== */
+
+function openCustomerOffer(offerId){
+
+    if(!offerId){
+
+        window.location.href =
+            "offers.html";
+
+        return;
+
+    }
+
+
+    window.location.href =
+        `offers.html?id=${encodeURIComponent(offerId)}`;
+
+}
+
+
+
+
+/* =====================================================
+   AUTO OFFER SLIDER + SWIPE DOTS
+===================================================== */
+
+let offerSlideIndex = 0;
+
+let offerSlideTimer = null;
+
+
+function updateOfferDots(){
+
+    const offersBox =
+        document.getElementById("customerOffers");
+
+    const dotsBox =
+        document.getElementById("offerDots");
+
+    if(!offersBox || !dotsBox){
+        return;
+    }
+
+    const cards =
+        offersBox.querySelectorAll(".offer-card");
+
+    dotsBox.innerHTML = "";
+
+    cards.forEach((card,index)=>{
+
+        const dot =
+            document.createElement("span");
+
+        dot.className =
+            "offer-dot";
+
+        if(index === offerSlideIndex){
+
+            dot.classList.add("active");
+
+        }
+
+        /*
+         * Allow user to tap a dot
+         */
+
+        dot.addEventListener("click",()=>{
+
+            offerSlideIndex = index;
+
+            offersBox.scrollTo({
+
+    left: index * offersBox.clientWidth,
+
+    behavior: "smooth"
+
+});
+
+            updateOfferDots();
+
+        });
+
+        dotsBox.appendChild(dot);
+
+    });
+
+}
+
+
+/* =====================================================
+   START OFFER AUTO SLIDE
+===================================================== */
+
+function startOfferAutoSlide(){
+
+    const offersBox =
+        document.getElementById(
+            "customerOffers"
+        );
+
+    if(!offersBox){
+        return;
+    }
+
+
+    const cards =
+        offersBox.querySelectorAll(
+            ".offer-card"
+        );
+
+
+    /*
+     * No offers
+     */
+
+    if(cards.length === 0){
+
+        return;
+
+    }
+
+
+    /*
+     * Start from first slide
+     */
+
+    offerSlideIndex = 0;
+
+
+    /*
+     * Create dots
+     */
+
+    updateOfferDots();
+
+
+    /*
+     * Remove old timer
+     */
+
+    if(offerSlideTimer){
+
+        clearInterval(
+            offerSlideTimer
+        );
+
+    }
+
+
+    /*
+     * Only one offer
+     * = no auto slide
+     */
+
+    if(cards.length <= 1){
+
+        return;
+
+    }
+
+
+    /*
+     * Auto slide every 4 seconds
+     */
+
+    offerSlideTimer =
+        setInterval(()=>{
+
+
+            offerSlideIndex++;
+
+
+            /*
+             * Go back to first offer
+             */
+
+            if(
+                offerSlideIndex >=
+                cards.length
+            ){
+
+                offerSlideIndex = 0;
+
+            }
+
+
+            /*
+             * Scroll to selected offer
+             */
+
+           
+            offersBox.scrollTo({
+
+    left:
+        offerSlideIndex *
+        offersBox.clientWidth,
+
+    behavior:"smooth"
+
+});
+
+            /*
+             * Update active dot
+             */
+
+            updateOfferDots();
+
+
+        },4000);
+
+}
+
+
+/* =====================================================
+   MANUAL SWIPE DETECTION
+===================================================== */
+
+function setupOfferSwipe(){
+
+    const offersBox =
+        document.getElementById(
+            "customerOffers"
+        );
+
+    if(!offersBox){
+        return;
+    }
+
+
+    offersBox.addEventListener(
+        "scroll",
+        function(){
+
+            const cards =
+                offersBox.querySelectorAll(
+                    ".offer-card"
+                );
+
+            if(cards.length === 0){
+                return;
+            }
+
+
+            /*
+             * Find the card closest
+             * to the left side.
+             */
+
+            let closestIndex = 0;
+
+            let closestDistance =
+                Infinity;
+
+
+            cards.forEach(
+                (card,index)=>{
+
+                    const distance =
+                        Math.abs(
+                            card.offsetLeft -
+                            offersBox.scrollLeft
+                        );
+
+
+                    if(
+                        distance <
+                        closestDistance
+                    ){
+
+                        closestDistance =
+                            distance;
+
+                        closestIndex =
+                            index;
+
+                    }
+
+                }
+            );
+
+
+            /*
+             * Update index
+             */
+
+            offerSlideIndex =
+                closestIndex;
+
+
+            /*
+             * Update dots
+             */
+
+            updateOfferDots();
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CUSTOMER NAME
+===================================================== */
+
+async function loadCustomerName(){
+
+    const nameElement =
+        document.getElementById("customerName");
+
+    if(!nameElement){
+        return;
+    }
+
+    /*
+     * First check localStorage.
+     * This is the easiest method if your login
+     * already saves the customer's name.
+     */
+
+    const savedName =
+        localStorage.getItem("customerName") ||
+        localStorage.getItem("name") ||
+        localStorage.getItem("customer_name");
+
+    if(savedName){
+
+        const nameParts =
+            savedName.trim().split(/\s+/);
+
+        const firstName =
+            nameParts[nameParts.length - 1];
+
+        nameElement.textContent =
+            firstName
+                ? `${firstName} 👋`
+                : "👋";
+
+        console.log(
+            "CUSTOMER NAME FROM STORAGE:",
+            savedName
+        );
+
+        return;
+    }
+
+
+    /*
+     * No name found in localStorage.
+     */
+
+    if(!customerId){
+
+        console.log(
+            "No customerId found"
+        );
+
+        nameElement.textContent = "👋";
+
+        return;
+    }
+
+
+    /*
+     * TEMPORARY DEBUG
+     *
+     * This will tell us exactly what your
+     * backend is returning.
+     */
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/customer/profile/${customerId}`
+            );
+
+        const text =
+            await response.text();
+
+        console.log(
+            "CUSTOMER PROFILE STATUS:",
+            response.status
+        );
+
+        console.log(
+            "CUSTOMER PROFILE RESPONSE:",
+            text
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Profile API returned ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            JSON.parse(text);
+
+        console.log(
+            "CUSTOMER PROFILE DATA:",
+            data
+        );
+
+
+        /*
+         * Support different possible API formats.
+         */
+
+        const customer =
+            data.customer ||
+            data.user ||
+            data.data ||
+            data;
+
+
+        const fullName =
+            customer.name ||
+            customer.full_name ||
+            customer.customer_name ||
+            customer.username ||
+            "";
+
+
+        if(!fullName){
+
+            console.log(
+                "Customer name not found in API response"
+            );
+
+            nameElement.textContent = "👋";
+
+            return;
+
+        }
+
+
+        const nameParts =
+            fullName.trim().split(/\s+/);
+
+
+        /*
+         * Shaik Jubair → Jubair
+         */
+
+        const firstName =
+            nameParts[nameParts.length - 1];
+
+
+        nameElement.textContent =
+            `${firstName} 👋`;
+
+
+        /*
+         * Save it so next page load is instant.
+         */
+
+        localStorage.setItem(
+            "customerName",
+            fullName
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "CUSTOMER NAME ERROR:",
+            error
+        );
+
+        nameElement.textContent =
+            "👋";
+
+    }
+
+}
+
+
+loadCustomerName();
+
+
+/* =====================================================
+   CATEGORY NAVIGATION
+===================================================== */
+
+function openCategory(category){
+
+    localStorage.setItem(
+        "darvozSelectedCategory",
+        category
+    );
+
+    window.location.href =
+        "restaurants.html?category=" +
+        encodeURIComponent(category);
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+const searchInput =
+document.getElementById("searchInput");
+
+searchInput.addEventListener(
+"keydown",
+function(event){
+
+    if(event.key === "Enter"){
+
+        const value =
+            searchInput.value.trim();
+
+        if(value){
+
+            window.location.href =
+                "search.html?q=" +
+                encodeURIComponent(value);
+
+        }
+
+    }
+
+});
+
+/* =====================================================
+   LOAD SAVED DELIVERY ADDRESS
+   Priority: address.html saved address
+===================================================== */
+
+function loadSavedDeliveryAddress(){
+
+    const locationElement =
+        document.getElementById("currentLocation");
+
+    if(!locationElement){
+        return false;
+    }
+
+
+    // =========================================
+    // PRIMARY LOCATION
+    // =========================================
+
+    const locationName =
+        localStorage.getItem("locationName");
+
+
+    if(locationName && locationName.trim()){
+
+        locationElement.textContent =
+            locationName;
+
+        console.log(
+            "SAVED LOCATION FOUND:",
+            locationName
+        );
+
+        return true;
+    }
+
+
+    // =========================================
+    // FALLBACK
+    // =========================================
+
+    const selectedAddress =
+        localStorage.getItem("selectedAddress");
+
+
+    if(
+        selectedAddress &&
+        selectedAddress.trim()
+    ){
+
+        locationElement.textContent =
+            selectedAddress;
+
+        console.log(
+            "SAVED ADDRESS FOUND:",
+            selectedAddress
+        );
+
+        return true;
+    }
+
+
+    return false;
+}
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
+function detectCustomerLocation(){
+
+    return new Promise((resolve) => {
+
+        const locationElement =
+            document.getElementById("currentLocation");
+
+        if(!locationElement){
+            resolve(false);
+            return;
+        }
+
+        // =========================================
+        // CHECK SAVED LOCATION + COORDINATES
+        // =========================================
+
+        const savedLocation =
+            localStorage.getItem("locationName");
+
+        const savedLatitude =
+            localStorage.getItem("latitude");
+
+        const savedLongitude =
+            localStorage.getItem("longitude");
+
+
+        // Only use saved location if coordinates
+        // are also available
+        if(
+            savedLocation &&
+            savedLatitude &&
+            savedLongitude
+        ){
+
+            locationElement.textContent =
+                savedLocation;
+
+            console.log(
+                "USING SAVED LOCATION:",
+                savedLocation,
+                savedLatitude,
+                savedLongitude
+            );
+
+            resolve(true);
+            return;
+        }
+
+
+        // =========================================
+        // DETECT CURRENT GPS LOCATION
+        // =========================================
+
+        locationElement.textContent =
+            "Detecting location...";
+
+
+        if(!navigator.geolocation){
+
+            locationElement.textContent =
+                "Location unavailable";
+
+            resolve(false);
+            return;
+        }
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            async function(position){
+
+                const latitude =
+                    position.coords.latitude;
+
+                const longitude =
+                    position.coords.longitude;
+
+
+                console.log(
+                    "CUSTOMER GPS:",
+                    latitude,
+                    longitude
+                );
+
+
+                // =====================================
+                // SAVE COORDINATES FIRST
+                // =====================================
+
+                localStorage.setItem(
+                    "latitude",
+                    latitude
+                );
+
+                localStorage.setItem(
+                    "longitude",
+                    longitude
+                );
+
+
+                // =====================================
+                // GET LOCATION NAME
+                // =====================================
+
+                try{
+
+                    if(
+                        typeof google === "undefined" ||
+                        !google.maps
+                    ){
+
+                        locationElement.textContent =
+                            "Current Location";
+
+                        localStorage.setItem(
+                            "locationName",
+                            "Current Location"
+                        );
+
+                        resolve(true);
+                        return;
+                    }
+
+
+                    const geocoder =
+                        new google.maps.Geocoder();
+
+
+                    geocoder.geocode(
+
+                        {
+                            location:{
+                                lat: latitude,
+                                lng: longitude
+                            }
+                        },
+
+                        function(results, status){
+
+                            if(
+                                status === "OK" &&
+                                results &&
+                                results[0]
+                            ){
+
+                                const displayLocation =
+                                    results[0].formatted_address;
+
+
+                                locationElement.textContent =
+                                    displayLocation;
+
+
+                                localStorage.setItem(
+                                    "locationName",
+                                    displayLocation
+                                );
+
+
+                                localStorage.setItem(
+                                    "detectedAddress",
+                                    displayLocation
+                                );
+
+
+                                console.log(
+                                    "CURRENT LOCATION SAVED:",
+                                    displayLocation
+                                );
+
+                            }
+                            else{
+
+                                locationElement.textContent =
+                                    "Current Location";
+
+                                localStorage.setItem(
+                                    "locationName",
+                                    "Current Location"
+                                );
+
+                            }
+
+
+                            // IMPORTANT:
+                            // Now GPS + address work is finished
+                            resolve(true);
+
+                        }
+
+                    );
+
+                }
+                catch(error){
+
+                    console.error(
+                        "GEOCODING ERROR:",
+                        error
+                    );
+
+                    locationElement.textContent =
+                        "Current Location";
+
+                    resolve(true);
+                }
+
+            },
+
+
+            function(error){
+
+                console.error(
+                    "LOCATION ERROR:",
+                    error
+                );
+
+                locationElement.textContent =
+                    "Select Location";
+
+                resolve(false);
+
+            },
+
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000
+            }
+
+        );
+
+    });
+
+}
+
+/* =====================================================
+   DARVOZ PICKS
+   REAL PRODUCTS ONLY
+===================================================== */
+
+async function loadDarvozPicks(){
+
+    const picksBox =
+        document.getElementById("darvozPicks");
+
+    if(!picksBox){
+
+        return;
+
+    }
+
+    try{
+
+const response = await fetch(
+    `${API}/products/picks`
+);
+
+if (!response.ok) {
+
+    throw new Error(
+        `DARVOZ Picks API failed: ${response.status}`
+    );
+
+}
+
+const result = await response.json();
+
+console.log(
+    "DARVOZ PICKS API:",
+    result
+);
+
+const data =
+    Array.isArray(result)
+        ? result
+        : (result.products || []);
+
+window.darvozPickProducts = data;
+
+        console.log(
+            "DARVOZ PICKS:",
+            data
+        );
+
+
+        if(!Array.isArray(data)){
+
+            throw new Error(
+                "Products API did not return array"
+            );
+
+        }
+
+
+        if(data.length === 0){
+
+            picksBox.innerHTML = `
+
+                <div style="
+                    width:100%;
+                    padding:25px;
+                    text-align:center;
+                    color:#777;
+                    font-size:12px;
+                ">
+
+                    No products available yet.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /*
+         * Shuffle products so the home page
+         * doesn't always show the same order.
+         */
+
+        const shuffled =
+            [...data].sort(
+                () => Math.random() - 0.5
+            );
+
+
+        /*
+         * Show maximum 10 products.
+         */
+
+        const products =
+            shuffled.slice(0,10);
+
+
+        let html = "";
+
+
+        products.forEach(product => {
+
+
+            /*
+             * Product image
+             */
+
+            let image =
+                product.image;
+
+
+            if(image){
+
+                if(
+                    !image.startsWith("http") &&
+                    !image.startsWith("/")
+                ){
+
+                    image =
+                        `${API}/uploads/${image}`;
+
+                }
+
+            }
+            else{
+
+                /*
+                 * Neutral placeholder.
+                 * NOT a fake product.
+                 */
+
+                image =
+                    "images/product-placeholder.png";
+
+            }
+
+
+            /*
+             * Restaurant name
+             */
+
+            const restaurantName =
+                product.restaurant_name
+                || "Restaurant";
+
+
+            /*
+             * Price
+             */
+
+            const price =
+                product.price != null
+                ? Number(product.price).toFixed(0)
+                : "0";
+
+
+            html += `
+
+                <div class="pick-card">
+
+
+                    <div class="pick-image-wrap">
+
+
+                        <img
+                            class="pick-image"
+                            src="${image}"
+                            alt="${product.product_name || "Product"}"
+                            onerror="
+                                this.onerror=null;
+                                this.src='images/product-placeholder.png';
+                            "
+                        >
+
+
+                       <button
+    class="pick-add-btn"
+    onclick="
+        event.stopPropagation();
+        addPickToCart(${product.id}, ${product.partner_id});
+    "
+    aria-label="Add"
+>
+    +
+</button>
+
+
+                    </div>
+
+
+                    <div
+                        class="pick-info"
+                        onclick="
+                            openPickRestaurant(${product.partner_id});
+                        "
+                    >
+
+                        <div class="pick-name">
+
+                            ${product.product_name || "Product"}
+
+                        </div>
+
+
+                        <div class="pick-price">
+
+                            ₹${price}
+
+                        </div>
+
+
+                        <div class="pick-restaurant">
+
+                            ${restaurantName}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        });
+
+
+        picksBox.innerHTML =
+            html;
+
+
+    }
+    catch(error){
+
+        console.error(
+            "DARVOZ PICKS ERROR:",
+            error
+        );
+
+
+        /*
+         * IMPORTANT:
+         * Never show fake products.
+         */
+
+        picksBox.innerHTML = `
+
+            <div style="
+                width:100%;
+                padding:25px;
+                text-align:center;
+                color:#777;
+                font-size:12px;
+            ">
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="
+                        color:#ff6500;
+                        font-size:25px;
+                    "
+                ></i>
+
+                <div style="
+                    margin-top:7px;
+                ">
+
+                    Unable to load picks.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   DARVOZ PICK → ADD TO CART → OPEN RESTAURANT
+===================================================== */
+
+function addPickToCart(productId, partnerId){
+
+    if(!productId || !partnerId){
+
+        console.error(
+            "Missing productId or partnerId:",
+            productId,
+            partnerId
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Find the product from the loaded
+     * DARVOZ Picks data.
+     */
+
+    const picksBox =
+        document.getElementById("darvozPicks");
+
+
+    /*
+     * We stored the product information
+     * directly on the button/card.
+     *
+     * Find the product again from the
+     * latest API data by keeping a global list.
+     */
+
+    const product =
+        window.darvozPickProducts?.find(
+            item =>
+                String(item.id) ===
+                String(productId)
+        );
+
+
+    if(!product){
+
+        console.error(
+            "DARVOZ PICK PRODUCT NOT FOUND:",
+            productId
+        );
+
+        /*
+         * Still open the correct restaurant
+         * instead of doing nothing.
+         */
+
+       window.location.href =
+    `restaurant.html?id=${encodeURIComponent(partnerId)}&product=${encodeURIComponent(productId)}`;
+        return;
+
+    }
+
+
+    /* =================================================
+       LOAD EXISTING CART
+    ================================================= */
+
+    let cart = [];
+
+    try{
+
+        cart =
+            JSON.parse(
+                localStorage.getItem("cart")
+            ) || [];
+
+    }
+    catch(error){
+
+        cart = [];
+
+    }
+
+
+    if(!Array.isArray(cart)){
+
+        cart = [];
+
+    }
+
+
+    /* =================================================
+       CHECK OTHER RESTAURANT
+    ================================================= */
+
+    const otherRestaurantItem =
+        cart.find(
+            item =>
+                item.partner_id &&
+                String(item.partner_id) !==
+                String(partnerId)
+        );
+
+
+    if(otherRestaurantItem){
+
+        const clearOldCart =
+            confirm(
+                "Your cart contains items from another restaurant. Clear the old cart and add this item?"
+            );
+
+
+        if(!clearOldCart){
+
+            return;
+
+        }
+
+
+        cart = [];
+
+    }
+
+
+    /* =================================================
+       CHECK SAME PRODUCT
+    ================================================= */
+
+    const existing =
+        cart.find(
+            item =>
+                String(item.product_id) ===
+                String(productId) &&
+
+                String(item.partner_id) ===
+                String(partnerId) &&
+
+                !item.cart_id
+        );
+
+
+    if(existing){
+
+        existing.quantity =
+            Number(existing.quantity || 0) + 1;
+
+    }
+
+    else{
+
+        const price =
+            Number(
+                product.offer_price ??
+                product.selling_price ??
+                product.sale_price ??
+                product.discount_price ??
+                product.price ??
+                0
+            ) || 0;
+
+
+        let image =
+            product.image ||
+            "/images/other.jpg";
+
+
+        if(
+            image &&
+            !image.startsWith("http") &&
+            !image.startsWith("/")
+        ){
+
+            image =
+                `${API}/uploads/${image}`;
+
+        }
+
+
+        cart.push({
+
+            product_id:
+                product.id,
+
+            quantity:
+                1,
+
+            product_name:
+                product.product_name ||
+                "Product",
+
+            price:
+                price,
+
+            image:
+                image,
+
+            partner_id:
+                partnerId
+
+        });
+
+    }
+
+
+    /* =================================================
+       SAVE CART
+    ================================================= */
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    /*
+     * Remember which restaurant the user
+     * came from.
+     */
+
+    localStorage.setItem(
+        "partnerId",
+        partnerId
+    );
+
+
+    if(product.restaurant_name){
+
+        localStorage.setItem(
+            "restaurantName",
+            product.restaurant_name
+        );
+
+    }
+
+
+    console.log(
+        "DARVOZ PICK ADDED:",
+        product
+    );
+
+
+    console.log(
+        "CART:",
+        cart
+    );
+
+
+    /* =================================================
+       OPEN EXACT RESTAURANT
+    ================================================= */
+
+   window.location.href =
+    `restaurant.html?id=${encodeURIComponent(partnerId)}&product=${encodeURIComponent(productId)}`;
+
+}
+
+async function checkServiceAvailability(){
+
+    const latitude =
+        localStorage.getItem("latitude");
+
+    const longitude =
+        localStorage.getItem("longitude");
+
+
+    if(!latitude || !longitude){
+
+        return false;
+
+    }
+
+
+    try{
+
+        const response = await fetch(
+            `${API}/restaurants/nearby`,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    latitude:Number(latitude),
+
+                    longitude:Number(longitude),
+
+                    radius:10
+
+                })
+            }
+        );
+
+
+        if(!response.ok){
+
+            return false;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "SERVICE AVAILABILITY:",
+            data
+        );
+
+
+        return Array.isArray(data) && data.length > 0;
+
+    }
+    catch(error){
+
+        console.error(
+            "SERVICE AVAILABILITY ERROR:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+function hideHomeContent(){
+
+    const offersSection =
+        document.getElementById("offersSection");
+
+    const picksSection =
+        document.getElementById("picksSection");
+
+    const restaurantsSection =
+        document.getElementById("restaurantsSection");
+
+
+    if(offersSection){
+        offersSection.style.display = "none";
+    }
+
+    if(picksSection){
+        picksSection.style.display = "none";
+    }
+
+    if(restaurantsSection){
+        restaurantsSection.style.display = "block";
+    }
+
+}
+
+
+function showHomeContent(){
+
+    const offersSection =
+        document.getElementById("offersSection");
+
+    const picksSection =
+        document.getElementById("picksSection");
+
+    const restaurantsSection =
+        document.getElementById("restaurantsSection");
+
+
+    if(offersSection){
+        offersSection.style.display = "";
+    }
+
+    if(picksSection){
+        picksSection.style.display = "";
+    }
+
+    if(restaurantsSection){
+        restaurantsSection.style.display = "";
+    }
+
+}
+
+function showOutOfServiceMessage(){
+
+    const restaurantsBox =
+        document.getElementById("restaurants");
+
+    if(!restaurantsBox){
+
+        return;
+
+    }
+
+
+    restaurantsBox.innerHTML = `
+
+        <div style="
+            padding:40px 20px;
+            text-align:center;
+            color:#777;
+        ">
+
+            <i
+                class="fa-solid fa-location-dot"
+                style="
+                    font-size:40px;
+                    color:#ff6500;
+                    margin-bottom:12px;
+                "
+            ></i>
+
+
+            <div style="
+                font-size:16px;
+                font-weight:700;
+                color:#333;
+                margin-bottom:8px;
+            ">
+                Sorry, we can't provide service
+                at your location.
+            </div>
+
+
+            <div style="
+                font-size:12px;
+                line-height:1.6;
+            ">
+                No restaurants found nearby.
+                <br>
+                Please select another location.
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+/* =====================================================
+   LOAD REAL RESTAURANTS
+===================================================== */
+
+async function loadRestaurants(){
+
+    const restaurantsBox =
+        document.getElementById(
+            "restaurants"
+        );
+
+    if(!restaurantsBox){
+
+        return;
+
+    }
+
+
+    const latitude =
+        localStorage.getItem(
+            "latitude"
+        );
+
+    const longitude =
+        localStorage.getItem(
+            "longitude"
+        );
+
+
+    /*
+       Location is required for nearby
+       restaurants.
+    */
+
+    if(
+        !latitude ||
+        !longitude
+    ){
+
+        restaurantsBox.innerHTML = `
+
+            <div style="
+                padding:30px 20px;
+                text-align:center;
+                color:#777;
+                font-size:13px;
+            ">
+
+                <i
+                    class="fa-solid fa-location-dot"
+                    style="
+                        font-size:32px;
+                        color:#ff6500;
+                        margin-bottom:10px;
+                    "
+                ></i>
+
+                <div style="
+                    font-weight:600;
+                    color:#333;
+                ">
+
+                    Select your location
+
+                </div>
+
+                <div style="
+                    margin-top:5px;
+                    font-size:11px;
+                ">
+
+                    Choose an address to see
+                    restaurants near you.
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+       Loading
+    */
+
+    restaurantsBox.innerHTML = `
+
+        <div style="
+            padding:30px;
+            text-align:center;
+            color:#777;
+            font-size:12px;
+        ">
+
+            <i
+                class="fa-solid fa-spinner fa-spin"
+                style="
+                    font-size:25px;
+                    color:#ff6500;
+                    margin-bottom:8px;
+                "
+            ></i>
+
+            <div>
+                Finding restaurants near you...
+            </div>
+
+        </div>
+
+    `;
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/restaurants/nearby`,
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        latitude:
+                            latitude,
+
+                        longitude:
+                            longitude,
+
+                        radius:10
+
+                    })
+
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Restaurant API failed: ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "HOME RESTAURANT API:",
+            data
+        );
+
+
+        /*
+           Your API should return an array.
+        */
+
+        if(!Array.isArray(data)){
+
+            throw new Error(
+                "Restaurant API did not return an array"
+            );
+
+        }
+
+
+        /*
+           No fake/demo cards.
+        */
+
+        if(data.length === 0){
+
+            restaurantsBox.innerHTML = `
+
+                <div style="
+                    padding:35px 20px;
+                    text-align:center;
+                    color:#777;
+                    font-size:13px;
+                ">
+
+                    <i
+                        class="fa-solid fa-store-slash"
+                        style="
+                            font-size:38px;
+                            color:#ff6500;
+                            margin-bottom:12px;
+                        "
+                    ></i>
+
+                    <div style="
+                        font-weight:600;
+                        color:#333;
+                    ">
+
+                        No restaurants nearby
+
+                    </div>
+
+                    <div style="
+                        margin-top:5px;
+                        font-size:11px;
+                    ">
+
+                        No restaurants found within
+                        10 km of your location.
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /*
+           Build REAL restaurant cards.
+        */
+
+        let html = "";
+
+
+        data
+        .slice(0,10)
+        .forEach(r => {
+
+
+        /*
+   STORE IMAGE
+   Priority:
+   1. storePhoto
+   2. logo
+   3. banner
+   4. placeholder
+*/
+
+let restaurantImage =
+    r.storePhoto ||
+    r.logo ||
+    r.banner ||
+    "";
+
+/*
+   If image is only a filename,
+   convert it to the uploads URL.
+   
+   If it is already a Cloudinary/HTTPS URL,
+   DON'T modify it.
+*/
+
+if(
+    restaurantImage &&
+    !restaurantImage.startsWith("http://") &&
+    !restaurantImage.startsWith("https://") &&
+    !restaurantImage.startsWith("/")
+){
+
+    restaurantImage =
+        `${API}/uploads/${restaurantImage}`;
+
+}
+
+/*
+   Final fallback
+*/
+
+if(!restaurantImage){
+
+    restaurantImage =
+        "images/restaurant-placeholder.png";
+
+}
+
+
+            /*
+               Delivery time.
+            */
+
+            const deliveryTime =
+                r.deliveryTime
+                || r.delivery_time
+                || "25 min";
+
+
+            /*
+               Distance.
+            */
+
+            let distanceText = "";
+
+            if(r.distance != null){
+
+                distanceText =
+                    `${Number(r.distance).toFixed(1)} km`;
+
+            }
+
+
+            /*
+               Rating.
+            */
+
+            const rating =
+                r.rating != null
+                ? r.rating
+                : "New";
+
+
+            /*
+               Business type.
+            */
+
+            const businessType =
+                r.business_type
+                || "Food";
+
+
+            /*
+               Open / closed.
+            */
+
+            let statusHTML = "";
+
+            if(r.isOpen === true){
+
+                statusHTML = `
+
+                    <div class="restaurant-status status-open">
+
+                        🟢 Open
+
+                    </div>
+
+                `;
+
+            }
+            else if(r.isOpen === false){
+
+                statusHTML = `
+
+                    <div class="restaurant-status status-closed">
+
+                        🔴 Closed
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /*
+               Card.
+            */
+
+            html += `
+
+                <div
+                    class="restaurant-card"
+                    onclick="openRestaurant(${r.id})"
+                >
+
+
+                    <div
+                        class="restaurant-image-wrap"
+                    >
+
+                       <img
+    src="${restaurantImage}"
+    class="restaurant-img"
+    alt="${r.restaurant_name || "Restaurant"}"
+    loading="lazy"
+    onerror="
+        this.onerror=null;
+        this.src='images/restaurant-placeholder.png';
+    "
+>
+
+
+                        <div class="time-badge">
+
+                            🛵 ${deliveryTime}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="restaurant-info">
+
+
+                        <h3>
+
+                            ${r.restaurant_name || "Restaurant"}
+
+                        </h3>
+
+
+                        <div class="restaurant-type">
+
+                            ${businessType}
+
+                        </div>
+
+
+                        <div class="restaurant-details">
+
+
+                            <div class="restaurant-rating">
+
+                                ⭐ ${rating}
+
+                            </div>
+
+
+                            <div class="restaurant-distance">
+
+                                ${distanceText}
+
+                            </div>
+
+
+                        </div>
+
+
+                        ${
+                            r.minimum_order != null
+                            ?
+                            `
+                            <div class="restaurant-price">
+
+                                Minimum ₹${r.minimum_order}
+
+                            </div>
+                            `
+                            :
+                            ""
+                        }
+
+
+                        ${statusHTML}
+
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        });
+
+
+        restaurantsBox.innerHTML =
+            html;
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Restaurant loading error:",
+            error
+        );
+
+
+        /*
+           IMPORTANT:
+           NO FAKE RESTAURANTS.
+        */
+
+        restaurantsBox.innerHTML = `
+
+            <div style="
+                padding:35px 20px;
+                text-align:center;
+                color:#777;
+                font-size:13px;
+            ">
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="
+                        font-size:35px;
+                        color:#ff6500;
+                        margin-bottom:12px;
+                    "
+                ></i>
+
+                <div style="
+                    font-weight:600;
+                    color:#333;
+                ">
+
+                    Unable to load restaurants
+
+                </div>
+
+                <div style="
+                    margin-top:5px;
+                    font-size:11px;
+                ">
+
+                    Please try again later.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN RESTAURANT
+===================================================== */
+
+function openRestaurant(id){
+
+    if(!id){
+
+        return;
+
+    }
+
+    window.location.href =
+        `restaurant.html?id=${id}`;
+
+}
+
+
+/* =====================================================
+   ACTIVE ORDER
+===================================================== */
+
+let activeOrderId = null;
+
+
+const activeOrderStatuses = [
+
+    "Pending",
+
+    "Accepted",
+
+    "Preparing",
+
+    "Ready",
+
+    "Delivery Assigned",
+
+    "Picked Up",
+
+    "Out For Delivery"
+
+];
+
+
+/* =====================================================
+   LOAD ACTIVE ORDER
+===================================================== */
+
+async function loadActiveOrder(){
+
+    if(!customerId){
+
+        return;
+
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/orders/customer/${customerId}`
+            );
+
+
+        if(!response.ok){
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !data.success ||
+            !Array.isArray(data.orders)
+        ){
+
+            hideActiveOrder();
+
+            return;
+
+        }
+
+
+        const activeOrder =
+            data.orders.find(
+                order =>
+                    activeOrderStatuses.includes(
+                        String(
+                            order.status
+                        ).trim()
+                    )
+            );
+
+
+        if(!activeOrder){
+
+            hideActiveOrder();
+
+            return;
+
+        }
+
+
+        activeOrderId =
+            activeOrder.id;
+
+
+        const popup =
+            document.getElementById(
+                "activeOrderPopup"
+            );
+
+
+        if(popup){
+
+            popup.style.display =
+                "block";
+
+        }
+
+
+        await updateActiveOrderETA(
+            activeOrder.id
+        );
+
+    }
+    catch(error){
+
+        console.log(
+            "Active order error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   HIDE ACTIVE ORDER
+===================================================== */
+
+function hideActiveOrder(){
+
+    activeOrderId = null;
+
+
+    const popup =
+        document.getElementById(
+            "activeOrderPopup"
+        );
+
+
+    if(popup){
+
+        popup.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN ACTIVE ORDER
+===================================================== */
+
+function openActiveOrder(){
+
+    if(!activeOrderId){
+
+        return;
+
+    }
+
+
+    window.location.href =
+        `track.html?id=${activeOrderId}`;
+
+}
+
+
+/* =====================================================
+   REAL ETA
+===================================================== */
+
+async function updateActiveOrderETA(
+    orderId
+){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/orders/track/${orderId}`
+            );
+
+
+        if(!response.ok){
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !data.success ||
+            !data.order
+        ){
+
+            return;
+
+        }
+
+
+        const order =
+            data.order;
+
+
+        if(
+            typeof google === "undefined" ||
+            !google.maps
+        ){
+
+            document.getElementById(
+                "activeOrderEta"
+            ).textContent =
+                "Updating...";
+
+            return;
+
+        }
+
+
+        const customer = {
+
+            lat:
+                Number(
+                    order.customer_lat
+                ),
+
+            lng:
+                Number(
+                    order.customer_lng
+                )
+
+        };
+
+
+        let start;
+
+
+        if(
+            order.latitude != null &&
+            order.longitude != null
+        ){
+
+            start = {
+
+                lat:
+                    Number(
+                        order.latitude
+                    ),
+
+                lng:
+                    Number(
+                        order.longitude
+                    )
+
+            };
+
+        }
+        else{
+
+            start = {
+
+                lat:
+                    Number(
+                        order.restaurant_lat
+                    ),
+
+                lng:
+                    Number(
+                        order.restaurant_lng
+                    )
+
+            };
+
+        }
+
+
+        const service =
+            new google.maps.DirectionsService();
+
+
+        service.route(
+
+            {
+
+                origin:start,
+
+                destination:customer,
+
+                travelMode:
+                    google.maps.TravelMode.DRIVING
+
+            },
+
+            (result,status)=>{
+
+
+                if(status !== "OK"){
+
+                    document.getElementById(
+                        "activeOrderEta"
+                    ).textContent =
+                        "Updating...";
+
+                    return;
+
+                }
+
+
+                const leg =
+                    result.routes[0]
+                    ?.legs[0];
+
+
+                if(!leg){
+
+                    return;
+
+                }
+
+
+                document.getElementById(
+                    "activeOrderEta"
+                ).textContent =
+                    leg.duration.text;
+
+            }
+
+        );
+
+    }
+    catch(error){
+
+        console.log(
+            "ETA ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+async function startDarvoz(){
+
+    console.log(
+        "DARVOZ HOME STARTING..."
+    );
+
+
+    // =========================================
+    // FIRST: LOAD SAVED ADDRESS
+    // =========================================
+
+    const hasSavedAddress =
+        loadSavedDeliveryAddress();
+
+
+    // =========================================
+    // IF NO SAVED ADDRESS → DETECT GPS
+    // =========================================
+
+    if(!hasSavedAddress){
+
+        console.log(
+            "NO SAVED ADDRESS → DETECTING GPS"
+        );
+
+        await detectCustomerLocation();
+
+    }
+    else{
+
+        console.log(
+            "SAVED ADDRESS EXISTS"
+        );
+
+    }
+
+
+    // =========================================
+    // CHECK LOCATION BEFORE LOADING ANYTHING
+    // =========================================
+
+    const serviceAvailable =
+        await checkServiceAvailability();
+
+
+    console.log(
+        "SERVICE AVAILABLE:",
+        serviceAvailable
+    );
+
+
+    // =========================================
+    // OUTSIDE 10 KM
+    // =========================================
+
+    if(!serviceAvailable){
+
+        console.log(
+            "OUTSIDE DARVOZ SERVICE AREA"
+        );
+
+
+        // Hide Offers + DARVOZ Picks
+        hideHomeContent();
+
+
+        // Show service unavailable message
+        showOutOfServiceMessage();
+
+
+        // STOP HERE
+        return;
+
+    }
+
+
+    // =========================================
+    // SERVICE AVAILABLE
+    // =========================================
+
+    console.log(
+        "DARVOZ SERVICE AVAILABLE"
+    );
+
+
+    // Show normal home content
+    showHomeContent();
+
+
+    // Load everything only now
+    loadCustomerOffers();
+
+    loadDarvozPicks();
+
+    loadRestaurants();
+
+}
+
+/* =====================================================
+   START DARVOZ
+===================================================== */
+
+startDarvoz();
+
+
+/* =====================================================
+   ACTIVE ORDER FIRST CHECK
+===================================================== */
+
+loadActiveOrder();
+
+
+/* =====================================================
+   CHECK ACTIVE ORDER EVERY 10 SECONDS
+===================================================== */
+
+setInterval(
+    loadActiveOrder,
+    10000
+);
+/* =====================================================
+   ACTIVE ORDER FIRST CHECK
+===================================================== */
+
+loadActiveOrder();
+
+
+/* =====================================================
+   CHECK ACTIVE ORDER EVERY 10 SECONDS
+===================================================== */
+
+setInterval(
+
+    loadActiveOrder,
+
+    10000
+
+);
+
+</script>
+
+
+</body>
+
+</html>

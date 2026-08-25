@@ -1,0 +1,6568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
+<title>DARVOZ — Partner</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f7f7f7;
+    color:#222;
+}
+
+button,
+input{
+    font-family:'Poppins',sans-serif;
+}
+
+button{
+    cursor:pointer;
+}
+
+img{
+    display:block;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+:root{
+    --orange:#ff5a00;
+    --green:#159447;
+    --red:#dc2626;
+    --text:#222;
+    --muted:#777;
+    --page:#f7f7f7;
+}
+
+.app{
+    min-height:100vh;
+    background:var(--page);
+}
+
+
+/* =========================================================
+   RESTAURANT HEADER
+========================================================= */
+
+.restaurant-header{
+    position:relative;
+    height:270px;
+    overflow:hidden;
+    color:#fff;
+    background:
+        linear-gradient(
+            135deg,
+            #ff9700 0%,
+            #ff6b00 45%,
+            #f84c00 100%
+        );
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+}
+
+.restaurant-header::before{
+    content:"";
+    position:absolute;
+    width:370px;
+    height:370px;
+    border-radius:50%;
+    left:-150px;
+    top:-190px;
+    background:rgba(255,255,255,.08);
+}
+
+.restaurant-header::after{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    right:-180px;
+    top:-120px;
+    background:rgba(255,255,255,.07);
+}
+
+.food-pattern{
+    position:absolute;
+    inset:0;
+    opacity:.13;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+}
+
+.food-pattern span{
+    position:absolute;
+    color:#fff;
+    font-size:24px;
+    transform:rotate(-18deg);
+}
+
+.food-pattern span:nth-child(1){left:9%;top:35px}
+.food-pattern span:nth-child(2){left:25%;top:115px;font-size:18px}
+.food-pattern span:nth-child(3){left:43%;top:45px}
+.food-pattern span:nth-child(4){right:28%;top:90px;font-size:18px}
+.food-pattern span:nth-child(5){right:13%;top:35px}
+.food-pattern span:nth-child(6){right:5%;bottom:45px}
+.food-pattern span:nth-child(7){left:6%;bottom:30px}
+.food-pattern span:nth-child(8){left:38%;bottom:25px}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.restaurant-topbar{
+    position:relative;
+    z-index:20;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px max(18px,4vw);
+}
+
+.top-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    position:relative;
+}
+
+.round-btn{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.20);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    backdrop-filter:blur(5px);
+    transition:.2s;
+}
+
+.round-btn:hover{
+    background:#fff;
+    color:var(--orange);
+}
+
+.header-cart{
+    position:relative;
+}
+
+.cart-badge{
+    position:absolute;
+    right:-4px;
+    top:-5px;
+    min-width:20px;
+    height:20px;
+    padding:0 5px;
+    border-radius:50px;
+    background:#fff;
+    color:var(--orange);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    font-size:10px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   RESTAURANT INFO
+========================================================= */
+
+.restaurant-info{
+    position:relative;
+    z-index:5;
+    text-align:center;
+    padding:14px 20px 0;
+}
+
+.restaurant-name{
+    font-size:clamp(27px,4vw,42px);
+    font-weight:800;
+    line-height:1.15;
+}
+
+.restaurant-cuisine{
+    margin-top:6px;
+    font-size:13px;
+    opacity:.95;
+    font-weight:500;
+}
+
+.restaurant-meta{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.meta-item{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.meta-item i{
+    font-size:11px;
+}
+
+.meta-divider{
+    opacity:.45;
+}
+
+.open-status{
+    padding:5px 11px;
+    border-radius:20px;
+    background:#fff;
+    color:var(--green);
+    font-size:10px;
+    font-weight:800;
+}
+
+.free-delivery{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:11px;
+    color:#fff;
+    font-size:9px;
+    font-weight:600;
+}
+
+
+/* =========================================================
+   FOOD MAIN
+========================================================= */
+
+.main-content{
+    width:min(1400px,100%);
+    margin:auto;
+    padding:0 max(14px,4vw);
+}
+
+.search-wrapper{
+    position:relative;
+    z-index:50;
+    margin-top:-20px;
+}
+
+.search-row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.search-box{
+    flex:1;
+    height:58px;
+    background:#fff;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    padding:0 17px;
+    box-shadow:0 9px 25px rgba(0,0,0,.10);
+    border:1px solid #eee;
+}
+
+.search-box > i{
+    color:#888;
+    font-size:20px;
+}
+
+.search-box input{
+    flex:1;
+    min-width:0;
+    border:none;
+    outline:none;
+    background:transparent;
+    padding:0 12px;
+    font-size:14px;
+}
+
+.filter-button{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:16px;
+    background:#fff;
+    color:var(--orange);
+    box-shadow:0 7px 20px rgba(0,0,0,.08);
+    font-size:17px;
+}
+
+.category-row{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    padding:12px 0 8px;
+    scrollbar-width:none;
+}
+
+.category-row::-webkit-scrollbar{
+    display:none;
+}
+
+.category-button{
+    flex:0 0 auto;
+    border:none;
+    background:#fff;
+    border-radius:25px;
+    padding:9px 15px;
+    color:#333;
+    font-size:11px;
+    font-weight:700;
+    box-shadow:0 3px 10px rgba(0,0,0,.06);
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.category-button i{
+    color:var(--orange);
+}
+
+.category-button.active{
+    background:var(--orange);
+    color:#fff;
+}
+
+.category-button.active i{
+    color:#fff;
+}
+
+.menu-section{
+    padding:10px 0 125px;
+}
+
+.menu-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:8px 0 15px;
+}
+
+.menu-heading h2{
+    font-size:24px;
+    font-weight:800;
+}
+
+.menu-heading span{
+    color:#888;
+    font-size:11px;
+    font-weight:600;
+}
+
+.food-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:15px;
+}
+
+.food-card{
+    background:#fff;
+    border:1px solid #ededed;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 4px 16px rgba(0,0,0,.045);
+}
+
+.food-image{
+    position:relative;
+    width:100%;
+    height:230px;
+    background:#eee;
+    overflow:hidden;
+}
+
+.food-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.food-type{
+    position:absolute;
+    left:10px;
+    top:10px;
+    width:20px;
+    height:20px;
+    background:#fff;
+    border:2px solid var(--green);
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.food-type::after{
+    content:"";
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+}
+
+.food-type.nonveg{
+    border-color:var(--red);
+}
+
+.food-type.nonveg::after{
+    background:var(--red);
+}
+
+.favorite-button{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:50%;
+    background:#fff;
+    color:#555;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.12);
+}
+
+.food-info{
+    padding:11px 12px 13px;
+}
+
+.food-name{
+    font-size:14px;
+    font-weight:800;
+    line-height:1.3;
+    min-height:37px;
+}
+
+.food-description{
+    color:#777;
+    font-size:10px;
+    line-height:1.45;
+    min-height:29px;
+    margin-top:3px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.food-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    margin-top:9px;
+}
+
+.food-price{
+    font-size:16px;
+    font-weight:800;
+}
+
+.add-button{
+    height:36px;
+    border:1px solid var(--orange);
+    border-radius:10px;
+    background:#fff;
+    color:var(--orange);
+    padding:0 13px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.add-button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.quantity-control{
+    height:36px;
+    border:1px solid var(--orange);
+    border-radius:10px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    background:#fff;
+}
+
+.quantity-control button{
+    width:29px;
+    height:100%;
+    border:none;
+    background:#fff;
+    color:var(--orange);
+    font-size:18px;
+    font-weight:700;
+}
+
+.quantity-control span{
+    min-width:28px;
+    text-align:center;
+    font-size:11px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   GROCERY MODE
+========================================================= */
+
+.grocery-page{
+    display:none;
+}
+
+body.is-grocery .restaurant-header,
+body.is-grocery .main-content{
+    display:none;
+}
+
+body.is-grocery .grocery-page{
+    display:block;
+}
+
+
+/* =========================================================
+   GROCERY TOP
+========================================================= */
+
+.grocery-top{
+    height:64px;
+    background:linear-gradient(135deg,#ff6b00,#ff3d00);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    gap:10px;
+    position:sticky;
+    top:0;
+    z-index:500;
+}
+
+.grocery-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:19px;
+    font-weight:800;
+}
+
+.grocery-brand small{
+    display:block;
+    font-size:7px;
+    letter-spacing:4px;
+}
+
+.grocery-location{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:10px;
+}
+
+.grocery-cart{
+    position:relative;
+    margin-left:12px;
+    font-size:20px;
+}
+
+.grocery-cart-badge{
+    position:absolute;
+    right:-8px;
+    top:-8px;
+    min-width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#fff;
+    color:var(--orange);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    font-size:9px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   GROCERY CONTENT
+========================================================= */
+
+.grocery-content{
+    display:grid;
+    grid-template-columns:185px 1fr;
+    gap:16px;
+    padding:14px max(10px,3vw) 90px;
+}
+
+.grocery-categories{
+    background:#fff;
+    border-radius:14px;
+    padding:8px;
+    height:calc(100vh - 90px);
+    position:sticky;
+    top:79px;
+    overflow:auto;
+    scrollbar-width:none;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.grocery-categories::-webkit-scrollbar{
+    display:none;
+}
+
+.category-title{
+    font-size:12px;
+    font-weight:800;
+    padding:8px;
+}
+
+.grocery-category-btn{
+    width:100%;
+    min-height:58px;
+    border:none;
+    background:#fff;
+    border-radius:10px;
+    padding:7px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    text-align:left;
+    color:#555;
+    font-size:11px;
+    font-weight:600;
+}
+
+.grocery-category-btn i{
+    width:30px;
+    height:30px;
+    border-radius:8px;
+    background:#fff2e9;
+    color:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.grocery-category-btn.active{
+    background:#fff0e5;
+    color:var(--orange);
+}
+
+.grocery-category-btn.active i{
+    background:var(--orange);
+    color:#fff;
+}
+
+.grocery-main-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.grocery-main-head h2{
+    font-size:20px;
+    font-weight:800;
+}
+
+.sort-button{
+    border:1px solid #ddd;
+    background:#fff;
+    border-radius:9px;
+    padding:7px 11px;
+    font-size:11px;
+    font-weight:600;
+}
+
+.grocery-products{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+}
+
+.grocery-card{
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.grocery-image{
+    height:220px;
+    background:#fff;
+    padding:8px;
+    position:relative;
+}
+
+.grocery-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.grocery-details{
+    padding:9px 10px 11px;
+}
+
+.grocery-name{
+    font-size:13px;
+    font-weight:700;
+    line-height:1.3;
+    min-height:34px;
+}
+
+.grocery-price-line{
+    display:flex;
+    align-items:baseline;
+    gap:4px;
+    margin-top:4px;
+}
+
+.grocery-price{
+    font-size:17px;
+    font-weight:800;
+}
+
+.onwards{
+    color:#888;
+    font-size:9px;
+}
+
+.weight-list{
+    display:flex;
+    gap:4px;
+    overflow:auto;
+    margin-top:7px;
+    scrollbar-width:none;
+}
+
+.weight-list::-webkit-scrollbar{
+    display:none;
+}
+
+.weight{
+    flex-shrink:0;
+    border:1px solid #ddd;
+    background:#fff;
+    border-radius:5px;
+    padding:3px 6px;
+    font-size:8px;
+}
+
+.grocery-action{
+    margin-top:8px;
+}
+
+.grocery-add{
+    width:100%;
+    height:32px;
+    border:none;
+    border-radius:7px;
+    background:var(--orange);
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+}
+
+.grocery-add:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.grocery-qty{
+    width:100%;
+    height:32px;
+    border:1px solid var(--orange);
+    border-radius:7px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    overflow:hidden;
+}
+
+.grocery-qty button{
+    width:30px;
+    height:100%;
+    border:none;
+    background:#fff;
+    color:var(--orange);
+    font-size:18px;
+}
+
+.grocery-qty span{
+    font-size:11px;
+    font-weight:800;
+}
+
+.grocery-content.no-categories{
+    grid-template-columns:1fr;
+}
+
+.grocery-content.no-categories .grocery-categories{
+    display:none;
+}
+
+
+/* =========================================================
+   CART BAR
+========================================================= */
+
+.cart-bar{
+    position:fixed;
+    z-index:1000;
+    left:50%;
+    bottom:15px;
+    transform:translateX(-50%);
+    width:min(680px,calc(100% - 28px));
+    min-height:65px;
+    padding:8px 10px 8px 17px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#ff6b00,#ff4d00);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 12px 35px rgba(0,0,0,.22);
+    opacity:0;
+    visibility:hidden;
+    transition:.25s;
+}
+
+.cart-bar.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.cart-summary{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.cart-summary-icon{
+    width:35px;
+    height:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.cart-summary-text strong{
+    display:block;
+    font-size:12px;
+}
+
+.cart-summary-text small{
+    display:block;
+    font-size:10px;
+    margin-top:1px;
+}
+
+.view-cart-button{
+    height:44px;
+    border:none;
+    border-radius:11px;
+    background:#fff;
+    color:var(--orange);
+    padding:0 17px;
+    font-size:11px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup-menu{
+    position:absolute;
+    right:0;
+    top:54px;
+    width:170px;
+    background:#fff;
+    color:#222;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+    overflow:hidden;
+    display:none;
+    z-index:100;
+}
+
+.popup-menu div{
+    padding:13px 15px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.empty-menu{
+    grid-column:1/-1;
+    text-align:center;
+    padding:60px 20px;
+    color:#777;
+}
+
+.empty-menu i{
+    font-size:35px;
+    margin-bottom:12px;
+    color:#aaa;
+}
+
+
+/* =========================================================
+   PACK POPUP
+========================================================= */
+
+.pack-popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:3000;
+}
+
+.pack-popup-overlay.show{
+    display:flex;
+}
+
+.pack-popup{
+    width:min(390px,100%);
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    animation:packPopupIn .2s ease;
+}
+
+@keyframes packPopupIn{
+    from{
+        transform:translateY(15px);
+        opacity:0;
+    }
+    to{
+        transform:translateY(0);
+        opacity:1;
+    }
+}
+
+.pack-popup-close{
+    position:absolute;
+    right:12px;
+    top:10px;
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:50%;
+    background:#f5f5f5;
+    font-size:22px;
+    color:#555;
+}
+
+.pack-popup h3{
+    font-size:18px;
+    font-weight:800;
+    padding-right:35px;
+}
+
+.pack-popup > p{
+    margin-top:3px;
+    color:#777;
+    font-size:11px;
+}
+
+.pack-options{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:16px;
+    max-height:55vh;
+    overflow:auto;
+}
+
+.pack-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:11px 12px;
+    background:#fff;
+}
+
+.pack-option-info{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.pack-option-weight{
+    font-size:13px;
+    font-weight:800;
+}
+
+.pack-option-price{
+    font-size:14px;
+    font-weight:800;
+}
+
+.pack-option-add{
+    border:none;
+    border-radius:8px;
+    background:var(--orange);
+    color:#fff;
+    padding:8px 13px;
+    font-size:10px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:1000px){
+
+    .food-image{
+        height:210px;
+    }
+
+    .grocery-products{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+    .restaurant-header{
+        height:205px;
+        border-bottom-left-radius:25px;
+        border-bottom-right-radius:25px;
+    }
+
+    .restaurant-topbar{
+        padding:11px 12px 0;
+    }
+
+    .top-actions{
+        gap:7px;
+    }
+
+    .round-btn{
+        width:40px;
+        height:40px;
+        font-size:16px;
+    }
+
+    .restaurant-info{
+        padding:7px 10px 0;
+    }
+
+    .restaurant-name{
+        font-size:25px;
+    }
+
+    .restaurant-cuisine{
+        margin-top:4px;
+        font-size:11px;
+    }
+
+    .restaurant-meta{
+        margin-top:10px;
+        gap:7px;
+        font-size:10px;
+    }
+
+    .open-status{
+        padding:4px 9px;
+        font-size:8px;
+    }
+
+    .free-delivery{
+        margin-top:9px;
+        font-size:9px;
+    }
+
+    .search-wrapper{
+        margin-top:-1px;
+    }
+
+    .filter-button{
+        display:none!important;
+    }
+
+    .search-box{
+        height:52px;
+        border-radius:16px;
+        padding:0 15px;
+    }
+
+    .search-box input{
+        font-size:13px;
+    }
+
+    .category-row{
+        padding:10px 0 7px;
+        gap:8px;
+    }
+
+    .category-button{
+        padding:9px 13px;
+        font-size:10px;
+    }
+
+    .menu-section{
+        padding:7px 0 120px;
+    }
+
+    .menu-heading h2{
+        font-size:20px;
+    }
+
+    .food-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .food-image{
+        height:145px;
+    }
+
+    .food-info{
+        padding:8px;
+    }
+
+    .food-name{
+        font-size:12px;
+        min-height:31px;
+    }
+
+    .food-description{
+        font-size:9px;
+        min-height:25px;
+    }
+
+    .food-price{
+        font-size:15px;
+    }
+
+
+    /* GROCERY */
+
+    .grocery-top{
+        height:58px;
+        padding:0 12px;
+        gap:8px;
+    }
+
+    .grocery-brand{
+        gap:7px;
+        font-size:17px;
+    }
+
+    .grocery-brand small{
+        font-size:6px;
+        letter-spacing:3px;
+    }
+
+    .grocery-location{
+        max-width:85px;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        font-size:9px;
+    }
+
+    .grocery-cart{
+        margin-left:4px;
+        font-size:19px;
+    }
+
+    .grocery-content{
+        grid-template-columns:72px minmax(0,1fr);
+        gap:8px;
+        padding:10px 7px 100px;
+        align-items:start;
+    }
+
+    .grocery-categories{
+        width:72px;
+        height:calc(100vh - 70px);
+        position:sticky;
+        top:68px;
+        padding:5px;
+        border-radius:11px;
+        overflow-y:auto;
+        overflow-x:hidden;
+    }
+
+    .category-title{
+        padding:6px 2px;
+        text-align:center;
+        font-size:9px;
+    }
+
+    .grocery-category-btn{
+        width:100%;
+        min-height:58px;
+        padding:5px 2px;
+        margin-bottom:4px;
+        border-radius:9px;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:4px;
+        text-align:center;
+        font-size:8px;
+        line-height:1.15;
+    }
+
+    .grocery-category-btn i{
+        width:28px;
+        height:28px;
+        font-size:12px;
+    }
+
+    .grocery-category-btn span{
+        width:100%;
+        display:block;
+        word-break:break-word;
+        line-height:1.15;
+    }
+
+    .grocery-content > main{
+        min-width:0;
+        width:100%;
+    }
+
+    .grocery-main-head{
+        margin-bottom:9px;
+    }
+
+    .grocery-main-head h2{
+        font-size:16px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .sort-button{
+        padding:6px 8px;
+        font-size:9px;
+    }
+
+    .grocery-products{
+        width:100%;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .grocery-card{
+        width:100%;
+        min-width:0;
+        border-radius:11px;
+    }
+
+    .grocery-image{
+        height:125px;
+        padding:5px;
+    }
+
+    .grocery-details{
+        padding:7px;
+    }
+
+    .grocery-name{
+        font-size:10px;
+        min-height:27px;
+    }
+
+    .grocery-price{
+        font-size:14px;
+    }
+
+    .onwards{
+        font-size:7px;
+    }
+
+    .grocery-action{
+        margin-top:6px;
+    }
+
+    .grocery-add,
+    .grocery-qty{
+        height:30px;
+    }
+
+    .grocery-add{
+        font-size:9px;
+    }
+
+    .grocery-qty button{
+        width:27px;
+        font-size:16px;
+    }
+
+    .grocery-qty span{
+        font-size:10px;
+    }
+
+    .add-button{
+        height:34px;
+        padding:0 9px;
+        font-size:10px;
+    }
+
+    .quantity-control{
+        height:34px;
+    }
+
+    .quantity-control button{
+        width:27px;
+    }
+
+    .quantity-control span{
+        min-width:24px;
+    }
+
+    .food-type{
+        left:8px;
+        top:8px;
+    }
+
+    .favorite-button{
+        right:8px;
+        top:8px;
+        width:32px;
+        height:32px;
+    }
+
+    .cart-bar{
+        bottom:10px;
+        width:calc(100% - 20px);
+        min-height:62px;
+        border-radius:15px;
+    }
+
+    .view-cart-button{
+        height:42px;
+        padding:0 14px;
+        font-size:10px;
+    }
+
+    .pack-popup{
+        width:calc(100% - 20px);
+        padding:17px;
+        border-radius:16px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media(max-width:380px){
+
+    .restaurant-header{
+        height:200px;
+    }
+
+    .restaurant-name{
+        font-size:23px;
+    }
+
+    .food-image{
+        height:130px;
+    }
+
+    .food-name{
+        font-size:10px;
+    }
+
+    .food-description{
+        display:none;
+    }
+
+    .food-price{
+        font-size:13px;
+    }
+
+    .grocery-content{
+        grid-template-columns:71px 1fr;
+    }
+
+}
+
+.grocery-content.no-categories{
+    grid-template-columns:1fr;
+}
+
+.grocery-content.no-categories .grocery-categories{
+    display:none;
+}
+
+/* =========================================================
+   FORCE GROCERY CATEGORY SIDEBAR
+========================================================= */
+
+body.is-grocery .grocery-content{
+    display:grid;
+}
+
+body.is-grocery .grocery-categories{
+    display:block;
+}
+
+body.is-grocery .grocery-content.no-categories{
+    grid-template-columns:185px 1fr;
+}
+
+body.is-grocery .grocery-content.no-categories
+.grocery-categories{
+    display:block;
+}
+
+@media(max-width:768px){
+
+    body.is-grocery .grocery-content{
+        grid-template-columns:72px minmax(0,1fr);
+    }
+
+    body.is-grocery .grocery-content.no-categories{
+        grid-template-columns:72px minmax(0,1fr);
+    }
+
+    body.is-grocery .grocery-content.no-categories
+    .grocery-categories{
+        display:block;
+    }
+
+}
+.favorite-button.active{
+    color:#ff5a00;
+}
+
+.favorite-button.active i{
+    color:#ff5a00;
+}
+
+.selected-product{
+    animation: selectedProductGlow 1s ease-in-out 2;
+    border-radius: 12px;
+}
+
+
+@keyframes selectedProductGlow{
+
+    0%{
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+    50%{
+        transform: scale(1.03);
+        box-shadow:
+            0 0 0 3px rgba(255,101,0,0.35);
+    }
+
+    100%{
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+}
+
+.target-product-highlight{
+    animation: productHighlight 2.5s ease;
+}
+
+@keyframes productHighlight{
+
+    0%{
+        transform: scale(1);
+    }
+
+    20%{
+        transform: scale(1.03);
+        box-shadow: 0 0 0 3px #ff5a1f;
+    }
+
+    70%{
+        transform: scale(1.03);
+        box-shadow: 0 0 0 3px #ff5a1f;
+    }
+
+    100%{
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+}
+
+/* Hide menu until correct business UI is ready */
+body.page-loading #menuContainer,
+body.page-loading #groceryMenu,
+body.page-loading #groceryCategories,
+body.page-loading .grocery-section,
+body.page-loading .food-section {
+    visibility: hidden !important;
+}
+
+.page-loading #menuContainer{
+    visibility: hidden !important;
+}
+
+.page-loading .restaurant-menu-section,
+.page-loading .grocery-menu-section{
+    visibility: hidden !important;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- =========================================================
+     FOOD HEADER
+========================================================= -->
+
+<header class="restaurant-header" id="restaurantHeader">
+
+    <div class="food-pattern">
+
+        <span><i class="fa-solid fa-leaf"></i></span>
+        <span><i class="fa-solid fa-pepper-hot"></i></span>
+        <span><i class="fa-solid fa-lemon"></i></span>
+        <span><i class="fa-solid fa-utensils"></i></span>
+        <span><i class="fa-solid fa-leaf"></i></span>
+        <span><i class="fa-solid fa-bowl-food"></i></span>
+        <span><i class="fa-solid fa-pepper-hot"></i></span>
+        <span><i class="fa-solid fa-leaf"></i></span>
+
+    </div>
+
+    <div class="restaurant-topbar">
+
+        <a href="index.html" class="round-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div class="top-actions">
+
+            <button class="round-btn" onclick="focusSearch()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <button
+    class="round-btn"
+    onclick="window.location.href='favorites.html?id=${restaurantId}'"
+>
+    <i class="fa-solid fa-heart"></i>
+</button>
+
+            <button
+                class="round-btn header-cart"
+                onclick="window.location.href='cart.html'"
+            >
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <span class="cart-badge" id="cartBadge">
+                    0
+                </span>
+            </button>
+
+            <button
+                class="round-btn"
+                onclick="toggleRestaurantMenu()"
+            >
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+
+            <div class="popup-menu" id="restaurantPopup">
+
+                <div onclick="window.location.href='help.html'">
+
+                    <i class="fa-regular fa-circle-question"></i>
+
+                    &nbsp; Help
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="restaurant-info">
+
+        <h1 class="restaurant-name" id="restaurantName">
+            Loading...
+        </h1>
+
+        <div class="restaurant-cuisine" id="restaurantCuisine">
+            Loading...
+        </div>
+
+        <div class="restaurant-meta">
+
+            <span class="meta-item">
+                <i class="fa-solid fa-star"></i>
+                <span id="restaurantRating">4.5</span>
+            </span>
+
+            <span class="meta-divider">|</span>
+
+            <span class="meta-item">
+                <i class="fa-regular fa-clock"></i>
+                <span id="deliveryTime">25 min</span>
+            </span>
+
+            <span class="meta-divider">|</span>
+
+            <span class="meta-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span id="restaurantCity">Loading...</span>
+            </span>
+
+            <span class="meta-divider">|</span>
+
+            <span class="open-status" id="openStatus">
+                OPEN
+            </span>
+
+        </div>
+
+        <div class="free-delivery">
+
+            <i class="fa-solid fa-motorcycle"></i>
+
+            FREE DELIVERY above ₹299
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     FOOD MAIN
+========================================================= -->
+
+<main class="main-content" id="foodMain">
+
+    <section class="search-wrapper">
+
+        <div class="search-row">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search for dishes, cuisines..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <button
+                class="filter-button"
+                onclick="focusSearch()"
+            >
+                <i class="fa-solid fa-sliders"></i>
+            </button>
+
+        </div>
+
+        <div class="category-row" id="categoryScroll"></div>
+
+    </section>
+
+
+    <section class="menu-section">
+
+        <div class="menu-heading">
+
+            <h2 id="menuTitle">
+                Recommended
+            </h2>
+
+            <span id="itemCount">
+                0 Items
+            </span>
+
+        </div>
+
+        <div class="food-grid" id="menuContainer"></div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     GROCERY
+========================================================= -->
+
+<section class="grocery-page" id="groceryPage">
+
+    <header class="grocery-top">
+
+        <div class="grocery-brand">
+
+            <i class="fa-solid fa-bars"></i>
+
+            <div>
+
+                DARVOZ
+
+                <small>GROCERY</small>
+
+            </div>
+
+        </div>
+
+        <div class="grocery-location">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <span id="groceryLocation">
+                Loading...
+            </span>
+
+        </div>
+
+        <div
+            class="grocery-cart"
+            onclick="window.location.href='cart.html'"
+        >
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <span
+                class="grocery-cart-badge"
+                id="groceryCartBadge"
+            >
+                0
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <div class="grocery-content" id="groceryLayout">
+
+        <aside
+            class="grocery-categories"
+            id="groceryCategories"
+        ></aside>
+
+
+        <main>
+
+            <div class="grocery-main-head">
+
+                <h2 id="groceryTitle">
+                    All Products
+                </h2>
+
+                <button
+                    class="sort-button"
+                    onclick="sortGroceryProducts()"
+                >
+
+                    <i class="fa-solid fa-arrow-up-wide-short"></i>
+
+                    Sort
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="grocery-products"
+                id="groceryContainer"
+            ></div>
+
+        </main>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CART BAR
+========================================================= -->
+
+<div class="cart-bar" id="cartBar">
+
+    <div class="cart-summary">
+
+        <div class="cart-summary-icon">
+            <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+
+        <div class="cart-summary-text">
+
+            <strong id="cartItems">
+                0 Items
+            </strong>
+
+            <small id="cartTotal">
+                ₹0
+            </small>
+
+        </div>
+
+    </div>
+
+    <button
+        class="view-cart-button"
+        onclick="window.location.href='cart.html'"
+    >
+        VIEW CART
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     PACK POPUP
+========================================================= -->
+
+<div class="pack-popup-overlay" id="packPopup">
+
+    <div class="pack-popup">
+
+        <button
+            class="pack-popup-close"
+            onclick="closePackPopup()"
+        >
+            ×
+        </button>
+
+        <h3 id="packPopupTitle">
+            Select Pack Size
+        </h3>
+
+        <p id="packPopupProduct">
+            Product
+        </p>
+
+        <div
+            class="pack-options"
+            id="packOptions"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+const API = window.location.origin;
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+    const urlParams = new URLSearchParams(
+    window.location.search
+);
+const restaurantId =
+    params.get("id");
+
+    const targetProductId =
+    urlParams.get("product");
+
+    const requestedCategory =
+    (
+        urlParams.get("category") ||
+        localStorage.getItem(
+            "darvozSelectedCategory"
+        ) ||
+        ""
+    )
+    .trim()
+    .toLowerCase();
+
+    
+
+let menuData = [];
+
+let partnerGroceryMenu = [];
+
+let defaultGroceryMenu = [];
+
+let groceryCategoryData = [];
+
+let cart = [];
+
+let isGrocery = false;
+
+let pageInitialized = false;
+
+let restaurantOpen = true;
+
+let currentGroceryItems = [];
+
+let partnerBusinessTypes = [];
+
+let selectedBusinessType = "Restaurant";
+
+let selectedGroceryCategory = "All";
+
+let selectedPackProduct = null;
+
+function openSelectedProduct(){
+
+    if(!targetProductId){
+        return;
+    }
+
+    setTimeout(() => {
+
+        const productElement =
+            document.querySelector(
+                `[data-product-id="${targetProductId}"]`
+            );
+
+        if(!productElement){
+            console.log(
+                "Selected product not found:",
+                targetProductId
+            );
+
+            return;
+        }
+
+        productElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+        productElement.classList.add(
+            "selected-product"
+        );
+
+        setTimeout(() => {
+
+            productElement.classList.remove(
+                "selected-product"
+            );
+
+        }, 2500);
+
+    }, 700);
+
+}
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   NUMBER / PRICE NORMALIZER
+========================================================= */
+
+function parseMoney(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+        return null;
+    }
+
+    if(typeof value === "number"){
+
+        return Number.isFinite(value)
+            ? value
+            : null;
+
+    }
+
+    const cleaned =
+        String(value)
+            .replace(/[₹,\s]/g,"")
+            .trim();
+
+    if(!cleaned){
+        return null;
+    }
+
+    const number =
+        Number(cleaned);
+
+    return Number.isFinite(number)
+        ? number
+        : null;
+
+}
+
+
+/* =========================================================
+   GET PRICE
+========================================================= */
+
+function getProductPrice(item){
+
+    if(!item){
+        return 0;
+    }
+
+
+    /*
+     * Direct common fields
+     */
+
+    const fields = [
+
+        "offer_price",
+        "offerPrice",
+
+        "selling_price",
+        "sellingPrice",
+
+        "sale_price",
+        "salePrice",
+
+        "discount_price",
+        "discountPrice",
+
+        "final_price",
+        "finalPrice",
+
+        "unit_price",
+        "unitPrice",
+
+        "selling_amount",
+        "sellingAmount",
+
+        "amount",
+
+        "price"
+
+    ];
+
+
+    for(const field of fields){
+
+        const value =
+            parseMoney(item[field]);
+
+        if(
+            value !== null &&
+            value >= 0
+        ){
+            return value;
+        }
+
+    }
+
+
+    /*
+     * Nested pricing objects
+     */
+
+    const pricing =
+        item.pricing ||
+        item.price_details ||
+        item.priceDetails ||
+        item.prices;
+
+
+    if(
+        pricing &&
+        typeof pricing === "object"
+    ){
+
+        for(const field of fields){
+
+            const value =
+                parseMoney(
+                    pricing[field]
+                );
+
+            if(
+                value !== null &&
+                value >= 0
+            ){
+                return value;
+            }
+
+        }
+
+    }
+
+
+    return 0;
+
+}
+
+
+/* =========================================================
+   OLD PRICE
+========================================================= */
+
+function getOldPrice(item){
+
+    if(!item){
+        return null;
+    }
+
+    const mrp =
+        parseMoney(
+            item.mrp ??
+            item.MRP ??
+            item.original_price ??
+            item.originalPrice ??
+            item.price
+        );
+
+    const current =
+        getProductPrice(item);
+
+    if(
+        mrp !== null &&
+        mrp > current &&
+        current >= 0
+    ){
+        return mrp;
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   IMAGE NORMALIZER
+========================================================= */
+
+function getProductImage(item){
+
+    if(!item){
+        return "/images/other.jpg";
+    }
+
+    const possible = [
+
+        item.image,
+        item.image_url,
+        item.imageUrl,
+
+        item.product_image,
+        item.productImage,
+
+        item.photo,
+        item.photo_url,
+        item.photoUrl,
+
+        item.thumbnail,
+        item.thumbnail_url,
+
+        item.img,
+        item.picture
+
+    ];
+
+
+    for(const value of possible){
+
+        if(
+            value !== null &&
+            value !== undefined &&
+            String(value).trim()
+        ){
+
+            return String(value).trim();
+
+        }
+
+    }
+
+
+    return "/images/other.jpg";
+
+}
+
+
+/* =========================================================
+   CATEGORY ID
+========================================================= */
+
+function getCategoryId(item){
+
+    if(!item){
+        return "";
+    }
+
+
+    const category =
+        item.category ||
+        item.product_category ||
+        item.productCategory;
+
+
+    /*
+     * Nested category object
+     */
+
+    if(
+        category &&
+        typeof category === "object"
+    ){
+
+        return String(
+
+            category.id ??
+            category.category_id ??
+            category.categoryId ??
+            ""
+
+        ).trim();
+
+    }
+
+
+    return String(
+
+        item.category_id ??
+        item.categoryId ??
+
+        (
+            typeof category !== "object"
+                ? category
+                : ""
+        ) ??
+
+        ""
+
+    ).trim();
+
+}
+
+
+/* =========================================================
+   CATEGORY NAME
+========================================================= */
+function getCategoryName(item){
+
+    if(!item){
+        return "";
+    }
+
+    /*
+     * Direct category names
+     */
+
+    const directFields = [
+
+        "category_name",
+        "categoryName",
+
+        "category_title",
+        "categoryTitle",
+
+        "category_label",
+        "categoryLabel",
+
+        "product_category_name",
+        "productCategoryName",
+
+        "subcategory_name",
+        "subCategoryName",
+
+        "category"
+
+    ];
+
+    for(const field of directFields){
+
+        const value = item[field];
+
+        if(
+            typeof value === "string" &&
+            value.trim()
+        ){
+
+            return value.trim();
+
+        }
+
+    }
+
+
+    /*
+     * Nested category object
+     */
+
+    const category =
+        item.category ||
+        item.product_category ||
+        item.productCategory;
+
+
+    if(
+        category &&
+        typeof category === "object"
+    ){
+
+        const name =
+
+            category.name ??
+            category.category_name ??
+            category.categoryName ??
+            category.title ??
+            category.label ??
+            category.category_title ??
+            category.categoryTitle;
+
+        if(
+            name !== null &&
+            name !== undefined &&
+            String(name).trim()
+        ){
+
+            return String(name).trim();
+
+        }
+
+    }
+
+
+    /*
+     * Sometimes backend sends:
+     *
+     * {
+     *   category: {
+     *      category: "Rice"
+     *   }
+     * }
+     */
+
+    if(
+        category &&
+        typeof category === "object"
+    ){
+
+        if(
+            typeof category.category === "string" &&
+            category.category.trim()
+        ){
+
+            return category.category.trim();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+/* =========================================================
+   BUSINESS ICON
+========================================================= */
+
+function getBusinessIcon(type){
+
+    const value =
+        String(type || "")
+            .toLowerCase()
+            .trim();
+
+    if(
+        value.includes("restaurant") ||
+        value.includes("food")
+    ){
+        return "fa-solid fa-utensils";
+    }
+
+    if(
+        value.includes("grocery") ||
+        value.includes("groceries")
+    ){
+        return "fa-solid fa-basket-shopping";
+    }
+
+    if(value.includes("meat")){
+        return "fa-solid fa-drumstick-bite";
+    }
+
+    if(value.includes("bakery")){
+        return "fa-solid fa-bread-slice";
+    }
+
+    if(
+        value.includes("pharmacy") ||
+        value.includes("medical")
+    ){
+        return "fa-solid fa-pills";
+    }
+
+    if(value.includes("fruit")){
+        return "fa-solid fa-apple-whole";
+    }
+
+    if(value.includes("vegetable")){
+        return "fa-solid fa-carrot";
+    }
+
+    if(value.includes("electronics")){
+        return "fa-solid fa-mobile-screen";
+    }
+
+    if(
+        value.includes("fashion") ||
+        value.includes("clothing")
+    ){
+        return "fa-solid fa-shirt";
+    }
+
+    if(value.includes("stationery")){
+        return "fa-solid fa-pen";
+    }
+
+    return "fa-solid fa-store";
+
+}
+
+
+/* =========================================================
+   NORMALIZE BUSINESS TYPES
+========================================================= */
+
+function normalizeBusinessTypes(restaurant){
+
+    let raw =
+
+        restaurant.business_types ??
+        restaurant.businessTypes ??
+        restaurant.business_type ??
+        restaurant.businessType ??
+        restaurant.partner_categories ??
+        restaurant.partnerCategories ??
+        restaurant.categories ??
+        restaurant.partner_business_types ??
+        restaurant.partnerBusinessTypes ??
+        [];
+
+
+    if(Array.isArray(raw)){
+
+        return raw
+            .map(x => {
+
+                if(
+                    x &&
+                    typeof x === "object"
+                ){
+
+                    return String(
+                        x.name ??
+                        x.category_name ??
+                        x.categoryName ??
+                        ""
+                    ).trim();
+
+                }
+
+                return String(x).trim();
+
+            })
+            .filter(Boolean);
+
+    }
+
+
+    if(
+        typeof raw === "string" &&
+        raw.trim().startsWith("[")
+    ){
+
+        try{
+
+            const parsed =
+                JSON.parse(raw);
+
+            if(Array.isArray(parsed)){
+
+                return parsed
+                    .map(x => String(x).trim())
+                    .filter(Boolean);
+
+            }
+
+        }
+        catch(error){
+
+            console.warn(
+                "BUSINESS TYPE JSON ERROR",
+                error
+            );
+
+        }
+
+    }
+
+
+    if(
+        typeof raw === "string" &&
+        raw.includes(",")
+    ){
+
+        return raw
+            .split(",")
+            .map(x => x.trim())
+            .filter(Boolean);
+
+    }
+
+
+    if(
+        typeof raw === "string" &&
+        raw.trim()
+    ){
+
+        return [raw.trim()];
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =========================================================
+   GPS
+========================================================= */
+
+function startGPS(){
+
+    if(!navigator.geolocation){
+
+        console.warn("❌ Geolocation is not supported");
+
+        return;
+
+    }
+
+    console.log("📍 Requesting GPS location...");
+
+    navigator.geolocation.getCurrentPosition(
+
+        position => {
+
+            const lat =
+                position.coords.latitude;
+
+            const lng =
+                position.coords.longitude;
+
+            console.log("✅ GPS LOCATION:", lat, lng);
+
+            localStorage.setItem(
+                "latitude",
+                String(lat)
+            );
+
+            localStorage.setItem(
+                "longitude",
+                String(lng)
+            );
+
+            // Update grocery location if needed
+            const locationElement =
+                document.getElementById("groceryLocation");
+
+            if(locationElement){
+
+                locationElement.textContent =
+                    `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+            }
+
+        },
+
+        error => {
+
+            console.warn(
+                "📍 GPS ERROR:",
+                error.code,
+                error.message
+            );
+
+            /*
+             * Don't break the page if GPS fails.
+             */
+
+            const locationElement =
+                document.getElementById("groceryLocation");
+
+            if(locationElement){
+
+                locationElement.textContent =
+                    "Location unavailable";
+
+            }
+
+        },
+
+        {
+            enableHighAccuracy: false,
+
+            // 15 seconds instead of 3 seconds
+            timeout: 15000,
+
+            // Allow cached location up to 10 minutes
+            maximumAge: 600000
+
+        }
+
+    );
+
+}
+
+/* =========================================================
+   CITY
+========================================================= */
+
+function extractCityFromAddress(address){
+
+    if(!address){
+        return "";
+    }
+
+    const parts =
+        String(address)
+            .split(",")
+            .map(x => x.trim())
+            .filter(Boolean);
+
+    const states = [
+
+        "telangana",
+        "andhra pradesh",
+        "karnataka",
+        "maharashtra",
+        "tamil nadu",
+        "kerala",
+        "odisha",
+        "west bengal",
+        "gujarat",
+        "rajasthan",
+        "delhi",
+        "uttar pradesh",
+        "madhya pradesh"
+
+    ];
+
+    const stateIndex =
+        parts.findIndex(part => {
+
+            const lower =
+                part.toLowerCase();
+
+            return states.some(
+                state =>
+                    lower.includes(state)
+            );
+
+        });
+
+
+    if(stateIndex > 0){
+
+        return parts[stateIndex - 1];
+
+    }
+
+
+    if(parts.length >= 3){
+
+        return parts[parts.length - 3];
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   OPEN STATUS
+========================================================= */
+
+function getRestaurantOpenStatus(restaurant){
+
+    if(
+        restaurant.isOpen !== undefined &&
+        restaurant.isOpen !== null
+    ){
+
+        return Boolean(
+            restaurant.isOpen
+        );
+
+    }
+
+    if(
+        restaurant.is_open !== undefined &&
+        restaurant.is_open !== null
+    ){
+
+        return Boolean(
+            restaurant.is_open
+        );
+
+    }
+
+    if(
+        restaurant.open_status !== undefined &&
+        restaurant.open_status !== null
+    ){
+
+        return String(
+            restaurant.open_status
+        )
+        .toLowerCase()
+        .includes("open");
+
+    }
+
+    return true;
+
+}
+
+
+function updateOpenStatus(){
+
+    const status =
+        document.getElementById(
+            "openStatus"
+        );
+
+    if(!status){
+        return;
+    }
+
+    status.textContent =
+        restaurantOpen
+            ? "OPEN"
+            : "CLOSED";
+
+    status.style.color =
+        restaurantOpen
+            ? "#159447"
+            : "#dc2626";
+
+}
+
+
+/* =========================================================
+   FETCH TIMEOUT
+========================================================= */
+
+async function fetchWithTimeout(
+    url,
+    options = {},
+    timeout = 7000
+){
+
+    const controller =
+        new AbortController();
+
+    const timer =
+        setTimeout(
+            () => controller.abort(),
+            timeout
+        );
+
+    try{
+
+        return await fetch(
+            url,
+            {
+                ...options,
+                signal:
+                    controller.signal
+            }
+        );
+
+    }
+    finally{
+
+        clearTimeout(timer);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD RESTAURANT
+========================================================= */
+
+async function loadRestaurant(){
+
+    if(!restaurantId){
+
+        showRestaurantFallback(
+            "Invalid Restaurant"
+        );
+
+        return false;
+
+    }
+
+
+    try{
+
+        const savedLat =
+            localStorage.getItem(
+                "latitude"
+            );
+
+        const savedLng =
+            localStorage.getItem(
+                "longitude"
+            );
+
+
+        const response =
+            await fetchWithTimeout(
+
+                `/restaurants/${restaurantId}`,
+
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        latitude:
+                            savedLat || null,
+
+                        longitude:
+                            savedLng || null
+
+                    })
+
+                },
+
+                7000
+
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Restaurant API HTTP ${response.status}`
+            );
+
+        }
+
+
+        const restaurant =
+            await response.json();
+
+
+        const partnerName =
+
+            restaurant.restaurant_name ||
+
+            restaurant.name ||
+
+            restaurant.store_name ||
+
+            restaurant.business_name ||
+
+            restaurant.partner_name ||
+
+            "Partner";
+
+
+        document.getElementById(
+            "restaurantName"
+        ).textContent =
+            partnerName;
+
+
+        partnerBusinessTypes =
+            normalizeBusinessTypes(
+                restaurant
+            );
+
+
+        if(!partnerBusinessTypes.length){
+
+            partnerBusinessTypes = [
+                "Restaurant"
+            ];
+
+        }
+
+
+        
+
+
+        document.getElementById(
+            "restaurantCuisine"
+        ).textContent =
+            partnerBusinessTypes.join(", ");
+
+
+        const partnerCity =
+
+            restaurant.city ||
+
+            restaurant.partner_city ||
+
+            restaurant.partnerCity ||
+
+            restaurant.town ||
+
+            restaurant.district ||
+
+            extractCityFromAddress(
+                restaurant.address
+            ) ||
+
+            "Location";
+
+
+        document.getElementById(
+            "restaurantCity"
+        ).textContent =
+            partnerCity;
+
+
+        document.getElementById(
+            "groceryLocation"
+        ).textContent =
+            partnerCity;
+
+
+        document.getElementById(
+            "restaurantRating"
+        ).textContent =
+            restaurant.rating || "4.5";
+
+
+        document.getElementById(
+            "deliveryTime"
+        ).textContent =
+
+            restaurant.deliveryTime ||
+
+            restaurant.delivery_time ||
+
+            "25-35 min";
+
+
+        restaurantOpen =
+            getRestaurantOpenStatus(
+                restaurant
+            );
+
+
+        updateOpenStatus();
+
+
+        localStorage.setItem(
+            "partnerId",
+            restaurant.id ||
+            restaurant._id ||
+            restaurantId
+        );
+
+
+        localStorage.setItem(
+            "restaurantName",
+            partnerName
+        );
+
+
+        // Do not select/render the first category here.
+// initialize() will choose the customer's requested category first.
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "LOAD RESTAURANT ERROR:",
+            error
+        );
+
+        showRestaurantFallback(
+            "Restaurant"
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FALLBACK
+========================================================= */
+
+function showRestaurantFallback(name){
+
+    document.getElementById(
+        "restaurantName"
+    ).textContent =
+        name;
+
+    document.getElementById(
+        "restaurantCuisine"
+    ).textContent =
+        partnerBusinessTypes.length
+            ? partnerBusinessTypes.join(", ")
+            : "Restaurant";
+
+    document.getElementById(
+        "restaurantCity"
+    ).textContent =
+        "Location";
+
+    document.getElementById(
+        "groceryLocation"
+    ).textContent =
+        "Location";
+
+}
+
+
+/* =========================================================
+   BUSINESS BUTTONS
+========================================================= */
+
+function buildBusinessTypeButtons(){
+
+    const box =
+        document.getElementById(
+            "categoryScroll"
+        );
+
+    if(!box){
+        return;
+    }
+
+    /* CLEAR OLD BUTTONS */
+    box.innerHTML = "";
+
+    partnerBusinessTypes.forEach(type => {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "category-button";
+
+        button.dataset.type =
+            type;
+
+        const isSelected =
+            String(type)
+            .trim()
+            .toLowerCase() ===
+            String(selectedBusinessType)
+            .trim()
+            .toLowerCase();
+
+        if(isSelected){
+
+            button.classList.add(
+                "active"
+            );
+
+        }
+
+        button.innerHTML = `
+            <i class="${getBusinessIcon(type)}"></i>
+            ${escapeHTML(type)}
+        `;
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectBusinessType(
+                    type,
+                    button
+                );
+
+            }
+        );
+
+        box.appendChild(button);
+
+    });
+
+}
+
+/* =========================================================
+   SELECT BUSINESS TYPE
+========================================================= */
+
+function selectBusinessType(
+    type,
+    button
+){
+
+    /* =========================================
+       SAVE SELECTED CATEGORY FIRST
+    ========================================= */
+
+    selectedBusinessType =
+        String(type)
+        .trim();
+
+
+    /* =========================================
+       REMOVE ACTIVE FROM ALL BUTTONS
+    ========================================= */
+
+    document
+        .querySelectorAll(
+            "#categoryScroll .category-button"
+        )
+        .forEach(item => {
+
+            item.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    /* =========================================
+       ADD ACTIVE TO CLICKED BUTTON
+    ========================================= */
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    /* =========================================
+       OPEN CORRECT UI
+    ========================================= */
+
+  
+}
+
+/* =========================================================
+   LOAD PARTNER GROCERY
+========================================================= */
+
+async function loadPartnerGroceryMenu(){
+
+    if(!restaurantId){
+
+        partnerGroceryMenu = [];
+
+        return false;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetchWithTimeout(
+
+                `/restaurants/grocery/${restaurantId}`,
+
+                {
+                    method:"GET",
+                    cache:"no-store"
+                },
+
+                7000
+
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Partner grocery API HTTP ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "🔥 PARTNER GROCERY RESPONSE:",
+            data
+        );
+
+
+        /*
+         * PRODUCTS
+         */
+
+        if(
+            Array.isArray(data)
+        ){
+
+            partnerGroceryMenu =
+                data;
+
+        }
+
+        else if(
+            Array.isArray(data.products)
+        ){
+
+            partnerGroceryMenu =
+                data.products;
+
+        }
+
+        else if(
+            Array.isArray(data.data)
+        ){
+
+            partnerGroceryMenu =
+                data.data;
+
+        }
+
+        else{
+
+            partnerGroceryMenu = [];
+
+        }
+
+
+        /*
+         * CATEGORY LIST FROM API
+         *
+         * This fixes cases where backend sends:
+         *
+         * {
+         *   products:[...],
+         *   categories:[...]
+         * }
+         */
+
+        groceryCategoryData = [];
+
+        if(
+            data &&
+            Array.isArray(data.categories)
+        ){
+
+            groceryCategoryData =
+                data.categories;
+
+        }
+
+
+        console.log(
+    "🛒 PRODUCTS:",
+    partnerGroceryMenu
+);
+
+console.log(
+    "🔍 FIRST GROCERY PRODUCT:",
+    partnerGroceryMenu[0]
+);
+
+console.log(
+    "🔍 FIRST PRODUCT KEYS:",
+    partnerGroceryMenu[0]
+        ? Object.keys(partnerGroceryMenu[0])
+        : []
+);
+
+console.log(
+    "🔍 FIRST PRODUCT CATEGORY:",
+    getCategoryName(partnerGroceryMenu[0])
+);
+
+
+        console.log(
+            "🗂️ API CATEGORIES:",
+            groceryCategoryData
+        );
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "PARTNER GROCERY ERROR:",
+            error
+        );
+
+        partnerGroceryMenu = [];
+
+        groceryCategoryData = [];
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD MENU
+========================================================= */
+
+async function loadMenu(){
+
+    if(!restaurantId){
+        return false;
+    }
+
+
+    try{
+
+        const response =
+            await fetchWithTimeout(
+
+                `/partner/menu/${restaurantId}`,
+
+                {
+                    method:"GET",
+                    cache:"no-store"
+                },
+
+                7000
+
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Menu API HTTP ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            data &&
+            Array.isArray(data.products)
+        ){
+
+            menuData =
+                data.products;
+
+        }
+        else if(Array.isArray(data)){
+
+            menuData =
+                data;
+
+        }
+        else{
+
+            menuData = [];
+
+        }
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "MENU ERROR:",
+            error
+        );
+
+        menuData = [];
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   APPLY BUSINESS MODE
+========================================================= */
+
+function applyBusinessMode(
+    businessType
+){
+
+    const value =
+        String(
+            businessType || ""
+        )
+        .trim()
+        .toLowerCase();
+
+    console.log(
+        "🎯 APPLYING MODE:",
+        businessType
+    );
+
+    console.log(
+        "🔍 NORMALIZED MODE:",
+        JSON.stringify(value)
+    );
+
+
+    const isGroceryMode =
+        value === "grocery" ||
+        value === "groceries" ||
+        value.includes("grocery") ||
+        value.includes("groceries");
+
+
+    console.log(
+        "🛒 IS GROCERY MODE:",
+        isGroceryMode
+    );
+
+
+    /* =========================
+       GROCERY MODE
+    ========================= */
+
+    if(isGroceryMode){
+
+        console.log(
+            "🛒 OPENING GROCERY UI"
+        );
+
+        isGrocery = true;
+
+        document.body.classList.add(
+            "is-grocery"
+        );
+
+
+        const products =
+            Array.isArray(
+                partnerGroceryMenu
+            )
+            ? partnerGroceryMenu
+            : [];
+
+
+        console.log(
+            "🛒 GROCERY PRODUCTS:",
+            products.length
+        );
+
+
+        buildGroceryCategories(
+            products
+        );
+
+
+        displayGroceryMenu(
+            products
+        );
+
+
+        return;
+
+    }
+
+
+    /* =========================
+       FOOD MODE
+    ========================= */
+
+    console.log(
+        "🍽️ OPENING FOOD UI"
+    );
+
+    isGrocery = false;
+
+    document.body.classList.remove(
+        "is-grocery"
+    );
+
+
+    const foodItems =
+        getItemsForBusinessType(
+            businessType
+        );
+
+
+    displayFoodMenu(
+        foodItems
+    );
+
+}
+
+
+/* =========================================================
+   FOOD FILTER
+========================================================= */
+
+function getItemsForBusinessType(
+    businessType
+){
+
+    const type =
+        String(
+            businessType || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if(!type){
+        return menuData;
+    }
+
+
+    const filtered =
+        menuData.filter(item => {
+
+            const itemType =
+
+                String(
+
+                    item.business_type ||
+
+                    item.businessType ||
+
+                    item.partner_business_type ||
+
+                    item.partnerBusinessType ||
+
+                    item.business_category ||
+
+                    item.businessCategory ||
+
+                    ""
+
+                )
+                .toLowerCase()
+                .trim();
+
+
+            if(!itemType){
+                return true;
+            }
+
+
+            return (
+
+                itemType.includes(type) ||
+
+                type.includes(itemType)
+
+            );
+
+        });
+
+
+    return filtered.length
+        ? filtered
+        : menuData;
+
+}
+
+
+/* =========================================================
+   FOOD EMPTY
+========================================================= */
+
+function showEmptyMenu(message){
+
+    const container =
+        document.getElementById(
+            "menuContainer"
+        );
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <div 
+        class="empty-menu"id="product-${item.id}"
+        
+        >
+
+            <i class="fa-solid fa-box-open"></i>
+
+            <p>
+                ${escapeHTML(message)}
+            </p>
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "itemCount"
+    ).textContent =
+        "0 Items";
+
+}
+
+
+/* =========================================================
+   DISPLAY FOOD
+========================================================= */
+
+function displayFoodMenu(items){
+
+    const container =
+        document.getElementById(
+            "menuContainer"
+        );
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+    const favorites =
+    JSON.parse(
+        localStorage.getItem("favorites")
+    ) || [];
+
+
+    document.getElementById(
+        "menuTitle"
+    ).textContent =
+        selectedBusinessType ||
+        "Recommended";
+
+
+    document.getElementById(
+        "itemCount"
+    ).textContent =
+        `${items.length} Item${
+            items.length === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    if(!items.length){
+
+        showEmptyMenu(
+            "No products found"
+        );
+
+        return;
+
+    }
+
+
+    items.forEach(item => {
+
+        const cartItem =
+            cart.find(
+                x =>
+                    x.product_id == item.id &&
+                    !x.cart_id
+            );
+
+
+        const price =
+            getProductPrice(item);
+
+
+        const image =
+            getProductImage(item);
+
+
+        const foodType =
+            String(
+                item.food_type ||
+                item.type ||
+                ""
+            )
+            .toLowerCase();
+
+
+        const nonVeg =
+            foodType.includes("non");
+
+
+        let actionHTML;
+
+
+        if(cartItem){
+
+            actionHTML = `
+
+                <div class="quantity-control">
+
+                    <button
+                        onclick="decreaseQty(${item.id})"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${cartItem.quantity}
+                    </span>
+
+                    <button
+                        onclick="increaseQty(${item.id})"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+        else{
+
+            actionHTML = `
+
+                <button
+                    class="add-button"
+                    onclick="addFoodToCart(${item.id})"
+                    ${restaurantOpen ? "" : "disabled"}
+                >
+
+                    ${
+                        restaurantOpen
+                            ? "ADD +"
+                            : "CLOSED"
+                    }
+
+                </button>
+
+            `;
+
+        }
+
+
+        container.innerHTML += `
+
+            <article 
+            class="food-card"
+            id="product-${item.id}"
+            >
+
+                <div class="food-image">
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(
+                            item.product_name ||
+                            "Food"
+                        )}"
+                        onerror="this.onerror=null;this.src='/images/other.jpg';"
+                    >
+
+                    <span
+                        class="food-type ${
+                            nonVeg
+                                ? "nonveg"
+                                : ""
+                        }"
+                    ></span>
+
+                  <button
+    class="favorite-button ${
+        favorites.includes(item.id)
+            ? "active"
+            : ""
+    }"
+    onclick="toggleFavorite(event, ${item.id})"
+>
+
+    <i class="${
+        favorites.includes(item.id)
+            ? "fa-solid"
+            : "fa-regular"
+    } fa-heart"></i>
+
+</button> 
+
+                </div>
+
+
+                <div class="food-info">
+
+                    <div class="food-name">
+
+                        ${escapeHTML(
+                            item.product_name ||
+                            "Food Item"
+                        )}
+
+                    </div>
+
+
+                    <div class="food-description">
+
+                        ${escapeHTML(
+                            item.description ||
+                            item.short_description ||
+                            "Freshly prepared and delicious."
+                        )}
+
+                    </div>
+
+
+                    <div class="food-bottom">
+
+                        <strong class="food-price">
+                            ₹${price}
+                        </strong>
+
+                        ${actionHTML}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+
+    });
+
+    // ==========================================
+// OPEN & HIGHLIGHT PRODUCT FROM DARVOZ PICKS
+// ==========================================
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const targetProductId = urlParams.get("product");
+
+if(targetProductId){
+
+    setTimeout(() => {
+
+        const targetProduct = document.getElementById(
+            `product-${targetProductId}`
+        );
+
+        if(targetProduct){
+
+            targetProduct.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            // Highlight selected product
+            targetProduct.classList.add("target-product-highlight");
+
+            setTimeout(() => {
+
+                targetProduct.classList.remove(
+                    "target-product-highlight"
+                );
+
+            }, 2500);
+
+        }
+        else{
+
+            console.warn(
+                "Selected product not found:",
+                targetProductId
+            );
+
+        }
+
+    }, 300);
+
+}
+
+}
+
+/* =========================================================
+   FAVORITES
+========================================================= */
+
+function toggleFavorite(event, productId){
+
+    event.stopPropagation();
+
+    let favorites =
+        JSON.parse(
+            localStorage.getItem("favorites")
+        ) || [];
+
+    const index =
+        favorites.findIndex(
+            id => String(id) === String(productId)
+        );
+
+    const button =
+        event.currentTarget;
+
+    const icon =
+        button.querySelector("i");
+
+    if(index === -1){
+
+        // ❤️ ADD
+        favorites.push(productId);
+
+        icon.classList.remove("fa-regular");
+        icon.classList.add("fa-solid");
+
+        button.classList.add("active");
+
+    }
+    else{
+
+        // 💔 REMOVE
+        favorites.splice(index,1);
+
+        icon.classList.remove("fa-solid");
+        icon.classList.add("fa-regular");
+
+        button.classList.remove("active");
+
+    }
+
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(favorites)
+    );
+
+}
+/* =========================================================
+   GROCERY CATEGORY ICON
+========================================================= */
+
+function getCategoryIcon(category){
+
+    const value =
+        String(category || "")
+            .toLowerCase();
+
+
+    if(
+        value.includes("rice") ||
+        value.includes("atta") ||
+        value.includes("flour")
+    ){
+        return "fa-solid fa-wheat-awn";
+    }
+
+    if(
+        value.includes("dal") ||
+        value.includes("pulse")
+    ){
+        return "fa-solid fa-bowl-food";
+    }
+
+    if(
+        value.includes("oil") ||
+        value.includes("ghee")
+    ){
+        return "fa-solid fa-bottle-droplet";
+    }
+
+    if(value.includes("spice")){
+        return "fa-solid fa-pepper-hot";
+    }
+
+    if(
+        value.includes("salt") ||
+        value.includes("sugar")
+    ){
+        return "fa-solid fa-jar";
+    }
+
+    if(
+        value.includes("biscuit") ||
+        value.includes("snack")
+    ){
+        return "fa-solid fa-cookie-bite";
+    }
+
+    if(
+        value.includes("beverage") ||
+        value.includes("drink")
+    ){
+        return "fa-solid fa-bottle-water";
+    }
+
+    if(
+        value.includes("dairy") ||
+        value.includes("milk")
+    ){
+        return "fa-solid fa-bottle-droplet";
+    }
+
+    if(value.includes("personal")){
+        return "fa-solid fa-pump-soap";
+    }
+
+    if(value.includes("home")){
+        return "fa-solid fa-house";
+    }
+
+    if(value.includes("baby")){
+        return "fa-solid fa-baby";
+    }
+
+    return "fa-solid fa-basket-shopping";
+
+}
+
+
+/* =========================================================
+   BUILD GROCERY CATEGORIES
+========================================================= */
+function buildGroceryCategories(groceryItems){
+
+    const box =
+        document.getElementById("groceryCategories");
+
+    const layout =
+        document.getElementById("groceryLayout");
+
+    if(!box || !layout){
+        console.error("❌ GROCERY CATEGORY ELEMENTS NOT FOUND");
+        return;
+    }
+
+    groceryItems =
+        Array.isArray(groceryItems)
+            ? groceryItems
+            : [];
+
+
+    /* =====================================================
+       CATEGORY MAP
+    ===================================================== */
+
+    const categoryMap = new Map();
+
+
+    function addCategory(id, name){
+
+        if(
+            name === null ||
+            name === undefined
+        ){
+            return;
+        }
+
+        name =
+            String(name)
+                .trim();
+
+        if(!name){
+            return;
+        }
+
+
+        /*
+         * If backend doesn't provide ID,
+         * use category name as ID.
+         */
+
+        if(
+            id === null ||
+            id === undefined ||
+            String(id).trim() === ""
+        ){
+
+            id = name
+                .toLowerCase()
+                .replace(/\s+/g,"_")
+                .replace(/[^a-z0-9_-]/g,"");
+
+        }
+
+
+        id =
+            String(id)
+                .trim();
+
+
+        if(!id){
+            return;
+        }
+
+
+        if(!categoryMap.has(id)){
+
+            categoryMap.set(
+                id,
+                {
+                    id:id,
+                    name:name
+                }
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       1. CATEGORIES FROM API
+    ===================================================== */
+
+    const apiCategories =
+        Array.isArray(groceryCategoryData)
+            ? groceryCategoryData
+            : [];
+
+
+    apiCategories.forEach(category => {
+
+        /*
+         * String category
+         *
+         * Example:
+         * "Rice"
+         */
+
+        if(
+            typeof category === "string"
+        ){
+
+            addCategory(
+                null,
+                category
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !category ||
+            typeof category !== "object"
+        ){
+            return;
+        }
+
+
+        const id =
+
+            category.id ??
+
+            category.category_id ??
+
+            category.categoryId ??
+
+            category.categoryID;
+
+
+        const name =
+
+            category.name ??
+
+            category.category_name ??
+
+            category.categoryName ??
+
+            category.category_title ??
+
+            category.categoryTitle ??
+
+            category.title ??
+
+            category.label;
+
+
+        addCategory(
+            id,
+            name
+        );
+
+    });
+
+
+    /* =====================================================
+       2. BUILD FROM PRODUCTS
+       THIS IS THE IMPORTANT FALLBACK
+    ===================================================== */
+
+    groceryItems.forEach(item => {
+
+        if(
+            !item ||
+            typeof item !== "object"
+        ){
+            return;
+        }
+
+
+        let category =
+            item.category ??
+            item.product_category ??
+            item.productCategory ??
+            item.category_name ??
+            item.categoryName ??
+            item.product_category_name ??
+            item.productCategoryName;
+
+
+        let categoryId =
+
+            item.category_id ??
+
+            item.categoryId ??
+
+            item.product_category_id ??
+
+            item.productCategoryId;
+
+
+        /*
+         * Nested category object
+         */
+
+        if(
+            category &&
+            typeof category === "object"
+        ){
+
+            categoryId =
+
+                category.id ??
+
+                category.category_id ??
+
+                category.categoryId ??
+
+                categoryId;
+
+
+            category =
+
+                category.name ??
+
+                category.category_name ??
+
+                category.categoryName ??
+
+                category.title ??
+
+                category.label;
+
+        }
+
+
+        /*
+         * If category is an array
+         */
+
+        if(Array.isArray(category)){
+
+            category.forEach(cat => {
+
+                if(
+                    cat &&
+                    typeof cat === "object"
+                ){
+
+                    addCategory(
+
+                        cat.id ??
+                        cat.category_id ??
+                        cat.categoryId,
+
+                        cat.name ??
+                        cat.category_name ??
+                        cat.categoryName ??
+                        cat.title ??
+                        cat.label
+
+                    );
+
+                }
+                else{
+
+                    addCategory(
+                        null,
+                        cat
+                    );
+
+                }
+
+            });
+
+            return;
+
+        }
+
+
+        addCategory(
+            categoryId,
+            category
+        );
+
+    });
+
+
+    /* =====================================================
+       FINAL CATEGORIES
+    ===================================================== */
+
+    const categories =
+        Array.from(
+            categoryMap.values()
+        );
+
+
+    console.log(
+        "🛒 API CATEGORY DATA:",
+        groceryCategoryData
+    );
+
+    console.log(
+        "🛒 GROCERY PRODUCTS:",
+        groceryItems
+    );
+
+    console.log(
+        "🛒 FINAL CATEGORIES:",
+        categories
+    );
+
+
+    /* =====================================================
+       ALWAYS KEEP SIDEBAR
+    ===================================================== */
+
+    layout.classList.remove(
+        "no-categories"
+    );
+
+
+    /* =====================================================
+       BUILD SIDEBAR
+    ===================================================== */
+
+    box.innerHTML = `
+
+        <div class="category-title">
+            Categories
+        </div>
+
+        <button
+            type="button"
+            class="grocery-category-btn active"
+            data-category-id="ALL"
+        >
+
+            <i class="fa-solid fa-border-all"></i>
+
+            <span>
+                All
+            </span>
+
+        </button>
+
+    `;
+
+
+    /* =====================================================
+       ADD CATEGORIES
+    ===================================================== */
+
+    categories.forEach(category => {
+
+        const button =
+            document.createElement("button");
+
+
+        button.type =
+            "button";
+
+
+        button.className =
+            "grocery-category-btn";
+
+
+        button.dataset.categoryId =
+            category.id;
+
+
+        button.innerHTML = `
+
+            <i
+                class="${getCategoryIcon(category.name)}"
+            ></i>
+
+            <span>
+                ${escapeHTML(category.name)}
+            </span>
+
+        `;
+
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                filterGroceryById(
+                    category.id,
+                    this
+                );
+
+            }
+        );
+
+
+        box.appendChild(
+            button
+        );
+
+    });
+
+
+    /* =====================================================
+       ALL BUTTON
+    ===================================================== */
+
+    const allButton =
+        box.querySelector(
+            '[data-category-id="ALL"]'
+        );
+
+
+    if(allButton){
+
+        allButton.addEventListener(
+            "click",
+            function(){
+
+                filterGroceryById(
+                    "ALL",
+                    this
+                );
+
+            }
+        );
+
+    }
+
+
+    console.log(
+        `✅ ${categories.length} grocery categories displayed`
+    );
+
+}
+/* =========================================================
+   FILTER GROCERY BY CATEGORY ID
+========================================================= */
+
+function filterGroceryById(
+    categoryId,
+    button
+){
+
+    document
+        .querySelectorAll(
+            ".grocery-category-btn"
+        )
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const products =
+        Array.isArray(
+            partnerGroceryMenu
+        )
+            ? partnerGroceryMenu
+            : [];
+
+
+    /*
+     * ALL PRODUCTS
+     */
+
+    if(
+        String(categoryId) === "ALL"
+    ){
+
+        selectedGroceryCategory =
+            "All";
+
+
+        document.getElementById(
+            "groceryTitle"
+        ).textContent =
+            "All Products";
+
+
+        displayGroceryMenu(
+            products
+        );
+
+        return;
+
+    }
+
+
+    selectedGroceryCategory =
+        String(categoryId);
+
+
+    /*
+     * FILTER PRODUCTS
+     */
+
+    const result =
+    products.filter(item => {
+
+        const itemCategoryId =
+            getCategoryId(item);
+
+        const itemCategoryName =
+            getCategoryName(item);
+
+
+        /* ID MATCH */
+
+        if(
+            String(itemCategoryId).trim() ===
+            String(categoryId).trim()
+        ){
+
+            return true;
+
+        }
+
+
+        /* NAME-BASED CATEGORY ID */
+
+        const generatedNameId =
+            String(itemCategoryName || "")
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g,"_")
+                .replace(/[^a-z0-9_-]/g,"");
+
+
+        return (
+            generatedNameId ===
+            String(categoryId).trim()
+        );
+
+    });
+
+
+    /*
+     * GET CATEGORY NAME FROM API
+     */
+
+    let title = "";
+
+
+    const category =
+        Array.isArray(
+            groceryCategoryData
+        )
+            ? groceryCategoryData.find(
+                category => {
+
+                    const id =
+                        category.id ??
+                        category.category_id ??
+                        category.categoryId;
+
+                    return (
+                        String(id).trim()
+                        ===
+                        String(categoryId).trim()
+                    );
+
+                }
+            )
+            : null;
+
+
+    if(category){
+
+        title =
+            category.name ??
+            category.category_name ??
+            category.categoryName ??
+            category.category_title ??
+            category.categoryTitle ??
+            category.title ??
+            category.label ??
+            "";
+
+    }
+
+
+    /*
+     * FALLBACK TO PRODUCT CATEGORY NAME
+     */
+
+    if(!title){
+
+        const product =
+            products.find(
+                item =>
+                    getCategoryId(item) ===
+                    String(categoryId)
+            );
+
+
+        if(product){
+
+            title =
+                getCategoryName(product);
+
+        }
+
+    }
+
+
+    /*
+     * FINAL TITLE
+     */
+
+    document.getElementById(
+        "groceryTitle"
+    ).textContent =
+        title ||
+        "Category";
+
+
+    console.log(
+        "🛒 SELECTED CATEGORY:",
+        categoryId
+    );
+
+    console.log(
+        "🛒 CATEGORY NAME:",
+        title
+    );
+
+    console.log(
+        "🛒 FILTERED PRODUCTS:",
+        result
+    );
+
+
+    displayGroceryMenu(
+        result
+    );
+
+}
+/* =========================================================
+   BACKWARD COMPATIBILITY
+========================================================= */
+
+function filterGrocery(
+    category,
+    button
+){
+
+    if(category === "All"){
+
+        filterGroceryById(
+            "ALL",
+            button
+        );
+
+        return;
+
+    }
+
+
+    const products =
+        Array.isArray(
+            partnerGroceryMenu
+        )
+            ? partnerGroceryMenu
+            : [];
+
+
+    const found =
+        products.find(
+            item =>
+                getCategoryName(item)
+                    .toLowerCase()
+                ===
+                String(category)
+                    .toLowerCase()
+        );
+
+
+    if(found){
+
+        filterGroceryById(
+            getCategoryId(found),
+            button
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   GET WEIGHTS / PACKS
+========================================================= */
+
+function getWeights(item){
+
+    let raw =
+
+        item.weights ??
+        item.weight_options ??
+        item.pack_sizes ??
+        item.pack_sizes_options ??
+        item.pack_size ??
+        item.variants ??
+        item.variations ??
+        item.product_variants ??
+        item.productVariants ??
+        item.variant_options ??
+        item.variantOptions ??
+        item.options ??
+        item.product_options ??
+        item.productOptions ??
+        item.sizes ??
+        item.size_options ??
+        null;
+
+
+    if(typeof raw === "string"){
+
+        try{
+
+            raw =
+                JSON.parse(raw);
+
+        }
+        catch(error){
+
+            return [];
+
+        }
+
+    }
+
+
+    if(
+        raw &&
+        typeof raw === "object" &&
+        !Array.isArray(raw)
+    ){
+
+        if(Array.isArray(raw.variants)){
+            raw = raw.variants;
+        }
+        else if(Array.isArray(raw.options)){
+            raw = raw.options;
+        }
+        else if(Array.isArray(raw.sizes)){
+            raw = raw.sizes;
+        }
+        else if(Array.isArray(raw.weights)){
+            raw = raw.weights;
+        }
+        else{
+            raw = [raw];
+        }
+
+    }
+
+
+    if(
+        !Array.isArray(raw) ||
+        !raw.length
+    ){
+
+        return [];
+
+    }
+
+
+    return raw
+        .map(variant => {
+
+            if(
+                variant &&
+                typeof variant === "object"
+            ){
+
+                const weight =
+
+                    variant.weight ??
+                    variant.size ??
+                    variant.pack_size ??
+                    variant.packSize ??
+                    variant.label ??
+                    variant.name ??
+                    variant.unit ??
+                    variant.quantity ??
+                    variant.qty ??
+                    "";
+
+
+                let price =
+                    getProductPrice(
+                        variant
+                    );
+
+
+                if(price === 0){
+
+                    price =
+                        getProductPrice(
+                            item
+                        );
+
+                }
+
+
+                return {
+
+                    weight:
+                        String(weight),
+
+                    price:
+                        Number(price || 0)
+
+                };
+
+            }
+
+
+            return {
+
+                weight:
+                    String(variant),
+
+                price:
+                    getProductPrice(item)
+
+            };
+
+        })
+        .filter(
+            variant =>
+                variant.weight &&
+                variant.weight !== "undefined"
+        );
+
+}
+
+
+/* =========================================================
+   DISPLAY GROCERY
+========================================================= */
+
+function displayGroceryMenu(
+    items
+){
+
+    if(!Array.isArray(items)){
+
+        items = [];
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "groceryContainer"
+        );
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+    currentGroceryItems =
+        [...items];
+
+
+    if(!items.length){
+
+        container.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    padding:50px;
+                    color:#777;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-box-open"
+                    style="
+                        font-size:35px;
+                        margin-bottom:10px;
+                    "
+                ></i>
+
+                <p>
+                    No grocery products found
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    items.forEach(item => {
+
+        const cartItem =
+            cart.find(
+                x =>
+                    x.product_id == item.id
+            );
+
+
+        const weights =
+            getWeights(item);
+
+
+        const hasVariants =
+            weights.length > 0;
+
+
+        let price =
+            getProductPrice(item);
+
+
+        if(hasVariants){
+
+            const variantPrices =
+                weights
+                    .map(
+                        v =>
+                            Number(v.price || 0)
+                    )
+                    .filter(
+                        p =>
+                            p > 0
+                    );
+
+
+            if(
+                variantPrices.length
+            ){
+
+                price =
+                    Math.min(
+                        ...variantPrices
+                    );
+
+            }
+
+        }
+
+
+        const oldPrice =
+            getOldPrice(item);
+
+
+        const image =
+            getProductImage(item);
+
+
+        let actionHTML;
+
+
+        if(cartItem){
+
+            actionHTML = `
+
+                <div class="grocery-qty">
+
+                    <button
+                        onclick="decreaseQty(${item.id})"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${cartItem.quantity}
+                    </span>
+
+                    <button
+                        onclick="increaseQty(${item.id})"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+        else if(hasVariants){
+
+            actionHTML = `
+
+                <button
+                    class="grocery-add"
+                    onclick="openPackPopup(${item.id})"
+                    ${restaurantOpen ? "" : "disabled"}
+                >
+
+                    ${
+                        restaurantOpen
+                            ? "ADD"
+                            : "CLOSED"
+                    }
+
+                    <i
+                        class="fa-solid fa-cart-shopping"
+                    ></i>
+
+                </button>
+
+            `;
+
+        }
+        else{
+
+            actionHTML = `
+
+                <button
+                    class="grocery-add"
+                    onclick="addGroceryDirectly(${item.id})"
+                    ${restaurantOpen ? "" : "disabled"}
+                >
+
+                    ${
+                        restaurantOpen
+                            ? "ADD"
+                            : "CLOSED"
+                    }
+
+                    <i
+                        class="fa-solid fa-cart-shopping"
+                    ></i>
+
+                </button>
+
+            `;
+
+        }
+
+
+        container.innerHTML += `
+
+            <article
+    class="grocery-card"
+    id="product-${item.id}"
+>
+
+                <div class="grocery-image">
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(
+                            item.product_name ||
+                            "Product"
+                        )}"
+                        onerror="this.onerror=null;this.src='/images/other.jpg';"
+                    >
+
+                </div>
+
+
+                <div class="grocery-details">
+
+                    <div class="grocery-name">
+
+                        ${escapeHTML(
+                            item.product_name ||
+                            item.name ||
+                            "Product"
+                        )}
+
+                    </div>
+
+
+                    <div class="grocery-price-line">
+
+                        <strong class="grocery-price">
+
+                            ₹${price}
+
+                        </strong>
+
+
+                        ${
+                            hasVariants
+                                ? `
+                                    <span class="onwards">
+                                        onwards
+                                    </span>
+                                `
+                                : ""
+                        }
+
+
+                        ${
+                            oldPrice !== null
+                                ? `
+                                    <s class="onwards">
+                                        ₹${oldPrice}
+                                    </s>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    <div class="grocery-action">
+
+                        ${actionHTML}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================================
+   DIRECT GROCERY ADD
+========================================================= */
+
+function addGroceryDirectly(
+    productId
+){
+
+    const product =
+        partnerGroceryMenu.find(
+            item =>
+                item.id == productId
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    const variants =
+        getWeights(product);
+
+
+    if(variants.length){
+
+        openPackPopup(
+            productId
+        );
+
+        return;
+
+    }
+
+
+    const existing =
+        cart.find(
+            item =>
+                item.product_id == productId &&
+                !item.cart_id
+        );
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }
+    else{
+
+        cart.push({
+
+            product_id:
+                product.id,
+
+            quantity:1,
+
+            product_name:
+                product.product_name ||
+                product.name,
+
+            price:
+                getProductPrice(product),
+
+            image:
+                getProductImage(product),
+
+            partner_id:
+                restaurantId,
+
+            item_type:
+                "grocery"
+
+        });
+
+    }
+
+
+    saveCart();
+
+    refreshCurrentView();
+
+}
+
+
+/* =========================================================
+   OPEN PACK POPUP
+========================================================= */
+
+function openPackPopup(
+    productId
+){
+
+    const product =
+        partnerGroceryMenu.find(
+            item =>
+                item.id == productId
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    selectedPackProduct =
+        product;
+
+
+    const popup =
+        document.getElementById(
+            "packPopup"
+        );
+
+    const title =
+        document.getElementById(
+            "packPopupTitle"
+        );
+
+    const productName =
+        document.getElementById(
+            "packPopupProduct"
+        );
+
+    const options =
+        document.getElementById(
+            "packOptions"
+        );
+
+
+    const weights =
+        getWeights(product);
+
+
+    title.textContent =
+        "Select Pack Size";
+
+
+    productName.textContent =
+        product.product_name ||
+        product.name ||
+        "Product";
+
+
+    options.innerHTML = "";
+
+
+    weights.forEach(
+        (pack,index) => {
+
+            options.innerHTML += `
+
+                <div class="pack-option">
+
+                    <div class="pack-option-info">
+
+                        <span class="pack-option-weight">
+
+                            ${escapeHTML(
+                                pack.weight ||
+                                "Pack"
+                            )}
+
+                        </span>
+
+                        <span class="pack-option-price">
+
+                            ₹${Number(
+                                pack.price || 0
+                            )}
+
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="pack-option-add"
+                        onclick="addPackToCart(
+                            ${product.id},
+                            ${index}
+                        )"
+                    >
+                        ADD
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    popup.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE PACK
+========================================================= */
+
+function closePackPopup(){
+
+    const popup =
+        document.getElementById(
+            "packPopup"
+        );
+
+    if(popup){
+
+        popup.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    selectedPackProduct =
+        null;
+
+}
+
+
+/* =========================================================
+   ADD PACK
+========================================================= */
+
+function addPackToCart(
+    productId,
+    packIndex
+){
+
+    const product =
+        partnerGroceryMenu.find(
+            item =>
+                item.id == productId
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    const weights =
+        getWeights(product);
+
+
+    const selectedPack =
+        weights[packIndex];
+
+
+    if(!selectedPack){
+        return;
+    }
+
+
+    const cartId =
+        `${product.id}_${String(
+            selectedPack.weight
+        )
+        .trim()
+        .replace(/\s+/g,"_")}`;
+
+
+    const existing =
+        cart.find(
+            item =>
+                item.cart_id === cartId
+        );
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }
+    else{
+
+        cart.push({
+
+            cart_id:
+                cartId,
+
+            product_id:
+                product.id,
+
+            quantity:1,
+
+            product_name:
+                product.product_name ||
+                product.name,
+
+            weight:
+                selectedPack.weight,
+
+            price:
+                Number(
+                    selectedPack.price || 0
+                ),
+
+            image:
+                getProductImage(product),
+
+            partner_id:
+                restaurantId,
+
+            item_type:
+                "grocery"
+
+        });
+
+    }
+
+
+    saveCart();
+
+    closePackPopup();
+
+    refreshCurrentView();
+
+}
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+function sortGroceryProducts(){
+
+    const sorted =
+        [...currentGroceryItems]
+        .sort(
+            (a,b) =>
+                getProductPrice(a) -
+                getProductPrice(b)
+        );
+
+
+    displayGroceryMenu(
+        sorted
+    );
+
+}
+
+
+/* =========================================================
+   CART LOAD
+========================================================= */
+
+function loadCart(){
+
+    try{
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "cart"
+                )
+            ) || [];
+
+
+        if(!Array.isArray(cart)){
+            cart = [];
+        }
+
+    }
+    catch(error){
+
+        cart = [];
+
+    }
+
+
+    updateCartUI();
+
+}
+
+
+/* =========================================================
+   SAVE CART
+========================================================= */
+
+function saveCart(){
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    updateCartUI();
+
+}
+
+
+/* =========================================================
+   FOOD ADD
+========================================================= */
+
+function addFoodToCart(
+    productId
+){
+
+    const product =
+        menuData.find(
+            item =>
+                item.id == productId
+        );
+
+
+    if(!product){
+        return;
+    }
+
+
+    const existing =
+        cart.find(
+            item =>
+                item.product_id == productId &&
+                !item.cart_id
+        );
+
+
+    if(existing){
+
+        existing.quantity++;
+
+    }
+    else{
+
+        cart.push({
+
+            product_id:
+                product.id,
+
+            quantity:1,
+
+            product_name:
+                product.product_name ||
+                product.name,
+
+            price:
+                getProductPrice(product),
+
+            image:
+                getProductImage(product),
+
+            partner_id:
+                restaurantId,
+
+            item_type:
+                "food"
+
+        });
+
+    }
+
+
+    saveCart();
+
+    refreshCurrentView();
+
+}
+
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
+function increaseQty(
+    productId
+){
+
+    const item =
+        cart.find(
+            x =>
+                x.product_id ==
+                productId
+        );
+
+
+    if(item){
+
+        item.quantity++;
+
+        saveCart();
+
+        refreshCurrentView();
+
+    }
+
+}
+
+
+function decreaseQty(
+    productId
+){
+
+    const index =
+        cart.findIndex(
+            x =>
+                x.product_id ==
+                productId
+        );
+
+
+    if(index === -1){
+        return;
+    }
+
+
+    if(
+        cart[index].quantity > 1
+    ){
+
+        cart[index].quantity--;
+
+    }
+    else{
+
+        cart.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    saveCart();
+
+    refreshCurrentView();
+
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+function refreshCurrentView(){
+
+    if(isGrocery){
+
+        displayGroceryMenu(
+            currentGroceryItems
+        );
+
+    }
+    else{
+
+        displayFoodMenu(
+            getItemsForBusinessType(
+                selectedBusinessType
+            )
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CART UI
+========================================================= */
+
+function updateCartUI(){
+
+    let totalItems = 0;
+
+    let totalPrice = 0;
+
+
+    cart.forEach(item => {
+
+        const quantity =
+            Number(
+                item.quantity || 0
+            );
+
+
+        const price =
+            Number(
+                item.price || 0
+            );
+
+
+        totalItems +=
+            quantity;
+
+
+        totalPrice +=
+            quantity * price;
+
+    });
+
+
+    const badge =
+        document.getElementById(
+            "cartBadge"
+        );
+
+
+    if(badge){
+
+        badge.textContent =
+            totalItems;
+
+        badge.style.display =
+            totalItems > 0
+                ? "flex"
+                : "none";
+
+    }
+
+
+    const groceryBadge =
+        document.getElementById(
+            "groceryCartBadge"
+        );
+
+
+    if(groceryBadge){
+
+        groceryBadge.textContent =
+            totalItems;
+
+        groceryBadge.style.display =
+            totalItems > 0
+                ? "flex"
+                : "none";
+
+    }
+
+
+    const cartBar =
+        document.getElementById(
+            "cartBar"
+        );
+
+
+    if(cartBar){
+
+        cartBar.classList.toggle(
+            "show",
+            totalItems > 0
+        );
+
+    }
+
+
+    document.getElementById(
+        "cartItems"
+    ).textContent =
+
+        `${totalItems} Item${
+            totalItems === 1
+                ? ""
+                : "s"
+        }`;
+
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent =
+        `₹${totalPrice}`;
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+if(searchInput){
+
+    searchInput.addEventListener(
+        "input",
+        function(){
+
+            const value =
+                this.value
+                    .trim()
+                    .toLowerCase();
+
+
+            if(isGrocery){
+
+                const source =
+                    Array.isArray(
+                        partnerGroceryMenu
+                    )
+                        ? partnerGroceryMenu
+                        : [];
+
+
+                if(!value){
+
+                    displayGroceryMenu(
+                        source
+                    );
+
+                    return;
+
+                }
+
+
+                const result =
+                    source.filter(item => {
+
+                        const name =
+                            String(
+                                item.product_name ||
+                                item.name ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        const category =
+                            getCategoryName(item)
+                                .toLowerCase();
+
+
+                        const description =
+                            String(
+                                item.description ||
+                                item.short_description ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        return (
+
+                            name.includes(value) ||
+
+                            category.includes(value) ||
+
+                            description.includes(value)
+
+                        );
+
+                    });
+
+
+                displayGroceryMenu(
+                    result
+                );
+
+                return;
+
+            }
+
+
+            const source =
+                getItemsForBusinessType(
+                    selectedBusinessType
+                );
+
+
+            if(!value){
+
+                displayFoodMenu(
+                    source
+                );
+
+                return;
+
+            }
+
+
+            const result =
+                source.filter(item => {
+
+                    const name =
+                        String(
+                            item.product_name ||
+                            item.name ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    const category =
+                        String(
+
+                            item.category ||
+
+                            item.product_category ||
+
+                            item.category_name ||
+
+                            ""
+
+                        )
+                        .toLowerCase();
+
+
+                    const description =
+                        String(
+                            item.description ||
+                            item.short_description ||
+                            ""
+                        )
+                        .toLowerCase();
+
+
+                    return (
+
+                        name.includes(value) ||
+
+                        category.includes(value) ||
+
+                        description.includes(value)
+
+                    );
+
+                });
+
+
+            displayFoodMenu(
+                result
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH FOCUS
+========================================================= */
+
+function focusSearch(){
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    if(!input){
+        return;
+    }
+
+
+    input.focus();
+
+
+    input.scrollIntoView({
+
+        behavior:"smooth",
+
+        block:"center"
+
+    });
+
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+function toggleRestaurantMenu(){
+
+    const popup =
+        document.getElementById(
+            "restaurantPopup"
+        );
+
+
+    if(!popup){
+        return;
+    }
+
+
+    popup.style.display =
+
+        popup.style.display === "block"
+
+            ? "none"
+
+            : "block";
+
+}
+
+
+/* =========================================================
+   BOOKMARK
+========================================================= */
+
+const bookmarkButton =
+    document.getElementById(
+        "bookmarkButton"
+    );
+
+
+if(bookmarkButton){
+
+    bookmarkButton.addEventListener(
+        "click",
+        function(){
+
+            const icon =
+                this.querySelector("i");
+
+
+            if(!icon){
+                return;
+            }
+
+
+            if(
+                icon.classList.contains(
+                    "fa-regular"
+                )
+            ){
+
+                icon.classList.remove(
+                    "fa-regular"
+                );
+
+                icon.classList.add(
+                    "fa-solid"
+                );
+
+            }
+            else{
+
+                icon.classList.remove(
+                    "fa-solid"
+                );
+
+                icon.classList.add(
+                    "fa-regular"
+                );
+
+            }
+
+        }
+    );
+
+}
+/* =========================================================
+   OPEN DARVOZ PICK PRODUCT
+========================================================= */
+
+function scrollToTargetProduct(){
+
+    if(!targetProductId){
+        return;
+    }
+
+    const productElement =
+        document.getElementById(
+            `product-${targetProductId}`
+        );
+
+    if(!productElement){
+        console.log(
+            "TARGET PRODUCT NOT FOUND:",
+            targetProductId
+        );
+        return;
+    }
+
+    setTimeout(() => {
+
+        productElement.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+        productElement.classList.add(
+            "target-product-highlight"
+        );
+
+        setTimeout(() => {
+
+            productElement.classList.remove(
+                "target-product-highlight"
+            );
+
+        }, 2500);
+
+    }, 500);
+
+}
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize(){
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "DARVOZ PAGE START"
+    );
+
+    console.log(
+        "RESTAURANT ID:",
+        restaurantId
+    );
+
+    console.log(
+        "================================="
+    );
+
+
+    if(!restaurantId){
+
+        showRestaurantFallback(
+            "Invalid Restaurant"
+        );
+
+        showEmptyMenu(
+            "Restaurant ID missing"
+        );
+
+        return;
+
+    }
+
+
+    /* ================================
+       PREVENT ANY DEFAULT UI FLASH
+    ================================= */
+
+    pageInitialized = false;
+
+    document.body.classList.add(
+        "page-loading"
+    );
+
+
+    /* ================================
+       LOAD CART + GPS
+    ================================= */
+
+    loadCart();
+
+    startGPS();
+
+
+    /* ================================
+       LOAD RESTAURANT FIRST
+       We need business type first
+    ================================= */
+
+    const restaurantLoaded =
+        await loadRestaurant();
+
+
+    if(!restaurantLoaded){
+
+        document.body.classList.remove(
+            "page-loading"
+        );
+
+        return;
+
+    }
+
+
+    /* ================================
+       FIND CUSTOMER CATEGORY FIRST
+    ================================= */
+
+    let categoryToOpen = "";
+
+
+    if(
+        requestedCategory &&
+        partnerBusinessTypes.some(
+            type =>
+
+                String(type)
+                .trim()
+                .toLowerCase() ===
+
+                String(requestedCategory)
+                .trim()
+                .toLowerCase()
+        )
+    ){
+
+        categoryToOpen =
+            partnerBusinessTypes.find(
+                type =>
+
+                    String(type)
+                    .trim()
+                    .toLowerCase() ===
+
+                    String(requestedCategory)
+                    .trim()
+                    .toLowerCase()
+            );
+
+    }
+
+
+    /* PARTNER FIRST CATEGORY */
+
+    if(
+        !categoryToOpen &&
+        partnerBusinessTypes.length
+    ){
+
+        categoryToOpen =
+            partnerBusinessTypes[0];
+
+    }
+
+
+    /* FINAL DEFAULT */
+
+    if(!categoryToOpen){
+
+        categoryToOpen =
+            "Restaurant";
+
+    }
+
+
+    /* ================================
+       SET FINAL CATEGORY NOW
+       BEFORE ANY MENU RENDERING
+    ================================= */
+
+    selectedBusinessType =
+        categoryToOpen;
+
+
+    console.log(
+        "🎯 FINAL CATEGORY:",
+        selectedBusinessType
+    );
+
+
+    /* ================================
+       LOAD ONLY THE REQUIRED DATA
+    ================================= */
+
+    const selectedValue =
+    String(
+        selectedBusinessType || ""
+    )
+    .trim()
+    .toLowerCase();
+
+console.log(
+    "🔍 CHECKING CATEGORY:",
+    JSON.stringify(selectedValue)
+);
+
+const isGroceryCategory =
+    selectedValue === "grocery" ||
+    selectedValue === "groceries" ||
+    selectedValue.includes("grocery") ||
+    selectedValue.includes("groceries");
+
+console.log(
+    "🛒 IS GROCERY:",
+    isGroceryCategory
+);
+
+if(isGroceryCategory){
+
+    console.log(
+        "🛒 LOADING GROCERY FIRST"
+    );
+
+    await loadPartnerGroceryMenu();
+
+}
+else{
+
+    console.log(
+        "🍽️ LOADING FOOD FIRST"
+    );
+
+    await loadMenu();
+
+}
+
+
+    /* ================================
+       NOW PAGE IS READY
+    ================================= */
+
+    pageInitialized = true;
+
+
+    /* ================================
+       BUILD BUTTONS
+       AFTER CATEGORY IS FINAL
+    ================================= */
+
+    buildBusinessTypeButtons();
+
+
+    /* ================================
+       RENDER ONLY ONE UI
+    ================================= */
+
+    applyBusinessMode(
+        selectedBusinessType
+    );
+
+
+    /* ================================
+       PRODUCT SCROLL
+    ================================= */
+
+    scrollToTargetProduct();
+
+
+    /* ================================
+       CART
+    ================================= */
+
+    updateCartUI();
+
+
+    /* ================================
+       SHOW PAGE
+    ================================= */
+
+    document.body.classList.remove(
+        "page-loading"
+    );
+
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "DARVOZ PAGE READY"
+    );
+
+    console.log(
+        "FINAL MODE:",
+        selectedBusinessType
+    );
+
+    console.log(
+        "================================="
+    );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initialize
+);
+document.getElementById("favoritesButton")
+    ?.addEventListener("click", function(){
+
+        window.location.href =
+            `favorites.html?id=${restaurantId}`;
+
+    });
+</script>
+
+</body>
+</html>

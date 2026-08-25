@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>DARVOZ | Delivery Login</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+/* =========================================
+   RESET
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    min-height:100vh;
+    min-height:100svh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #ff8b36 0%,
+            #ff6b00 30%,
+            #fff2e8 68%,
+            #f4f4f4 100%
+        );
+}
+
+
+/* =========================================
+   MAIN MOBILE PAGE
+========================================= */
+
+.app{
+    width:100%;
+    max-width:430px;
+
+    height:100vh;
+    height:100svh;
+
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    padding:10px 12px;
+
+    overflow:hidden;
+}
+
+
+/* =========================================
+   BACKGROUND DECORATION
+========================================= */
+
+.bg-circle{
+    position:absolute;
+    width:240px;
+    height:240px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.14);
+
+    top:-120px;
+    right:-100px;
+}
+
+.bg-circle-two{
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.13);
+
+    bottom:-80px;
+    left:-90px;
+}
+
+
+/* =========================================
+   LOGIN CARD
+========================================= */
+
+.login-card{
+
+    width:100%;
+    max-width:380px;
+
+    position:relative;
+    z-index:2;
+
+    background:
+        rgba(255,255,255,.95);
+
+    border-radius:24px;
+
+    padding:
+        clamp(18px, 4vh, 26px)
+        clamp(18px, 5vw, 28px)
+        clamp(16px, 3vh, 22px);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.18);
+
+    border:
+        1px solid rgba(255,255,255,.8);
+}
+
+
+/* =========================================
+   DARVOZ BRAND
+========================================= */
+
+.brand{
+    text-align:center;
+}
+
+.brand-logo{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:9px;
+}
+
+.brand-icon{
+
+    width:34px;
+    height:34px;
+
+    border-radius:10px;
+
+    background:#ff6b00;
+
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:17px;
+
+    box-shadow:
+        0 5px 12px rgba(255,107,0,.25);
+}
+
+.brand-name{
+
+    color:#ff5b00;
+
+    font-size:25px;
+
+    font-weight:800;
+
+    letter-spacing:1px;
+}
+
+.tagline{
+
+    margin-top:2px;
+
+    font-size:11px;
+
+    color:#777;
+}
+
+
+/* =========================================
+   DELIVERY ILLUSTRATION
+========================================= */
+
+.delivery-art{
+
+    width:105px;
+    height:58px;
+
+    margin:8px auto 2px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:48px;
+
+    position:relative;
+}
+
+.delivery-art::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:100px;
+    height:48px;
+
+    border-radius:50px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #fff2e8,
+            #ffe0c6
+        );
+
+    z-index:-1;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.title{
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#303030;
+
+    margin-top:2px;
+}
+
+.subtitle{
+
+    text-align:center;
+
+    font-size:11px;
+
+    color:#777;
+
+    margin-top:2px;
+
+    margin-bottom:10px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+label{
+
+    display:block;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    color:#444;
+
+    margin-bottom:5px;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-box{
+
+    width:100%;
+
+    height:48px;
+
+    position:relative;
+
+    margin-bottom:9px;
+}
+
+.input-box .left-icon{
+
+    position:absolute;
+
+    left:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#888;
+
+    font-size:15px;
+}
+
+.input-box .eye{
+
+    position:absolute;
+
+    right:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#888;
+
+    cursor:pointer;
+
+    font-size:15px;
+}
+
+input{
+
+    width:100%;
+    height:100%;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    outline:none;
+
+    padding:
+        0 45px;
+
+    font-size:13px;
+
+    color:#333;
+
+    background:#fafafa;
+}
+
+input:focus{
+
+    border-color:#ff6b00;
+
+    box-shadow:
+        0 0 0 3px rgba(255,107,0,.08);
+}
+
+
+/* =========================================
+   OPTIONS
+========================================= */
+
+.options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:1px;
+
+    font-size:11px;
+}
+
+.remember{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    color:#666;
+
+    white-space:nowrap;
+}
+
+.remember input{
+
+    width:14px;
+    height:14px;
+
+    padding:0;
+
+    accent-color:#ff6b00;
+
+    cursor:pointer;
+}
+
+.forgot{
+
+    color:#e85f00;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+#error{
+
+    display:none;
+
+    margin-top:9px;
+
+    padding:8px 10px;
+
+    border-radius:8px;
+
+    background:#ffe7e7;
+
+    color:#d63031;
+
+    font-size:10px;
+
+    text-align:center;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading{
+
+    display:none;
+
+    text-align:center;
+
+    color:#ff6b00;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    margin-top:8px;
+}
+
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.login-btn{
+
+    width:100%;
+
+    height:48px;
+
+    margin-top:12px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ff5a00,
+            #ff7a00
+        );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    box-shadow:
+        0 8px 18px rgba(255,107,0,.25);
+
+    transition:.2s;
+}
+
+.login-btn:active{
+
+    transform:scale(.98);
+}
+
+
+/* =========================================
+   OR
+========================================= */
+
+.or{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:10px 0;
+
+    color:#777;
+
+    font-size:11px;
+}
+
+.or::before,
+.or::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:#e5e5e5;
+}
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+.register{
+
+    text-align:center;
+
+    font-size:11px;
+
+    color:#666;
+}
+
+.register a{
+
+    color:#e85f00;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+    margin-left:4px;
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.features{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:stretch;
+
+    margin-top:14px;
+
+    padding-top:12px;
+
+    border-top:1px solid #eee;
+}
+
+.feature{
+
+    flex:1;
+
+    text-align:center;
+
+    font-size:9px;
+
+    color:#555;
+
+    padding:0 4px;
+}
+
+.feature + .feature{
+
+    border-left:1px solid #eee;
+}
+
+.feature-icon{
+
+    width:30px;
+    height:30px;
+
+    margin:0 auto 4px;
+
+    border-radius:50%;
+
+    background:#fff2e8;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    font-size:13px;
+}
+
+.feature strong{
+
+    display:block;
+
+    font-size:9px;
+
+    font-weight:600;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer{
+
+    position:relative;
+
+    z-index:2;
+
+    margin-top:7px;
+
+    color:#555;
+
+    font-size:9px;
+
+    text-align:center;
+}
+
+
+/* =========================================
+   SMALL MOBILE FIX
+========================================= */
+
+@media(max-height:680px){
+
+    .login-card{
+
+        padding-top:14px;
+        padding-bottom:14px;
+    }
+
+    .delivery-art{
+
+        height:48px;
+
+        margin:4px auto 0;
+
+        font-size:40px;
+    }
+
+    .delivery-art::before{
+
+        height:40px;
+    }
+
+    .title{
+
+        font-size:18px;
+    }
+
+    .subtitle{
+
+        margin-bottom:7px;
+    }
+
+    .input-box{
+
+        height:44px;
+
+        margin-bottom:6px;
+    }
+
+    .login-btn{
+
+        height:44px;
+
+        margin-top:9px;
+    }
+
+    .features{
+
+        margin-top:10px;
+
+        padding-top:8px;
+    }
+
+    .feature-icon{
+
+        width:26px;
+        height:26px;
+
+        font-size:11px;
+    }
+
+    .footer{
+
+        display:none;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <div class="bg-circle"></div>
+
+    <div class="bg-circle-two"></div>
+
+
+    <!-- LOGIN CARD -->
+
+    <div class="login-card">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+
+                <div class="brand-icon">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                </div>
+
+                <div class="brand-name">
+
+                    DARVOZ
+
+                </div>
+
+            </div>
+
+            <div class="tagline">
+
+                Delivering Happiness
+
+            </div>
+
+        </div>
+
+
+        <!-- DELIVERY ART -->
+
+        <div class="delivery-art">
+
+            🛵
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="title">
+
+            Delivery Partner Login
+
+        </div>
+
+        <div class="subtitle">
+
+            Welcome back! Please login to your account.
+
+        </div>
+
+
+        <!-- MOBILE -->
+
+        <label>
+
+            Mobile Number
+
+        </label>
+
+        <div class="input-box">
+
+            <i class="fa-solid fa-phone left-icon"></i>
+
+            <input
+                type="tel"
+                id="mobile"
+                inputmode="numeric"
+                maxlength="10"
+                placeholder="Enter Mobile Number">
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <label>
+
+            Password
+
+        </label>
+
+        <div class="input-box">
+
+            <i class="fa-solid fa-lock left-icon"></i>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password">
+
+            <i
+                class="fa-solid fa-eye eye"
+                id="eyeIcon"
+                onclick="togglePassword()">
+            </i>
+
+        </div>
+
+
+        <!-- OPTIONS -->
+
+        <div class="options">
+
+            <label class="remember">
+
+                <input
+                    type="checkbox"
+                    id="rememberMe">
+
+                Remember Me
+
+            </label>
+
+
+            <a
+                href="delivery-forgot-password.html"
+                class="forgot">
+
+                Forgot Password?
+
+            </a>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div id="error"></div>
+
+
+        <!-- LOADING -->
+
+        <div
+            class="loading"
+            id="loading">
+
+            Signing in...
+
+        </div>
+
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+            class="login-btn"
+            id="loginButton"
+            onclick="login()">
+
+            <i class="fa-solid fa-right-to-bracket"></i>
+
+            &nbsp; Login
+
+        </button>
+
+
+        <!-- OR -->
+
+        <div class="or">
+
+            OR
+
+        </div>
+
+
+        <!-- REGISTER -->
+
+        <div class="register">
+
+            Don't have an account?
+
+            <a href="delivery-registration.html">
+
+                Register Now
+
+            </a>
+
+        </div>
+
+
+        <!-- FEATURES -->
+
+        <div class="features">
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                </div>
+
+                <strong>Earn More</strong>
+
+                Every Delivery
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <strong>Track Your</strong>
+
+                Earnings
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+
+                    <i class="fa-solid fa-headset"></i>
+
+                </div>
+
+                <strong>24/7 Partner</strong>
+
+                Support
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        © 2026 DARVOZ. All rights reserved.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+const API = window.location.origin;
+
+
+/* =========================================
+   SHOW / HIDE PASSWORD
+========================================= */
+
+function togglePassword(){
+
+    const password =
+        document.getElementById("password");
+
+    const eyeIcon =
+        document.getElementById("eyeIcon");
+
+
+    if(password.type === "password"){
+
+        password.type = "text";
+
+        eyeIcon.classList.remove(
+            "fa-eye"
+        );
+
+        eyeIcon.classList.add(
+            "fa-eye-slash"
+        );
+
+    }
+    else{
+
+        password.type = "password";
+
+        eyeIcon.classList.remove(
+            "fa-eye-slash"
+        );
+
+        eyeIcon.classList.add(
+            "fa-eye"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+async function login(){
+
+
+    const mobile =
+        document
+        .getElementById("mobile")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value
+        .trim();
+
+
+    const error =
+        document.getElementById("error");
+
+
+    const loading =
+        document.getElementById("loading");
+
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+
+    error.style.display = "none";
+
+
+    /* VALIDATION */
+
+    if(
+        mobile === "" ||
+        password === ""
+    ){
+
+        error.style.display = "block";
+
+        error.innerHTML =
+            "Please enter Mobile Number and Password.";
+
+        return;
+
+    }
+
+
+    if(
+        !/^[0-9]{10}$/.test(mobile)
+    ){
+
+        error.style.display = "block";
+
+        error.innerHTML =
+            "Please enter a valid 10-digit mobile number.";
+
+        return;
+
+    }
+
+
+    loading.style.display = "block";
+
+    loginButton.disabled = true;
+
+    loginButton.innerHTML =
+        "Please wait...";
+
+
+    try{
+
+
+        const response =
+            await fetch(
+
+                `${API}/delivery/login`,
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            mobile,
+                            password
+
+                        })
+
+                }
+
+            );
+
+
+        let result;
+
+
+        try{
+
+            result =
+                await response.json();
+
+        }
+        catch(e){
+
+            throw new Error(
+                "Invalid server response"
+            );
+
+        }
+
+
+        if(
+            response.ok &&
+            result.success
+        ){
+
+
+            /* SAVE DELIVERY PARTNER */
+
+            localStorage.setItem(
+
+                "deliveryPartner",
+
+                JSON.stringify(
+                    result.partner
+                )
+
+            );
+
+
+            /* REMEMBER MOBILE */
+
+            if(
+                document
+                .getElementById("rememberMe")
+                .checked
+            ){
+
+                localStorage.setItem(
+
+                    "rememberDeliveryMobile",
+
+                    mobile
+
+                );
+
+            }
+            else{
+
+                localStorage.removeItem(
+                    "rememberDeliveryMobile"
+                );
+
+            }
+
+
+            window.location.href =
+                "delivery-dashboard.html";
+
+
+        }
+        else{
+
+
+            error.style.display = "block";
+
+            error.innerHTML =
+                result.message ||
+                "Invalid Mobile Number or Password.";
+
+
+        }
+
+
+    }
+    catch(err){
+
+
+        console.error(
+            "DELIVERY LOGIN ERROR:",
+            err
+        );
+
+
+        error.style.display = "block";
+
+        error.innerHTML =
+            "Unable to connect to server. Please try again.";
+
+
+    }
+    finally{
+
+
+        loading.style.display = "none";
+
+        loginButton.disabled = false;
+
+        loginButton.innerHTML =
+
+            `<i class="fa-solid fa-right-to-bracket"></i>
+            &nbsp; Login`;
+
+
+    }
+
+
+}
+
+
+/* =========================================
+   LOAD REMEMBERED MOBILE
+========================================= */
+
+window.addEventListener(
+
+    "DOMContentLoaded",
+
+    () => {
+
+
+        const savedMobile =
+            localStorage.getItem(
+                "rememberDeliveryMobile"
+            );
+
+
+        if(savedMobile){
+
+
+            document
+            .getElementById("mobile")
+            .value =
+                savedMobile;
+
+
+            document
+            .getElementById("rememberMe")
+            .checked =
+                true;
+
+
+        }
+
+
+        /* ENTER KEY LOGIN */
+
+        document
+        .getElementById("password")
+        .addEventListener(
+
+            "keydown",
+
+            function(event){
+
+
+                if(
+                    event.key === "Enter"
+                ){
+
+                    login();
+
+                }
+
+
+            }
+
+        );
+
+
+    }
+
+);
+
+
+</script>
+
+</body>
+
+</html>

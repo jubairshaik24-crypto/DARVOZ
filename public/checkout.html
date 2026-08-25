@@ -1,0 +1,2616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Checkout</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+:root{
+--primary:#ff5a00;
+--bg:#f7f7f7;
+--white:#fff;
+--text:#222;
+--light:#777;
+--border:#ececec;
+--green:#1ba672;
+}
+
+body{
+background:var(--bg);
+padding-bottom:110px;
+color:var(--text);
+}
+
+/* ================= HEADER ================= */
+
+header{
+position:sticky;
+top:0;
+background:#fff;
+height:65px;
+display:flex;
+align-items:center;
+padding:0 18px;
+box-shadow:0 2px 10px rgba(0,0,0,.06);
+z-index:999;
+}
+
+header i{
+font-size:22px;
+cursor:pointer;
+}
+
+header h2{
+margin-left:15px;
+font-size:22px;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+max-width:850px;
+margin:auto;
+padding:15px;
+}
+
+/* ================= CARD ================= */
+
+.card{
+background:#fff;
+border-radius:18px;
+padding:18px;
+margin-bottom:16px;
+box-shadow:0 3px 10px rgba(0,0,0,.06);
+}
+
+/* ================= TITLE ================= */
+
+.title{
+font-size:18px;
+font-weight:700;
+margin-bottom:15px;
+}
+
+/* ================= ADDRESS ================= */
+
+.address{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+}
+
+.address-left{
+display:flex;
+gap:14px;
+}
+
+.address-left i{
+font-size:24px;
+color:var(--primary);
+}
+
+.address h3{
+font-size:17px;
+}
+
+.address p{
+margin-top:6px;
+color:#666;
+font-size:14px;
+line-height:22px;
+}
+
+.change{
+color:var(--primary);
+font-weight:600;
+cursor:pointer;
+}
+
+/* ================= RESTAURANT ================= */
+
+.restaurant{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.restaurant h2{
+font-size:20px;
+}
+
+.restaurant small{
+color:#666;
+}
+
+/* ================= ORDER ITEMS ================= */
+
+#orderItems{
+margin-top:15px;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+gap:15px;
+padding:14px 0;
+border-bottom:1px solid #eee;
+}
+
+.item:last-child{
+border-bottom:none;
+}
+
+.item-name{
+font-size:16px;
+font-weight:600;
+}
+
+.item-price{
+font-weight:700;
+white-space:nowrap;
+}
+
+.item-details{
+margin-top:5px;
+font-size:13px;
+color:#777;
+}
+
+/* ================= COUPON ================= */
+
+.coupon{
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+
+.coupon-left{
+display:flex;
+gap:12px;
+align-items:center;
+}
+
+.coupon-left i{
+font-size:22px;
+color:var(--primary);
+}
+
+/* ================= PAYMENT ================= */
+
+.payment-option{
+display:flex;
+align-items:center;
+gap:15px;
+padding:15px;
+border:2px solid #ececec;
+border-radius:12px;
+margin-top:12px;
+cursor:pointer;
+transition:.2s;
+}
+
+.payment-option:hover{
+border-color:var(--primary);
+}
+
+.payment-option input{
+width:20px;
+height:20px;
+accent-color:var(--primary);
+}
+
+.pay-sub{
+font-size:13px;
+color:#777;
+margin-top:4px;
+}
+
+/* ================= BILL ================= */
+
+.bill-row{
+display:flex;
+justify-content:space-between;
+margin:14px 0;
+font-size:15px;
+}
+
+.grand{
+border-top:1px dashed #ddd;
+padding-top:15px;
+font-size:20px;
+font-weight:700;
+color:var(--primary);
+}
+
+/* ================= BOTTOM ================= */
+
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#fff;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 -3px 10px rgba(0,0,0,.12);
+z-index:1000;
+}
+
+.bottom h2{
+color:var(--primary);
+margin-top:3px;
+}
+
+.bottom button{
+background:var(--primary);
+border:none;
+color:#fff;
+padding:15px 35px;
+border-radius:12px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+}
+
+.bottom button:hover{
+background:#e64d00;
+}
+
+.bottom button:disabled{
+background:#aaa;
+cursor:not-allowed;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+text-align:center;
+padding:40px 20px;
+}
+
+.empty i{
+font-size:60px;
+color:#ddd;
+}
+
+.empty h3{
+margin-top:15px;
+}
+
+.empty p{
+margin-top:8px;
+color:#777;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+.container{
+padding:12px;
+}
+
+header h2{
+font-size:20px;
+}
+
+.bottom{
+padding:12px;
+}
+
+.bottom button{
+padding:14px 24px;
+}
+
+.item{
+gap:10px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+                        HEADER
+===================================================== -->
+
+<header>
+
+<i
+class="fa fa-arrow-left"
+onclick="history.back()">
+</i>
+
+<h2>Checkout</h2>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+                    DELIVERY ADDRESS
+===================================================== -->
+
+<div class="card">
+
+<div class="title">
+Delivery Address
+</div>
+
+<div class="address">
+
+<div class="address-left">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<div>
+
+<h3>Home</h3>
+
+<p id="address">
+Loading Address...
+</p>
+
+</div>
+
+</div>
+
+<div
+class="change"
+onclick="changeAddress()">
+
+Change
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+                       RESTAURANT
+===================================================== -->
+
+<div class="card">
+
+<div class="restaurant">
+
+<div>
+
+<h2 id="restaurantName">
+Loading...
+</h2>
+
+<small id="restaurantItems">
+0 Items
+</small>
+
+</div>
+
+<i
+class="fa-solid fa-store"
+style="
+font-size:28px;
+color:#ff5a00;
+">
+</i>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+                     ORDER SUMMARY
+===================================================== -->
+
+<div class="card">
+
+<div class="title">
+Order Summary
+</div>
+
+<div id="orderItems">
+
+Loading...
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+                         COUPON
+===================================================== -->
+
+<div
+class="card coupon"
+onclick="openCoupons()">
+
+<div class="coupon-left">
+
+<i class="fa-solid fa-tags"></i>
+
+<div>
+
+<b>Apply Coupon</b>
+
+<div
+style="
+font-size:13px;
+color:#777;
+margin-top:4px;
+">
+
+Save more on your order
+
+</div>
+
+</div>
+
+</div>
+
+<i class="fa fa-angle-right"></i>
+
+</div>
+
+
+<!-- =====================================================
+                    PAYMENT METHOD
+===================================================== -->
+
+<div class="card">
+
+<div class="title">
+Payment Method
+</div>
+
+
+<!-- UPI -->
+
+<label class="payment-option">
+
+<input
+type="radio"
+name="payment"
+value="UPI"
+checked>
+
+<div>
+
+<b>UPI</b>
+
+<div class="pay-sub">
+PhonePe • Google Pay • Paytm
+</div>
+
+</div>
+
+</label>
+
+
+<!-- COD -->
+
+<label class="payment-option">
+
+<input
+type="radio"
+name="payment"
+value="COD">
+
+<div>
+
+<b>Cash On Delivery</b>
+
+<div class="pay-sub">
+Pay after delivery
+</div>
+
+</div>
+
+</label>
+
+</div>
+
+
+<!-- =====================================================
+                      BILL DETAILS
+===================================================== -->
+
+<div class="card">
+
+<div class="title">
+Bill Details
+</div>
+
+
+<div class="bill-row">
+
+<span>
+Item Total
+</span>
+
+<span id="itemTotal">
+₹0
+</span>
+
+</div>
+
+
+<div class="bill-row">
+
+<span>
+Delivery Fee
+</span>
+
+<span id="deliveryFee">
+₹0
+</span>
+
+</div>
+
+
+<div class="bill-row">
+
+<span>
+GST
+</span>
+
+<span id="gstFee">
+₹0
+</span>
+
+</div>
+
+
+<div class="bill-row">
+
+<span>
+Discount
+</span>
+
+<span id="discount">
+₹0
+</span>
+
+</div>
+
+
+<div class="bill-row grand">
+
+<span>
+Grand Total
+</span>
+
+<span id="grandTotal">
+₹0
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+                    BOTTOM PAYMENT BAR
+===================================================== -->
+
+<div class="bottom">
+
+<div>
+
+<small
+style="color:#777;">
+
+To Pay
+
+</small>
+
+<h2 id="bottomTotal">
+₹0
+</h2>
+
+</div>
+
+<button
+id="payButton"
+onclick="payNow()">
+
+Pay Now
+
+</button>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+                    BASIC VARIABLES
+===================================================== */
+
+const API = window.location.origin;
+
+const customerId =
+    localStorage.getItem("customerId");
+
+
+let cart = [];
+
+let partnerId =
+    localStorage.getItem("partnerId") || null;
+
+let subtotal = 0;
+
+let deliveryFee = 0;
+
+let gstFee = 0;
+
+let couponDiscount = 0;
+
+let grandTotal = 0;
+
+let paymentMethod = "UPI";
+
+
+/* =====================================================
+                    PAGE LOAD
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
+
+        console.log(
+            "================================"
+        );
+
+        console.log(
+            "DARVOZ CHECKOUT LOADED"
+        );
+
+        console.log(
+            "================================"
+        );
+
+
+        /* ---------------------------------------------
+                        LOGIN CHECK
+        --------------------------------------------- */
+
+        if(!customerId){
+
+            alert(
+                "Please login first"
+            );
+
+            window.location =
+                "customer-login.html";
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                        LOAD ADDRESS
+        --------------------------------------------- */
+
+        await loadAddress();
+
+
+        /* ---------------------------------------------
+                          LOAD CART
+        --------------------------------------------- */
+
+        await loadCart();
+
+    }
+);
+
+/* =====================================================
+                    LOAD ADDRESS
+===================================================== */
+
+async function loadAddress(){
+
+    try{
+
+        /* =============================================
+           FIRST: CHECK ADDRESS SELECTED IN address.html
+        ============================================= */
+
+        const selectedAddress =
+            localStorage.getItem(
+                "selectedAddress"
+            );
+
+        const selectedLat =
+            localStorage.getItem(
+                "latitude"
+            );
+
+        const selectedLng =
+            localStorage.getItem(
+                "longitude"
+            );
+
+
+        /*
+         * If customer clicked "Deliver Here",
+         * use that address immediately.
+         */
+
+        if(selectedAddress){
+
+            console.log(
+                "USING SELECTED DELIVERY ADDRESS:",
+                selectedAddress
+            );
+
+
+            document.getElementById(
+                "address"
+            ).innerHTML =
+                escapeHTML(
+                    selectedAddress
+                );
+
+
+            /*
+             * Save selected coordinates for order
+             */
+
+            localStorage.setItem(
+                "customer_lat",
+                selectedLat || ""
+            );
+
+            localStorage.setItem(
+                "customer_lng",
+                selectedLng || ""
+            );
+
+
+            return;
+
+        }
+
+
+        /* =============================================
+           IF NO SELECTED ADDRESS, LOAD DEFAULT ADDRESS
+        ============================================= */
+
+        const res =
+            await fetch(
+                `${API}/address/${customerId}`
+            );
+
+
+        if(!res.ok){
+
+            throw new Error(
+                "Address API failed"
+            );
+
+        }
+
+
+        const addresses =
+            await res.json();
+
+
+        console.log(
+            "CHECKOUT ADDRESSES:",
+            addresses
+        );
+
+
+        if(
+            !Array.isArray(addresses) ||
+            addresses.length === 0
+        ){
+
+            document.getElementById(
+                "address"
+            ).innerHTML =
+                "Please select address";
+
+            return;
+
+        }
+
+
+        /* =============================================
+                    GET DEFAULT ADDRESS
+        ============================================= */
+
+        const address =
+            addresses.find(
+                a => Number(a.is_default) === 1
+            ) ||
+            addresses[0];
+
+
+        /* =============================================
+                    CREATE FULL ADDRESS
+        ============================================= */
+
+        const fullAddress =
+
+            `${address.house || ""}, ` +
+            `${address.street || ""}, ` +
+            `${address.area || ""}, ` +
+            `${address.city || ""}, ` +
+            `${address.state || ""} - ` +
+            `${address.pincode || ""}`;
+
+
+        /*
+         * Save it as current selected address too.
+         */
+
+        localStorage.setItem(
+            "selectedAddress",
+            fullAddress
+        );
+
+        localStorage.setItem(
+            "latitude",
+            address.latitude || ""
+        );
+
+        localStorage.setItem(
+            "longitude",
+            address.longitude || ""
+        );
+
+
+        /*
+         * Also save for order API
+         */
+
+        localStorage.setItem(
+            "customer_lat",
+            address.latitude || ""
+        );
+
+        localStorage.setItem(
+            "customer_lng",
+            address.longitude || ""
+        );
+
+
+        /* =============================================
+                    DISPLAY ADDRESS
+        ============================================= */
+
+        document.getElementById(
+            "address"
+        ).innerHTML =
+            escapeHTML(
+                fullAddress
+            );
+
+
+        console.log(
+            "USING DEFAULT ADDRESS:",
+            fullAddress
+        );
+
+    }
+
+    catch(error){
+
+        console.log(
+            "ADDRESS ERROR:",
+            error
+        );
+
+        document.getElementById(
+            "address"
+        ).innerHTML =
+            "Unable to load address";
+
+    }
+
+}
+
+/* =====================================================
+                    LOAD LOCAL CART
+===================================================== */
+
+async function loadCart(){
+
+    try{
+
+        /* ---------------------------------------------
+                    READ LOCAL STORAGE
+        --------------------------------------------- */
+
+        const savedCart =
+            localStorage.getItem("cart");
+
+
+        console.log(
+            "RAW LOCAL CART:",
+            savedCart
+        );
+
+
+        if(!savedCart){
+
+            showCartEmpty();
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                    PARSE CART
+        --------------------------------------------- */
+
+        try{
+
+            cart =
+                JSON.parse(savedCart);
+
+        }
+
+        catch(error){
+
+            console.log(
+                "CART JSON ERROR:",
+                error
+            );
+
+            cart = [];
+
+        }
+
+
+        /* ---------------------------------------------
+                    ARRAY CHECK
+        --------------------------------------------- */
+
+        if(!Array.isArray(cart)){
+
+            cart = [];
+
+        }
+
+
+        console.log(
+            "CHECKOUT LOCAL CART:",
+            cart
+        );
+
+
+        /* ---------------------------------------------
+                    EMPTY CHECK
+        --------------------------------------------- */
+
+        if(cart.length === 0){
+
+            showCartEmpty();
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                    PARTNER ID
+        --------------------------------------------- */
+
+        partnerId =
+            localStorage.getItem(
+                "partnerId"
+            ) ||
+            cart[0].partner_id ||
+            null;
+
+
+        console.log(
+            "CHECKOUT PARTNER ID:",
+            partnerId
+        );
+
+
+        /* ---------------------------------------------
+                    RESTAURANT NAME
+        --------------------------------------------- */
+
+        const restaurantName =
+            localStorage.getItem(
+                "restaurantName"
+            ) ||
+            cart[0].restaurant_name ||
+            "DARVOZ Partner";
+
+
+        document.getElementById(
+            "restaurantName"
+        ).innerHTML =
+            escapeHTML(
+                restaurantName
+            );
+
+
+        /* ---------------------------------------------
+                    TOTAL ITEMS
+        --------------------------------------------- */
+
+        const totalItems =
+            cart.reduce(
+                function(total,item){
+
+                    return total +
+                        Number(
+                            item.quantity || 0
+                        );
+
+                },
+                0
+            );
+
+
+        document.getElementById(
+            "restaurantItems"
+        ).innerHTML =
+            totalItems +
+            (
+                totalItems === 1
+                    ? " Item"
+                    : " Items"
+            );
+
+
+        /* ---------------------------------------------
+                    RENDER ITEMS
+        --------------------------------------------- */
+
+        renderItems();
+
+
+        /* ---------------------------------------------
+                    CALCULATE BILL
+        --------------------------------------------- */
+
+        calculateBill();
+
+    }
+
+    catch(error){
+
+        console.log(
+            "CHECKOUT CART ERROR:",
+            error
+        );
+
+        showCartEmpty();
+
+    }
+
+}
+
+
+/* =====================================================
+                    RENDER ORDER ITEMS
+===================================================== */
+
+function renderItems(){
+
+    const box =
+        document.getElementById(
+            "orderItems"
+        );
+
+
+    box.innerHTML = "";
+
+    subtotal = 0;
+
+
+    cart.forEach(
+        function(item){
+
+            /* -----------------------------------------
+                            PRICE
+            ----------------------------------------- */
+
+            const offerPrice =
+                Number(
+                    item.offer_price || 0
+                );
+
+
+            const normalPrice =
+                Number(
+                    item.price || 0
+                );
+
+
+            const price =
+                offerPrice > 0
+                    ? offerPrice
+                    : normalPrice;
+
+
+            /* -----------------------------------------
+                          QUANTITY
+            ----------------------------------------- */
+
+            const quantity =
+                Number(
+                    item.quantity || 0
+                );
+
+
+            /* -----------------------------------------
+                        ITEM TOTAL
+            ----------------------------------------- */
+
+            const itemTotal =
+                price * quantity;
+
+
+            subtotal += itemTotal;
+
+
+            /* -----------------------------------------
+                          PACK SIZE
+            ----------------------------------------- */
+
+            const weightHTML =
+                item.weight
+                    ? `
+                        <div class="item-details">
+
+                            Pack:
+                            ${escapeHTML(
+                                item.weight
+                            )}
+
+                        </div>
+                      `
+                    : "";
+
+
+            /* -----------------------------------------
+                        EACH PRICE
+            ----------------------------------------- */
+
+            const eachPriceHTML = `
+
+                <div class="item-details">
+
+                    ₹${formatMoney(price)}
+                    each
+
+                </div>
+
+            `;
+
+
+            /* -----------------------------------------
+                        ADD TO HTML
+            ----------------------------------------- */
+
+            box.innerHTML += `
+
+                <div class="item">
+
+                    <div>
+
+                        <div class="item-name">
+
+                            ${escapeHTML(
+                                item.product_name ||
+                                "Product"
+                            )}
+
+                        </div>
+
+                        ${weightHTML}
+
+                        <div class="item-details">
+
+                            Qty:
+                            ${quantity}
+
+                        </div>
+
+                        ${eachPriceHTML}
+
+                    </div>
+
+
+                    <div class="item-price">
+
+                        ₹${formatMoney(
+                            itemTotal
+                        )}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    console.log(
+        "CHECKOUT SUBTOTAL:",
+        subtotal
+    );
+
+}
+
+
+/* =====================================================
+                    CALCULATE BILL
+===================================================== */
+
+function calculateBill(){
+
+    /* ---------------------------------------------
+                    SUBTOTAL
+    --------------------------------------------- */
+
+    subtotal = 0;
+
+
+    cart.forEach(
+        function(item){
+
+            const offerPrice =
+                Number(
+                    item.offer_price || 0
+                );
+
+
+            const normalPrice =
+                Number(
+                    item.price || 0
+                );
+
+
+            const price =
+                offerPrice > 0
+                    ? offerPrice
+                    : normalPrice;
+
+
+            const quantity =
+                Number(
+                    item.quantity || 0
+                );
+
+
+            subtotal +=
+                price * quantity;
+
+        }
+    );
+    /* ---------------------------------------------
+            DELIVERY FEE - TESTING
+--------------------------------------------- */
+
+// TEST MODE
+// Delivery is FREE for every order.
+
+deliveryFee = 0;
+
+
+    /* ---------------------------------------------
+                    DELIVERY FEE
+    --------------------------------------------- */
+
+    // if(subtotal >= 299){
+
+    //     deliveryFee = 0;
+
+    // }
+
+    // else{
+
+    //     /*
+    //      * Use the value calculated by cart.html.
+    //      * If it is missing, default to ₹20.
+    //      */
+
+    //     const savedDelivery =
+    //         Number(
+    //             localStorage.getItem(
+    //                 "deliveryFee"
+    //             )
+    //         );
+
+
+    //     if(
+    //         Number.isFinite(
+    //             savedDelivery
+    //         ) &&
+    //         savedDelivery >= 0
+    //     ){
+
+    //         deliveryFee =
+    //             savedDelivery;
+
+    //     }
+
+    //     else{
+
+    //         deliveryFee = 20;
+
+    //     }
+
+    // }
+
+
+    /* ---------------------------------------------
+                    GST 5%
+    --------------------------------------------- */
+
+    gstFee =
+        Math.round(
+            subtotal * 0.05
+        );
+
+
+    /* ---------------------------------------------
+                    COUPON
+    --------------------------------------------- */
+
+    couponDiscount =
+        Number(
+            localStorage.getItem(
+                "couponDiscount"
+            )
+        ) || 0;
+
+
+    /* ---------------------------------------------
+                    GRAND TOTAL
+    --------------------------------------------- */
+
+    grandTotal =
+        subtotal +
+        deliveryFee +
+        gstFee -
+        couponDiscount;
+
+
+    if(grandTotal < 0){
+
+        grandTotal = 0;
+
+    }
+
+
+    /* ---------------------------------------------
+                    SAVE BILL
+    --------------------------------------------- */
+
+    localStorage.setItem(
+        "cartSubtotal",
+        subtotal
+    );
+
+    localStorage.setItem(
+        "deliveryFee",
+        deliveryFee
+    );
+
+    localStorage.setItem(
+        "gstFee",
+        gstFee
+    );
+
+    localStorage.setItem(
+        "couponDiscount",
+        couponDiscount
+    );
+
+    localStorage.setItem(
+        "grandTotal",
+        grandTotal
+    );
+
+    localStorage.setItem(
+        "partnerId",
+        partnerId || ""
+    );
+
+
+    /* ---------------------------------------------
+                    DISPLAY BILL
+    --------------------------------------------- */
+
+    document.getElementById(
+        "itemTotal"
+    ).innerHTML =
+        "₹" +
+        formatMoney(subtotal);
+
+
+    document.getElementById(
+        "deliveryFee"
+    ).innerHTML =
+
+        deliveryFee === 0
+
+        ? `
+            <span style="
+                color:green;
+                font-weight:600;
+            ">
+                FREE
+            </span>
+          `
+
+        :
+        "₹" +
+        formatMoney(
+            deliveryFee
+        );
+
+
+    document.getElementById(
+        "gstFee"
+    ).innerHTML =
+        "₹" +
+        formatMoney(
+            gstFee
+        );
+
+
+    document.getElementById(
+        "discount"
+    ).innerHTML =
+        "- ₹" +
+        formatMoney(
+            couponDiscount
+        );
+
+
+    document.getElementById(
+        "grandTotal"
+    ).innerHTML =
+        "₹" +
+        formatMoney(
+            grandTotal
+        );
+
+
+    document.getElementById(
+        "bottomTotal"
+    ).innerHTML =
+        "₹" +
+        formatMoney(
+            grandTotal
+        );
+
+
+    console.log(
+        "================================"
+    );
+
+    console.log(
+        "CHECKOUT BILL"
+    );
+
+    console.log(
+        "Subtotal:",
+        subtotal
+    );
+
+    console.log(
+        "Delivery:",
+        deliveryFee
+    );
+
+    console.log(
+        "GST:",
+        gstFee
+    );
+
+    console.log(
+        "Discount:",
+        couponDiscount
+    );
+
+    console.log(
+        "Grand Total:",
+        grandTotal
+    );
+
+    console.log(
+        "================================"
+    );
+
+}
+
+
+/* =====================================================
+                    CHANGE ADDRESS
+===================================================== */
+
+function changeAddress(){
+
+    /*
+     * Tell address.html that user came
+     * from checkout page.
+     */
+
+    localStorage.setItem(
+        "addressReturnPage",
+        "checkout.html"
+    );
+
+
+    window.location.href =
+        "address.html";
+
+}
+
+/* =====================================================
+                        COUPON
+===================================================== */
+
+function openCoupons(){
+
+    alert(
+        "Coupon feature coming soon."
+    );
+
+}
+
+
+/* =====================================================
+                    PAY NOW
+===================================================== */
+
+async function payNow(){
+
+    console.log(
+        "================================"
+    );
+
+    console.log(
+        "DARVOZ PAY NOW"
+    );
+
+    console.log(
+        "================================"
+    );
+
+
+    /* ---------------------------------------------
+                    READ CART AGAIN
+    --------------------------------------------- */
+
+    const savedCart =
+        localStorage.getItem(
+            "cart"
+        );
+
+
+    console.log(
+        "RAW PAYMENT CART:",
+        savedCart
+    );
+
+
+    if(!savedCart){
+
+        alert(
+            "Cart Empty"
+        );
+
+        window.location =
+            "cart.html";
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+                    PARSE CART
+    --------------------------------------------- */
+
+    try{
+
+        cart =
+            JSON.parse(
+                savedCart
+            );
+
+    }
+
+    catch(error){
+
+        console.log(
+            "PAYMENT CART JSON ERROR:",
+            error
+        );
+
+        alert(
+            "Cart data is corrupted."
+        );
+
+        window.location =
+            "cart.html";
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+                    CHECK CART
+    --------------------------------------------- */
+
+    if(
+        !Array.isArray(cart) ||
+        cart.length === 0
+    ){
+
+        alert(
+            "Cart Empty"
+        );
+
+        window.location =
+            "cart.html";
+
+        return;
+
+    }
+
+
+    console.log(
+        "PAYMENT CART:",
+        cart
+    );
+
+
+    /* ---------------------------------------------
+                    PARTNER ID
+    --------------------------------------------- */
+
+    partnerId =
+        localStorage.getItem(
+            "partnerId"
+        ) ||
+        cart[0].partner_id ||
+        null;
+
+
+    if(!partnerId){
+
+        alert(
+            "Restaurant information missing."
+        );
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+                    PAYMENT METHOD
+    --------------------------------------------- */
+
+    const selectedPayment =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+
+    if(!selectedPayment){
+
+        alert(
+            "Please select payment method."
+        );
+
+        return;
+
+    }
+
+
+    paymentMethod =
+        selectedPayment.value;
+
+
+    /* ---------------------------------------------
+                    RECALCULATE BILL
+    --------------------------------------------- */
+
+    calculateBill();
+
+
+    if(grandTotal <= 0){
+
+        alert(
+            "Invalid order amount."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "PAYMENT METHOD:",
+        paymentMethod
+    );
+
+    console.log(
+        "PAYMENT AMOUNT:",
+        grandTotal
+    );
+
+
+    /* =================================================
+                    CASH ON DELIVERY
+    ================================================= */
+
+    if(paymentMethod === "COD"){
+
+        await placeOrderAfterPayment(
+            null
+        );
+
+        return;
+
+    }
+
+
+    /* =================================================
+                    UPI / RAZORPAY
+    ================================================= */
+
+    try{
+
+        const createOrder =
+            await fetch(
+
+                `${API}/payment/create-order`,
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        amount:
+                            grandTotal
+
+                    })
+
+                }
+
+            );
+
+
+        if(!createOrder.ok){
+
+            throw new Error(
+                "Payment API failed"
+            );
+
+        }
+
+
+        const orderData =
+            await createOrder.json();
+
+
+        console.log(
+            "RAZORPAY ORDER:",
+            orderData
+        );
+
+
+        if(
+            !orderData.success ||
+            !orderData.order
+        ){
+
+            alert(
+                orderData.message ||
+                "Unable to create payment."
+            );
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                    RAZORPAY OPTIONS
+        --------------------------------------------- */
+
+        const options = {
+
+            /*
+             * Use your Razorpay TEST key while developing.
+             * Replace with your real Key ID when going live.
+             */
+
+            key:
+                "rzp_live_TKPhleuHhHFzUn",
+
+
+            amount:
+                orderData.order.amount,
+
+
+            currency:
+                "INR",
+
+
+            name:
+                "DARVOZ",
+
+
+            description:
+                "DARVOZ Order",
+
+
+            order_id:
+                orderData.order.id,
+
+
+            handler:
+                function(response){
+
+                    console.log(
+                        "RAZORPAY RESPONSE:",
+                        response
+                    );
+
+
+                    verifyPayment(
+                        response
+                    );
+
+                },
+
+
+            modal:{
+
+                ondismiss:
+                    function(){
+
+                        console.log(
+                            "Razorpay closed."
+                        );
+
+                    }
+
+            },
+
+
+            theme:{
+
+                color:
+                    "#ff5a00"
+
+            }
+
+        };
+
+
+        /* ---------------------------------------------
+                    OPEN RAZORPAY
+        --------------------------------------------- */
+
+        const rzp =
+            new Razorpay(
+                options
+            );
+
+
+        rzp.on(
+            "payment.failed",
+            function(response){
+
+                console.log(
+                    "PAYMENT FAILED:",
+                    response
+                );
+
+                alert(
+                    "Payment failed. Please try again."
+                );
+
+            }
+        );
+
+
+        rzp.open();
+
+    }
+
+    catch(error){
+
+        console.log(
+            "PAYMENT ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to start payment."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+                    VERIFY PAYMENT
+===================================================== */
+
+async function verifyPayment(
+    payment
+){
+
+    try{
+
+        console.log(
+            "VERIFYING RAZORPAY PAYMENT..."
+        );
+
+
+        /* ---------------------------------------------
+                    VERIFY SIGNATURE
+        --------------------------------------------- */
+
+        const verify =
+            await fetch(
+
+                `${API}/payment/verify`,
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        razorpay_order_id:
+                            payment.razorpay_order_id,
+
+                        razorpay_payment_id:
+                            payment.razorpay_payment_id,
+
+                        razorpay_signature:
+                            payment.razorpay_signature
+
+                    })
+
+                }
+
+            );
+
+
+        if(!verify.ok){
+
+            throw new Error(
+                "Verification API failed"
+            );
+
+        }
+
+
+        const verifyData =
+            await verify.json();
+
+
+        console.log(
+            "PAYMENT VERIFY RESPONSE:",
+            verifyData
+        );
+
+
+        if(!verifyData.success){
+
+            alert(
+                verifyData.message ||
+                "Payment Verification Failed"
+            );
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                    PAYMENT VERIFIED
+        --------------------------------------------- */
+
+        console.log(
+            "PAYMENT VERIFIED SUCCESSFULLY"
+        );
+
+
+        /* ---------------------------------------------
+                    PLACE ORDER
+        --------------------------------------------- */
+
+        await placeOrderAfterPayment(
+            payment
+        );
+
+    }
+
+    catch(error){
+
+        console.log(
+            "VERIFY ERROR:",
+            error
+        );
+
+        alert(
+            "Payment verification failed."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+                    PLACE ORDER
+===================================================== */
+
+async function placeOrderAfterPayment(
+    payment
+){
+
+    try{
+
+        console.log(
+            "================================"
+        );
+
+        console.log(
+            "PLACING DARVOZ ORDER"
+        );
+
+        console.log(
+            "================================"
+        );
+
+
+        /* ---------------------------------------------
+                    CHECK CART
+        --------------------------------------------- */
+
+        if(
+            !Array.isArray(cart) ||
+            cart.length === 0
+        ){
+
+            alert(
+                "Cart Empty"
+            );
+
+            window.location =
+                "cart.html";
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                    RESTAURANT NAME
+        --------------------------------------------- */
+
+        const restaurantName =
+            cart[0].restaurant_name ||
+            localStorage.getItem(
+                "restaurantName"
+            ) ||
+            "DARVOZ Partner";
+
+
+        /* ---------------------------------------------
+                    CUSTOMER DATA
+        --------------------------------------------- */
+
+        const customerName =
+            localStorage.getItem(
+                "customerName"
+            ) || "";
+
+
+        const mobile =
+            localStorage.getItem(
+                "mobile"
+            ) || "";
+
+
+        const address =
+            document.getElementById(
+                "address"
+            ).innerText;
+
+
+        const customerLat =
+            localStorage.getItem(
+                "customer_lat"
+            ) || "";
+
+
+        const customerLng =
+            localStorage.getItem(
+                "customer_lng"
+            ) || "";
+
+
+        /* ---------------------------------------------
+                    ORDER DATA
+        --------------------------------------------- */
+
+        const orderPayload = {
+
+    customer_id: customerId,
+
+    partner_id: partnerId,
+
+    restaurant_name: restaurantName,
+
+    customer_name: customerName,
+
+    mobile: mobile,
+
+    address: address,
+
+    customer_lat: customerLat,
+
+    customer_lng: customerLng,
+
+    payment: paymentMethod,
+
+    amount: grandTotal,
+
+    subtotal: subtotal,
+
+    delivery_fee: deliveryFee,
+
+    gst: gstFee,
+
+    discount: couponDiscount,
+
+    // IMPORTANT: SEND ORDER ITEMS
+    items: cart.map(item => ({
+
+        product_id:
+            item.product_id ||
+            item.id ||
+            null,
+
+        product_name:
+            item.product_name ||
+            item.name ||
+            "Product",
+
+        price:
+            Number(
+                item.offer_price ||
+                item.price ||
+                0
+            ),
+
+        quantity:
+            Number(
+                item.quantity ||
+                1
+            ),
+
+        weight:
+            item.weight ||
+            ""
+
+    })),
+
+    payment_id:
+        payment
+            ? payment.razorpay_payment_id
+            : null,
+
+    payment_order_id:
+        payment
+            ? payment.razorpay_order_id
+            : null
+
+};
+
+
+        console.log(
+            "ORDER PAYLOAD:",
+            orderPayload
+        );
+
+
+        /* ---------------------------------------------
+                    SEND ORDER
+        --------------------------------------------- */
+
+        const orderResponse =
+            await fetch(
+
+                `${API}/orders/place`,
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            orderPayload
+                        )
+
+                }
+
+            );
+
+
+        console.log(
+            "ORDER HTTP STATUS:",
+            orderResponse.status
+        );
+
+
+       if(!orderResponse.ok){
+
+    const errorText =
+        await orderResponse.text();
+
+    console.error(
+        "ORDER SERVER ERROR:",
+        errorText
+    );
+
+    throw new Error(
+        `Order API failed: ${errorText}`
+    );
+
+}
+
+
+        const orderData =
+            await orderResponse.json();
+
+
+        console.log(
+            "ORDER RESPONSE:",
+            orderData
+        );
+
+
+        /* ---------------------------------------------
+                    ORDER FAILED
+        --------------------------------------------- */
+
+        if(!orderData.success){
+
+            alert(
+                orderData.message ||
+                "Order failed."
+            );
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------
+                    SAVE ORDER ID
+        --------------------------------------------- */
+
+        localStorage.setItem(
+    "orderId",
+    String(orderData.orderId)
+);
+
+localStorage.setItem(
+    "orderSuccess",
+    "true"
+);
+
+localStorage.setItem(
+    "paymentSuccess",
+    paymentMethod === "UPI" ? "true" : "false"
+);
+
+
+        /* ---------------------------------------------
+                    SAVE LAST ORDER
+        --------------------------------------------- */
+
+        localStorage.setItem(
+            "lastOrder",
+            JSON.stringify({
+
+                orderId:
+                    orderData.orderId,
+
+                partnerId:
+                    partnerId,
+
+                amount:
+                    grandTotal,
+
+                payment:
+                    paymentMethod
+
+            })
+        );
+
+
+        /* ---------------------------------------------
+                    CLEAR CART
+        --------------------------------------------- */
+
+        localStorage.removeItem(
+            "cart"
+        );
+
+
+        localStorage.removeItem(
+            "cartSubtotal"
+        );
+
+        localStorage.removeItem(
+            "deliveryFee"
+        );
+
+        localStorage.removeItem(
+            "gstFee"
+        );
+
+        localStorage.removeItem(
+            "couponDiscount"
+        );
+
+        localStorage.removeItem(
+            "grandTotal"
+        );
+
+
+        /* ---------------------------------------------
+                    SUCCESS PAGE
+        --------------------------------------------- */
+
+        window.location.href =
+            "order-success.html";
+
+    }
+
+   catch(error){
+
+    console.error(
+        "PLACE ORDER ERROR:",
+        error
+    );
+
+    alert(
+        "Order payment was successful, but order creation failed. Please contact support. Do not pay again."
+    );
+
+}
+
+}
+
+
+/* =====================================================
+                    EMPTY CART
+===================================================== */
+
+function showCartEmpty(){
+
+    document.getElementById(
+        "restaurantName"
+    ).innerHTML =
+        "DARVOZ";
+
+
+    document.getElementById(
+        "restaurantItems"
+    ).innerHTML =
+        "0 Items";
+
+
+    document.getElementById(
+        "orderItems"
+    ).innerHTML = `
+
+        <div class="empty">
+
+            <i class="
+                fa-solid
+                fa-cart-shopping
+            "></i>
+
+            <h3>
+                Your Cart is Empty
+            </h3>
+
+            <p>
+                Add products to continue.
+            </p>
+
+            <button
+                onclick="
+                    window.location='index.html'
+                "
+                style="
+                    margin-top:20px;
+                    background:#ff5a00;
+                    color:white;
+                    border:none;
+                    padding:12px 25px;
+                    border-radius:10px;
+                    cursor:pointer;
+                "
+            >
+                Browse DARVOZ
+            </button>
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "itemTotal"
+    ).innerHTML =
+        "₹0";
+
+
+    document.getElementById(
+        "deliveryFee"
+    ).innerHTML =
+        "₹0";
+
+
+    document.getElementById(
+        "gstFee"
+    ).innerHTML =
+        "₹0";
+
+
+    document.getElementById(
+        "discount"
+    ).innerHTML =
+        "₹0";
+
+
+    document.getElementById(
+        "grandTotal"
+    ).innerHTML =
+        "₹0";
+
+
+    document.getElementById(
+        "bottomTotal"
+    ).innerHTML =
+        "₹0";
+
+
+    document.getElementById(
+        "payButton"
+    ).disabled =
+        true;
+
+}
+
+
+/* =====================================================
+                    MONEY FORMAT
+===================================================== */
+
+function formatMoney(value){
+
+    return Number(
+        value || 0
+    ).toLocaleString(
+        "en-IN",
+        {
+            minimumFractionDigits:0,
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+/* =====================================================
+                    ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text){
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.innerText =
+        text == null
+            ? ""
+            : String(text);
+
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+                    END CHECKOUT
+===================================================== */
+
+console.log(
+    "DARVOZ Checkout JS Loaded Successfully"
+);
+
+</script>
+
+</body>
+
+</html>

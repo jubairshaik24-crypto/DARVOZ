@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Profile</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+:root{
+
+    --orange:#ff6200;
+    --orange-dark:#ff4300;
+    --orange-light:#fff3eb;
+
+    --bg:#f5f6f8;
+    --white:#fff;
+
+    --text:#111827;
+    --muted:#6b7280;
+
+    --shadow:0 8px 30px rgba(0,0,0,.07);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff8f3 0px,
+            #f5f6f8 500px
+        );
+
+    color:var(--text);
+
+    padding-bottom:100px;
+
+}
+
+
+/* =====================================================
+   PREMIUM HEADER
+===================================================== */
+
+.header{
+
+    height:220px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    text-align:center;
+
+    color:#fff;
+
+    background:
+
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(255,255,255,.24),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(255,210,120,.25),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(255,255,255,.15),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #ff9500 0%,
+            #ff7200 25%,
+            #ff5b00 52%,
+            #ff4300 78%,
+            #ed3100 100%
+        );
+
+    box-shadow:
+        0 12px 35px rgba(255,88,0,.25);
+
+}
+
+
+/* =====================================================
+   PREMIUM GLOW CIRCLES
+===================================================== */
+
+.header::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:390px;
+    height:390px;
+
+    left:-210px;
+    top:-180px;
+
+    border-radius:50%;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.16),
+            rgba(255,255,255,0) 70%
+        );
+
+    pointer-events:none;
+
+}
+
+
+.header::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:420px;
+    height:420px;
+
+    right:-230px;
+    bottom:-300px;
+
+    border-radius:50%;
+
+    border:1px solid rgba(255,255,255,.18);
+
+    box-shadow:
+
+        0 0 0 35px rgba(255,255,255,.035),
+
+        0 0 0 75px rgba(255,255,255,.025),
+
+        0 0 0 115px rgba(255,255,255,.018);
+
+    pointer-events:none;
+
+}
+
+
+/* =====================================================
+   FOOD DECORATIONS
+===================================================== */
+
+.food-decoration{
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.12;
+
+    font-size:33px;
+
+    z-index:1;
+
+}
+
+.food-decoration span{
+
+    position:absolute;
+
+    filter:
+        drop-shadow(
+            0 4px 8px rgba(0,0,0,.10)
+        );
+
+}
+
+.food1{
+
+    top:24px;
+    left:25px;
+
+    transform:rotate(-12deg);
+
+}
+
+.food2{
+
+    top:32px;
+    right:28px;
+
+    transform:rotate(10deg);
+
+}
+
+.food3{
+
+    bottom:28px;
+    left:70px;
+
+    transform:rotate(-15deg);
+
+}
+
+.food4{
+
+    bottom:24px;
+    right:75px;
+
+    transform:rotate(12deg);
+
+}
+
+.food5{
+
+    top:85px;
+    left:48%;
+
+    transform:rotate(-8deg);
+
+}
+
+
+/* =====================================================
+   DARVOZ LOGO
+===================================================== */
+
+.logo{
+
+    position:relative;
+
+    z-index:5;
+
+    padding-top:28px;
+
+    font-size:56px;
+
+    line-height:1;
+
+    font-weight:800;
+
+    letter-spacing:-2.5px;
+
+    color:#fff;
+
+    text-shadow:
+
+        0 4px 12px rgba(0,0,0,.15),
+
+        0 1px 2px rgba(255,255,255,.3);
+
+}
+
+
+/* =====================================================
+   TAGLINE
+===================================================== */
+
+.tagline{
+
+    position:relative;
+
+    z-index:5;
+
+    margin-top:9px;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    letter-spacing:.3px;
+
+    color:#fff;
+
+    text-shadow:
+        0 2px 6px rgba(0,0,0,.13);
+
+}
+
+
+/* =====================================================
+   HEADER LINE
+===================================================== */
+
+.header-line{
+
+    position:relative;
+
+    z-index:5;
+
+    width:90px;
+
+    height:3px;
+
+    margin:13px auto 0;
+
+    border-radius:20px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.15),
+            #fff,
+            rgba(255,255,255,.15)
+        );
+
+    box-shadow:
+        0 0 13px rgba(255,255,255,.4);
+
+}
+
+
+/* =====================================================
+   PROFILE CARD
+   MOVED SLIGHTLY UP
+===================================================== */
+
+.profile-card{
+
+    position:relative;
+
+    z-index:10;
+
+    margin:
+
+        -38px
+        28px
+        22px;
+
+    padding:25px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fffdfc
+        );
+
+    border-radius:25px;
+
+    box-shadow:
+
+        0 15px 40px rgba(0,0,0,.12),
+
+        0 2px 8px rgba(255,98,0,.08);
+
+    border:1px solid rgba(255,255,255,.9);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:22px;
+
+}
+
+
+/* =====================================================
+   PROFILE IMAGE
+===================================================== */
+
+.profile-image{
+
+    width:105px;
+    height:105px;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    background:#fff3eb;
+
+    border:4px solid var(--orange);
+
+    box-shadow:
+
+        0 5px 18px rgba(255,98,0,.20);
+
+}
+
+.profile-image img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+/* =====================================================
+   PROFILE DETAILS
+===================================================== */
+
+.profile-details{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+.profile-details h2{
+
+    font-size:26px;
+
+    font-weight:700;
+
+    margin-bottom:9px;
+
+    color:#111827;
+
+}
+
+.profile-details p{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    margin-bottom:6px;
+
+    font-size:14px;
+
+    color:#60656f;
+
+}
+
+.profile-details p i{
+
+    width:20px;
+
+    color:var(--orange);
+
+    font-size:15px;
+
+}
+
+
+/* =====================================================
+   EDIT BUTTON
+===================================================== */
+
+.edit-btn{
+
+    height:48px;
+
+    padding:0 20px;
+
+    border:
+
+        1.5px solid
+        var(--orange);
+
+    border-radius:14px;
+
+    background:#fff;
+
+    color:var(--orange);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    white-space:nowrap;
+
+}
+
+.edit-btn:hover{
+
+    background:var(--orange);
+
+    color:#fff;
+
+}
+
+.edit-btn i{
+
+    font-size:17px;
+
+}
+
+
+/* =====================================================
+   MENU CARD
+===================================================== */
+
+.menu-card{
+
+    margin:0 28px;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow);
+
+    border:1px solid #f0f0f0;
+
+}
+
+
+/* =====================================================
+   MENU ITEM
+===================================================== */
+
+.menu-item{
+
+    min-height:94px;
+
+    padding:15px 20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    cursor:pointer;
+
+    border-bottom:1px solid #eeeeee;
+
+    transition:.2s;
+
+}
+
+.menu-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.menu-item:hover{
+
+    background:#fffaf7;
+
+}
+
+
+/* =====================================================
+   MENU LEFT
+===================================================== */
+
+.menu-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:17px;
+
+    min-width:0;
+
+}
+
+
+/* =====================================================
+   MENU ICON
+===================================================== */
+
+.menu-icon{
+
+    width:55px;
+    height:55px;
+
+    flex-shrink:0;
+
+    border-radius:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#fff3eb;
+
+    color:var(--orange);
+
+    font-size:22px;
+
+}
+
+
+/* GREEN */
+
+.menu-icon.green{
+
+    background:#eaf9ef;
+
+    color:#15ad50;
+
+}
+
+
+/* PINK */
+
+.menu-icon.pink{
+
+    background:#fff0f5;
+
+    color:#ed2362;
+
+}
+
+
+/* PURPLE */
+
+.menu-icon.purple{
+
+    background:#f2ebff;
+
+    color:#7435d6;
+
+}
+
+
+/* =====================================================
+   MENU CONTENT
+===================================================== */
+
+.menu-content{
+
+    min-width:0;
+
+}
+
+.menu-content h3{
+
+    font-size:17px;
+
+    font-weight:650;
+
+    color:#111827;
+
+    line-height:1.3;
+
+}
+
+.menu-content p{
+
+    margin-top:4px;
+
+    font-size:13px;
+
+    color:#737780;
+
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.menu-arrow{
+
+    color:#888d94;
+
+    font-size:18px;
+
+    margin-left:12px;
+
+}
+
+
+/* =====================================================
+   WALLET
+===================================================== */
+
+.wallet-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:17px;
+
+    margin-left:auto;
+
+}
+
+.wallet-balance{
+
+    color:var(--orange);
+
+    font-size:19px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.logout{
+
+    margin:22px 28px;
+
+    min-height:86px;
+
+    padding:15px 20px;
+
+    border-radius:22px;
+
+    background:
+
+        radial-gradient(
+            circle at 90% 120%,
+            rgba(255,255,255,.20),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #ff7900,
+            #ff5800,
+            #f04400
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    box-shadow:
+
+        0 10px 28px
+        rgba(255,98,0,.22);
+
+    cursor:pointer;
+
+}
+
+.logout-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+.logout-icon{
+
+    width:55px;
+    height:55px;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.7);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:23px;
+
+}
+
+.logout-content h3{
+
+    font-size:18px;
+
+    font-weight:650;
+
+}
+
+.logout-content p{
+
+    font-size:13px;
+
+    margin-top:3px;
+
+    opacity:.9;
+
+}
+
+.logout-arrow{
+
+    font-size:20px;
+
+}
+
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:0;
+    bottom:0;
+
+    width:100%;
+
+    height:78px;
+
+    background:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-around;
+
+    box-shadow:
+        0 -5px 25px rgba(0,0,0,.08);
+
+    border-top:1px solid #eeeeee;
+
+    z-index:9999;
+
+}
+
+.bottom-nav a{
+
+    flex:1;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:5px;
+
+    text-decoration:none;
+
+    color:#6c7076;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.bottom-nav a i{
+
+    font-size:22px;
+
+}
+
+.bottom-nav a.active{
+
+    color:var(--orange);
+
+}
+
+.bottom-nav a.active i{
+
+    transform:scale(1.08);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    body{
+
+        padding-bottom:90px;
+
+    }
+
+
+    .header{
+
+        height:195px;
+
+    }
+
+
+    .logo{
+
+        padding-top:27px;
+
+        font-size:44px;
+
+        letter-spacing:-2px;
+
+    }
+
+
+    .tagline{
+
+        font-size:15px;
+
+        margin-top:8px;
+
+    }
+
+
+    .header-line{
+
+        width:70px;
+
+        height:2.5px;
+
+        margin-top:11px;
+
+    }
+
+
+    .food-decoration{
+
+        font-size:27px;
+
+    }
+
+
+    /* PROFILE CARD HIGHER */
+
+    .profile-card{
+
+        margin:
+
+            -32px
+            14px
+            17px;
+
+        padding:18px;
+
+        gap:13px;
+
+        border-radius:21px;
+
+    }
+
+
+    .profile-image{
+
+        width:78px;
+
+        height:78px;
+
+        border-width:3px;
+
+    }
+
+
+    .profile-details h2{
+
+        font-size:19px;
+
+        margin-bottom:7px;
+
+    }
+
+
+    .profile-details p{
+
+        font-size:11.5px;
+
+        gap:6px;
+
+    }
+
+
+    .profile-details p i{
+
+        width:16px;
+
+        font-size:13px;
+
+    }
+
+
+    .edit-btn{
+
+        width:44px;
+
+        height:44px;
+
+        padding:0;
+
+        border-radius:12px;
+
+    }
+
+
+    .edit-btn span{
+
+        display:none;
+
+    }
+
+
+    /* MENU */
+
+    .menu-card{
+
+        margin:0 14px;
+
+        border-radius:20px;
+
+    }
+
+
+    .menu-item{
+
+        min-height:82px;
+
+        padding:13px 14px;
+
+    }
+
+
+    .menu-left{
+
+        gap:12px;
+
+    }
+
+
+    .menu-icon{
+
+        width:47px;
+
+        height:47px;
+
+        border-radius:13px;
+
+        font-size:19px;
+
+    }
+
+
+    .menu-content h3{
+
+        font-size:14.5px;
+
+    }
+
+
+    .menu-content p{
+
+        font-size:11.5px;
+
+        margin-top:3px;
+
+    }
+
+
+    .menu-arrow{
+
+        font-size:16px;
+
+    }
+
+
+    /* WALLET */
+
+    .wallet-right{
+
+        gap:8px;
+
+    }
+
+
+    .wallet-balance{
+
+        font-size:14px;
+
+    }
+
+
+    /* LOGOUT */
+
+    .logout{
+
+        margin:17px 14px;
+
+        min-height:76px;
+
+        border-radius:18px;
+
+        padding:12px 15px;
+
+    }
+
+
+    .logout-icon{
+
+        width:47px;
+
+        height:47px;
+
+        border-radius:13px;
+
+        font-size:20px;
+
+    }
+
+
+    .logout-content h3{
+
+        font-size:16px;
+
+    }
+
+
+    .logout-content p{
+
+        font-size:11px;
+
+    }
+
+
+    .logout-arrow{
+
+        font-size:17px;
+
+    }
+
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media(min-width:900px){
+
+    .profile-card,
+    .menu-card,
+    .logout{
+
+        max-width:850px;
+
+        margin-left:auto;
+
+        margin-right:auto;
+
+    }
+
+
+    .profile-card{
+
+        margin-top:-38px;
+
+    }
+
+
+    .bottom-nav{
+
+        width:500px;
+
+        left:50%;
+
+        transform:translateX(-50%);
+
+        border-radius:24px 24px 0 0;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+
+    <div class="food-decoration">
+
+        <span class="food1">🛒</span>
+
+        <span class="food2">🥩</span>
+
+        <span class="food3">🥕</span>
+
+        <span class="food4">🍔</span>
+
+        <span class="food5">🛍️</span>
+
+    </div>
+
+
+    <div class="logo">
+        DARVOZ
+    </div>
+
+
+    <div class="tagline">
+        One App. Every Need.
+    </div>
+
+
+    <div class="header-line"></div>
+
+
+</header>
+
+
+<!-- =====================================================
+     PROFILE CARD
+===================================================== -->
+
+<section class="profile-card">
+
+
+    <div class="profile-image">
+
+        <img
+            id="profileImage"
+            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            alt="Profile">
+
+    </div>
+
+
+    <div class="profile-details">
+
+        <h2 id="customerName">
+            Loading...
+        </h2>
+
+
+        <p>
+
+            <i class="fa-solid fa-phone"></i>
+
+            <span id="customerMobile">
+                Loading...
+            </span>
+
+        </p>
+
+
+        <p>
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <span id="customerEmail">
+                Loading...
+            </span>
+
+        </p>
+
+    </div>
+
+
+    <div
+        class="edit-btn"
+        onclick="location.href='edit-profile.html'">
+
+        <i class="fa-solid fa-pen"></i>
+
+        <span>
+            Edit Profile
+        </span>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     MENU CARD
+===================================================== -->
+
+<section class="menu-card">
+
+
+    <!-- WALLET -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='wallet.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon green">
+
+                <i class="fa-solid fa-wallet"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    My Wallet
+                </h3>
+
+                <p>
+                    View wallet balance and transactions
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="wallet-right">
+
+            <span class="wallet-balance">
+
+                ₹<span id="walletBalance">0.00</span>
+
+            </span>
+
+
+            <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- SAVED ADDRESSES -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='address.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    Saved Addresses
+                </h3>
+
+                <p>
+                    Manage your saved addresses
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+    <!-- MY ORDERS -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='orders.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    My Orders
+                </h3>
+
+                <p>
+                    View your past and ongoing orders
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+    <!-- REFER A FRIEND -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='refer.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon pink">
+
+                <i class="fa-solid fa-user-group"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    Refer a Friend
+                </h3>
+
+                <p>
+                    Invite friends and earn rewards
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+    <!-- FAVORITES -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='favorites.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon pink">
+
+                <i class="fa-solid fa-heart"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    Favorites
+                </h3>
+
+                <p>
+                    View your favorite items and stores
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+    <!-- HELP & SUPPORT -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='help.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon purple">
+
+                <i class="fa-solid fa-headset"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    Help &amp; Support
+                </h3>
+
+                <p>
+                    Get help and support
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+    <!-- CANCELLATION -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='cancellation-refund.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon">
+
+                <i class="fa-solid fa-rotate-left"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    Cancellation &amp; Refund Policy
+                </h3>
+
+                <p>
+                    Read our cancellation &amp; refund policy
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+    <!-- TERMS -->
+
+    <div
+        class="menu-item"
+        onclick="location.href='terms.html'">
+
+        <div class="menu-left">
+
+            <div class="menu-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+
+            <div class="menu-content">
+
+                <h3>
+                    Terms and Conditions
+                </h3>
+
+                <p>
+                    Read our terms and conditions
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <i class="fa-solid fa-chevron-right menu-arrow"></i>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     LOGOUT
+===================================================== -->
+
+<div
+    class="logout"
+    onclick="logout()">
+
+
+    <div class="logout-left">
+
+
+        <div class="logout-icon">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+        </div>
+
+
+        <div class="logout-content">
+
+            <h3>
+                Logout
+            </h3>
+
+            <p>
+                Log out from your DARVOZ account
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <i class="fa-solid fa-chevron-right logout-arrow"></i>
+
+
+</div>
+
+
+<!-- =====================================================
+     BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="bottom-nav">
+
+
+    <a href="index.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+    <a href="categories.html">
+
+        <i class="fa-solid fa-layer-group"></i>
+
+        <span>
+            Categories
+        </span>
+
+    </a>
+
+
+    <a href="cart.html">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <span>
+            Cart
+        </span>
+
+    </a>
+
+
+    <a href="orders.html">
+
+        <i class="fa-solid fa-box"></i>
+
+        <span>
+            Orders
+        </span>
+
+    </a>
+
+
+    <a
+        href="profile.html"
+        class="active">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>
+            Profile
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+<script>
+
+/* =====================================================
+   API + CUSTOMER
+===================================================== */
+
+const API = window.location.origin;
+
+const customerId =
+    localStorage.getItem("customerId");
+
+
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
+if(!customerId){
+
+    window.location.href =
+        "customer-login.html";
+
+}
+
+
+/* =====================================================
+   LOAD PROFILE
+===================================================== */
+
+async function loadProfile(){
+
+    try{
+
+        console.log(
+            "CUSTOMER ID:",
+            customerId
+        );
+
+
+        const response =
+            await fetch(
+                `${API}/customer/profile/${customerId}`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "PROFILE API RESPONSE:",
+            data
+        );
+
+
+        /* =================================================
+           CHECK API RESPONSE
+        ================================================= */
+
+        if(
+            !data.success ||
+            !data.customer
+        ){
+
+            throw new Error(
+                data.message ||
+                "Customer data not found"
+            );
+
+        }
+
+
+        const customer =
+            data.customer;
+
+
+        console.log(
+            "CUSTOMER DATA:",
+            customer
+        );
+
+
+        /* =================================================
+           NAME
+        ================================================= */
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            customer.name || "Customer";
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        document.getElementById(
+            "customerMobile"
+        ).textContent =
+            customer.mobile || "Mobile not available";
+
+
+        /* =================================================
+           EMAIL
+        ================================================= */
+
+        document.getElementById(
+            "customerEmail"
+        ).textContent =
+            customer.email || "Email not available";
+
+
+        /* =================================================
+           PROFILE IMAGE
+        ================================================= */
+
+        if(customer.profile_image){
+
+            let imageUrl =
+                customer.profile_image;
+
+
+            /*
+             * If backend gives complete URL
+             * such as Cloudinary URL
+             */
+            if(
+                imageUrl.startsWith("http://") ||
+                imageUrl.startsWith("https://")
+            ){
+
+                document.getElementById(
+                    "profileImage"
+                ).src =
+                    imageUrl;
+
+            }
+
+            /*
+             * If backend gives only filename
+             */
+            else{
+
+                document.getElementById(
+                    "profileImage"
+                ).src =
+                    `${API}/uploads/${imageUrl}`;
+
+            }
+
+        }
+
+
+        /* =================================================
+           WALLET BALANCE
+        ================================================= */
+
+        const balance =
+            Number(
+                customer.wallet_balance || 0
+            );
+
+
+        document.getElementById(
+            "walletBalance"
+        ).textContent =
+            balance.toLocaleString(
+                "en-IN",
+                {
+                    minimumFractionDigits:2,
+                    maximumFractionDigits:2
+                }
+            );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "DARVOZ PROFILE ERROR:",
+            error
+        );
+
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            "Unable to load";
+
+
+        document.getElementById(
+            "customerMobile"
+        ).textContent =
+            "";
+
+
+        document.getElementById(
+            "customerEmail"
+        ).textContent =
+            "";
+
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    const confirmLogout =
+        confirm(
+            "Are you sure you want to logout?"
+        );
+
+
+    if(!confirmLogout){
+
+        return;
+
+    }
+
+
+    localStorage.clear();
+
+    window.location.href =
+        "customer-login.html";
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadProfile();
+
+</script>
+
+</body>
+</html>

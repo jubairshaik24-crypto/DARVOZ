@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Categories | DARVOZ</title>
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+
+        body{
+            font-family:Arial,sans-serif;
+            background:#f7f7f7;
+            color:#222;
+
+            padding-bottom:90px;
+        }
+
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        .top-header{
+            position:sticky;
+            top:0;
+            z-index:100;
+
+            height:65px;
+
+            display:flex;
+            align-items:center;
+
+            gap:15px;
+
+            padding:0 18px;
+
+            background:#fff;
+
+            border-bottom:1px solid #eee;
+        }
+
+
+        .back-btn{
+            width:40px;
+            height:40px;
+
+            border:none;
+            border-radius:50%;
+
+            background:#f5f5f5;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            cursor:pointer;
+
+            font-size:18px;
+        }
+
+
+        .top-header h2{
+            font-size:20px;
+            font-weight:700;
+        }
+
+
+        /* =====================================
+           PAGE CONTENT
+        ===================================== */
+
+        .page-content{
+            padding:20px 16px;
+        }
+
+
+        .page-title{
+            font-size:24px;
+            font-weight:700;
+
+            margin-bottom:20px;
+        }
+
+
+        /* =====================================
+           CATEGORY GRID
+        ===================================== */
+
+        .category-grid{
+
+            display:grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:18px 12px;
+
+        }
+
+
+        .category{
+
+            display:flex;
+            flex-direction:column;
+
+            align-items:center;
+
+            cursor:pointer;
+
+            transition:transform .2s ease;
+
+        }
+
+
+        .category:active{
+            transform:scale(.95);
+        }
+
+
+        /* =====================================
+           CATEGORY IMAGE
+        ===================================== */
+
+        .category-image{
+
+    width:85px;
+    height:85px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    box-shadow:
+        0 2px 10px
+        rgba(0,0,0,.08);
+
+}
+
+
+        .category-image img{
+
+            width:100%;
+            height:100%;
+
+            object-fit:cover;
+
+            display:block;
+
+        }
+
+
+        /* =====================================
+           CATEGORY NAME
+        ===================================== */
+
+        .category-name{
+
+            margin-top:8px;
+
+            text-align:center;
+
+            font-size:14px;
+
+            font-weight:600;
+
+            line-height:1.25;
+
+            min-height:35px;
+
+            display:flex;
+            align-items:flex-start;
+            justify-content:center;
+
+        }
+
+
+        /* =====================================
+           BOTTOM NAV
+        ===================================== */
+
+        .bottom-nav{
+
+            position:fixed;
+
+            bottom:0;
+            left:0;
+
+            width:100%;
+            height:70px;
+
+            background:#fff;
+
+            display:flex;
+
+            align-items:center;
+            justify-content:space-around;
+
+            border-top:
+                1px solid #eee;
+
+            z-index:1000;
+
+        }
+
+
+        .bottom-nav a{
+
+            text-decoration:none;
+
+            color:#777;
+
+            display:flex;
+            flex-direction:column;
+
+            align-items:center;
+            justify-content:center;
+
+            gap:5px;
+
+            font-size:11px;
+
+            min-width:55px;
+
+        }
+
+
+        .bottom-nav a i{
+
+            font-size:19px;
+
+        }
+
+
+        .bottom-nav a.active{
+
+            color:#ff4d4d;
+
+        }
+
+
+        /* =====================================
+           RESPONSIVE
+        ===================================== */
+
+        @media(min-width:600px){
+
+            .page-content{
+                max-width:700px;
+                margin:auto;
+            }
+
+            .category-grid{
+                grid-template-columns:
+                    repeat(4,1fr);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     HEADER
+===================================== -->
+
+<div class="top-header">
+
+    <button
+        class="back-btn"
+        onclick="goBack()"
+    >
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+
+    <h2>
+        Categories
+    </h2>
+
+</div>
+
+
+
+<!-- =====================================
+     PAGE CONTENT
+===================================== -->
+
+<div class="page-content">
+
+
+    <h1 class="page-title">
+        Explore Categories
+    </h1>
+
+
+
+    <!-- =====================================
+         CATEGORY GRID
+    ===================================== -->
+
+    <div class="category-grid">
+
+
+        <!-- BIRYANI -->
+
+        <div
+            class="category"
+            onclick="openCategory('biryani')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/biryani.png"
+                    alt="Biryani"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Biryani
+            </div>
+
+        </div>
+
+
+
+        <!-- GROCERIES -->
+
+        <div
+            class="category"
+            onclick="openCategory('grocery')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/groceries.png"
+                    alt="Groceries"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Groceries
+            </div>
+
+        </div>
+
+
+
+        <!-- MEAT -->
+
+        <div
+            class="category"
+            onclick="openCategory('meat')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/meat.png"
+                    alt="Meat"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Meat
+            </div>
+
+        </div>
+
+
+
+        <!-- TIFFINS -->
+
+        <div
+            class="category"
+            onclick="openCategory('tiffins')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/tiffins.png"
+                    alt="Tiffins"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Tiffins
+            </div>
+
+        </div>
+
+
+
+        <!-- ICECREAMS -->
+
+        <div
+            class="category"
+            onclick="openCategory('icecreams')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/icecreams.png"
+                    alt="Icecreams"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Icecreams
+            </div>
+
+        </div>
+
+
+
+        <!-- CAKES -->
+
+        <div
+            class="category"
+            onclick="openCategory('cakes')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/cakes.png"
+                    alt="Cakes"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Cakes
+            </div>
+
+        </div>
+
+
+
+        <!-- PIZZAS -->
+
+        <div
+            class="category"
+            onclick="openCategory('pizzas')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/pizzas.png"
+                    alt="Pizzas"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Pizzas
+            </div>
+
+        </div>
+
+
+
+        <!-- FAST FOOD -->
+
+        <div
+            class="category"
+            onclick="openCategory('fastfood')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/fastfood.png"
+                    alt="Fast Food"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Fast Food
+            </div>
+
+        </div>
+
+
+
+        <!-- JUICE -->
+
+        <div
+            class="category"
+            onclick="openCategory('juice')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/juice.png"
+                    alt="Juice"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Juice
+            </div>
+
+        </div>
+
+
+
+        <!-- SHAWARMA -->
+
+        <div
+            class="category"
+            onclick="openCategory('shawarma')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/shawarma.png"
+                    alt="Shawarma"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Shawarma
+            </div>
+
+        </div>
+
+
+
+        <!-- PARATHA -->
+
+        <div
+            class="category"
+            onclick="openCategory('paratha')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/paratha.png"
+                    alt="Paratha"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Paratha
+            </div>
+
+        </div>
+
+
+
+        <!-- ROLLS & SANDWICH -->
+
+        <div
+            class="category"
+            onclick="openCategory('rolls-sandwich')"
+        >
+
+            <div class="category-image">
+
+                <img
+                    src="images/categories/rolls-sandwich.png"
+                    alt="Rolls and Sandwich"
+                >
+
+            </div>
+
+            <div class="category-name">
+                Rolls &<br>
+                Sandwich
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     BOTTOM NAV
+===================================== -->
+
+<nav class="bottom-nav">
+
+
+    <a href="index.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+
+    <a
+        href="categories.html"
+        class="active"
+    >
+
+        <i class="fa-solid fa-grip"></i>
+
+        <span>
+            Categories
+        </span>
+
+    </a>
+
+
+
+    <a href="raider.html">
+
+        <i class="fa-solid fa-motorcycle"></i>
+
+        <span>
+            Rider
+        </span>
+
+    </a>
+
+
+
+    <a href="cart.html">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <span>
+            Cart
+        </span>
+
+    </a>
+
+
+
+    <a href="profile.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>
+            Profile
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+
+<!-- =====================================
+     JAVASCRIPT
+===================================== -->
+
+<script>
+
+
+    /* =====================================
+       OPEN CATEGORY
+    ===================================== */
+
+    function openCategory(category){
+
+        // Save selected category
+        localStorage.setItem(
+            "selectedCategory",
+            category
+        );
+
+
+        // Open restaurants page
+        window.location.href =
+            "restaurants.html?category=" +
+            encodeURIComponent(category);
+
+    }
+
+
+
+    /* =====================================
+       BACK BUTTON
+    ===================================== */
+
+    function goBack(){
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

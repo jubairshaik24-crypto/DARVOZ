@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Cart</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+:root{
+
+--primary:#ff5a00;
+--green:#1ba672;
+--bg:#f6f6f6;
+--text:#222;
+--light:#777;
+--white:#fff;
+--border:#ececec;
+
+}
+
+body{
+
+background:var(--bg);
+padding-bottom:110px;
+
+}
+
+header{
+
+position:sticky;
+top:0;
+z-index:999;
+height:65px;
+background:#fff;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 18px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+}
+
+header h2{
+
+font-size:22px;
+font-weight:600;
+
+}
+
+header i{
+
+font-size:22px;
+cursor:pointer;
+
+}
+
+.container{
+
+padding:15px;
+max-width:900px;
+margin:auto;
+
+}
+
+.card{
+
+background:#fff;
+border-radius:18px;
+padding:16px;
+margin-bottom:15px;
+box-shadow:0 3px 10px rgba(0,0,0,.06);
+
+}
+
+.address{
+
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+
+}
+
+.address-left{
+
+display:flex;
+gap:12px;
+
+}
+
+.address-left i{
+
+font-size:22px;
+color:var(--primary);
+
+}
+
+.address h3{
+
+font-size:17px;
+
+}
+
+.address p{
+
+margin-top:6px;
+font-size:14px;
+color:#666;
+line-height:21px;
+
+}
+
+.change{
+
+color:var(--primary);
+font-weight:600;
+cursor:pointer;
+
+}
+
+.restaurant h2{
+
+font-size:21px;
+
+}
+
+.restaurant-info{
+
+display:flex;
+gap:10px;
+align-items:center;
+margin-top:10px;
+color:#666;
+font-size:14px;
+
+}
+
+.dot{
+
+width:5px;
+height:5px;
+background:#bbb;
+border-radius:50%;
+
+}
+
+.offer{
+
+background:#fff;
+border:none;
+border-radius:16px;
+padding:18px;
+box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+}
+
+.coupon{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+
+}
+
+.coupon-left{
+
+display:flex;
+gap:12px;
+align-items:center;
+
+}
+
+.coupon-left i{
+
+font-size:23px;
+color:var(--primary);
+
+}
+
+.coupon h3{
+
+font-size:16px;
+
+}
+
+.coupon p{
+
+font-size:13px;
+color:#777;
+margin-top:4px;
+
+}
+
+#cartItems{
+
+margin-top:15px;
+
+}
+
+.cart-item{
+
+background:#fff;
+border-radius:16px;
+padding:16px;
+margin-bottom:15px;
+box-shadow:0 3px 10px rgba(0,0,0,.06);
+
+}
+
+.bill h3{
+
+margin-bottom:18px;
+
+}
+
+.row{
+
+display:flex;
+justify-content:space-between;
+margin:14px 0;
+font-size:15px;
+
+}
+
+.total{
+
+border-top:1px dashed #ddd;
+padding-top:14px;
+font-size:20px;
+font-weight:700;
+color:var(--primary);
+
+}
+
+.bottom-bar{
+
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#fff;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 -2px 12px rgba(0,0,0,.12);
+
+}
+
+.bottom-left small{
+
+color:#777;
+
+}
+
+.bottom-left h2{
+
+margin-top:4px;
+color:var(--primary);
+
+}
+
+.bottom-bar button{
+
+border:none;
+background:var(--primary);
+color:#fff;
+padding:15px 28px;
+font-size:16px;
+border-radius:12px;
+cursor:pointer;
+font-weight:600;
+
+}
+
+.bottom-bar button:hover{
+
+background:#ea5300;
+
+}
+
+.empty{
+
+text-align:center;
+padding:40px;
+
+}
+
+.empty i{
+
+font-size:75px;
+color:#ddd;
+
+}
+
+.empty h2{
+
+margin-top:15px;
+
+}
+
+.empty p{
+
+margin-top:8px;
+color:#777;
+
+}
+
+@media(max-width:700px){
+
+.container{
+
+padding:12px;
+
+}
+
+header h2{
+
+font-size:20px;
+
+}
+
+.bottom-bar button{
+
+padding:14px 22px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<i class="fa fa-arrow-left" onclick="history.back()"></i>
+
+<h2>My Cart</h2>
+
+<i class="fa-regular fa-trash-can" onclick="clearCart()"></i>
+
+</header>
+
+<div class="container">
+
+<!-- ADDRESS -->
+
+<div class="card">
+
+<div class="address">
+
+<div class="address-left">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<div>
+
+<h3>Deliver To</h3>
+
+<p id="address">
+Loading Address...
+</p>
+
+</div>
+
+</div>
+
+<div class="change" onclick="changeAddress()">
+
+Change
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RESTAURANT -->
+
+<div class="card restaurant">
+
+<h2 id="restaurantName">
+
+Loading...
+
+</h2>
+
+<div class="restaurant-info">
+
+<span id="rating">⭐ 4.5</span>
+
+<div class="dot"></div>
+
+<span id="deliveryTime">25-35 mins</span>
+
+<div class="dot"></div>
+
+<span id="distance">0 km</span>
+
+</div>
+
+</div>
+
+<!-- OFFER -->
+
+<div class="card offer" id="offerBox">
+
+Checking Offer...
+
+</div>
+
+<!-- COUPON -->
+
+<div class="card coupon" onclick="openCoupons()">
+
+<div class="coupon-left">
+
+<i class="fa-solid fa-tags"></i>
+
+<div>
+
+<h3>Apply Coupon</h3>
+
+<p>Save more on this order</p>
+
+</div>
+
+</div>
+
+<i class="fa fa-angle-right"></i>
+
+</div>
+
+<!-- CART ITEMS -->
+
+<div id="cartItems">
+
+</div>
+
+<!-- BILL -->
+
+<div class="card bill">
+
+<h3>Bill Details</h3>
+
+<div class="row">
+
+<span>Item Total</span>
+
+<span id="itemTotal">₹0</span>
+
+</div>
+
+<div class="row">
+
+<span>Delivery Fee</span>
+
+<span id="deliveryFee">₹0</span>
+
+</div>
+
+<div class="row">
+
+<span>GST & Platform Fee</span>
+
+<span id="gstFee">₹0</span>
+
+</div>
+
+<div class="row">
+
+<span>Discount</span>
+
+<span id="discount">₹0</span>
+
+</div>
+
+<div class="row total">
+
+<span>Grand Total</span>
+
+<span id="grandTotal">₹0</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom-bar">
+
+<div class="bottom-left">
+
+<small>Grand Total</small>
+
+<h2 id="bottomTotal">
+
+₹0
+
+</h2>
+
+</div>
+
+<button onclick="checkout()">
+
+Proceed
+
+</button>
+
+</div>
+
+<script>
+
+const API = window.location.origin;
+
+const customerId = localStorage.getItem("customerId");
+
+let cart=[];
+
+let currentPartnerId=null;
+
+let subtotal=0;
+
+let deliveryFee=0;
+
+let gstFee=0;
+
+let couponDiscount=0;
+
+let grandTotal=0;
+
+let distanceKm=0;
+
+let customerLatitude=null;
+
+let customerLongitude=null;
+
+let restaurantLatitude=null;
+
+let restaurantLongitude=null;
+
+/*==========================================
+            DARVOZ CART PART-2
+==========================================*/
+
+document.addEventListener("DOMContentLoaded",async()=>{
+
+    if(!customerId){
+
+        alert("Please Login First");
+        window.location="customer-login.html";
+        return;
+
+    }
+
+    await loadAddress();
+    await loadCart();
+
+});
+
+/*==========================================
+        LOAD CUSTOMER ADDRESS
+==========================================*/
+
+async function loadAddress(){
+
+    try{
+
+        const res=await fetch(`${API}/address/${customerId}`);
+
+        if(!res.ok) throw new Error();
+
+        const addresses=await res.json();
+
+        if(addresses.length==0){
+
+            document.getElementById("address").innerHTML=
+            "Select Delivery Address";
+
+            return;
+
+        }
+
+        const selectedAddress =
+    localStorage.getItem(
+        "selectedAddress"
+    );
+
+const selectedLat =
+    localStorage.getItem(
+        "latitude"
+    );
+
+const selectedLng =
+    localStorage.getItem(
+        "longitude"
+    );
+
+
+/* ==========================================
+   USE ADDRESS SELECTED FROM address.html
+========================================== */
+
+if(
+    selectedAddress &&
+    selectedLat &&
+    selectedLng
+){
+
+    document.getElementById(
+        "address"
+    ).innerHTML =
+        selectedAddress;
+
+
+    customerLatitude =
+        Number(selectedLat);
+
+    customerLongitude =
+        Number(selectedLng);
+
+
+    console.log(
+        "📍 USING SELECTED CART ADDRESS:",
+        selectedAddress
+    );
+
+    return;
+
+}
+
+
+/* ==========================================
+   OTHERWISE USE DEFAULT SAVED ADDRESS
+========================================== */
+
+const address =
+    addresses.find(
+        a => a.is_default == 1
+    ) || addresses[0];
+
+
+document.getElementById(
+    "address"
+).innerHTML =
+`
+${address.house},
+${address.street},
+${address.area},
+${address.city}
+`;
+
+
+customerLatitude =
+    Number(address.latitude);
+
+
+customerLongitude =
+    Number(address.longitude);
+
+    }
+
+    catch{
+
+        document.getElementById("address").innerHTML=
+        "Unable to load address";
+
+    }
+
+}
+
+/*==========================================
+            LOAD CART
+==========================================*/
+
+async function loadCart(){
+
+    try{
+
+        const savedCart =
+            localStorage.getItem("cart");
+
+        cart =
+            savedCart
+                ? JSON.parse(savedCart)
+                : [];
+
+        if(!Array.isArray(cart)){
+            cart=[];
+        }
+
+        console.log("LOCAL CART:", cart);
+
+        if(cart.length===0){
+
+            emptyCart();
+
+            return;
+
+        }
+
+        currentPartnerId =
+            cart[0].partner_id || null;
+
+        /*
+         * Restaurant name
+         */
+
+        const savedRestaurantName =
+            localStorage.getItem("restaurantName");
+
+        document.getElementById("restaurantName").innerHTML =
+            savedRestaurantName ||
+            cart[0].restaurant_name ||
+            "DARVOZ Partner";
+
+
+        /*
+         * Load restaurant details
+         */
+
+        if(currentPartnerId){
+
+            await loadRestaurant();
+
+        }
+
+
+        /*
+         * Render cart
+         */
+
+        renderCart();
+
+        calculateBill();
+
+    }
+
+    catch(err){
+
+        console.log(
+            "LOAD LOCAL CART ERROR:",
+            err
+        );
+
+        cart=[];
+
+        emptyCart();
+
+    }
+
+}
+
+/*==========================================
+        LOAD RESTAURANT DETAILS
+==========================================*/
+
+async function loadRestaurant(){
+
+    try{
+
+        const res=await fetch(
+
+        `${API}/restaurants/${currentPartnerId}`,
+
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                latitude:customerLatitude,
+                longitude:customerLongitude
+
+            })
+
+        });
+
+        if(!res.ok)
+            throw new Error();
+
+        const restaurant=await res.json();
+
+        restaurantLatitude=restaurant.latitude;
+        restaurantLongitude=restaurant.longitude;
+
+        distanceKm=parseFloat(restaurant.distance)||0;
+
+        document.getElementById("rating").innerHTML=
+        "⭐ "+(restaurant.rating||4.5);
+
+        document.getElementById("deliveryTime").innerHTML=
+        restaurant.delivery_time||"25-35 mins";
+
+        document.getElementById("distance").innerHTML=
+        restaurant.distance||"0 km";
+
+    }
+
+    catch{
+
+        document.getElementById("rating").innerHTML="⭐4.5";
+        document.getElementById("deliveryTime").innerHTML="25-35 mins";
+        document.getElementById("distance").innerHTML="0 km";
+
+        distanceKm=0;
+
+    }
+
+}
+
+/*==========================================
+            RENDER CART
+==========================================*/
+
+function renderCart(){
+
+    const box =
+        document.getElementById("cartItems");
+
+    box.innerHTML="";
+
+    subtotal=0;
+
+    cart.forEach((item,index)=>{
+
+        const price =
+            Number(item.price || 0);
+
+        const quantity =
+            Number(item.quantity || 0);
+
+        const itemSubtotal =
+            price * quantity;
+
+        subtotal += itemSubtotal;
+
+
+        /*
+         * UNIQUE LOCAL CART INDEX
+         */
+
+        const safeIndex = index;
+
+
+        /*
+         * PACK SIZE
+         */
+
+        const packHTML =
+            item.weight
+                ? `
+                    <div style="
+                        margin-top:5px;
+                        font-size:12px;
+                        color:#666;
+                        font-weight:600;
+                    ">
+                        Pack: ${escapeHTML(item.weight)}
+                    </div>
+                `
+                : "";
+
+
+        /*
+         * IMAGE
+         */
+
+        const image =
+            item.image ||
+            "images/no-image.png";
+
+
+        box.innerHTML += `
+
+        <div class="cart-item">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                gap:12px;
+            ">
+
+                <div style="
+                    display:flex;
+                    gap:12px;
+                    min-width:0;
+                ">
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        onerror="this.src='images/no-image.png'"
+                        style="
+                            width:75px;
+                            height:75px;
+                            object-fit:contain;
+                            border-radius:12px;
+                            background:#f5f5f5;
+                            flex-shrink:0;
+                        "
+                    >
+
+                    <div style="
+                        min-width:0;
+                    ">
+
+                        <h3 style="
+                            font-size:15px;
+                            line-height:1.3;
+                        ">
+                            ${escapeHTML(
+                                item.product_name ||
+                                "Product"
+                            )}
+                        </h3>
+
+                        ${packHTML}
+
+                        <div style="
+                            margin-top:7px;
+                            font-weight:800;
+                            color:#ff5a00;
+                        ">
+                            ₹${formatMoney(price)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <i
+                    class="fa-solid fa-trash"
+                    onclick="removeLocalItem(${safeIndex})"
+                    style="
+                        color:red;
+                        cursor:pointer;
+                        font-size:17px;
+                        padding:5px;
+                    "
+                ></i>
+
+            </div>
+
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-top:17px;
+            ">
+
+
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                ">
+
+                    <button
+                        onclick="updateLocalQty(
+                            ${safeIndex},
+                            ${quantity - 1}
+                        )"
+                        style="
+                            width:36px;
+                            height:36px;
+                            border:none;
+                            border-radius:10px;
+                            background:#ff5a00;
+                            color:#fff;
+                            font-size:20px;
+                            font-weight:bold;
+                            cursor:pointer;
+                        "
+                    >
+                        −
+                    </button>
+
+
+                    <span style="
+                        font-size:17px;
+                        font-weight:800;
+                        min-width:18px;
+                        text-align:center;
+                    ">
+                        ${quantity}
+                    </span>
+
+
+                    <button
+                        onclick="updateLocalQty(
+                            ${safeIndex},
+                            ${quantity + 1}
+                        )"
+                        style="
+                            width:36px;
+                            height:36px;
+                            border:none;
+                            border-radius:10px;
+                            background:#ff5a00;
+                            color:#fff;
+                            font-size:20px;
+                            font-weight:bold;
+                            cursor:pointer;
+                        "
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <div style="
+                    font-size:18px;
+                    font-weight:800;
+                ">
+                    ₹${formatMoney(itemSubtotal)}
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/*==========================================
+        LOCAL CART QUANTITY
+==========================================*/
+
+async function updateLocalQty(index, newQty){
+
+    if(index < 0 || index >= cart.length){
+        return;
+    }
+
+
+    if(newQty <= 0){
+
+        cart.splice(index, 1);
+
+    }
+    else{
+
+        cart[index].quantity =
+            Number(newQty);
+
+    }
+
+
+    saveLocalCart();
+
+
+    // Sync updated cart to MySQL
+    await syncCartToDatabase();
+
+}
+
+
+/*==========================================
+        REMOVE LOCAL ITEM
+==========================================*/
+
+async function removeLocalItem(index){
+
+    if(index < 0 || index >= cart.length){
+        return;
+    }
+
+
+    const item = cart[index];
+
+
+    if(
+        !confirm(
+            `Remove ${item.product_name || "this item"} from cart?`
+        )
+    ){
+
+        return;
+
+    }
+
+
+    cart.splice(index, 1);
+
+
+    saveLocalCart();
+
+
+    // Sync MySQL
+    await syncCartToDatabase();
+
+}
+
+/*==========================================
+        SAVE LOCAL CART
+==========================================*/
+
+function saveLocalCart(){
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    if(cart.length === 0){
+
+        emptyCart();
+
+        return;
+
+    }
+
+
+    renderCart();
+
+    calculateBill();
+
+}
+/*==========================================
+        UPDATE QUANTITY
+==========================================*/
+
+async function updateQty(cartId,newQty){
+
+    if(newQty<=0){
+
+        removeItem(cartId);
+        return;
+
+    }
+
+    try{
+
+        const res=await fetch(
+
+            `${API}/cart/update/${cartId}`,
+
+            {
+
+                method:"PUT",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    quantity:newQty
+
+                })
+
+            }
+
+        );
+
+        const data=await res.json();
+
+        if(data.success){
+
+            await loadCart();
+
+        }else{
+
+            alert("Unable to update quantity.");
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+        alert("Something went wrong.");
+
+    }
+
+}
+
+/*==========================================
+            REMOVE ITEM
+==========================================*/
+
+async function removeItem(cartId){
+
+    if(!confirm("Remove this item from cart?"))
+        return;
+
+    try{
+
+        const res=await fetch(
+
+            `${API}/cart/remove/${cartId}`,
+
+            {
+
+                method:"DELETE"
+
+            }
+
+        );
+
+        const data=await res.json();
+
+        if(data.success){
+
+            await loadCart();
+
+        }
+
+        else{
+
+            alert("Unable to remove item.");
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+/*==========================================
+            CLEAR CART
+==========================================*/
+async function clearCart(){
+
+    if(cart.length === 0){
+        return;
+    }
+
+
+    if(!confirm("Clear entire cart?")){
+        return;
+    }
+
+
+    cart = [];
+
+
+    localStorage.removeItem(
+        "cart"
+    );
+
+
+    // Clear MySQL cart too
+    const customerId =
+        localStorage.getItem(
+            "customerId"
+        );
+
+
+    if(customerId){
+
+        try{
+
+            await fetch(
+                `${API}/cart/clear/${customerId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            console.log(
+                "✅ MYSQL CART CLEARED"
+            );
+
+        }
+
+        catch(error){
+
+            console.log(
+                "MYSQL CLEAR ERROR:",
+                error
+            );
+
+        }
+
+    }
+
+
+    emptyCart();
+
+}
+
+/*==========================================
+            CALCULATE BILL
+==========================================*/
+
+function calculateBill(){
+
+    subtotal=0;
+
+    cart.forEach(item=>{
+
+        const price=
+
+        item.offer_price>0
+
+        ?
+
+        Number(item.offer_price)
+
+        :
+
+        Number(item.price);
+
+        subtotal+=price*item.quantity;
+
+    });
+
+    /* Delivery */
+
+    if(subtotal>=299){
+
+        deliveryFee=0;
+
+      document.getElementById("offerBox").innerHTML = `
+
+<div style="margin-bottom:10px;">
+
+<div style="
+font-size:16px;
+font-weight:700;
+">
+
+🎉 Congratulations!
+
+</div>
+
+<div style="
+font-size:13px;
+color:#666;
+margin-top:4px;
+">
+
+You unlocked FREE Delivery
+
+</div>
+
+</div>
+
+<div style="
+height:8px;
+background:#eee;
+border-radius:20px;
+overflow:hidden;
+">
+
+<div style="
+width:100%;
+height:100%;
+background:#ff5a00;
+border-radius:20px;
+">
+
+</div>
+
+</div>
+
+`;
+
+    }
+
+    else{
+
+        if(distanceKm<=2){
+
+            deliveryFee=20;
+
+        }
+
+        else if(distanceKm<=4){
+
+            deliveryFee=30;
+
+        }
+
+        else if(distanceKm<=6){
+
+            deliveryFee=40;
+
+        }
+
+        else if(distanceKm<=8){
+
+            deliveryFee=50;
+
+        }
+
+        else{
+
+            deliveryFee=60;
+
+        }
+
+        const remaining=299-subtotal;
+
+        document.getElementById("offerBox").innerHTML = `
+
+<div style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+">
+
+<div>
+
+<div style="
+font-weight:700;
+">
+
+🚚 FREE Delivery
+
+</div>
+
+<div style="
+font-size:13px;
+color:#666;
+margin-top:4px;
+">
+
+Add ₹${remaining} more
+
+</div>
+
+</div>
+
+<div style="
+font-weight:700;
+color:#ff5a00;
+">
+
+₹299
+
+</div>
+
+</div>
+
+<div style="
+height:8px;
+background:#eee;
+border-radius:20px;
+overflow:hidden;
+">
+
+<div style="
+width:${Math.min((subtotal/299)*100,100)}%;
+height:100%;
+background:#ff5a00;
+border-radius:20px;
+transition:.3s;
+">
+
+</div>
+
+</div>
+
+`;
+
+    }
+
+    gstFee=Math.round(subtotal*0.05);
+
+    grandTotal=
+
+    subtotal+
+
+    deliveryFee+
+
+    gstFee-
+
+    couponDiscount;
+
+    if(grandTotal<0)
+
+        grandTotal=0;
+
+    document.getElementById("itemTotal").innerHTML=
+
+    "₹"+subtotal;
+
+    document.getElementById("deliveryFee").innerHTML=
+
+    deliveryFee==0
+
+    ?
+
+    "<span style='color:green;font-weight:600;'>FREE</span>"
+
+    :
+
+    "₹"+deliveryFee;
+
+    document.getElementById("gstFee").innerHTML=
+
+    "₹"+gstFee;
+
+    document.getElementById("discount").innerHTML=
+
+    "- ₹"+couponDiscount;
+
+    document.getElementById("grandTotal").innerHTML=
+
+    "₹"+grandTotal;
+
+    document.getElementById("bottomTotal").innerHTML=
+
+    "₹"+grandTotal;
+
+}
+
+/*==========================================
+            EMPTY CART
+==========================================*/
+
+function emptyCart(){
+
+    document.getElementById("cartItems").innerHTML=
+
+    `
+    <div class="card empty">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <h2>Your Cart is Empty</h2>
+
+        <p>Add delicious food to continue.</p>
+
+        <button
+
+        style="
+        margin-top:20px;
+        background:#ff5a00;
+        color:white;
+        border:none;
+        padding:14px 30px;
+        border-radius:12px;
+        cursor:pointer;
+        "
+
+        onclick="window.location='index.html'">
+
+        Browse Restaurants
+
+        </button>
+
+    </div>
+    `;
+
+    document.getElementById("restaurantName").innerHTML="-";
+
+    document.getElementById("itemTotal").innerHTML="₹0";
+
+    document.getElementById("deliveryFee").innerHTML="₹0";
+
+    document.getElementById("gstFee").innerHTML="₹0";
+
+    document.getElementById("discount").innerHTML="₹0";
+
+    document.getElementById("grandTotal").innerHTML="₹0";
+
+    document.getElementById("bottomTotal").innerHTML="₹0";
+
+}
+
+/*==========================================
+        SYNC LOCAL CART TO MYSQL
+==========================================*/
+
+async function syncCartToDatabase(){
+
+    const customerId =
+        localStorage.getItem("customerId");
+
+    if(!customerId){
+
+        console.log(
+            "❌ CUSTOMER ID NOT FOUND"
+        );
+
+        return false;
+
+    }
+
+    if(
+        !Array.isArray(cart) ||
+        cart.length === 0
+    ){
+
+        console.log(
+            "❌ LOCAL CART EMPTY"
+        );
+
+        return false;
+
+    }
+
+
+    try{
+
+        console.log(
+            "================================"
+        );
+
+        console.log(
+            "SYNCING CART TO MYSQL"
+        );
+
+        console.log(
+            "Customer ID:",
+            customerId
+        );
+
+        console.log(
+            "Cart:",
+            cart
+        );
+
+
+        /* --------------------------------
+            CLEAR OLD MYSQL CART
+        -------------------------------- */
+
+        const clearResponse =
+            await fetch(
+                `${API}/cart/clear/${customerId}`,
+                {
+                    method:"DELETE"
+                }
+            );
+
+
+        if(!clearResponse.ok){
+
+            console.log(
+                "❌ MYSQL CART CLEAR FAILED"
+            );
+
+            return false;
+
+        }
+
+
+        /* --------------------------------
+            ADD LOCAL ITEMS TO MYSQL
+        -------------------------------- */
+
+        for(const item of cart){
+
+            console.log(
+                "Adding product:",
+                item.product_id
+            );
+
+
+            const response =
+                await fetch(
+                    `${API}/cart/add`,
+                    {
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:JSON.stringify({
+
+                            customer_id:
+                                customerId,
+
+                            partner_id:
+                                item.partner_id,
+
+                            product_id:
+                                item.product_id,
+
+                            quantity:
+                                Number(
+                                    item.quantity || 1
+                                )
+
+                        })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "MYSQL ADD RESPONSE:",
+                data
+            );
+
+
+            if(!response.ok || !data.success){
+
+                console.log(
+                    "❌ PRODUCT FAILED TO SYNC:",
+                    item
+                );
+
+                return false;
+
+            }
+
+        }
+
+
+        console.log(
+            "✅ CART SUCCESSFULLY SYNCED TO MYSQL"
+        );
+
+        console.log(
+            "================================"
+        );
+
+
+        return true;
+
+    }
+
+    catch(error){
+
+        console.log(
+            "❌ CART SYNC ERROR:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+async function checkout(){
+
+    console.log(
+        "========== PROCEED CLICKED =========="
+    );
+
+
+    const savedCart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+
+    console.log(
+        "CART BEFORE CHECKOUT:",
+        savedCart
+    );
+
+
+    if(savedCart.length === 0){
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return;
+
+    }
+
+
+    // Make sure latest cart is saved
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(savedCart)
+    );
+
+
+    // Make sure MySQL has the same cart
+    const synced =
+        await syncCartToDatabase();
+
+
+    if(!synced){
+
+        alert(
+            "Unable to sync cart with server. Please try again."
+        );
+
+        return;
+
+    }
+
+
+    // Save bill
+    localStorage.setItem(
+        "cartSubtotal",
+        String(subtotal)
+    );
+
+    localStorage.setItem(
+        "deliveryFee",
+        String(deliveryFee)
+    );
+
+    localStorage.setItem(
+        "gstFee",
+        String(gstFee)
+    );
+
+    localStorage.setItem(
+        "couponDiscount",
+        String(couponDiscount)
+    );
+
+    localStorage.setItem(
+        "grandTotal",
+        String(grandTotal)
+    );
+
+    localStorage.setItem(
+        "partnerId",
+        String(currentPartnerId || "")
+    );
+
+    localStorage.setItem(
+        "restaurantName",
+        document.getElementById(
+            "restaurantName"
+        ).innerText
+    );
+
+
+    console.log(
+        "✅ CART READY FOR CHECKOUT"
+    );
+
+
+    window.location.href =
+        "checkout.html";
+
+}
+/*==========================================
+        CHANGE ADDRESS
+==========================================*/
+function changeAddress(){
+
+    localStorage.setItem(
+        "addressReturnPage",
+        "cart.html"
+    );
+
+    window.location.href =
+        "address.html";
+
+}
+
+
+/*==========================================
+        OPEN COUPONS
+==========================================*/
+
+function openCoupons(){
+
+    alert("Coupon feature coming soon.");
+
+}
+
+/*==========================================
+        MONEY FORMAT
+==========================================*/
+
+function formatMoney(value){
+
+    return Number(value||0).toLocaleString("en-IN",{
+
+        minimumFractionDigits:0,
+        maximumFractionDigits:2
+
+    });
+
+}
+
+/*==========================================
+        LOADING SCREEN
+==========================================*/
+
+function showLoading(){
+
+    document.getElementById("cartItems").innerHTML=
+
+    `
+    <div class="card" style="text-align:center;padding:40px;">
+
+        <i class="fa-solid fa-spinner fa-spin"
+        style="font-size:40px;color:#ff5a00;"></i>
+
+        <h3 style="margin-top:15px;">
+        Loading Cart...
+        </h3>
+
+    </div>
+    `;
+
+}
+
+/*==========================================
+        API ERROR
+==========================================*/
+
+function showError(message){
+
+    document.getElementById("cartItems").innerHTML=
+
+    `
+    <div class="card" style="text-align:center;padding:40px;">
+
+        <i class="fa-solid fa-circle-exclamation"
+        style="font-size:45px;color:red;"></i>
+
+        <h3 style="margin-top:15px;">
+        ${message}
+        </h3>
+
+        <button
+        onclick="loadCart()"
+        style="
+        margin-top:20px;
+        border:none;
+        background:#ff5a00;
+        color:white;
+        padding:12px 28px;
+        border-radius:10px;
+        cursor:pointer;
+        ">
+
+        Retry
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+/*==========================================
+        IMAGE FALLBACK
+==========================================*/
+
+function imageError(img){
+
+    img.src="images/no-image.png";
+
+}
+
+/*==========================================
+        ESCAPE HTML
+==========================================*/
+
+function escapeHTML(text){
+
+    const div=document.createElement("div");
+
+    div.innerText=text;
+
+    return div.innerHTML;
+
+}
+
+/*==========================================
+        END OF CART
+==========================================*/
+
+console.log("DARVOZ Cart Loaded Successfully");
+</script>
+
+</body>
+
+</html>

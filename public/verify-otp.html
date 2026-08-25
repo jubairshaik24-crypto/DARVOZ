@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Verify OTP</title>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#f5f6fa;
+
+    padding:20px;
+}
+
+.container{
+
+    width:100%;
+    max-width:430px;
+
+    background:#fff;
+
+    border-radius:25px;
+
+    padding:35px 25px;
+
+    text-align:center;
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.12);
+}
+
+.logo{
+
+    font-size:38px;
+
+    font-weight:800;
+
+    color:#ff6500;
+
+    letter-spacing:2px;
+}
+
+.icon{
+
+    width:75px;
+    height:75px;
+
+    margin:25px auto 18px;
+
+    border-radius:50%;
+
+    background:#fff3eb;
+
+    color:#ff6500;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+}
+
+h1{
+
+    font-size:25px;
+
+    color:#222;
+}
+
+.subtitle{
+
+    margin-top:8px;
+
+    color:#777;
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+.mobile{
+
+    color:#ff6500;
+
+    font-weight:700;
+}
+
+.otp-box{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:8px;
+
+    margin:30px 0;
+}
+
+.otp-input{
+
+    width:48px;
+    height:55px;
+
+    border:1.5px solid #ddd;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    outline:none;
+}
+
+.otp-input:focus{
+
+    border-color:#ff6500;
+
+    box-shadow:
+        0 0 0 4px rgba(255,101,0,.08);
+}
+
+.verify-btn{
+
+    width:100%;
+    height:52px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff8a00,
+            #ff6200
+        );
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.resend{
+
+    margin-top:22px;
+
+    font-size:12px;
+
+    color:#777;
+}
+
+.resend button{
+
+    border:none;
+
+    background:none;
+
+    color:#ff6500;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.back{
+
+    margin-top:22px;
+
+    font-size:12px;
+
+    color:#777;
+
+    cursor:pointer;
+}
+
+.back i{
+
+    margin-right:5px;
+}
+
+@media(max-width:500px){
+
+    body{
+        padding:0;
+        background:#fff;
+    }
+
+    .container{
+
+        min-height:100vh;
+
+        border-radius:0;
+
+        box-shadow:none;
+
+        display:flex;
+
+        flex-direction:column;
+
+        justify-content:center;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        DARVOZ
+    </div>
+
+    <div class="icon">
+        <i class="fa-solid fa-shield-halved"></i>
+    </div>
+
+    <h1>
+        Verify your number
+    </h1>
+
+    <div class="subtitle">
+
+        We've sent a 6-digit verification code to
+
+        <br>
+
+        <span
+            class="mobile"
+            id="mobileDisplay">
+        </span>
+
+    </div>
+
+    <div class="otp-box">
+
+        <input
+            type="text"
+            maxlength="1"
+            class="otp-input">
+
+        <input
+            type="text"
+            maxlength="1"
+            class="otp-input">
+
+        <input
+            type="text"
+            maxlength="1"
+            class="otp-input">
+
+        <input
+            type="text"
+            maxlength="1"
+            class="otp-input">
+
+        <input
+            type="text"
+            maxlength="1"
+            class="otp-input">
+
+        <input
+            type="text"
+            maxlength="1"
+            class="otp-input">
+
+    </div>
+
+    <button
+        class="verify-btn"
+        onclick="verifyOTP()">
+
+        Verify & Continue
+
+    </button>
+
+    <div class="resend">
+
+        Didn't receive the code?
+
+        <button onclick="resendOTP()">
+            Resend OTP
+        </button>
+
+    </div>
+
+    <div
+        class="back"
+        onclick="goBack()">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Change mobile number
+
+    </div>
+
+</div>
+
+<script src="verify-otp.js"></script>
+
+</body>
+</html>

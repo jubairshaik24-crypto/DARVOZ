@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Documents</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#ececec;
+display:flex;
+justify-content:center;
+}
+
+.app{
+width:100%;
+max-width:390px;
+min-height:100vh;
+background:#fff;
+box-shadow:0 0 35px rgba(0,0,0,.12);
+}
+
+.header{
+padding:20px;
+display:flex;
+align-items:center;
+gap:15px;
+background:#fff;
+box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.back{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#fff3eb;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#ff6b00;
+cursor:pointer;
+font-size:18px;
+}
+
+.header h2{
+font-size:24px;
+font-weight:700;
+}
+
+.form{
+padding:22px;
+}
+
+.progress{
+height:8px;
+background:#eee;
+border-radius:12px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress div{
+width:60%;
+height:100%;
+background:#ff6b00;
+}
+
+.step{
+font-size:14px;
+font-weight:600;
+color:#ff6b00;
+margin-bottom:8px;
+}
+
+.title{
+font-size:28px;
+font-weight:800;
+margin-bottom:8px;
+}
+
+.sub{
+font-size:14px;
+color:#777;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+.upload-card{
+display:flex;
+align-items:center;
+gap:18px;
+
+padding:18px;
+
+margin-bottom:18px;
+
+border:2px dashed #ddd;
+border-radius:18px;
+
+background:#fafafa;
+
+cursor:pointer;
+
+transition:.3s;
+}
+
+.upload-card:hover{
+border-color:#ff6b00;
+background:#fff8f2;
+}
+
+.upload-card i{
+
+width:60px;
+height:60px;
+
+border:2px dashed #ff6b00;
+
+border-radius:16px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:28px;
+
+color:#ff6b00;
+
+flex-shrink:0;
+
+}
+
+ .upload-content{
+flex:1;
+}
+
+.upload-content h4{
+font-size:18px;
+margin-bottom:5px;
+}
+
+.upload-content p{
+font-size:13px;
+color:#777;
+margin-bottom:8px;
+}
+
+.file-name{
+font-size:13px;
+font-weight:600;
+color:#0f9d58;
+word-break:break-word;
+}
+.upload-card h4{
+
+font-size:17px;
+
+margin-bottom:6px;
+
+}
+
+.upload-card p{
+
+font-size:13px;
+
+color:#777;
+
+}
+
+.upload-card input{
+
+display:none;
+
+}
+
+.file-name{
+
+margin-top:10px;
+
+font-size:13px;
+
+color:#0f9d58;
+
+font-weight:600;
+
+word-break:break-all;
+
+}
+
+button{
+
+width:100%;
+
+height:56px;
+
+margin-top:30px;
+
+border:none;
+
+border-radius:18px;
+
+background:#ff6b00;
+
+color:#fff;
+
+font-size:18px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#e55d00;
+
+}
+
+@media(max-width:400px){
+
+.form{
+
+padding:18px;
+
+}
+
+.title{
+
+font-size:24px;
+
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="app">
+
+<div class="header">
+
+<div class="back" onclick="history.back()">
+<i class="fa-solid fa-arrow-left"></i>
+</div>
+
+<h2>Documents</h2>
+
+</div>
+
+<div class="form">
+
+<div class="progress">
+<div></div>
+</div>
+
+<div class="step">
+Step 3 of 5
+</div>
+
+<div class="title">
+Upload Documents
+</div>
+
+<div class="sub">
+Upload your shop documents to complete verification.
+</div>
+
+<!-- Store Photo -->
+
+<label class="upload-card">
+
+<i class="fa-solid fa-store"></i>
+
+<div class="upload-content">
+
+<h4>Store Photo *</h4>
+
+<p>Upload your shop front photo</p>
+
+<div class="file-name" id="storePhotoName">
+No file selected
+</div>
+
+</div>
+
+<input
+type="file"
+id="storePhoto"
+accept="image/*"
+onchange="showFile(this,'storePhotoName')">
+
+</label>
+
+<!-- Store Logo -->
+
+<label class="upload-card">
+
+<i class="fa-solid fa-image"></i>
+
+<h4>Store Logo (Optional)</h4>
+
+<p>Upload your logo</p>
+
+<input
+type="file"
+id="logo"
+accept="image/*"
+onchange="showFile(this,'logoName')">
+
+<div
+class="file-name"
+id="logoName">
+No file selected
+</div>
+
+</label>
+
+<!-- FSSAI -->
+
+<label class="upload-card">
+
+<i class="fa-solid fa-file-shield"></i>
+
+<h4>FSSAI License (Optional)</h4>
+
+<p>Image or PDF</p>
+
+<input
+type="file"
+id="fssai"
+accept=".jpg,.jpeg,.png,.pdf"
+onchange="showFile(this,'fssaiName')">
+
+<div
+class="file-name"
+id="fssaiName">
+No file selected
+</div>
+
+</label>
+
+<!-- GST -->
+
+<label class="upload-card">
+
+<i class="fa-solid fa-file-invoice"></i>
+
+<h4>GST Certificate (Optional)</h4>
+
+<p>Image or PDF</p>
+
+<input
+type="file"
+id="gst"
+accept=".jpg,.jpeg,.png,.pdf"
+onchange="showFile(this,'gstName')">
+
+<div
+class="file-name"
+id="gstName">
+No file selected
+</div>
+
+</label>
+
+<button onclick="nextPage()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+   
+const API = window.location.origin;
+
+function showFile(input,id){
+
+if(input.files.length>0){
+
+document.getElementById(id).innerHTML=input.files[0].name;
+
+}
+
+}
+async function nextPage(){
+
+const formData=new FormData();
+
+formData.append(
+"storePhoto",
+document.getElementById("storePhoto").files[0]
+);
+
+if(document.getElementById("logo").files[0]){
+
+formData.append(
+"logo",
+document.getElementById("logo").files[0]
+);
+
+}
+
+if(document.getElementById("fssai").files[0]){
+
+formData.append(
+"fssai",
+document.getElementById("fssai").files[0]
+);
+
+}
+
+if(document.getElementById("gst").files[0]){
+
+formData.append(
+"gst",
+document.getElementById("gst").files[0]
+);
+
+}
+
+const response=await fetch(
+`${API}/partner/upload-documents`,
+{
+
+method:"POST",
+
+body:formData
+
+}
+
+);
+
+const result=await response.json();
+
+if(result.success){
+
+localStorage.setItem("storePhoto",result.storePhoto);
+
+localStorage.setItem("logo",result.logo);
+
+localStorage.setItem("fssai",result.fssai);
+
+localStorage.setItem("gst",result.gst);
+
+window.location.href = "partner-bank.html";
+
+
+
+}else{
+
+alert("Upload Failed");
+
+}
+
+}
+
+
+
+</script>
+
+</body>
+
+</html>

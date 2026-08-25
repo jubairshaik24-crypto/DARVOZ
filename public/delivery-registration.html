@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Delivery Partner Registration</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+.container{
+max-width:450px;
+margin:20px auto;
+background:#fff;
+border-radius:20px;
+padding:25px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.logo{
+text-align:center;
+margin-bottom:20px;
+}
+
+.logo h1{
+color:#ff6b00;
+font-size:34px;
+font-weight:700;
+}
+
+.logo p{
+color:#666;
+margin-top:5px;
+}
+
+h2{
+margin-bottom:20px;
+text-align:center;
+}
+
+label{
+display:block;
+margin-top:15px;
+font-weight:600;
+color:#333;
+}
+
+input,
+select{
+width:100%;
+height:50px;
+margin-top:8px;
+padding:0 15px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:15px;
+outline:none;
+}
+
+input:focus,
+select:focus{
+border-color:#ff6b00;
+}
+
+.file-box{
+margin-top:10px;
+}
+
+button{
+width:100%;
+height:55px;
+margin-top:30px;
+background:#ff6b00;
+border:none;
+color:white;
+font-size:18px;
+font-weight:600;
+border-radius:14px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#e65f00;
+}
+
+.note{
+margin-top:20px;
+font-size:13px;
+text-align:center;
+color:#666;
+line-height:22px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+
+<h1>DARVOZ</h1>
+
+<p>One App. Every Need.</p>
+
+</div>
+
+<h2>Delivery Partner Registration</h2>
+
+<form id="deliveryForm" enctype="multipart/form-data">
+
+<label>Full Name</label>
+<input
+type="text"
+id="name"
+required>
+
+<label>Mobile Number</label>
+<input
+type="tel"
+id="mobile"
+required>
+
+<label>Email</label>
+<input
+type="email"
+id="email"
+required>
+
+<label>Password</label>
+<input
+type="password"
+id="password"
+required>
+
+<label>Vehicle Type</label>
+
+<select id="vehicle">
+
+<option value="">Select Vehicle</option>
+
+<option>Bike</option>
+
+<option>Scooter</option>
+
+<option>Bicycle</option>
+
+</select>
+
+<label>Driving License</label>
+
+<div class="file-box">
+<input type="file" id="license">
+</div>
+
+<label>Aadhaar Card</label>
+
+<div class="file-box">
+<input type="file" id="aadhaar">
+</div>
+
+<label>Vehicle RC</label>
+
+<div class="file-box">
+<input type="file" id="rc">
+</div>
+
+<label>Profile Photo</label>
+
+<div class="file-box">
+<input type="file" id="photo">
+</div>
+
+<button type="submit">
+
+Register Now
+
+</button>
+
+</form>
+
+<div class="note">
+
+Your application will be reviewed by the DARVOZ Admin.
+<br>
+After admin approval, you can log in using your Mobile Number and Password.
+
+</div>
+
+</div>
+<script>
+
+const API = "https://darvoz-app.onrender.com";
+
+document
+.getElementById("deliveryForm")
+.addEventListener("submit", registerDelivery);
+
+async function registerDelivery(e){
+
+    e.preventDefault();
+
+    const name =
+    document.getElementById("name").value.trim();
+
+    const mobile =
+    document.getElementById("mobile").value.trim();
+
+    const email =
+    document.getElementById("email").value.trim();
+
+    const password =
+    document.getElementById("password").value.trim();
+
+    const vehicle =
+    document.getElementById("vehicle").value;
+
+    const license =
+    document.getElementById("license").files[0];
+
+    const aadhaar =
+    document.getElementById("aadhaar").files[0];
+
+    const rc =
+    document.getElementById("rc").files[0];
+
+    const photo =
+    document.getElementById("photo").files[0];
+
+    if(
+        !name ||
+        !mobile ||
+        !email ||
+        !password ||
+        !vehicle ||
+        !license ||
+        !aadhaar ||
+        !rc ||
+        !photo
+    ){
+
+        alert("Please fill all fields.");
+
+        return;
+
+    }
+
+    const formData = new FormData();
+
+    formData.append("name",name);
+    formData.append("mobile",mobile);
+    formData.append("email",email);
+    formData.append("password",password);
+    formData.append("vehicle",vehicle);
+
+    formData.append("license",license);
+    formData.append("aadhaar",aadhaar);
+    formData.append("rc",rc);
+    formData.append("photo",photo);
+
+    try{
+
+        const response = await fetch(
+
+            `${API}/delivery/register`,
+
+            {
+
+                method:"POST",
+
+                body:formData
+
+            }
+
+        );
+
+        const result = await response.json();
+
+        if(result.success){
+
+            alert(
+"Registration Submitted Successfully.\n\nYour account is pending admin approval. You can log in after approval using your mobile number and password."
+);
+
+            window.location =
+            "delivery-login.html";
+
+        }
+
+        else{
+
+            alert(
+                result.message ||
+                "Registration Failed."
+            );
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Unable to connect to server.");
+
+    }
+
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARVOZ - Import Menu</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+.container{
+max-width:500px;
+margin:40px auto;
+background:#fff;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+color:#ff6600;
+}
+
+input[type=file]{
+width:100%;
+padding:12px;
+margin:15px 0;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#ff6600;
+color:#fff;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#e65c00;
+}
+
+#loading{
+display:none;
+text-align:center;
+margin-top:20px;
+font-weight:bold;
+color:#ff6600;
+}
+
+#result{
+margin-top:20px;
+}
+
+.item{
+padding:10px;
+border-bottom:1px solid #eee;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2 id="pageTitle">📥 Import Menu</h2>
+
+<input type="file" id="menuImage" accept="image/*">
+
+<button onclick="uploadMenu()">Upload Menu</button>
+
+<div id="loading">
+Scanning menu... Please wait...
+</div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+    
+const API = window.location.origin;
+const partner = JSON.parse(localStorage.getItem("partner"));
+
+const params = new URLSearchParams(window.location.search);
+
+const businessType = params.get("business");
+
+console.log("Business :", businessType);
+
+if(!partner){
+alert("Please login first");
+window.location.href="partner-login.html";
+}
+
+document.getElementById("pageTitle").innerHTML =
+`📥 Import ${businessType} Menu`;
+
+async function uploadMenu(){
+
+const file=document.getElementById("menuImage").files[0];
+
+if(!file){
+alert("Please choose a menu image");
+return;
+}
+
+const formData=new FormData();
+formData.append("menuImage",file);
+formData.append("partner_id", partner.id);
+formData.append("business_type", businessType);
+
+const partnerCategory = params.get("category");
+
+document.getElementById("loading").style.display="block";
+
+try{
+
+    const response=await fetch(`${API}/import-menu/upload`,{
+method:"POST",
+body:formData
+
+});
+
+const data=await response.json();
+
+document.getElementById("loading").style.display="none";
+
+if(!data.success){
+
+alert(data.message || "OCR failed");
+return;
+
+}
+
+localStorage.setItem("products",JSON.stringify(data.products));
+
+let html="<h3>Detected Products</h3>";
+
+data.products.forEach(product=>{
+
+html+=`
+<div class="item">
+<b>${product.name}</b><br>
+₹${product.price}<br>
+${product.category}
+</div>
+`;
+
+});
+
+document.getElementById("result").innerHTML=html;
+
+setTimeout(()=>{
+
+window.location.href =
+`review-products.html?business=${encodeURIComponent(businessType)}`;
+
+},1500);
+
+}catch(err){
+
+document.getElementById("loading").style.display="none";
+
+console.log(err);
+
+alert("Server Error");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
+<title>DARVOZ Partner Dashboard</title>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+
+    width:100%;
+
+    min-height:100vh;
+
+    background:#f5f5f5;
+
+    color:#222;
+
+    padding-bottom:80px;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    position:sticky;
+
+    top:0;
+
+    width:100%;
+
+    height:60px;
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    z-index:1000;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.15);
+
+}
+
+.header i{
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+.logo h2{
+
+    font-size:22px;
+
+    letter-spacing:1px;
+
+}
+
+
+/* =====================================================
+   HEADER RIGHT
+===================================================== */
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+
+/* =====================================================
+   WALLET MINI
+===================================================== */
+
+.wallet-mini{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    background:#fff;
+
+    color:#ff6b00;
+
+    padding:8px 12px;
+
+    border-radius:22px;
+
+    font-weight:700;
+
+    font-size:14px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.12);
+
+    white-space:nowrap;
+
+}
+
+.wallet-mini i{
+
+    font-size:15px;
+
+    color:#ff6b00;
+
+}
+
+
+/* =====================================================
+   NOTIFICATION
+===================================================== */
+
+.notify{
+
+    position:relative;
+
+    cursor:pointer;
+
+}
+
+.notify i{
+
+    color:#fff;
+
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+
+    width:100%;
+
+    padding:0 15px;
+
+}
+
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+.welcome{
+
+    background:#fff;
+
+    margin:20px 0;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.welcome h2{
+
+    color:#ff6b00;
+
+    margin-bottom:5px;
+
+}
+
+.welcome h3{
+
+    margin-bottom:8px;
+
+    font-size:20px;
+
+}
+
+.welcome p{
+
+    color:#555;
+
+    font-size:14px;
+
+}
+
+.welcome p b{
+
+    color:#222;
+
+}
+
+
+/* =====================================================
+   APPROVED STATUS
+===================================================== */
+
+.status{
+
+    display:inline-block;
+
+    margin-top:12px;
+
+    background:#28a745;
+
+    color:#fff;
+
+    padding:6px 15px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+/* =====================================================
+   STORE STATUS
+===================================================== */
+
+.store-status-box{
+
+    margin-top:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+}
+
+.store-status{
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+}
+
+.store-status.open{
+
+    background:#d1fae5;
+
+    color:#16a34a;
+
+}
+
+.store-status.closed{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+
+/* =====================================================
+   STORE BUTTON
+===================================================== */
+
+#toggleStoreBtn{
+
+    border:none;
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    padding:11px 18px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+#toggleStoreBtn:hover{
+
+    opacity:.9;
+
+}
+
+
+/* =====================================================
+   DASHBOARD CARDS
+===================================================== */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+.card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    text-align:center;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.card i{
+
+    font-size:28px;
+
+    color:#ff6b00;
+
+    margin-bottom:10px;
+
+}
+
+.card h4{
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+.card h1{
+
+    margin-top:10px;
+
+    color:#ff6b00;
+
+    font-size:28px;
+
+}
+
+
+/* =====================================================
+   RECENT ORDERS
+===================================================== */
+
+.orders{
+
+    margin-top:20px;
+
+}
+
+.section-title{
+
+    margin-bottom:12px;
+
+}
+
+.section-title h3{
+
+    font-size:19px;
+
+}
+
+
+/* =====================================================
+   ORDER CARD
+===================================================== */
+
+.order-card{
+
+    background:#fff;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    margin-bottom:12px;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.08);
+
+}
+
+.order-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:8px;
+
+}
+
+.order-id{
+
+    font-weight:bold;
+
+    color:#ff6b00;
+
+}
+
+.order-status{
+
+    background:#fff3e8;
+
+    color:#ff6b00;
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+}
+
+.customer{
+
+    color:#444;
+
+    margin-bottom:6px;
+
+}
+
+.total{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:65px;
+
+    background:#fff;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    box-shadow:
+        0 -3px 12px rgba(0,0,0,.12);
+
+    z-index:999;
+
+}
+
+.bottom-nav a{
+
+    text-decoration:none;
+
+    color:#666;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    font-size:12px;
+
+}
+
+.bottom-nav i{
+
+    font-size:22px;
+
+    margin-bottom:4px;
+
+}
+
+.bottom-nav .active{
+
+    color:#ff6b00;
+
+}
+
+
+/* =====================================================
+   SIDE MENU
+===================================================== */
+
+.side-menu{
+
+    position:fixed;
+
+    top:0;
+
+    left:-270px;
+
+    width:260px;
+
+    height:100%;
+
+    background:#fff;
+
+    transition:.3s;
+
+    z-index:1001;
+
+    box-shadow:
+        5px 0 20px rgba(0,0,0,.15);
+
+    padding-top:20px;
+
+}
+
+.side-menu.active{
+
+    left:0;
+
+}
+
+.close{
+
+    text-align:right;
+
+    padding:15px;
+
+}
+
+.close i{
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    color:#333;
+
+}
+
+.side-menu a{
+
+    display:block;
+
+    text-decoration:none;
+
+    color:#333;
+
+    padding:18px 20px;
+
+    border-bottom:1px solid #eee;
+
+    font-size:16px;
+
+}
+
+.side-menu a:hover{
+
+    background:#fff3e8;
+
+    color:#ff6b00;
+
+}
+
+
+/* =====================================================
+   OVERLAY
+===================================================== */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.4);
+
+    display:none;
+
+    z-index:1000;
+
+}
+
+.overlay.active{
+
+    display:block;
+
+}
+
+
+/* =====================================================
+   NEW ORDER POPUP
+===================================================== */
+
+.new-order-popup{
+
+    position:fixed;
+
+    top:85px;
+
+    right:20px;
+
+    width:340px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.25);
+
+    z-index:99999;
+
+    padding:18px;
+
+    display:none;
+
+    animation:
+        popupIn .35s ease;
+
+}
+
+.new-order-popup.show{
+
+    display:block;
+
+}
+
+@keyframes popupIn{
+
+    from{
+
+        transform:translateX(120%);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:translateX(0);
+
+        opacity:1;
+
+    }
+
+}
+
+
+/* =====================================================
+   POPUP HEADER
+===================================================== */
+
+.popup-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.popup-icon{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#fff0e7;
+
+    color:#ff5a00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:20px;
+
+}
+
+.popup-header h3{
+
+    font-size:15px;
+
+    color:#222;
+
+}
+
+.popup-header p{
+
+    font-size:10px;
+
+    color:#888;
+
+}
+
+.popup-close{
+
+    margin-left:auto;
+
+    border:none;
+
+    background:none;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    color:#777;
+
+}
+
+
+/* =====================================================
+   POPUP BODY
+===================================================== */
+
+.popup-body{
+
+    margin-top:18px;
+
+    display:grid;
+
+    gap:9px;
+
+}
+
+.popup-body div{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    background:#f7f7f7;
+
+    padding:9px 11px;
+
+    border-radius:8px;
+
+}
+
+.popup-body span{
+
+    color:#777;
+
+    font-size:11px;
+
+}
+
+.popup-body b{
+
+    font-size:12px;
+
+}
+
+
+/* =====================================================
+   VIEW ORDER BUTTON
+===================================================== */
+
+.view-order-btn{
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#ff5a00;
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+.view-order-btn:hover{
+
+    opacity:.9;
+
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media(min-width:1024px){
+
+    .header{
+
+        max-width:1200px;
+
+        margin:auto;
+
+        left:50%;
+
+        transform:translateX(-50%);
+
+        border-radius:
+            0 0 18px 18px;
+
+    }
+
+    .container{
+
+        width:min(1200px,95%);
+
+        margin:20px auto;
+
+    }
+
+    .cards{
+
+        grid-template-columns:
+            repeat(4,1fr);
+
+    }
+
+    .bottom-nav{
+
+        max-width:1200px;
+
+        left:50%;
+
+        transform:translateX(-50%);
+
+        border-radius:
+            18px 18px 0 0;
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    .header{
+
+        padding:0 12px;
+
+    }
+
+    .logo h2{
+
+        font-size:20px;
+
+    }
+
+    .header-right{
+
+        gap:8px;
+
+    }
+
+    .wallet-mini{
+
+        padding:7px 9px;
+
+        font-size:12px;
+
+    }
+
+    .wallet-mini i{
+
+        font-size:13px;
+
+    }
+
+    .notify i{
+
+        font-size:20px;
+
+    }
+
+    .store-status-box{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        gap:12px;
+
+    }
+
+    .store-status{
+
+        text-align:center;
+
+    }
+
+    #toggleStoreBtn{
+
+        width:100%;
+
+    }
+
+    .new-order-popup{
+
+        left:12px;
+
+        right:12px;
+
+        width:auto;
+
+        top:75px;
+
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media(max-width:380px){
+
+    .wallet-mini{
+
+        padding:6px 8px;
+
+        font-size:11px;
+
+    }
+
+    .wallet-mini i{
+
+        display:none;
+
+    }
+
+    .logo h2{
+
+        font-size:18px;
+
+    }
+
+    .header{
+
+        padding:0 10px;
+
+    }
+
+}
+
+.wallet-mini{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    background:#fff;
+
+    color:#ff6b00;
+
+    padding:8px 12px;
+
+    border-radius:22px;
+
+    font-weight:700;
+
+    font-size:14px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.12);
+
+    white-space:nowrap;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+}
+
+.wallet-mini i{
+
+    font-size:15px;
+
+    color:#ff6b00;
+
+}
+
+.wallet-mini:hover{
+
+    transform:scale(1.03);
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+
+    <div class="menu-btn">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </div>
+
+
+    <div class="logo">
+
+        <h2>DARVOZ</h2>
+
+    </div>
+
+
+    <div class="header-right">
+
+
+        <!-- WALLET BALANCE -->
+
+      <a
+    href="wallet.html"
+    class="wallet-mini"
+    id="walletBalanceBox"
+>
+
+    <i class="fa-solid fa-wallet"></i>
+
+    <span id="partnerWalletBalance">
+        ₹0.00
+    </span>
+
+</a>  
+
+
+        <!-- NOTIFICATION -->
+
+        <div class="notify">
+
+            <i class="fa-solid fa-bell"></i>
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN CONTAINER
+===================================================== -->
+
+<div class="container">
+
+
+<!-- =====================================================
+     WELCOME
+===================================================== -->
+
+<section class="welcome">
+
+
+    <h2>
+        Welcome 👋
+    </h2>
+
+
+    <h3 id="partnerName">
+        Partner
+    </h3>
+
+
+    <p>
+
+        Partner ID :
+
+        <b id="partnerId">
+            DAR0001
+        </b>
+
+    </p>
+
+
+    <span class="status">
+        Approved
+    </span>
+
+
+    <!-- STORE STATUS -->
+
+    <div class="store-status-box">
+
+
+        <span
+            id="storeStatus"
+            class="store-status open"
+        >
+
+            🟢 OPEN
+
+        </span>
+
+
+        <button id="toggleStoreBtn">
+
+            Go Offline
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     DASHBOARD CARDS
+===================================================== -->
+
+<section class="cards">
+
+
+    <!-- TODAY ORDERS -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-box"></i>
+
+        <h4>
+            Today's Orders
+        </h4>
+
+        <h1 id="todayOrders">
+            0
+        </h1>
+
+    </div>
+
+
+    <!-- TODAY REVENUE -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        <h4>
+            Today's Revenue
+        </h4>
+
+        <h1 id="todayRevenue">
+            ₹0
+        </h1>
+
+    </div>
+
+
+    <!-- PENDING -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-hourglass-half"></i>
+
+        <h4>
+            Pending
+        </h4>
+
+        <h1 id="pendingOrders">
+            0
+        </h1>
+
+    </div>
+
+
+    <!-- COMPLETED -->
+
+    <div class="card">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <h4>
+            Completed
+        </h4>
+
+        <h1 id="completedOrders">
+            0
+        </h1>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     RECENT ORDERS
+===================================================== -->
+
+<section class="orders">
+
+
+    <div class="section-title">
+
+        <h3>
+            Recent Orders
+        </h3>
+
+    </div>
+
+
+    <div id="ordersTable">
+
+
+        <div class="order-card">
+
+            <p>
+                Loading Orders...
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="bottom-nav">
+
+
+    <a
+        href="partner-dashboard.html"
+        class="active"
+    >
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+    <a href="partner-orders.html">
+
+        <i class="fa-solid fa-box"></i>
+
+        <span>
+            Orders
+        </span>
+
+    </a>
+
+
+    <a href="import-menu.html">
+
+        <i class="fa-solid fa-utensils"></i>
+
+        <span>
+            Menu
+        </span>
+
+    </a>
+
+
+    <a href="partner-earnings.html">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        <span>
+            Earnings
+        </span>
+
+    </a>
+
+
+    <a href="partner-profile.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>
+            Profile
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+
+<!-- =====================================================
+     SIDE MENU
+===================================================== -->
+
+<div
+    class="side-menu"
+    id="sideMenu"
+>
+
+
+    <div class="close">
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </div>
+
+
+    <a href="partner-dashboard.html">
+
+        🏠 Dashboard
+
+    </a>
+
+
+    <a href="partner-menu.html">
+
+        🍔 Food Menu
+
+    </a>
+
+
+    <a href="partner-orders.html">
+
+        📦 Orders
+
+    </a>
+
+
+    <a href="partner-earnings.html">
+
+        💰 Earnings
+
+    </a>
+
+
+    <a href="partner-profile.html">
+
+        🏪 Store Profile
+
+    </a>
+
+
+    <a href="#" id="logoutBtn">
+
+        🚪 Logout
+
+    </a>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     OVERLAY
+===================================================== -->
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+
+<!-- =====================================================
+     NEW ORDER POPUP
+===================================================== -->
+
+<div
+    id="newOrderPopup"
+    class="new-order-popup"
+>
+
+
+    <div class="popup-header">
+
+
+        <div class="popup-icon">
+
+            <i class="fa-solid fa-bell"></i>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                New Order Received!
+            </h3>
+
+            <p>
+                DARVOZ Partner
+            </p>
+
+        </div>
+
+
+        <button
+            id="closeOrderPopup"
+            class="popup-close"
+        >
+
+            ×
+
+        </button>
+
+
+    </div>
+
+
+
+    <div class="popup-body">
+
+
+        <div>
+
+            <span>
+                Order
+            </span>
+
+            <b id="popupOrderId">
+                #-----
+            </b>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Customer
+            </span>
+
+            <b id="popupCustomer">
+                Customer
+            </b>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Total
+            </span>
+
+            <b id="popupAmount">
+                ₹0
+            </b>
+
+        </div>
+
+
+    </div>
+
+
+
+    <button
+        id="viewOrderBtn"
+        class="view-order-btn"
+    >
+
+        VIEW ORDER
+
+    </button>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     ORDER SOUND
+===================================================== -->
+
+<audio
+    id="orderSound"
+    preload="auto"
+    loop
+>
+
+    <source
+        src="assets/sounds/notification.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<!-- =====================================================
+     SOCKET.IO
+===================================================== -->
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<!-- =====================================================
+     PARTNER DASHBOARD JS
+===================================================== -->
+
+<script src="partner-dashboard.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Saved Addresses</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+    body{
+background:#f6f6f6;
+font-family:Poppins,sans-serif;
+}
+
+.header{
+
+height:65px;
+display:flex;
+align-items:center;
+padding:0 18px;
+background:#fff;
+font-weight:600;
+box-shadow:0 2px 10px rgba(0,0,0,.05);
+
+}
+
+.back{
+
+font-size:24px;
+cursor:pointer;
+margin-right:18px;
+
+}
+
+.title{
+
+font-size:24px;
+font-weight:700;
+
+}
+
+.container{
+
+padding:18px;
+
+}
+
+.search-box{
+
+display:flex;
+align-items:center;
+background:#fff;
+border-radius:16px;
+padding:14px 18px;
+margin-bottom:20px;
+box-shadow:0 3px 10px rgba(0,0,0,.05);
+
+}
+
+.search-box i{
+
+font-size:20px;
+color:#888;
+margin-right:12px;
+
+}
+
+.search-box input{
+
+border:none;
+outline:none;
+width:100%;
+font-size:16px;
+background:none;
+
+}
+
+.action-grid{
+
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+margin-bottom:25px;
+
+}
+
+.action-card{
+
+background:#fff;
+border-radius:18px;
+padding:20px 15px;
+text-align:left;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 3px 10px rgba(0,0,0,.05);
+
+}
+
+.action-card:hover{
+
+transform:translateY(-3px);
+
+}
+
+.action-card i{
+
+font-size:28px;
+color:#ff6200;
+margin-bottom:18px;
+
+}
+
+.action-card h4{
+
+font-size:17px;
+line-height:24px;
+
+}
+
+.saved-title{
+
+font-size:15px;
+font-weight:700;
+color:#888;
+margin-bottom:15px;
+letter-spacing:1px;
+
+}
+.saved-card{
+
+display:flex;
+align-items:flex-start;
+background:#fff;
+border-radius:22px;
+padding:18px;
+margin-bottom:16px;
+box-shadow:0 5px 18px rgba(0,0,0,.06);
+cursor:pointer;
+transition:.3s;
+
+}
+
+.saved-card:hover{
+
+transform:translateY(-2px);
+
+}
+
+.left-icon{
+
+width:70px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+margin-right:15px;
+
+}
+
+.left-icon i{
+
+font-size:22px;
+color:#222;
+margin-bottom:8px;
+
+}
+
+.left-icon span{
+
+font-size:13px;
+font-weight:600;
+
+}
+
+.address-info{
+
+flex:1;
+
+}
+
+.address-head{
+
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:8px;
+
+}
+
+.address-head h3{
+
+font-size:24px;
+font-weight:700;
+
+}
+
+.selected{
+
+background:#d9fff0;
+color:#17a567;
+padding:5px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:700;
+
+}
+
+.address-info p{
+
+font-size:18px;
+line-height:30px;
+color:#555;
+
+}
+
+.menu{
+
+font-size:22px;
+cursor:pointer;
+padding:6px;
+
+}
+.empty{
+text-align:center;
+padding:80px 20px;
+color:#888;
+font-size:18px;
+}
+
+/* ==========================
+ADD ADDRESS POPUP
+========================== */
+
+.modal{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+
+display:none;
+
+justify-content:center;
+align-items:center;
+
+z-index:999;
+
+}
+
+.modal-content{
+
+background:#fff;
+width:95%;
+max-width:430px;
+
+padding:22px;
+
+border-radius:20px;
+
+max-height:90vh;
+overflow:auto;
+
+}
+
+.modal h2{
+
+margin-bottom:18px;
+font-size:22px;
+
+}
+
+.locationBtn{
+
+width:100%;
+
+padding:14px;
+
+background:#16a34a;
+color:#fff;
+
+border:none;
+
+border-radius:12px;
+
+font-size:16px;
+
+cursor:pointer;
+
+margin-bottom:15px;
+
+}
+
+.modal input,
+.modal select{
+
+width:100%;
+
+padding:14px;
+
+margin-bottom:14px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+font-size:15px;
+
+outline:none;
+
+}
+
+.saveBtn{
+
+width:100%;
+
+padding:15px;
+
+background:#ff6200;
+color:#fff;
+
+border:none;
+
+border-radius:12px;
+
+font-size:17px;
+
+cursor:pointer;
+
+}
+
+.menu-popup{
+
+position:fixed;
+
+right:20px;
+top:120px;
+
+background:#fff;
+
+border-radius:16px;
+
+box-shadow:0 8px 25px rgba(0,0,0,.15);
+
+display:none;
+
+overflow:hidden;
+
+z-index:9999;
+
+min-width:180px;
+
+}
+
+.menu-popup button{
+
+width:100%;
+
+border:none;
+
+background:#fff;
+
+padding:15px;
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-size:15px;
+
+cursor:pointer;
+
+}
+
+.menu-popup button:hover{
+
+background:#f6f6f6;
+
+}
+
+.menu-popup button i{
+
+color:#ff6200;
+
+width:20px;
+
+}
+
+.deliverBtn{
+
+margin-top:15px;
+
+background:#16a34a;
+
+color:#fff;
+
+border:none;
+
+padding:12px 20px;
+
+border-radius:12px;
+
+font-size:15px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.deliverBtn:hover{
+
+background:#138a3c;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <div class="back" onclick="history.back()">
+        <i class="fa fa-arrow-left"></i>
+    </div>
+
+    <div class="title">
+        Select Your Location
+    </div>
+
+</div>
+
+<div class="container">
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+        <i class="fa fa-search"></i>
+
+        <input
+type="text"
+id="searchAddress"
+placeholder="Search your address..."
+onkeyup="searchAddress()">
+    </div>
+
+    <!-- Top Actions -->
+
+    <div class="action-grid">
+
+        <div class="action-card"
+        onclick="currentLocation()">
+
+            <i class="fa-solid fa-location-crosshairs"></i>
+
+            <h4>Use Current Location</h4>
+
+        </div>
+
+        <div class="action-card"
+        onclick="openModal()">
+
+            <i class="fa-solid fa-plus"></i>
+
+            <h4>Add New Address</h4>
+
+        </div>
+
+
+    </div>
+
+    <h3 class="saved-title">
+
+        SAVED ADDRESSES
+
+    </h3>
+
+    <div id="addressList">
+
+        <div class="empty">
+
+            Loading Addresses...
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal -->
+
+<div
+
+class="modal"
+
+id="modal">
+
+<div class="modal-content">
+
+<h2>
+
+Add Address
+
+</h2>
+
+<button
+
+class="locationBtn"
+
+onclick="currentLocation()">
+
+📍 Use Current Location
+
+</button>
+
+<select id="title">
+
+<option>Home</option>
+
+<option>Work</option>
+
+<option>Other</option>
+
+</select>
+
+<input
+id="house"
+placeholder="House / Flat No">
+
+<input
+id="street"
+placeholder="Street">
+
+<input
+id="area"
+placeholder="Area">
+
+<input
+id="city"
+placeholder="City">
+
+<input
+id="state"
+placeholder="State">
+
+<input
+id="pincode"
+placeholder="Pincode">
+
+<button
+
+class="saveBtn"
+
+onclick="saveAddress()">
+
+Save Address
+
+</button>
+
+</div>
+
+</div>
+<div id="menuPopup" class="menu-popup">
+
+<button onclick="editSelected()">
+<i class="fa fa-pen"></i>
+Edit
+</button>
+
+<button onclick="makeDefault()">
+<i class="fa fa-star"></i>
+Make Default
+</button>
+
+<button onclick="deleteSelected()">
+<i class="fa fa-trash"></i>
+Delete
+</button>
+
+</div>
+
+<script
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ&libraries=places">
+</script>
+<script>
+
+const API = window.location.origin;
+
+const customerId=localStorage.getItem("customerId");
+
+let editId=null;
+let latitude="";
+let longitude="";
+
+loadAddresses();
+function getDistance(lat2,lng2){
+
+const lat1=localStorage.getItem("latitude");
+const lng1=localStorage.getItem("longitude");
+
+if(!lat1 || !lng1) return "--";
+
+const R=6371;
+
+const dLat=(lat2-lat1)*Math.PI/180;
+const dLon=(lng2-lng1)*Math.PI/180;
+
+const a=
+Math.sin(dLat/2)**2+
+Math.cos(lat1*Math.PI/180)*
+Math.cos(lat2*Math.PI/180)*
+Math.sin(dLon/2)**2;
+
+const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+
+return (R*c).toFixed(1);
+
+}
+//==========================
+// Load Addresses
+//==========================
+
+async function loadAddresses(){
+
+const res = await fetch(`${API}/address/${customerId}`);
+
+const addresses = await res.json();
+
+allAddresses = addresses;
+
+const list = document.getElementById("addressList");
+
+if(addresses.length==0){
+
+list.innerHTML=`
+<div class="empty">
+No Saved Addresses
+</div>
+`;
+
+return;
+
+}
+
+list.innerHTML="";
+
+addresses.forEach(a=>{
+
+list.innerHTML += `
+
+<div class="saved-card">
+<div class="left-icon">
+
+<i class="fa-solid fa-location-arrow"></i>
+
+
+<span>${getDistance(
+a.latitude,
+a.longitude
+)} km</span>
+</div>
+
+<div class="address-info">
+
+<div class="address-head">
+
+<h3>${a.title}</h3>
+
+${a.is_default==1
+?
+`<span class="selected">SELECTED</span>`
+:
+""
+}
+
+</div>
+
+<p>
+
+${a.house},
+${a.street},
+${a.area},
+${a.city},
+${a.state},
+${a.pincode}
+
+</p>
+
+<button
+class="deliverBtn"
+onclick="deliverHere(event,
+'${a.house}',
+'${a.street}',
+'${a.area}',
+'${a.city}',
+'${a.state}',
+'${a.pincode}',
+'${a.latitude}',
+'${a.longitude}')">
+
+Deliver Here
+
+</button>
+
+</div>
+
+<div class="menu"
+
+onclick="showMenu(event,
+${a.id},
+'${a.title}',
+'${a.house}',
+'${a.street}',
+'${a.area}',
+'${a.city}',
+'${a.state}',
+'${a.pincode}',
+'${a.latitude}',
+'${a.longitude}'
+)">
+
+<i class="fa-solid fa-ellipsis-vertical"></i>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+function searchAddress(){
+
+const keyword = document
+.getElementById("searchAddress")
+.value
+.toLowerCase();
+
+const cards = document.querySelectorAll(".saved-card");
+
+cards.forEach(card=>{
+
+const text = card.innerText.toLowerCase();
+
+if(text.includes(keyword)){
+
+card.style.display="flex";
+
+}else{
+
+card.style.display="none";
+
+}
+
+});
+
+}
+//==========================
+// Open Modal
+//==========================
+
+function openModal(){
+
+editId=null;
+
+document.getElementById("modal").style.display="flex";
+
+clearForm();
+
+}
+
+//==========================
+// Clear Form
+//==========================
+
+function clearForm(){
+
+house.value="";
+street.value="";
+area.value="";
+city.value="";
+state.value="";
+pincode.value="";
+title.value="Home";
+
+}
+
+//==========================
+// Close Modal
+//==========================
+
+window.onclick=function(e){
+
+if(e.target.id=="modal"){
+
+modal.style.display="none";
+
+}
+
+}
+
+//==========================
+// Current Location
+//==========================
+function currentLocation(){
+
+navigator.geolocation.getCurrentPosition((position)=>{
+
+latitude = position.coords.latitude;
+longitude = position.coords.longitude;
+
+const geocoder = new google.maps.Geocoder();
+
+const latlng = {
+lat: latitude,
+lng: longitude
+};
+
+geocoder.geocode({location:latlng},(results,status)=>{
+
+if(status!=="OK" || !results[0]){
+alert("Unable to fetch address");
+return;
+}
+
+openModal();
+
+const components = results[0].address_components;
+
+let house="";
+let street="";
+let area="";
+let city="";
+let state="";
+let pincode="";
+
+components.forEach(c=>{
+
+if(c.types.includes("street_number"))
+house=c.long_name;
+
+if(c.types.includes("route"))
+street=c.long_name;
+
+if(
+c.types.includes("sublocality") ||
+c.types.includes("sublocality_level_1")
+)
+area=c.long_name;
+
+if(c.types.includes("locality"))
+city=c.long_name;
+
+if(c.types.includes("administrative_area_level_1"))
+state=c.long_name;
+
+if(c.types.includes("postal_code"))
+pincode=c.long_name;
+
+});
+
+document.getElementById("house").value=house;
+document.getElementById("street").value=street;
+document.getElementById("area").value=area;
+document.getElementById("city").value=city;
+document.getElementById("state").value=state;
+document.getElementById("pincode").value=pincode;
+
+});
+
+});
+
+}
+
+//==========================
+// Save Address
+//==========================
+
+async function saveAddress(){
+
+const body={
+
+customer_id:customerId,
+
+title:title.value,
+
+house:house.value,
+
+street:street.value,
+
+area:area.value,
+
+city:city.value,
+
+state:state.value,
+
+pincode:pincode.value,
+
+latitude,
+
+longitude
+
+};
+
+let url=`${API}/address/add`;
+
+let method="POST";
+
+if(editId){
+
+url=`${API}/address/update/${editId}`;
+
+method="PUT";
+
+}
+
+await fetch(url,{
+
+method,
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(body)
+
+});
+
+modal.style.display="none";
+
+loadAddresses();
+
+}
+
+//==========================
+// Edit
+//==========================
+
+function editAddress(
+
+id,
+
+t,
+
+h,
+
+s,
+
+a,
+
+c,
+
+st,
+
+p,
+
+lat,
+
+lng
+
+){
+
+editId=id;
+
+modal.style.display="flex";
+
+title.value=t;
+
+house.value=h;
+
+street.value=s;
+
+area.value=a;
+
+city.value=c;
+
+state.value=st;
+
+pincode.value=p;
+
+latitude=lat;
+
+longitude=lng;
+
+}
+
+//==========================
+// Delete
+//==========================
+
+async function deleteAddress(id){
+
+if(!confirm("Delete Address?")) return;
+
+await fetch(`${API}/address/${id}`,{
+
+method:"DELETE"
+
+});
+
+loadAddresses();
+
+}
+
+//==========================
+// Default
+//==========================
+
+async function setDefault(id){
+
+await fetch(`${API}/address/default/${id}`,{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+customer_id:customerId
+
+})
+
+});
+
+loadAddresses();
+
+}
+
+function deliverHere(
+    event,
+    house,
+    street,
+    area,
+    city,
+    state,
+    pincode,
+    lat,
+    lng
+){
+
+    event.stopPropagation();
+
+
+    /* ===============================
+       SAVE LOCATION NAME
+    =============================== */
+
+    const locationName =
+        `${area}, ${city}`;
+
+
+    localStorage.setItem(
+        "locationName",
+        locationName
+    );
+
+
+    /* ===============================
+       SAVE FULL ADDRESS
+    =============================== */
+
+    const fullAddress =
+        `${house}, ${street}, ${area}, ${city}, ${state} - ${pincode}`;
+
+
+    localStorage.setItem(
+        "selectedAddress",
+        fullAddress
+    );
+
+
+    /* ===============================
+       SAVE GPS LOCATION
+    =============================== */
+
+    localStorage.setItem(
+        "latitude",
+        lat
+    );
+
+    localStorage.setItem(
+        "longitude",
+        lng
+    );
+
+
+    console.log(
+        "✅ DELIVERY ADDRESS SELECTED"
+    );
+
+    console.log(
+        "Location:",
+        locationName
+    );
+
+    console.log(
+        "Address:",
+        fullAddress
+    );
+
+
+    /* ===============================
+       CHECK WHERE USER CAME FROM
+    =============================== */
+
+    const returnPage =
+        localStorage.getItem(
+            "addressReturnPage"
+        );
+
+
+    /* ===============================
+       CLEAR RETURN PAGE
+    =============================== */
+
+    localStorage.removeItem(
+        "addressReturnPage"
+    );
+
+
+    /* ===============================
+       GO BACK TO CORRECT PAGE
+    =============================== */
+
+    if(returnPage){
+
+        window.location.href =
+            returnPage;
+
+    }
+
+    else{
+
+        window.location.href =
+            "index.html";
+
+    }
+
+}
+
+
+let selectedAddress={};
+
+function showMenu(
+event,
+id,
+title,
+house,
+street,
+area,
+city,
+state,
+pincode,
+lat,
+lng
+){
+
+event.stopPropagation();
+
+selectedAddress={
+id,
+title,
+house,
+street,
+area,
+city,
+state,
+pincode,
+lat,
+lng
+};
+
+const popup=document.getElementById("menuPopup");
+
+popup.style.display="block";
+
+popup.style.left=event.pageX-160+"px";
+
+popup.style.top=event.pageY+"px";
+
+}
+function editSelected(){
+
+document.getElementById("menuPopup").style.display="none";
+
+editAddress(
+
+selectedAddress.id,
+
+selectedAddress.title,
+
+selectedAddress.house,
+
+selectedAddress.street,
+
+selectedAddress.area,
+
+selectedAddress.city,
+
+selectedAddress.state,
+
+selectedAddress.pincode,
+
+selectedAddress.lat,
+
+selectedAddress.lng
+
+);
+
+}
+
+function makeDefault(){
+
+document.getElementById("menuPopup").style.display="none";
+
+setDefault(selectedAddress.id);
+
+}
+
+function deleteSelected(){
+
+document.getElementById("menuPopup").style.display="none";
+
+deleteAddress(selectedAddress.id);
+
+}
+document.addEventListener("click",()=>{
+
+document.getElementById("menuPopup").style.display="none";
+
+});
+let allAddresses=[];
+
+function deliverHere(
+    event,
+    house,
+    street,
+    area,
+    city,
+    state,
+    pincode,
+    lat,
+    lng
+){
+
+    event.stopPropagation();
+
+
+    /* ==========================================
+       SAVE DISPLAY LOCATION
+    ========================================== */
+
+    const locationName =
+        `${area}, ${city}`;
+
+
+    localStorage.setItem(
+        "locationName",
+        locationName
+    );
+
+
+    /* ==========================================
+       SAVE FULL ADDRESS
+    ========================================== */
+
+    const fullAddress =
+        `${house}, ${street}, ${area}, ${city}, ${state} - ${pincode}`;
+
+
+    localStorage.setItem(
+        "selectedAddress",
+        fullAddress
+    );
+
+
+    /* ==========================================
+       SAVE GPS
+    ========================================== */
+
+    localStorage.setItem(
+        "latitude",
+        lat
+    );
+
+    localStorage.setItem(
+        "longitude",
+        lng
+    );
+
+
+    console.log(
+        "DELIVERY LOCATION SELECTED:",
+        locationName
+    );
+
+    console.log(
+        "FULL ADDRESS:",
+        fullAddress
+    );
+
+
+    /* ==========================================
+       GO HOME
+    ========================================== */
+
+    window.location.href =
+        "index.html";
+
+}
+
+let autocomplete;
+
+window.onload = function () {
+
+    const input = document.getElementById("searchAddress");
+
+    autocomplete = new google.maps.places.Autocomplete(input, {
+        componentRestrictions: { country: "in" },
+        fields: [
+            "formatted_address",
+            "geometry",
+            "address_components"
+        ]
+    });
+
+    autocomplete.addListener("place_changed", fillAddress);
+
+};
+function fillAddress(){
+
+    const place = autocomplete.getPlace();
+
+    if(!place.geometry) return;
+
+    latitude = place.geometry.location.lat();
+    longitude = place.geometry.location.lng();
+
+    let house = "";
+    let street = "";
+    let area = "";
+    let city = "";
+    let state = "";
+    let pincode = "";
+
+    place.address_components.forEach(component=>{
+
+        const type = component.types[0];
+
+        if(type=="street_number"){
+            house = component.long_name;
+        }
+
+        if(type=="route"){
+            street = component.long_name;
+        }
+
+        if(
+            type=="sublocality" ||
+            type=="sublocality_level_1" ||
+            type=="neighborhood"
+        ){
+            area = component.long_name;
+        }
+
+        if(type=="locality"){
+            city = component.long_name;
+        }
+
+        if(type=="administrative_area_level_1"){
+            state = component.long_name;
+        }
+
+        if(type=="postal_code"){
+            pincode = component.long_name;
+        }
+
+    });
+
+    openModal();
+    document.getElementById("searchAddress").value = "";
+
+    document.getElementById("house").value = house;
+    document.getElementById("street").value = street;
+    document.getElementById("area").value = area;
+    document.getElementById("city").value = city;
+    document.getElementById("state").value = state;
+    document.getElementById("pincode").value = pincode;
+
+}
+</script>
+
+
+</body>
+
+</html>

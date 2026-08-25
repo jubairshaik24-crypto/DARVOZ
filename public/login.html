@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
+
+<title>DARVOZ — Choose Your Role</title>
+
+
+<!-- FONT -->
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+
+<!-- ICONS -->
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+/* =====================================================
+   HTML / BODY
+===================================================== */
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+    margin:0;
+
+    overflow:hidden;
+
+    font-family:"Poppins",sans-serif;
+
+    background:#ffffff;
+}
+
+
+/* =====================================================
+   MAIN APP
+===================================================== */
+
+.app{
+
+    width:100%;
+    height:100vh;
+
+    max-width:430px;
+
+    margin:auto;
+
+    position:relative;
+
+    background:#ffffff;
+
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   ORANGE HEADER
+===================================================== */
+
+.hero{
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    height:270px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff8a00,
+            #ff5b00
+        );
+
+    border-bottom-left-radius:50% 18%;
+    border-bottom-right-radius:50% 18%;
+
+    overflow:hidden;
+
+    z-index:1;
+}
+
+
+/* =====================================================
+   ORANGE DECORATION
+===================================================== */
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    top:-120px;
+    right:-45px;
+}
+
+
+.hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:190px;
+    height:190px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    top:20px;
+    left:-110px;
+}
+
+
+/* =====================================================
+   LOGO AREA
+===================================================== */
+
+.logo-area{
+
+    position:relative;
+
+    z-index:5;
+
+    width:100%;
+
+    text-align:center;
+
+    color:white;
+
+    padding-top:24px;
+}
+
+
+/* =====================================================
+   DARVOZ LOGO IMAGE
+===================================================== */
+
+.logo-image{
+
+    width:70px;
+    height:70px;
+
+    display:block;
+
+    object-fit:contain;
+
+    margin:0 auto 3px;
+
+    filter:
+        drop-shadow(
+            0 4px 10px rgba(0,0,0,0.12)
+        );
+}
+
+
+/* Hide broken image */
+
+.logo-image.hidden{
+
+    display:none;
+}
+
+
+/* =====================================================
+   DARVOZ TEXT
+===================================================== */
+
+.logo-title{
+
+    font-size:45px;
+
+    line-height:1;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+}
+
+
+/* =====================================================
+   TAGLINE
+===================================================== */
+
+.tagline{
+
+    font-size:15px;
+
+    font-weight:500;
+
+    margin-top:8px;
+}
+
+
+/* =====================================================
+   WHITE LINE
+===================================================== */
+
+.logo-line{
+
+    width:82px;
+    height:5px;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    margin:14px auto 0;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+
+    position:absolute;
+
+    z-index:10;
+
+    top:285px;
+
+    left:0;
+
+    width:100%;
+
+    padding:
+        0
+        17px
+        50px;
+}
+
+
+/* =====================================================
+   HEADING
+===================================================== */
+
+.heading{
+
+    text-align:center;
+
+    margin-bottom:15px;
+}
+
+
+.heading h2{
+
+    font-size:28px;
+
+    line-height:1.15;
+
+    font-weight:800;
+
+    color:#111111;
+}
+
+
+.heading p{
+
+    font-size:12px;
+
+    color:#777777;
+
+    margin-top:5px;
+}
+
+
+.heading p strong{
+
+    color:#ff6500;
+
+    font-weight:700;
+}
+
+
+/* =====================================================
+   ROLES
+===================================================== */
+
+.roles{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:11px;
+}
+
+
+/* =====================================================
+   ROLE CARD
+===================================================== */
+
+.role-card{
+
+    width:100%;
+
+    height:88px;
+
+    min-height:88px;
+
+    background:#ffffff;
+
+    border-radius:23px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        10px
+        15px
+        10px
+        19px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 7px 23px rgba(0,0,0,0.09);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+
+/* =====================================================
+   COLORED LEFT LINE
+===================================================== */
+
+.role-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:6px;
+    height:100%;
+}
+
+
+/* CUSTOMER */
+
+.customer::before{
+
+    background:#ff6800;
+}
+
+
+/* PARTNER */
+
+.partner::before{
+
+    background:#20b64b;
+}
+
+
+/* DELIVERY */
+
+.delivery::before{
+
+    background:#1976ed;
+}
+
+
+/* RIDER */
+
+.rider::before{
+
+    background:#8138d6;
+}
+
+
+/* =====================================================
+   PRESS
+===================================================== */
+
+.role-card:active{
+
+    transform:scale(.975);
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+/* =====================================================
+   LEFT SIDE
+===================================================== */
+
+.role-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    min-width:0;
+}
+
+
+/* =====================================================
+   ICON BOX
+===================================================== */
+
+.role-icon{
+
+    width:58px;
+    height:58px;
+
+    border-radius:18px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#ffffff;
+
+    font-size:24px;
+}
+
+
+/* CUSTOMER */
+
+.customer .role-icon{
+
+    background:#ff6800;
+}
+
+
+/* PARTNER */
+
+.partner .role-icon{
+
+    background:#20b64b;
+}
+
+
+/* DELIVERY */
+
+.delivery .role-icon{
+
+    background:#1976ed;
+}
+
+
+/* RIDER */
+
+.rider .role-icon{
+
+    background:#8138d6;
+}
+
+
+/* =====================================================
+   ROLE TEXT
+===================================================== */
+
+.role-text{
+
+    min-width:0;
+}
+
+
+.role-text h3{
+
+    font-size:20px;
+
+    line-height:1.1;
+
+    font-weight:700;
+
+    color:#151515;
+}
+
+
+.role-text p{
+
+    font-size:10.5px;
+
+    color:#777777;
+
+    margin-top:5px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    max-width:235px;
+}
+
+
+/* =====================================================
+   ARROW
+===================================================== */
+
+.arrow{
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+}
+
+
+/* CUSTOMER */
+
+.customer .arrow{
+
+    color:#ff6800;
+
+    background:#fff0e6;
+}
+
+
+/* PARTNER */
+
+.partner .arrow{
+
+    color:#20a947;
+
+    background:#eef9ee;
+}
+
+
+/* DELIVERY */
+
+.delivery .arrow{
+
+    color:#1976ed;
+
+    background:#edf4ff;
+}
+
+
+/* RIDER */
+
+.rider .arrow{
+
+    color:#8138d6;
+
+    background:#f4edff;
+}
+
+
+/* =====================================================
+   TERMS
+===================================================== */
+
+.terms{
+
+    text-align:center;
+
+    margin-top:12px;
+
+    font-size:8.5px;
+
+    line-height:1.4;
+
+    color:#999999;
+}
+
+
+.terms span{
+
+    color:#ff6500;
+
+    font-weight:600;
+}
+
+
+/* =====================================================
+   BOTTOM WAVES
+===================================================== */
+
+.bottom{
+
+    position:absolute;
+
+    left:0;
+    bottom:0;
+
+    width:100%;
+
+    height:55px;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    z-index:20;
+}
+
+
+/* LIGHT WAVE */
+
+.wave-light{
+
+    position:absolute;
+
+    width:125%;
+    height:80px;
+
+    left:-12.5%;
+
+    bottom:-52px;
+
+    background:#ffd3b8;
+
+    border-radius:50% 50% 0 0;
+}
+
+
+/* ORANGE WAVE */
+
+.wave-orange{
+
+    position:absolute;
+
+    width:125%;
+    height:70px;
+
+    left:-12.5%;
+
+    bottom:-60px;
+
+    background:#ff6800;
+
+    border-radius:50% 50% 0 0;
+}
+
+
+/* =====================================================
+   CARD ANIMATION
+===================================================== */
+
+.role-card{
+
+    opacity:0;
+
+    transform:translateY(12px);
+
+    animation:
+        showCard .35s ease forwards;
+}
+
+
+.role-card:nth-child(1){
+
+    animation-delay:.05s;
+}
+
+
+.role-card:nth-child(2){
+
+    animation-delay:.10s;
+}
+
+
+.role-card:nth-child(3){
+
+    animation-delay:.15s;
+}
+
+
+.role-card:nth-child(4){
+
+    animation-delay:.20s;
+}
+
+
+@keyframes showCard{
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+    }
+}
+
+
+/* =====================================================
+   SMALL HEIGHT SCREEN
+===================================================== */
+
+@media(max-height:700px){
+
+    .hero{
+
+        height:235px;
+    }
+
+
+    .logo-area{
+
+        padding-top:10px;
+    }
+
+
+    .logo-image{
+
+        width:52px;
+        height:52px;
+    }
+
+
+    .logo-title{
+
+        font-size:37px;
+    }
+
+
+    .tagline{
+
+        font-size:11px;
+    }
+
+
+    .logo-line{
+
+        width:65px;
+
+        height:3px;
+
+        margin-top:8px;
+    }
+
+
+    .content{
+
+        top:250px;
+    }
+
+
+    .heading{
+
+        margin-bottom:9px;
+    }
+
+
+    .heading h2{
+
+        font-size:23px;
+    }
+
+
+    .heading p{
+
+        font-size:10px;
+    }
+
+
+    .roles{
+
+        gap:7px;
+    }
+
+
+    .role-card{
+
+        height:72px;
+
+        min-height:72px;
+
+        border-radius:20px;
+    }
+
+
+    .role-icon{
+
+        width:48px;
+        height:48px;
+
+        border-radius:15px;
+
+        font-size:20px;
+    }
+
+
+    .role-text h3{
+
+        font-size:17px;
+    }
+
+
+    .role-text p{
+
+        font-size:8.5px;
+    }
+
+
+    .arrow{
+
+        width:34px;
+        height:34px;
+
+        font-size:15px;
+    }
+
+
+    .terms{
+
+        margin-top:7px;
+
+        font-size:7px;
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL SCREEN
+===================================================== */
+
+@media(max-height:620px){
+
+    .hero{
+
+        height:210px;
+    }
+
+
+    .content{
+
+        top:225px;
+    }
+
+
+    .logo-image{
+
+        width:43px;
+        height:43px;
+    }
+
+
+    .logo-title{
+
+        font-size:31px;
+    }
+
+
+    .tagline{
+
+        font-size:9px;
+    }
+
+
+    .logo-line{
+
+        width:55px;
+
+        height:3px;
+
+        margin-top:6px;
+    }
+
+
+    .heading h2{
+
+        font-size:20px;
+    }
+
+
+    .roles{
+
+        gap:5px;
+    }
+
+
+    .role-card{
+
+        height:62px;
+
+        min-height:62px;
+    }
+
+
+    .role-icon{
+
+        width:40px;
+        height:40px;
+
+        font-size:16px;
+    }
+
+
+    .role-text h3{
+
+        font-size:14px;
+    }
+
+
+    .role-text p{
+
+        font-size:7px;
+    }
+
+
+    .arrow{
+
+        width:29px;
+        height:29px;
+
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =================================================
+         ORANGE HEADER
+    ================================================== -->
+
+    <section class="hero">
+
+
+        <div class="logo-area">
+
+
+            <!--
+                IMPORTANT:
+
+                Keep your actual DARVOZ logo as:
+
+                logo.png
+
+                in the SAME folder as login.html
+            -->
+
+            <img
+                src="logo.png"
+                alt="DARVOZ Logo"
+                class="logo-image"
+                onerror="this.classList.add('hidden')"
+            >
+
+
+            <div class="logo-title">
+                DARVOZ
+            </div>
+
+
+            <div class="tagline">
+                One App. Every Need.
+            </div>
+
+
+            <div class="logo-line"></div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
+
+    <main class="content">
+
+
+        <!-- HEADING -->
+
+        <div class="heading">
+
+            <h2>
+                Choose Your Role
+            </h2>
+
+
+            <p>
+
+                How do you want to use
+
+                <strong>
+                    DARVOZ?
+                </strong>
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ROLE CARDS
+        ================================================== -->
+
+        <div class="roles">
+
+
+            <!-- CUSTOMER -->
+
+            <div
+                class="role-card customer"
+                onclick="openPage('customer-login.html')"
+            >
+
+                <div class="role-left">
+
+
+                    <div class="role-icon">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                    </div>
+
+
+                    <div class="role-text">
+
+                        <h3>
+                            Customer
+                        </h3>
+
+                        <p>
+                            Food • Grocery • Meat
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="arrow">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PARTNER -->
+
+            <div
+                class="role-card partner"
+                onclick="openPage('partner-login.html')"
+            >
+
+                <div class="role-left">
+
+
+                    <div class="role-icon">
+
+                        <i class="fa-solid fa-store"></i>
+
+                    </div>
+
+
+                    <div class="role-text">
+
+                        <h3>
+                            Partner
+                        </h3>
+
+                        <p>
+                            Restaurant • Grocery • Meat Shop
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="arrow">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DELIVERY -->
+
+            <div
+                class="role-card delivery"
+                onclick="openPage('delivery-login.html')"
+            >
+
+                <div class="role-left">
+
+
+                    <div class="role-icon">
+
+                        <i class="fa-solid fa-truck-fast"></i>
+
+                    </div>
+
+
+                    <div class="role-text">
+
+                        <h3>
+                            Delivery
+                        </h3>
+
+                        <p>
+                            Pickup • Deliver • Earn Daily
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="arrow">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DARVOZ RIDER -->
+
+            <div
+                class="role-card rider"
+                onclick="openPage('rider-login.html')"
+            >
+
+                <div class="role-left">
+
+
+                    <div class="role-icon">
+
+                        <i class="fa-solid fa-motorcycle"></i>
+
+                    </div>
+
+
+                    <div class="role-text">
+
+                        <h3>
+                            DARVOZ Rider
+                        </h3>
+
+                        <p>
+                            Ride • Deliver • Earn More
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="arrow">
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- TERMS -->
+
+        <div class="terms">
+
+            By continuing, you agree to our
+
+            <br>
+
+            <span>Terms</span>
+
+            &
+
+            <span>Privacy Policy</span>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         BOTTOM WAVE
+    ================================================== -->
+
+    <div class="bottom">
+
+        <div class="wave-light"></div>
+
+        <div class="wave-orange"></div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function openPage(page){
+
+    window.location.href = page;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

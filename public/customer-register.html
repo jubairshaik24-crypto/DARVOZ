@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>DARVOZ | Create Account</title>
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #fff7f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page {
+    width: 100%;
+    max-width: 430px;
+    height: 100dvh;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+        /* TOP ORANGE AREA */
+
+        .top-section {
+            height: 240px;
+            background: linear-gradient(
+                135deg,
+                #ff7a00,
+                #ff5500
+            );
+
+            padding: 25px 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-section::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.10);
+            right: -90px;
+            top: -70px;
+        }
+
+        .top-section::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 25px solid rgba(255,255,255,0.07);
+            left: -80px;
+            bottom: -100px;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.18);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand {
+            margin-top: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand h1 {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .brand p {
+            font-size: 14px;
+            margin-top: 6px;
+            opacity: 0.92;
+        }
+
+
+        /* REGISTER CARD */
+
+        .register-card {
+            background: white;
+            border-radius: 30px 30px 0 0;
+            margin-top: -35px;
+            min-height: calc(100vh - 205px);
+            padding: 35px 25px 30px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .register-card h2 {
+            font-size: 24px;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+
+        /* INPUT */
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .input-box {
+            height: 56px;
+            border: 1px solid #e8e8e8;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            transition: 0.2s;
+        }
+
+        .input-box:focus-within {
+            border-color: #ff6b00;
+            box-shadow: 0 0 0 3px rgba(255,107,0,0.08);
+        }
+
+        .input-box i {
+            color: #ff6b00;
+            font-size: 18px;
+            width: 30px;
+        }
+
+        .input-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+            background: transparent;
+        }
+
+        .input-box input::placeholder {
+            color: #aaa;
+        }
+
+
+        /* MOBILE */
+
+        .mobile-box {
+            background: #fffaf7;
+        }
+
+        .country-code {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            padding-right: 10px;
+            border-right: 1px solid #ddd;
+            margin-right: 12px;
+        }
+
+        #mobile {
+            color: #777;
+            font-weight: 500;
+        }
+
+
+        /* TERMS */
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 5px;
+            margin-bottom: 24px;
+        }
+
+        .terms input {
+            margin-top: 4px;
+            accent-color: #ff6b00;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .terms label {
+            font-size: 12px;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .terms a {
+            color: #ff6b00;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+
+        /* BUTTON */
+
+        .register-btn {
+            width: 100%;
+            height: 56px;
+            border: none;
+            border-radius: 14px;
+            background: #ff6b00;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255,107,0,0.25);
+            transition: 0.2s;
+        }
+
+        .register-btn:hover {
+            background: #e95f00;
+        }
+
+        .register-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+
+        /* BOTTOM */
+
+        .bottom {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .bottom a {
+            color: #ff6b00;
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+
+        /* MOBILE RESPONSIVE */
+
+        @media (min-width: 500px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .page {
+                min-height: 780px;
+                border-radius: 25px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="page">
+
+
+        <!-- TOP -->
+
+        <div class="top-section">
+
+            <button class="back-btn"
+                onclick="goBack()">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </button>
+
+
+            <div class="brand">
+
+                <h1>DARVOZ</h1>
+
+                <p>One App. Every Need.</p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- REGISTER FORM -->
+
+        <div class="register-card">
+
+            <h2>Create your account 👋</h2>
+
+            <p class="subtitle">
+                Just a few details and you're ready to go!
+            </p>
+
+
+            <!-- NAME -->
+
+            <div class="input-group">
+
+                <label>Full Name</label>
+
+                <div class="input-box">
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        autocomplete="name">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MOBILE -->
+
+            <div class="input-group">
+
+                <label>Mobile Number</label>
+
+                <div class="input-box mobile-box">
+
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+
+                    <span class="country-code">
+                        +91
+                    </span>
+
+                    <input
+                        type="text"
+                        id="mobile"
+                        placeholder="Mobile number"
+                        readonly>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="input-group">
+
+                <label>Email Address</label>
+
+                <div class="input-box">
+
+                    <i class="fa-regular fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TERMS -->
+
+            <div class="terms">
+
+                <input
+                    type="checkbox"
+                    id="terms">
+
+                <label for="terms">
+
+                    I agree to the
+
+                    <a href="terms.html">
+                        Terms & Conditions
+                    </a>
+
+                    and
+
+                    <a href="privacy-policy.html">
+                        Privacy Policy
+                    </a>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- REGISTER BUTTON -->
+
+            <button
+                class="register-btn"
+                onclick="register()">
+
+                Create Account
+
+                <i class="fa-solid fa-arrow-right"
+                    style="margin-left:8px;">
+                </i>
+
+            </button>
+
+
+
+            <!-- LOGIN -->
+
+            <div class="bottom">
+
+                Already have an account?
+
+                <a href="customer-login.html">
+                    Login
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        const API = window.location.origin;
+
+
+        // ==========================================
+        // GET VERIFIED MOBILE FROM OTP PAGE
+        // ==========================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                const verifiedMobile =
+                    localStorage.getItem(
+                        "registerMobile"
+                    );
+
+                if (verifiedMobile) {
+
+                    // Remove +91 if backend/frontend
+                    // stored it with country code
+
+                    let mobile =
+                        verifiedMobile.replace(/\D/g, "");
+
+                    if (
+                        mobile.startsWith("91") &&
+                        mobile.length === 12
+                    ) {
+                        mobile = mobile.substring(2);
+                    }
+
+                    document.getElementById(
+                        "mobile"
+                    ).value = mobile;
+
+                } else {
+
+                    // User should not directly open
+                    // registration without OTP verification
+
+                    alert(
+                        "Please verify your mobile number first."
+                    );
+
+                    window.location.href =
+                        "customer-login.html";
+
+                }
+
+            }
+        );
+
+
+
+        // ==========================================
+        // REGISTER CUSTOMER
+        // ==========================================
+
+        async function register() {
+
+            const button =
+                document.querySelector(
+                    ".register-btn"
+                );
+
+
+            const name =
+                document.getElementById(
+                    "name"
+                ).value.trim();
+
+
+            const mobile =
+                document.getElementById(
+                    "mobile"
+                ).value.trim();
+
+
+            const email =
+                document.getElementById(
+                    "email"
+                ).value.trim();
+
+
+            const terms =
+                document.getElementById(
+                    "terms"
+                ).checked;
+
+
+
+            // ==========================================
+            // VALIDATION
+            // ==========================================
+
+            if (!name) {
+
+                alert(
+                    "Please enter your full name."
+                );
+
+                return;
+
+            }
+
+
+            if (name.length < 2) {
+
+                alert(
+                    "Please enter a valid name."
+                );
+
+                return;
+
+            }
+
+
+            if (!mobile) {
+
+                alert(
+                    "Mobile number not found. Please verify OTP again."
+                );
+
+                return;
+
+            }
+
+
+            if (!/^[0-9]{10}$/.test(mobile)) {
+
+                alert(
+                    "Please enter a valid 10-digit mobile number."
+                );
+
+                return;
+
+            }
+
+
+            if (!email) {
+
+                alert(
+                    "Please enter your email address."
+                );
+
+                return;
+
+            }
+
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+            if (!emailPattern.test(email)) {
+
+                alert(
+                    "Please enter a valid email address."
+                );
+
+                return;
+
+            }
+
+
+            if (!terms) {
+
+                alert(
+                    "Please accept the Terms & Conditions."
+                );
+
+                return;
+
+            }
+
+
+
+            // ==========================================
+            // BUTTON LOADING
+            // ==========================================
+
+            const originalText =
+                button.innerHTML;
+
+
+            button.disabled = true;
+
+
+            button.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Creating Account...
+            `;
+
+
+
+            try {
+
+
+                console.log(
+                    "REGISTER REQUEST:",
+                    {
+                        name,
+                        mobile,
+                        email
+                    }
+                );
+
+
+
+                // ==========================================
+                // SEND REGISTER REQUEST
+                // ==========================================
+
+                const response =
+                    await fetch(
+
+                        `${API}/customer/register`,
+
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                name: name,
+
+                                mobile: mobile,
+
+                                email: email
+
+                            })
+
+                        }
+
+                    );
+
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "REGISTER RESPONSE:",
+                    data
+                );
+
+
+
+                // ==========================================
+                // FAILED
+                // ==========================================
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    alert(
+                        data.message ||
+                        "Registration failed. Please try again."
+                    );
+
+                    return;
+
+                }
+
+
+
+                // ==========================================
+                // SUCCESS
+                // ==========================================
+
+                alert(
+                    "Welcome to DARVOZ 🎉 Account created successfully!"
+                );
+
+
+
+                // Save customer data
+
+                if (data.customer) {
+
+
+                    if (data.customer.id) {
+
+                        localStorage.setItem(
+                            "customerId",
+                            String(data.customer.id)
+                        );
+
+                    }
+
+
+                    localStorage.setItem(
+                        "customerName",
+                        data.customer.name || name
+                    );
+
+
+                    localStorage.setItem(
+                        "mobile",
+                        data.customer.mobile || mobile
+                    );
+
+
+                    localStorage.setItem(
+                        "customerEmail",
+                        data.customer.email || email
+                    );
+
+                } else {
+
+
+                    localStorage.setItem(
+                        "customerName",
+                        name
+                    );
+
+
+                    localStorage.setItem(
+                        "mobile",
+                        mobile
+                    );
+
+
+                    localStorage.setItem(
+                        "customerEmail",
+                        email
+                    );
+
+                }
+
+
+
+                localStorage.setItem(
+                    "customerLoggedIn",
+                    "true"
+                );
+
+
+                localStorage.setItem(
+                    "customerLoginTime",
+                    Date.now().toString()
+                );
+
+
+
+                // Remove temporary OTP number
+
+                localStorage.removeItem(
+                    "registerMobile"
+                );
+
+
+                localStorage.removeItem(
+                    "otpMobile"
+                );
+
+
+
+                // GO TO HOME PAGE
+
+                window.location.href =
+                    "index.html";
+
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "CUSTOMER REGISTER ERROR:",
+                    error
+                );
+
+
+                alert(
+                    "Unable to connect to server. Please try again."
+                );
+
+
+            } finally {
+
+
+                button.disabled = false;
+
+
+                button.innerHTML =
+                    originalText;
+
+            }
+
+        }
+
+
+
+        // ==========================================
+        // BACK
+        // ==========================================
+
+        function goBack() {
+
+            localStorage.removeItem(
+                "registerMobile"
+            );
+
+            window.location.href =
+                "customer-login.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

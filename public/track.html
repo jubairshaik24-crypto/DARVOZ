@@ -1,0 +1,5798 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <title>DARVOZ | Track Order</title>
+
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+
+    <!-- GOOGLE FONT -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+<link rel="stylesheet" href="helpBot.css">
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        html,
+        body{
+            width:100%;
+            min-height:100%;
+        }
+
+        body{
+            font-family:"Poppins",sans-serif;
+            background:#f7f8f7;
+            color:#20252b;
+            padding-bottom:30px;
+        }
+
+
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        :root{
+
+            --orange:#ff5a00;
+            --orange-soft:#fff0e8;
+
+            --green:#148348;
+            --green-soft:#eaf7ef;
+
+            --text:#20252b;
+            --muted:#6d7680;
+
+            --border:#e7e9eb;
+
+            --card:#ffffff;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .track-container{
+            width:100%;
+            max-width:700px;
+            margin:auto;
+            padding:16px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .top-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            margin-bottom:20px;
+        }
+
+        .header-left{
+            display:flex;
+            align-items:center;
+            gap:15px;
+            min-width:0;
+        }
+
+        .back-btn{
+            width:46px;
+            height:46px;
+            border:none;
+            background:#fff;
+            border-radius:50%;
+            font-size:21px;
+            cursor:pointer;
+            flex-shrink:0;
+            box-shadow:0 4px 18px rgba(0,0,0,.06);
+        }
+
+        .order-heading{
+            min-width:0;
+        }
+
+        .order-heading h1{
+            font-size:25px;
+            font-weight:700;
+            line-height:1.2;
+        }
+
+        .order-heading p{
+            color:var(--muted);
+            font-size:14px;
+            margin-top:4px;
+        }
+
+        .help-btn{
+            border:1px solid #ffd2ba;
+            background:#fff;
+            color:var(--orange);
+            border-radius:24px;
+            padding:10px 16px;
+            font-size:14px;
+            font-weight:600;
+            cursor:pointer;
+            flex-shrink:0;
+        }
+
+        .help-btn i{
+            margin-right:5px;
+        }
+
+
+        /* =====================================================
+           COMMON CARD
+        ===================================================== */
+
+        .card{
+            background:var(--card);
+            border:1px solid var(--border);
+            border-radius:22px;
+            box-shadow:0 5px 25px rgba(30,40,50,.04);
+        }
+
+
+        /* =====================================================
+           DELIVERY HERO
+        ===================================================== */
+
+        .delivery-hero{
+            padding:20px;
+            margin-bottom:16px;
+        }
+
+        .hero-top{
+            display:flex;
+            align-items:center;
+            gap:16px;
+        }
+
+        .delivery-time{
+            flex:1;
+            min-width:0;
+        }
+
+        .delivery-time small{
+            display:block;
+            color:var(--muted);
+            font-size:14px;
+        }
+
+        .delivery-time h2{
+            color:var(--orange);
+            font-size:36px;
+            margin-top:5px;
+            line-height:1.1;
+        }
+
+        .delivery-time p{
+            color:var(--muted);
+            font-size:14px;
+            margin-top:6px;
+        }
+
+        .hero-divider{
+            width:1px;
+            height:125px;
+            background:#e6e6e6;
+            flex-shrink:0;
+        }
+
+        .rider-illustration{
+            width:110px;
+            height:110px;
+            border-radius:50%;
+            background:#fff4ec;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:48px;
+            flex-shrink:0;
+        }
+
+        .hero-message{
+            flex:1.4;
+            min-width:0;
+        }
+
+        .live-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:7px;
+
+            background:var(--green-soft);
+            color:var(--green);
+
+            padding:6px 12px;
+            border-radius:10px;
+
+            font-size:13px;
+            font-weight:600;
+        }
+
+        .live-dot{
+            width:9px;
+            height:9px;
+            border-radius:50%;
+            background:var(--green);
+        }
+
+        .hero-message h6{
+            font-size:18px;
+            margin-top:12px;
+            line-height:1.4;
+        }
+
+        .hero-message p{
+            color:var(--muted);
+            font-size:14px;
+            line-height:1.55;
+            margin-top:7px;
+        }
+
+
+        /* =====================================================
+           ORDER PROGRESS TIMELINE
+        ===================================================== */
+
+        .progress-card{
+            padding:24px 8px 20px;
+            margin-bottom:16px;
+            overflow:hidden;
+        }
+
+        .timeline{
+            width:100%;
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            position:relative;
+        }
+
+
+        /* GREY BACKGROUND LINE */
+
+        .timeline-line{
+            position:absolute;
+
+            top:28px;
+            left:10%;
+            right:10%;
+
+            height:3px;
+
+            background:#e2e5e8;
+
+            border-radius:10px;
+
+            z-index:1;
+        }
+
+
+        /* ORANGE ACTIVE LINE */
+
+        .timeline-progress{
+            position:absolute;
+
+            top:28px;
+            left:10%;
+
+            width:0%;
+            height:3px;
+
+            background:var(--orange);
+
+            border-radius:10px;
+
+            z-index:2;
+
+            transition:width .4s ease;
+        }
+
+
+        /* EACH STEP */
+
+        .step{
+            width:20%;
+            min-width:0;
+
+            position:relative;
+            z-index:3;
+
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+
+            text-align:center;
+        }
+
+
+        /* STEP ICON */
+
+        .step-icon{
+            width:58px;
+            height:58px;
+
+            border-radius:50%;
+
+            background:#f4f5f6;
+            border:2px solid #e0e4e7;
+
+            color:#89919a;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:20px;
+
+            flex-shrink:0;
+
+            transition:
+                background .3s ease,
+                border-color .3s ease,
+                color .3s ease;
+        }
+
+
+        /* COMPLETED */
+
+        .step.active .step-icon{
+            background:var(--green);
+            border-color:var(--green);
+            color:#fff;
+        }
+
+
+        /* CURRENT STEP */
+
+        .step.current .step-icon{
+            background:var(--orange);
+            border-color:var(--orange);
+            color:#fff;
+
+            box-shadow:
+                0 0 0 5px rgba(255,90,0,.12);
+        }
+
+
+        /* STEP NAME */
+
+        .step-name{
+            width:100%;
+
+            margin-top:10px;
+
+            font-size:12px;
+            font-weight:600;
+
+            color:var(--text);
+
+            line-height:1.25;
+
+            white-space:normal;
+            word-break:normal;
+        }
+
+
+        /* STEP TIME */
+
+        .step-time{
+            width:100%;
+
+            margin-top:4px;
+
+            font-size:10px;
+
+            color:var(--muted);
+
+            line-height:1.3;
+
+            white-space:normal;
+        }
+
+
+        /* ACTIVE TIME */
+
+        .step.active .step-time{
+            color:var(--green);
+        }
+
+
+        /* CURRENT TIME */
+
+        .step.current .step-time{
+            color:var(--orange);
+            font-weight:600;
+        }
+
+
+        /* =====================================================
+           MAP
+        ===================================================== */
+
+        .map-card{
+            overflow:hidden;
+            margin-bottom:16px;
+            position:relative;
+        }
+
+        #map{
+            width:100%;
+            height:400px;
+            background:#edf0ed;
+        }
+
+
+        /* =====================================================
+           MAP RESTAURANT BOX
+        ===================================================== */
+
+        .restaurant-map-card{
+            position:absolute;
+
+            top:18px;
+            left:18px;
+
+            z-index:5;
+
+            background:#fff;
+            padding:12px;
+
+            border-radius:16px;
+
+            display:flex;
+            gap:11px;
+            align-items:center;
+
+            max-width:245px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.12);
+        }
+
+        .restaurant-map-image{
+            width:58px;
+            height:58px;
+
+            border-radius:12px;
+
+            background:#fff0e8;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:27px;
+
+            flex-shrink:0;
+        }
+
+        .restaurant-map-info{
+            min-width:0;
+        }
+
+        .restaurant-map-info h3{
+            font-size:15px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .restaurant-map-info p{
+            font-size:12px;
+            color:var(--muted);
+            margin-top:4px;
+        }
+
+
+        /* =====================================================
+           RIDER MAP BOX
+        ===================================================== */
+
+        .rider-map-box{
+            position:absolute;
+
+            right:18px;
+            bottom:105px;
+
+            z-index:5;
+
+            background:#fff;
+
+            padding:13px 16px;
+
+            border-radius:16px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.12);
+
+            max-width:250px;
+        }
+
+        .rider-map-box h3{
+            font-size:15px;
+        }
+
+        .rider-map-box p{
+            font-size:13px;
+            color:var(--muted);
+            margin-top:5px;
+        }
+
+        .rider-map-box strong{
+            color:var(--green);
+        }
+
+
+        /* =====================================================
+           MAP BUTTONS
+        ===================================================== */
+
+        .map-buttons{
+            position:absolute;
+
+            top:18px;
+            right:18px;
+
+            z-index:5;
+
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        .map-action{
+            width:52px;
+            height:52px;
+
+            background:#fff;
+            border:none;
+
+            border-radius:16px;
+
+            font-size:20px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.1);
+
+            cursor:pointer;
+        }
+
+
+        /* =====================================================
+           RIDER CARD
+        ===================================================== */
+
+        .rider-card{
+            padding:18px;
+            margin-bottom:16px;
+
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+
+        .rider-avatar{
+            width:78px;
+            height:78px;
+
+            border-radius:50%;
+
+            background:linear-gradient(
+                135deg,
+                #ffd8c3,
+                #fff1e9
+            );
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:38px;
+
+            flex-shrink:0;
+        }
+
+        .rider-info{
+            flex:1;
+            min-width:0;
+        }
+
+        .rider-info h2{
+            font-size:20px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .rider-info p{
+            color:var(--muted);
+            font-size:13px;
+            margin-top:4px;
+        }
+
+        .rider-rating{
+            margin-top:8px;
+
+            display:flex;
+            align-items:center;
+            gap:8px;
+
+            font-size:12px;
+            flex-wrap:wrap;
+        }
+
+        .rating-badge{
+            background:var(--green-soft);
+            color:var(--green);
+
+            padding:4px 8px;
+            border-radius:7px;
+
+            font-weight:600;
+        }
+
+        .rider-actions{
+            display:flex;
+            gap:12px;
+            flex-shrink:0;
+        }
+
+        .action-circle{
+            width:58px;
+            height:58px;
+
+            border-radius:50%;
+
+            border:1px solid var(--border);
+
+            background:#fff;
+
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+
+            cursor:pointer;
+
+            font-size:18px;
+        }
+
+        .action-circle span{
+            font-size:11px;
+            margin-top:3px;
+        }
+
+        .call-btn{
+            color:var(--green);
+        }
+
+
+        /* =====================================================
+           DELIVERY OTP
+        ===================================================== */
+
+        .otp-card{
+            padding:18px;
+            margin-bottom:16px;
+
+            display:flex;
+            align-items:center;
+            gap:15px;
+        }
+
+        .otp-icon{
+            width:62px;
+            height:62px;
+
+            border-radius:18px;
+
+            background:var(--orange-soft);
+            color:var(--orange);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:27px;
+
+            flex-shrink:0;
+        }
+
+        .otp-info{
+            flex:1;
+            min-width:0;
+        }
+
+        .otp-info h3{
+            font-size:17px;
+        }
+
+        .otp-info p{
+            font-size:12px;
+            color:var(--muted);
+            margin-top:4px;
+        }
+
+        .otp-value{
+            min-width:180px;
+
+            border:1.5px dashed #ffb78e;
+
+            border-radius:12px;
+
+            padding:13px;
+
+            text-align:center;
+
+            color:var(--orange);
+
+            font-size:28px;
+
+            font-weight:700;
+
+            letter-spacing:9px;
+        }
+
+
+        /* =====================================================
+           SAFETY
+        ===================================================== */
+
+        .safety-card{
+            padding:18px;
+            margin-bottom:16px;
+
+            display:flex;
+            align-items:center;
+            gap:15px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #f3fbf6,
+                    #ffffff
+                );
+        }
+
+        .safety-icon{
+            width:55px;
+            height:55px;
+
+            color:var(--green);
+
+            font-size:28px;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            flex-shrink:0;
+        }
+
+        .safety-info{
+            flex:1;
+        }
+
+        .safety-info h3{
+            font-size:16px;
+        }
+
+        .safety-info p{
+            color:var(--muted);
+            font-size:12px;
+            line-height:1.5;
+            margin-top:3px;
+        }
+
+
+        /* =====================================================
+           ORDER DETAILS
+        ===================================================== */
+
+        .details-card{
+            padding:18px;
+        }
+
+        .details-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            gap:10px;
+
+            margin-bottom:16px;
+        }
+
+        .details-header h2{
+            font-size:20px;
+        }
+
+        .details-header button{
+            border:none;
+            background:none;
+
+            color:var(--orange);
+
+            font-family:inherit;
+            font-weight:600;
+
+            cursor:pointer;
+
+            white-space:nowrap;
+        }
+
+        .order-item{
+            display:flex;
+            align-items:center;
+            gap:12px;
+
+            padding:11px 0;
+
+            border-bottom:1px solid #eee;
+        }
+
+        .item-image{
+            width:52px;
+            height:52px;
+
+            border-radius:10px;
+
+            background:#fff0e8;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:25px;
+
+            flex-shrink:0;
+        }
+
+        .item-qty{
+            background:var(--green-soft);
+            color:var(--green);
+
+            border-radius:7px;
+
+            padding:4px 7px;
+
+            font-size:12px;
+        }
+
+        .item-name{
+            flex:1;
+            font-size:14px;
+            font-weight:500;
+            min-width:0;
+        }
+
+        .item-price{
+            font-weight:600;
+            white-space:nowrap;
+        }
+
+        .order-total{
+            display:flex;
+            justify-content:space-between;
+
+            padding-top:17px;
+
+            font-size:20px;
+            font-weight:700;
+        }
+
+
+        /* =====================================================
+           TIMEOUT POPUP
+        ===================================================== */
+
+        .timeout-overlay{
+
+            position:fixed;
+
+            inset:0;
+
+            background:rgba(0,0,0,.55);
+
+            z-index:99999;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            padding:20px;
+
+        }
+
+        .timeout-box{
+
+            width:100%;
+            max-width:420px;
+
+            background:#fff;
+
+            border-radius:24px;
+
+            padding:30px;
+
+            text-align:center;
+
+            animation:popup .25s ease;
+
+        }
+
+        @keyframes popup{
+
+            from{
+                transform:scale(.9);
+                opacity:0;
+            }
+
+            to{
+                transform:scale(1);
+                opacity:1;
+            }
+
+        }
+
+        .timeout-icon{
+            font-size:42px;
+        }
+
+        .timeout-box h2{
+            margin-top:12px;
+            font-size:21px;
+        }
+
+        .timeout-box p{
+            margin-top:10px;
+            color:var(--muted);
+            font-size:14px;
+            line-height:1.6;
+        }
+
+        .timeout-question{
+            font-weight:600;
+            color:var(--text) !important;
+        }
+
+        .timeout-actions{
+
+            display:flex;
+            gap:12px;
+
+            margin-top:22px;
+
+        }
+
+        .timeout-actions button{
+
+            flex:1;
+
+            border:none;
+
+            padding:14px;
+
+            border-radius:12px;
+
+            font-family:inherit;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+        }
+
+        .timeout-cancel{
+            background:#ffe9e9;
+            color:#d93025;
+        }
+
+        .timeout-wait{
+            background:var(--orange);
+            color:#fff;
+        }
+
+
+        /* =====================================================
+           MOBILE RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:600px){
+
+            .track-container{
+                padding:12px;
+            }
+
+
+            /* HEADER */
+
+            .top-header{
+                margin-bottom:15px;
+            }
+
+            .header-left{
+                gap:10px;
+            }
+
+            .order-heading h1{
+                font-size:20px;
+            }
+
+            .order-heading p{
+                font-size:12px;
+            }
+
+            .back-btn{
+                width:42px;
+                height:42px;
+                font-size:18px;
+            }
+
+            .help-btn{
+                padding:9px 12px;
+                font-size:13px;
+            }
+
+
+            /* HERO */
+
+            .delivery-hero{
+                padding:16px;
+            }
+
+            .hero-top{
+                gap:9px;
+            }
+
+            .delivery-time{
+                flex:1;
+            }
+
+            .hero-divider{
+                display:block;
+                height:100px;
+            }
+
+            .rider-illustration{
+                width:76px;
+                height:76px;
+                font-size:33px;
+            }
+
+            .hero-message{
+                flex:1.35;
+            }
+
+            .delivery-time small{
+                font-size:10px;
+            }
+
+            .delivery-time h2{
+                font-size:25px;
+                margin-top:3px;
+            }
+
+            .delivery-time p{
+                font-size:10px;
+                line-height:1.4;
+            }
+
+            .live-badge{
+                padding:5px 8px;
+                font-size:9px;
+                gap:5px;
+            }
+
+            .live-dot{
+                width:6px;
+                height:6px;
+            }
+
+            .hero-message h6{
+                font-size:11px;
+                margin-top:7px;
+                line-height:1.35;
+            }
+
+            .hero-message p{
+                font-size:10px;
+                line-height:1.45;
+                margin-top:4px;
+            }
+
+
+            /* TIMELINE */
+
+            .progress-card{
+                padding:20px 4px 18px;
+            }
+
+            .timeline-line,
+            .timeline-progress{
+                top:23px;
+            }
+
+            .timeline-line{
+                left:10%;
+                right:10%;
+            }
+
+            .timeline-progress{
+                left:10%;
+            }
+
+            .step-icon{
+                width:46px;
+                height:46px;
+                font-size:16px;
+            }
+
+            .step-name{
+                margin-top:8px;
+                font-size:10px;
+                line-height:1.25;
+            }
+
+            .step-time{
+                margin-top:3px;
+                font-size:8px;
+                line-height:1.2;
+            }
+
+
+            /* MAP */
+
+            #map{
+                height:410px;
+            }
+
+            .restaurant-map-card{
+                left:12px;
+                top:12px;
+                max-width:205px;
+                padding:10px;
+            }
+
+            .restaurant-map-image{
+                width:48px;
+                height:48px;
+                font-size:22px;
+            }
+
+            .restaurant-map-info h3{
+                font-size:13px;
+            }
+
+            .restaurant-map-info p{
+                font-size:10px;
+            }
+
+            .rider-map-box{
+                right:12px;
+                bottom:80px;
+                padding:11px 13px;
+                max-width:210px;
+            }
+
+            .rider-map-box h3{
+                font-size:12px;
+            }
+
+            .rider-map-box p{
+                font-size:11px;
+            }
+
+            .map-buttons{
+                top:12px;
+                right:12px;
+                gap:8px;
+            }
+
+            .map-action{
+                width:46px;
+                height:46px;
+                border-radius:14px;
+                font-size:17px;
+            }
+
+
+            /* RIDER */
+
+            .rider-card{
+                flex-wrap:wrap;
+            }
+
+            .rider-avatar{
+                width:65px;
+                height:65px;
+                font-size:32px;
+            }
+
+            .rider-info{
+                min-width:0;
+            }
+
+            .rider-info h2{
+                font-size:17px;
+            }
+
+            .rider-actions{
+                width:100%;
+                justify-content:flex-end;
+                margin-top:4px;
+            }
+
+
+            /* OTP */
+
+            .otp-card{
+                flex-wrap:wrap;
+            }
+
+            .otp-info{
+                min-width:200px;
+            }
+
+            .otp-value{
+                width:100%;
+                min-width:0;
+                letter-spacing:12px;
+            }
+
+        }
+
+
+        /* =====================================================
+           EXTRA SMALL MOBILE
+        ===================================================== */
+
+        @media(max-width:390px){
+
+            .track-container{
+                padding:10px;
+            }
+
+            .help-btn{
+                width:42px;
+                height:42px;
+                padding:0;
+
+                border-radius:50%;
+
+                display:flex;
+                align-items:center;
+                justify-content:center;
+
+                font-size:0;
+            }
+
+            .help-btn i{
+                margin:0;
+                font-size:16px;
+            }
+
+
+            /* HERO */
+
+            .rider-illustration{
+                width:70px;
+                height:70px;
+                font-size:30px;
+            }
+
+            .delivery-time h2{
+                font-size:23px;
+            }
+
+
+            /* TIMELINE */
+
+            .progress-card{
+                padding-left:2px;
+                padding-right:2px;
+            }
+
+            .step-icon{
+                width:42px;
+                height:42px;
+                font-size:14px;
+            }
+
+            .timeline-line,
+            .timeline-progress{
+                top:21px;
+            }
+
+            .step-name{
+                font-size:9px;
+            }
+
+            .step-time{
+                font-size:7px;
+            }
+
+        }
+
+        /* =====================================================
+   BILL POPUP
+===================================================== */
+
+.bill-overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    z-index:99999;
+
+    display:none;
+
+    align-items:flex-end;
+    justify-content:center;
+
+    padding:0;
+}
+
+.bill-overlay.show{
+    display:flex;
+}
+
+.bill-popup{
+    width:100%;
+    max-width:700px;
+
+    max-height:88vh;
+
+    background:#fff;
+
+    border-radius:26px 26px 0 0;
+
+    overflow:hidden;
+
+    animation:billSlideUp .3s ease;
+}
+
+@keyframes billSlideUp{
+
+    from{
+        transform:translateY(100%);
+    }
+
+    to{
+        transform:translateY(0);
+    }
+
+}
+
+.bill-popup-header{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:20px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.bill-popup-header h2{
+    font-size:21px;
+}
+
+.bill-popup-header p{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.bill-close-btn{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#f3f5f6;
+
+    font-size:19px;
+
+    cursor:pointer;
+
+}
+
+.bill-scroll{
+
+    overflow-y:auto;
+
+    max-height:calc(88vh - 85px);
+
+    padding:10px 20px 25px;
+
+}
+
+
+/* =====================================================
+   BILL ITEMS
+===================================================== */
+
+.bill-item{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.bill-item-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    flex:1;
+
+}
+
+.bill-item-icon{
+
+    width:46px;
+    height:46px;
+
+    border-radius:12px;
+
+    background:var(--orange-soft);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:22px;
+
+}
+
+.bill-item-info h4{
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.bill-item-info p{
+
+    font-size:12px;
+
+    color:var(--muted);
+
+    margin-top:3px;
+
+}
+
+.bill-item-price{
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+
+/* =====================================================
+   BILL SUMMARY
+===================================================== */
+
+.bill-summary{
+
+    padding:18px 0;
+
+}
+
+.bill-row{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:13px;
+
+    font-size:14px;
+
+    color:var(--muted);
+
+}
+
+.bill-row strong{
+
+    color:var(--text);
+
+    font-weight:600;
+
+}
+
+.bill-discount-row strong{
+
+    color:var(--green);
+
+}
+
+.bill-total{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-top:18px;
+
+    padding-top:17px;
+
+    border-top:1.5px dashed #ddd;
+
+    font-size:19px;
+
+    font-weight:700;
+
+}
+
+.bill-total strong{
+
+    color:var(--orange);
+
+}
+
+
+/* =====================================================
+   PAYMENT BOX
+===================================================== */
+
+.bill-payment-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:var(--green-soft);
+
+}
+
+.bill-payment-icon{
+
+    font-size:25px;
+
+    color:var(--green);
+
+}
+
+.bill-payment-box h4{
+
+    font-size:14px;
+
+}
+
+.bill-payment-box p{
+
+    font-size:12px;
+
+    color:var(--green);
+
+    margin-top:3px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    .bill-popup{
+        max-height:90vh;
+    }
+
+    .bill-scroll{
+        padding:8px 16px 22px;
+        max-height:calc(90vh - 85px);
+    }
+
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="track-container">
+
+
+        <!-- =====================================================
+             HEADER
+        ===================================================== -->
+
+        <div class="top-header">
+
+            <div class="header-left">
+
+                <button
+                    class="back-btn"
+                    onclick="window.history.back()"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+
+
+                <div class="order-heading">
+
+                    <h1>
+                        Order #
+                        <span id="orderId">
+                            Loading...
+                        </span>
+                    </h1>
+
+                    <p id="orderDate">
+                        Tracking your order
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button class="help-btn" id="darvozHelpBtn">
+    <i class="fa-solid fa-headset"></i>
+    Help
+</button>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             DELIVERY HERO
+        ===================================================== -->
+
+        <div class="delivery-hero card">
+
+            <div class="hero-top">
+
+
+                <div class="delivery-time">
+
+                    <small>
+                        Estimated delivery
+                    </small>
+
+                    <h2 id="eta">
+                        --
+                    </h2>
+
+                    <p id="etaSubText">
+                        Calculating arrival time
+                    </p>
+
+                </div>
+
+
+                <div class="hero-divider"></div>
+
+
+                <div class="rider-illustration">
+                    🛵
+                </div>
+
+
+                <div class="hero-message">
+
+                    <div class="live-badge">
+
+                        <span class="live-dot"></span>
+
+                        LIVE
+
+                    </div>
+
+
+                    <h6 id="heroStatus">
+                        Your order is being processed
+                    </h6>
+
+
+                    <p id="heroSubStatus">
+                        Please wait while we prepare your order.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             ORDER PROGRESS
+        ===================================================== -->
+
+        <div class="progress-card card">
+
+            <div class="timeline">
+
+
+                <!-- GREY LINE -->
+
+                <div class="timeline-line"></div>
+
+
+                <!-- ACTIVE PROGRESS -->
+
+                <div
+                    class="timeline-progress"
+                    id="progressBar"
+                ></div>
+
+
+                <!-- CONFIRMED -->
+
+                <div
+                    class="step"
+                    id="confirmed"
+                >
+
+                    <div class="step-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div class="step-name">
+                        Confirmed
+                    </div>
+
+                    <div
+                        class="step-time"
+                        id="confirmedTime"
+                    >
+                        
+                    </div>
+
+                </div>
+
+
+                <!-- PREPARING -->
+
+                <div
+                    class="step"
+                    id="preparing"
+                >
+
+                    <div class="step-icon">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+
+                    <div class="step-name">
+                        Preparing
+                    </div>
+
+                    <div
+                        class="step-time"
+                        id="preparingTime"
+                    >
+                    
+                    </div>
+
+                </div>
+
+
+                <!-- PICKED UP -->
+
+                <div
+                    class="step"
+                    id="pickup"
+                >
+
+                    <div class="step-icon">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+
+                    <div class="step-name">
+                        Picked up
+                    </div>
+
+                    <div
+                        class="step-time"
+                        id="pickupTime"
+                    >
+                        
+                    </div>
+
+                </div>
+
+
+                <!-- ON THE WAY -->
+
+                <div
+                    class="step"
+                    id="delivery"
+                >
+
+                    <div class="step-icon">
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
+
+                    <div class="step-name">
+                        On the way
+                    </div>
+
+                    <div
+                        class="step-time"
+                        id="deliveryTime"
+                    >
+                        
+                    </div>
+
+                </div>
+
+
+                <!-- DELIVERED -->
+
+                <div
+                    class="step"
+                    id="delivered"
+                >
+
+                    <div class="step-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+
+                    <div class="step-name">
+                        Delivered
+                    </div>
+
+                    <div
+                        class="step-time"
+                        id="deliveredTime"
+                    >
+                        
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             MAP
+        ===================================================== -->
+
+        <div class="map-card card">
+
+
+            <div id="map"></div>
+
+
+            <!-- RESTAURANT -->
+
+            <div class="restaurant-map-card">
+
+                <div class="restaurant-map-image">
+                    🍛
+                </div>
+
+
+                <div class="restaurant-map-info">
+
+                    <h3 id="restaurantName">
+                        DARVOZ Restaurant
+                    </h3>
+
+                    <p id="mapStatus">
+                        Processing your order
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MAP STATUS -->
+
+            <!-- <div class="rider-map-box">
+
+                <h3 id="mapMessage">
+                    Order is being processed
+                </h3>
+
+                <p id="mapSubMessage">
+                    Please wait.
+                </p>
+
+            </div> -->
+
+
+
+            <!-- MAP BUTTONS -->
+
+            <div class="map-buttons">
+
+                <button
+                    class="map-action"
+                    onclick="centerMapOnRider()"
+                >
+                    <i class="fa-solid fa-crosshairs"></i>
+                </button>
+
+
+                <button class="map-action">
+
+                    <i
+                        class="fa-solid fa-shield-halved"
+                        style="color:#148348"
+                    ></i>
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             RIDER
+        ===================================================== -->
+
+        <div class="rider-card card">
+
+
+            <div class="rider-avatar">
+                👨🏻
+            </div>
+
+
+            <div class="rider-info">
+
+                <h2 id="riderName">
+                    Searching Rider...
+                </h2>
+
+                <p>
+                    Your delivery partner
+                </p>
+
+
+                <div class="rider-rating">
+
+                    <span class="rating-badge">
+
+                        <i class="fa-solid fa-star"></i>
+
+                        4.7
+
+                    </span>
+
+                    <span>
+                        250+ deliveries
+                    </span>
+
+                </div>
+
+
+                <span
+                    id="riderMobile"
+                    style="display:none"
+                ></span>
+
+            </div>
+
+
+
+            <div class="rider-actions">
+
+                <button
+                    class="action-circle call-btn"
+                    onclick="callRider()"
+                >
+
+                    <i class="fa-solid fa-phone"></i>
+
+                    <span>
+                        Call
+                    </span>
+
+                </button>
+
+
+                <button class="action-circle">
+
+                    <i class="fa-solid fa-message"></i>
+
+                    <span>
+                        Chat
+                    </span>
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             DELIVERY OTP
+        ===================================================== -->
+
+        <div
+            class="otp-card card"
+            id="otpCard"
+            style="display:none"
+        >
+
+
+            <div class="otp-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+
+            <div class="otp-info">
+
+                <h3>
+                    Delivery OTP
+                </h3>
+
+                <p>
+                    Share OTP only after receiving your order
+                </p>
+
+            </div>
+
+
+            <div
+                class="otp-value"
+                id="deliveryOtp"
+            >
+                ----
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             SAFETY
+        ===================================================== -->
+
+        <div class="safety-card card">
+
+
+            <div class="safety-icon">
+
+                <i class="fa-solid fa-shield-heart"></i>
+
+            </div>
+
+
+            <div class="safety-info">
+
+                <h3>
+                    Your safety is our priority
+                </h3>
+
+                <p>
+                    Our delivery partners follow strict
+                    safety and hygiene protocols.
+                </p>
+
+            </div>
+
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+                    ORDER DETAILS
+                ===================================================== -->
+
+                <!-- <div class="details-card card">
+
+
+                    <div class="details-header">
+
+                        <h2>
+                            Order Details
+                        </h2>
+
+                        <button onclick="openBillPopup()">
+            View Bill
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+                    </div>
+
+
+
+                    <!-- ORDER ITEMS -->
+<!-- 
+                    <div id="orderItems">
+
+                        <div class="order-item">
+
+                            <div class="item-image">
+                                🍽️
+                            </div>
+
+                            <div class="item-name">
+                                Loading items...
+                            </div>
+
+                        </div>
+
+                    </div> -->
+
+
+
+                    <!-- TOTAL -->
+
+                    <!-- <div class="order-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <span id="orderTotal">
+                            ₹--
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div> --> 
+
+
+            
+        <!-- =====================================================
+            BILL POPUP
+        ===================================================== -->
+
+        <div class="bill-overlay" id="billOverlay">
+
+            <div class="bill-popup">
+
+                <div class="bill-popup-header">
+
+                    <div>
+                        <h2>Order Bill</h2>
+                        <p id="billOrderId">DARVOZ Order</p>
+                    </div>
+
+                    <button
+                        class="bill-close-btn"
+                        onclick="closeBillPopup()"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="bill-scroll">
+
+
+                    <!-- BILL ITEMS -->
+
+                    <div
+                        class="bill-items"
+                        id="billItems"
+                    >
+                        <!-- Real order items load here -->
+                    </div>
+
+
+                    <!-- BILL SUMMARY -->
+
+                    <div class="bill-summary">
+
+                        <div class="bill-row">
+                            <span>Item Total</span>
+                            <strong id="billSubtotal">₹0</strong>
+                        </div>
+
+                        <div class="bill-row">
+                            <span>GST</span>
+                            <strong id="billGst">₹0</strong>
+                        </div>
+
+                        <div class="bill-row">
+                            <span>Delivery Fee</span>
+                            <strong id="billDeliveryFee">₹0</strong>
+                        </div>
+
+                        <div
+                            class="bill-row bill-discount-row"
+                            id="billDiscountRow"
+                            style="display:none"
+                        >
+                            <span>Discount</span>
+                            <strong id="billDiscount">-₹0</strong>
+                        </div>
+
+                        <div class="bill-total">
+
+                            <span>Total Paid</span>
+
+                            <strong id="billTotal">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <div class="bill-payment-box">
+
+                        <div class="bill-payment-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h4 id="billPaymentMethod">
+                                Payment
+                            </h4>
+
+                            <p id="billPaymentStatus">
+                                Payment completed
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+<!-- =====================================================
+     SOCKET.IO
+===================================================== -->
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+
+<!-- =====================================================
+     GOOGLE MAPS
+===================================================== -->
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ&callback=initTrackMap"
+    async
+    defer
+></script>
+
+
+
+<script>
+
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const API =
+    window.location.origin;
+
+
+const socket =
+    io(API);
+
+
+
+/* =====================================================
+   URL ORDER ID
+===================================================== */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const orderId =
+    params.get("id");
+
+
+if(!orderId){
+
+    alert(
+        "Invalid Order ID"
+    );
+
+}
+
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let riderMobile = "";
+
+let customerId = null;
+
+let map = null;
+
+let directionsService = null;
+
+let directionsRenderer = null;
+
+let restaurantMarker = null;
+
+let riderMarker = null;
+
+let customerMarker = null;
+
+let riderLocation = null;
+
+let currentOrder = null;
+
+let lastRouteTime = 0;
+
+let riderCountdownInterval = null;
+
+let itemsLoaded = false;
+
+
+
+/* =====================================================
+   GOOGLE MAP INITIALIZATION
+===================================================== */
+
+function initTrackMap(){
+
+    console.log(
+        "Google Maps loaded"
+    );
+
+
+    if(!window.google){
+
+        console.log(
+            "Google Maps unavailable"
+        );
+
+        return;
+
+    }
+
+
+    directionsService =
+        new google.maps.DirectionsService();
+
+
+    directionsRenderer =
+        new google.maps.DirectionsRenderer({
+
+            suppressMarkers:true,
+
+            polylineOptions:{
+
+                strokeColor:"#ff5a00",
+
+                strokeOpacity:1,
+
+                strokeWeight:5
+
+            }
+
+        });
+
+
+    if(currentOrder){
+
+        createMap(
+            currentOrder
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LOAD ORDER
+===================================================== */
+
+async function loadOrder(){
+
+    if(!orderId){
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/orders/track/${orderId}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "TRACK ORDER RESPONSE:",
+            data
+        );
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            console.error(
+                "TRACK ORDER ERROR:",
+                data
+            );
+
+            return;
+
+        }
+
+
+        const order =
+            data.order;
+
+
+        currentOrder =
+            order;
+
+
+
+        /* =============================================
+           JOIN CUSTOMER ROOM
+        ============================================= */
+
+        if(order.customer_id){
+
+            customerId =
+                order.customer_id;
+
+
+            socket.emit(
+                "joinCustomer",
+                customerId
+            );
+
+        }
+
+
+
+        /* =============================================
+           BASIC DETAILS
+        ============================================= */
+
+        document.getElementById(
+            "orderId"
+        ).innerText =
+            order.id;
+
+
+        document.getElementById(
+            "restaurantName"
+        ).innerText =
+            order.restaurant_name ||
+            "DARVOZ Restaurant";
+
+
+        document.getElementById(
+            "orderDate"
+        ).innerText =
+            order.created_at
+            ? `Order placed on ${formatDate(order.created_at)}`
+            : "Tracking your order";
+
+
+
+        /* =============================================
+           RIDER
+        ============================================= */
+
+        riderMobile =
+            order.rider_mobile ||
+            "";
+
+
+        document.getElementById(
+            "riderName"
+        ).innerText =
+            order.rider_name ||
+            "Searching Rider...";
+
+
+        document.getElementById(
+            "riderMobile"
+        ).innerText =
+            riderMobile ||
+            "";
+
+
+
+        /* =============================================
+           STATUS
+        ============================================= */
+
+        const status =
+            getEffectiveStatus(
+                order
+            );
+
+
+        console.log(
+            "EFFECTIVE STATUS:",
+            status
+        );
+
+
+        /* DELIVERED */
+
+        if(status === "Delivered"){
+
+            window.location.href =
+                "order-delivered.html";
+
+            return;
+
+        }
+
+
+        
+
+
+
+        /* =============================================
+           UPDATE UI
+        ============================================= */
+
+       updateHeroStatus(status);
+
+
+        updateTimeline(
+            status
+        );
+
+
+        updateProgress(
+            status
+        );
+
+
+
+        updateDeliveryOTP(
+            order
+        );
+
+
+       updateRiderAssignmentTimer(
+    order,
+    status
+);
+
+
+        
+// =============================================
+// ORDER TOTAL
+// =============================================
+
+//  updateOrderDetails(order);
+
+
+// =============================================
+// LOAD ORDER ITEMS ONLY ONCE
+// =============================================
+
+if (!itemsLoaded) {
+
+    itemsLoaded = true;
+
+    loadOrderItems(order.id);
+
+}
+
+        /* =============================================
+           MAP
+        ============================================= */
+
+        updateMap(
+            order
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "TRACK LOAD ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(dateValue){
+
+    try{
+
+        const date =
+            new Date(
+                dateValue
+            );
+
+
+        return date.toLocaleString(
+            "en-IN",
+            {
+                day:"numeric",
+                month:"short",
+                year:"numeric",
+                hour:"numeric",
+                minute:"2-digit"
+            }
+        );
+
+    }
+    catch(error){
+
+        return "Tracking your order";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   EFFECTIVE STATUS
+===================================================== */
+
+function getEffectiveStatus(order){
+
+    const orderStatus =
+        String(
+            order.status || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    const deliveryStatus =
+        String(
+            order.delivery_status || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if(
+        orderStatus === "delivered" ||
+        deliveryStatus === "delivered" ||
+        deliveryStatus === "otpverified"
+    ){
+
+        return "Delivered";
+
+    }
+
+
+    if(
+        deliveryStatus === "reached customer" ||
+        deliveryStatus === "reachedcustomer"
+    ){
+
+        return "Reached Customer";
+
+    }
+
+
+    if(
+        orderStatus === "out for delivery" ||
+        orderStatus === "outfordelivery" ||
+        deliveryStatus === "out for delivery" ||
+        deliveryStatus === "outfordelivery"
+    ){
+
+        return "Out For Delivery";
+
+    }
+
+
+    if(
+        orderStatus === "picked up" ||
+        orderStatus === "pickedup" ||
+        deliveryStatus === "picked up" ||
+        deliveryStatus === "pickedup"
+    ){
+
+        return "Picked Up";
+
+    }
+
+
+    if(
+        deliveryStatus === "reached restaurant" ||
+        deliveryStatus === "reachedrestaurant"
+    ){
+
+        return "Reached Restaurant";
+
+    }
+
+
+    if(
+        orderStatus === "delivery assigned" ||
+        orderStatus === "deliveryassigned"
+    ){
+
+        return "Delivery Assigned";
+
+    }
+
+
+    if(
+        orderStatus === "preparing"
+    ){
+
+        return "Preparing";
+
+    }
+
+
+    if(
+        orderStatus === "accepted"
+    ){
+
+        return "Accepted";
+
+    }
+
+
+    return (
+        order.status ||
+        order.delivery_status ||
+        "Pending"
+    );
+
+}
+
+
+
+/* =====================================================
+   HERO STATUS
+===================================================== */
+function updateHeroStatus(status) {
+
+    const heroStatus =
+        document.getElementById("heroStatus");
+
+    const heroSubStatus =
+        document.getElementById("heroSubStatus");
+
+
+    const normalizedStatus =
+        String(status || "")
+        .trim()
+        .toUpperCase()
+        .replace(/[\s-]+/g, "_");
+
+
+    switch (normalizedStatus) {
+
+        case "PROCESSING":
+        case "ORDER_PROCESSING":
+
+            heroStatus.textContent =
+                "Your order is being processed";
+
+            heroSubStatus.textContent =
+                "Please wait while the restaurant processes your order.";
+
+            break;
+
+
+        case "ACCEPTED":
+
+            heroStatus.textContent =
+                "Your order has been accepted";
+
+            heroSubStatus.textContent =
+                "The restaurant has accepted and is preparing your order.";
+
+            break;
+
+
+        case "PREPARING":
+
+            heroStatus.textContent =
+                "Restaurant is preparing your order";
+
+            heroSubStatus.textContent =
+                "Your food is being freshly prepared.";
+
+            break;
+
+
+        case "DELIVERY_ASSIGNED":
+        case "RIDER_ASSIGNED":
+
+            heroStatus.textContent =
+                "Delivery partner accepted your order";
+
+            heroSubStatus.textContent =
+                "Your delivery partner is getting ready to pick up your order.";
+
+            break;
+
+
+        case "RIDER_TO_RESTAURANT":
+        case "GOING_TO_RESTAURANT":
+
+            heroStatus.textContent =
+                "Delivery partner is going to the restaurant";
+
+            heroSubStatus.textContent =
+                "Your rider is on the way to pick up your order.";
+
+            break;
+
+
+        case "RIDER_AT_RESTAURANT":
+        case "AT_RESTAURANT":
+
+            heroStatus.textContent =
+                "Delivery partner reached the restaurant";
+
+            heroSubStatus.textContent =
+                "Your rider is waiting to collect your order.";
+
+            break;
+
+
+        case "PICKED_UP":
+
+            heroStatus.textContent =
+                "Your order has been picked up";
+
+            heroSubStatus.textContent =
+                "Your delivery partner has collected your order.";
+
+            break;
+
+
+        case "ON_THE_WAY":
+        case "OUT_FOR_DELIVERY":
+
+            heroStatus.textContent =
+                "Your order is on the way";
+
+            heroSubStatus.textContent =
+                "Your delivery partner is heading towards your delivery address.";
+
+            break;
+
+
+        case "DELIVERED":
+
+            heroStatus.textContent =
+                "Your order has been delivered";
+
+            heroSubStatus.textContent =
+                "Enjoy your order!";
+
+            break;
+
+
+        default:
+
+            heroStatus.textContent =
+                "Your order is being processed";
+
+            heroSubStatus.textContent =
+                "Please wait while we process your order.";
+    }
+}
+
+/* =====================================================
+   DELIVERY OTP
+===================================================== */
+
+function updateDeliveryOTP(order){
+
+    const otpCard =
+        document.getElementById(
+            "otpCard"
+        );
+
+
+    const otpElement =
+        document.getElementById(
+            "deliveryOtp"
+        );
+
+
+    if(!otpCard || !otpElement){
+
+        return;
+
+    }
+
+
+    if(
+        String(order.status)
+        .toLowerCase() ===
+        "delivered"
+    ){
+
+        otpCard.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    if(
+        order.delivery_partner_id &&
+        order.delivery_otp
+    ){
+
+        otpElement.innerText =
+            order.delivery_otp;
+
+        otpCard.style.display =
+            "flex";
+
+    }
+    else{
+
+        otpCard.style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   MAP MESSAGE
+===================================================== */
+function updateMapMessage(status){
+
+    const message =
+        document.getElementById("mapMessage");
+
+    const sub =
+        document.getElementById("mapSubMessage");
+
+    if(status === "Delivery Assigned"){
+
+        message.innerText =
+            "Delivery partner assigned";
+
+        sub.innerText =
+            "Your delivery partner will arrive at the restaurant soon.";
+
+    }
+
+    else if(status === "Accepted"){
+
+        message.innerText =
+            "Order confirmed";
+
+        sub.innerText =
+            "Restaurant has accepted your order.";
+
+    }
+
+    else if(status === "Preparing"){
+
+        message.innerText =
+            "Restaurant is preparing your order";
+
+        sub.innerText =
+            "Your food is being prepared.";
+
+    }
+
+    else if(status === "Reached Restaurant"){
+
+        message.innerText =
+            "Delivery partner reached the restaurant";
+
+        sub.innerText =
+            "Your order will be picked up soon.";
+
+    }
+
+    else if(status === "Picked Up"){
+
+        message.innerText =
+            "Delivery partner picked up your order";
+
+        sub.innerText =
+            "Your order is on the way.";
+
+    }
+
+    else if(status === "Out For Delivery"){
+
+        message.innerText =
+            "Your order is on the way";
+
+        sub.innerText =
+            "Delivery partner is heading to you.";
+
+    }
+
+    else if(status === "Reached Customer"){
+
+    message.innerText = "";
+
+    sub.innerText = "";
+
+    const messageBox =
+        message.closest(".map-message");
+
+    if(messageBox){
+
+        messageBox.style.display = "none";
+
+    }
+
+}
+
+    else if(status === "Delivered"){
+
+        message.innerText =
+            "Order delivered";
+
+        sub.innerText =
+            "Enjoy your order ❤️";
+
+    }
+
+    else{
+
+        message.innerText =
+            "Your order is being processed";
+
+        sub.innerText =
+            "Please wait while we process your order.";
+
+    }
+
+}
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+function updateTimeline(status){
+
+    const stages = [
+
+        {
+            id: "confirmed",
+            textId: "confirmedText"
+        },
+
+        {
+            id: "preparing",
+            textId: "preparingText"
+        },
+
+        {
+            id: "pickup",
+            textId: "pickupText"
+        },
+
+        {
+            id: "delivery",
+            textId: "deliveryText"
+        },
+
+        {
+            id: "delivered",
+            textId: "deliveredText"
+        }
+
+    ];
+
+
+    let completedStage = -1;
+
+
+    if(status === "Accepted"){
+
+        completedStage = 0;
+
+    }
+
+    else if(
+        status === "Preparing" ||
+        status === "Delivery Assigned" ||
+        status === "Reached Restaurant"
+    ){
+
+        completedStage = 1;
+
+    }
+
+    else if(status === "Picked Up"){
+
+        completedStage = 2;
+
+    }
+
+    else if(status === "Out For Delivery"){
+
+        completedStage = 2;
+
+    }
+
+    else if(status === "Reached Customer"){
+
+        completedStage = 3;
+
+    }
+
+    else if(status === "Delivered"){
+
+        completedStage = 4;
+
+    }
+
+
+    stages.forEach((stage, index) => {
+
+        const element =
+            document.getElementById(stage.id);
+
+        const text =
+            document.getElementById(stage.textId);
+
+
+        if(!element){
+            return;
+        }
+
+
+        // RESET
+
+        element.classList.remove(
+            "active",
+            "current"
+        );
+
+
+        if(text){
+
+            text.innerText = "--";
+
+        }
+
+
+        // COMPLETED STAGES
+
+        if(index <= completedStage){
+
+            element.classList.add("active");
+
+
+            if(text){
+
+                text.innerText = "Done";
+
+            }
+
+        }
+
+
+        // CURRENT LIVE STAGE
+
+        if(
+            status === "Out For Delivery" &&
+            index === 3
+        ){
+
+            element.classList.add("current");
+
+
+            if(text){
+
+                text.innerText = "Live";
+
+            }
+
+        }
+
+    });
+
+}
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+function updateProgress(status){
+
+    let width = 0;
+
+
+    if(status === "Accepted"){
+
+        width = 25;
+
+    }
+
+    else if(
+        status === "Preparing" ||
+        status === "Delivery Assigned" ||
+        status === "Reached Restaurant"
+    ){
+
+        width = 45;
+
+    }
+
+    else if(status === "Picked Up"){
+
+        width = 65;
+
+    }
+
+    else if(
+        status === "Out For Delivery" ||
+        status === "Reached Customer"
+    ){
+
+        width = 85;
+
+    }
+
+    else if(status === "Delivered"){
+
+        width = 100;
+
+    }
+
+
+    const progressBar =
+        document.getElementById("progressBar");
+
+
+    if(progressBar){
+
+        progressBar.style.width =
+            width + "%";
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE MAP
+===================================================== */
+
+function updateMap(order){
+
+    if(
+        !window.google ||
+        !google.maps
+    ){
+
+        return;
+
+    }
+
+
+    createMap(
+        order
+    );
+
+}
+
+
+/* =====================================================
+   CREATE MAP
+===================================================== */
+
+function createMap(order){
+
+    if(
+        !window.google ||
+        !google.maps
+    ){
+        return;
+    }
+
+
+    const restaurant = {
+
+        lat: Number(order.restaurant_lat),
+
+        lng: Number(order.restaurant_lng)
+
+    };
+
+
+    const customer = {
+
+        lat: Number(order.customer_lat),
+
+        lng: Number(order.customer_lng)
+
+    };
+
+
+    const effectiveStatus =
+        getEffectiveStatus(order);
+
+
+    let rider = null;
+
+
+    /* =============================================
+       LIVE RIDER LOCATION HAS FIRST PRIORITY
+    ============================================= */
+
+    if(
+        riderLocation &&
+        Number.isFinite(Number(riderLocation.lat)) &&
+        Number.isFinite(Number(riderLocation.lng))
+    ){
+
+        rider = {
+
+            lat: Number(riderLocation.lat),
+
+            lng: Number(riderLocation.lng)
+
+        };
+
+    }
+
+
+    /* =============================================
+       FALLBACK RIDER LOCATION FROM ORDER
+    ============================================= */
+
+    else if(
+        order.latitude != null &&
+        order.longitude != null
+    ){
+
+        const lat =
+            Number(order.latitude);
+
+        const lng =
+            Number(order.longitude);
+
+
+        if(
+            Number.isFinite(lat) &&
+            Number.isFinite(lng)
+        ){
+
+            rider = {
+
+                lat: lat,
+
+                lng: lng
+
+            };
+
+        }
+
+    }
+
+
+    /* =============================================
+       VALIDATE CUSTOMER
+    ============================================= */
+
+    if(
+        !Number.isFinite(customer.lat) ||
+        !Number.isFinite(customer.lng)
+    ){
+
+        console.log(
+            "Invalid customer coordinates"
+        );
+
+        return;
+
+    }
+
+
+    /* =============================================
+       VALIDATE RESTAURANT
+    ============================================= */
+
+    const validRestaurant =
+        Number.isFinite(restaurant.lat) &&
+        Number.isFinite(restaurant.lng);
+
+
+    /* =============================================
+       MAP CENTER
+    ============================================= */
+
+    let center =
+        customer;
+
+
+    if(rider){
+
+        center =
+            rider;
+
+    }
+
+    else if(validRestaurant){
+
+        center =
+            restaurant;
+
+    }
+
+
+    /* =============================================
+       CREATE MAP
+    ============================================= */
+
+    if(!map){
+
+        map =
+            new google.maps.Map(
+
+                document.getElementById("map"),
+
+                {
+
+                    zoom: 14,
+
+                    center: center,
+
+                    mapTypeControl: false,
+
+                    streetViewControl: false,
+
+                    fullscreenControl: false,
+
+                    gestureHandling: "greedy"
+
+                }
+
+            );
+
+
+        /* =============================================
+           RESTAURANT MARKER
+        ============================================= */
+
+        if(validRestaurant){
+
+            restaurantMarker =
+                new google.maps.Marker({
+
+                    position: restaurant,
+
+                    map: map,
+
+                    title: "Restaurant",
+
+                    label: {
+
+                        text: "🍴",
+
+                        fontSize: "18px"
+
+                    }
+
+                });
+
+        }
+
+
+        /* =============================================
+           CUSTOMER / HOME MARKER
+        ============================================= */
+
+        customerMarker =
+            new google.maps.Marker({
+
+                position: customer,
+
+                map: map,
+
+                title: "Delivery Address",
+
+                label: {
+
+                    text: "🏠",
+
+                    fontSize: "18px"
+
+                }
+
+            });
+
+
+        /* =============================================
+           RIDER MARKER
+        ============================================= */
+
+        if(rider){
+
+            createRiderMarker(
+                rider
+            );
+
+        }
+
+
+        /* =============================================
+           DIRECTIONS
+        ============================================= */
+
+        if(directionsRenderer){
+
+            directionsRenderer.setMap(
+                map
+            );
+
+        }
+
+    }
+
+    else{
+
+
+        /* =============================================
+           UPDATE RESTAURANT MARKER
+        ============================================= */
+
+        if(
+            restaurantMarker &&
+            validRestaurant
+        ){
+
+            restaurantMarker.setPosition(
+                restaurant
+            );
+
+        }
+
+
+        /* =============================================
+           UPDATE CUSTOMER MARKER
+        ============================================= */
+
+        if(customerMarker){
+
+            customerMarker.setPosition(
+                customer
+            );
+
+        }
+
+
+        /* =============================================
+           UPDATE RIDER MARKER
+        ============================================= */
+
+        if(rider){
+
+            if(!riderMarker){
+
+                createRiderMarker(
+                    rider
+                );
+
+            }
+
+            else{
+
+                riderMarker.setPosition(
+                    rider
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =============================================
+       DRAW CORRECT ROUTE BASED ON STATUS
+    ============================================= */
+
+    drawRoadRoute(
+
+        restaurant,
+
+        rider,
+
+        customer,
+
+        effectiveStatus
+
+    );
+
+}
+
+
+/* =====================================================
+   CREATE RIDER MARKER
+===================================================== */
+
+function createRiderMarker(position){
+
+    riderMarker =
+        new google.maps.Marker({
+
+            position:position,
+
+            map:map,
+
+            title:"DARVOZ Delivery Partner",
+
+            icon:{
+
+                url:
+                    "/images/darvoz-rider.png",
+
+                scaledSize:
+                    new google.maps.Size(
+                        50,
+                        50
+                    ),
+
+                anchor:
+                    new google.maps.Point(
+                        25,
+                        25
+                    )
+
+            }
+
+        });
+
+}
+
+
+
+/* =====================================================
+   ROAD ROUTE + ETA
+===================================================== */
+
+function drawRoadRoute(
+    restaurant,
+    rider,
+    customer,
+    effectiveStatus
+){
+
+    if(
+        !directionsService ||
+        !directionsRenderer
+    ){
+        return;
+    }
+
+
+    /* =============================================
+       VALIDATE RIDER LOCATION
+    ============================================= */
+
+    const validRider =
+        rider &&
+        Number.isFinite(Number(rider.lat)) &&
+        Number.isFinite(Number(rider.lng));
+
+
+    /* =============================================
+       VALIDATE RESTAURANT LOCATION
+    ============================================= */
+
+    const validRestaurant =
+        restaurant &&
+        Number.isFinite(Number(restaurant.lat)) &&
+        Number.isFinite(Number(restaurant.lng));
+
+
+    /* =============================================
+       VALIDATE CUSTOMER LOCATION
+    ============================================= */
+
+    const validCustomer =
+        customer &&
+        Number.isFinite(Number(customer.lat)) &&
+        Number.isFinite(Number(customer.lng));
+
+
+    if(!validCustomer){
+
+        console.log(
+            "Invalid customer coordinates"
+        );
+
+        return;
+
+    }
+
+
+    /* =============================================
+       STATUS NORMALIZATION
+    ============================================= */
+
+    const status =
+        String(
+            effectiveStatus || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    /* =============================================
+       BEFORE PICKUP
+
+       DELIVERY BOY MUST GO TO RESTAURANT
+
+       Delivery Assigned
+       Reached Restaurant
+       Preparing
+       Accepted
+    ============================================= */
+
+    const goingToRestaurant =
+        status === "delivery assigned" ||
+        status === "reached restaurant" ||
+        status === "preparing" ||
+        status === "accepted";
+
+
+    /* =============================================
+       AFTER PICKUP
+
+       DELIVERY BOY MUST GO TO CUSTOMER
+    ============================================= */
+
+    const goingToCustomer =
+        status === "picked up" ||
+        status === "out for delivery" ||
+        status === "reached customer";
+
+
+    let origin = null;
+
+    let destination = null;
+
+    let etaText =
+        "Estimated arrival";
+
+
+    /* =============================================
+       RIDER IS GOING TO RESTAURANT
+    ============================================= */
+
+    if(
+        goingToRestaurant &&
+        validRestaurant
+    ){
+
+        origin =
+            validRider
+            ? rider
+            : restaurant;
+
+
+        destination =
+            restaurant;
+
+
+        etaText =
+            validRider
+            ? "Rider arriving at restaurant"
+            : "Waiting for delivery partner";
+
+    }
+
+
+    /* =============================================
+       RIDER PICKED UP ORDER
+       NOW GO TO CUSTOMER HOME
+    ============================================= */
+
+    else if(goingToCustomer){
+
+        origin =
+            validRider
+            ? rider
+            : (
+                validRestaurant
+                ? restaurant
+                : null
+            );
+
+
+        destination =
+            customer;
+
+
+        etaText =
+            validRider
+            ? "Estimated arrival to your location"
+            : "Estimated delivery time";
+
+    }
+
+
+    /* =============================================
+       DEFAULT BEHAVIOUR
+    ============================================= */
+
+    else{
+
+        origin =
+            validRider
+            ? rider
+            : (
+                validRestaurant
+                ? restaurant
+                : null
+            );
+
+
+        destination =
+            customer;
+
+
+        etaText =
+            validRider
+            ? "Estimated arrival"
+            : "Estimated time from restaurant";
+
+    }
+
+
+    /* =============================================
+       CHECK ROUTE
+    ============================================= */
+
+    if(
+        !origin ||
+        !destination
+    ){
+
+        console.log(
+            "Route coordinates unavailable"
+        );
+
+        return;
+
+    }
+
+
+    /* =============================================
+       AVOID TOO MANY GOOGLE API REQUESTS
+    ============================================= */
+
+    const now =
+        Date.now();
+
+
+    if(
+        now - lastRouteTime < 8000
+    ){
+
+        return;
+
+    }
+
+
+    lastRouteTime =
+        now;
+
+
+    console.log(
+        "TRACKING STATUS:",
+        effectiveStatus
+    );
+
+
+    console.log(
+        "ROUTE ORIGIN:",
+        origin
+    );
+
+
+    console.log(
+        "ROUTE DESTINATION:",
+        destination
+    );
+
+
+    /* =============================================
+       GOOGLE DIRECTIONS REQUEST
+    ============================================= */
+
+    directionsService.route(
+
+        {
+
+            origin: origin,
+
+            destination: destination,
+
+            travelMode:
+                google.maps.TravelMode.DRIVING,
+
+            provideRouteAlternatives:
+                false
+
+        },
+
+        (result, routeStatus) => {
+
+
+            console.log(
+                "DIRECTIONS STATUS:",
+                routeStatus
+            );
+
+
+            if(
+                routeStatus !== "OK"
+            ){
+
+                console.error(
+                    "Directions error:",
+                    routeStatus
+                );
+
+
+                const etaElement =
+                    document.getElementById("eta");
+
+
+                if(etaElement){
+
+                    etaElement.innerText =
+                        "Calculating...";
+
+                }
+
+
+                return;
+
+            }
+
+
+            directionsRenderer.setDirections(
+                result
+            );
+
+
+            /* =============================================
+               AUTO FIT MAP TO ROUTE
+
+               SHOW BOTH:
+               RIDER + DESTINATION
+            ============================================= */
+
+            if(
+                result.routes &&
+                result.routes[0] &&
+                result.routes[0].bounds &&
+                map
+            ){
+
+                map.fitBounds(
+                    result.routes[0].bounds
+                );
+
+            }
+
+
+            const route =
+                result.routes &&
+                result.routes[0];
+
+
+            if(
+                !route ||
+                !route.legs ||
+                !route.legs[0]
+            ){
+
+                return;
+
+            }
+
+
+            const leg =
+                route.legs[0];
+
+
+            const etaElement =
+                document.getElementById("eta");
+
+
+            const etaSub =
+                document.getElementById(
+                    "etaSubText"
+                );
+
+
+            if(
+                etaElement &&
+                leg.duration &&
+                Number(
+                    leg.duration.value
+                ) > 0
+            ){
+
+                const minutes =
+                    Math.max(
+
+                        1,
+
+                        Math.ceil(
+                            Number(
+                                leg.duration.value
+                            ) / 60
+                        )
+
+                    );
+
+
+                etaElement.innerText =
+                    `${minutes} mins`;
+
+
+                if(etaSub){
+
+                    etaSub.innerText =
+                        etaText;
+
+                }
+
+
+                console.log(
+                    "ETA UPDATED:",
+                    minutes + " mins"
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+/* =====================================================
+   CENTER MAP
+===================================================== */
+
+function centerMapOnRider(){
+
+    if(
+        map &&
+        riderLocation
+    ){
+
+        map.panTo(
+            riderLocation
+        );
+
+        map.setZoom(16);
+
+    }
+
+}
+
+
+
+/* =====================================================
+   LIVE RIDER LOCATION
+===================================================== */
+
+socket.on(
+
+    "deliveryLocationUpdated",
+
+    (data) => {
+
+        console.log(
+            "LIVE RIDER LOCATION:",
+            data
+        );
+
+
+        if(
+            !data ||
+            Number(data.orderId) !==
+            Number(orderId)
+        ){
+
+            return;
+
+        }
+
+
+        const lat =
+            Number(data.latitude);
+
+
+        const lng =
+            Number(data.longitude);
+
+
+        if(
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lng)
+        ){
+
+            return;
+
+        }
+
+
+        riderLocation = {
+
+            lat:lat,
+
+            lng:lng
+
+        };
+
+
+        if(
+            riderMarker &&
+            map
+        ){
+
+            riderMarker.setPosition(
+                riderLocation
+            );
+
+        }
+
+
+        if(currentOrder){
+
+            createMap(
+                currentOrder
+            );
+
+        }
+
+    }
+
+);
+
+
+
+/* =====================================================
+   ORDER STATUS SOCKET
+===================================================== */
+
+socket.on(
+
+    "orderStatusUpdated",
+
+    (data) => {
+
+        if(
+            !data ||
+            Number(data.orderId) !==
+            Number(orderId)
+        ){
+
+            return;
+
+        }
+
+
+        loadOrder();
+
+    }
+
+);
+
+
+
+/* =====================================================
+   DELIVERY ASSIGNED
+===================================================== */
+
+socket.on(
+
+    "deliveryAssigned",
+
+    (data) => {
+
+        if(
+            !data ||
+            Number(data.orderId) !==
+            Number(orderId)
+        ){
+
+            return;
+
+        }
+
+
+        loadOrder();
+
+    }
+
+);
+
+
+
+/* =====================================================
+   DELIVERY STATUS UPDATED
+===================================================== */
+
+socket.on(
+
+    "deliveryStatusUpdated",
+
+    (data) => {
+
+        if(
+            !data ||
+            Number(data.orderId) !==
+            Number(orderId)
+        ){
+
+            return;
+
+        }
+
+
+        loadOrder();
+
+    }
+
+);
+
+
+
+/* =====================================================
+   PARTNER TIMEOUT
+===================================================== */
+
+socket.on(
+
+    "partnerResponseTimeout",
+
+    (data) => {
+
+        if(
+            !data ||
+            Number(data.orderId) !==
+            Number(orderId)
+        ){
+
+            return;
+
+        }
+
+
+        showTimeoutOption(
+
+            "Partner hasn't responded",
+
+            "The restaurant has not accepted your order within 10 minutes."
+
+        );
+
+    }
+
+);
+
+
+
+/* =====================================================
+   RIDER TIMEOUT
+===================================================== */
+
+socket.on(
+
+    "riderResponseTimeout",
+
+    (data) => {
+
+        if(
+            !data ||
+            Number(data.orderId) !==
+            Number(orderId)
+        ){
+
+            return;
+
+        }
+
+
+        showTimeoutOption(
+
+            "Delivery partner not assigned",
+
+            "No delivery partner has accepted your order within 10 minutes."
+
+        );
+
+    }
+
+);
+
+
+
+/* =====================================================
+   CANCEL ORDER
+===================================================== */
+
+async function cancelOrderFromTimeout(){
+
+    if(!orderId){
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to cancel this order?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+
+                `${API}/orders/${orderId}/cancel`,
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    }
+
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            alert(
+                data.message ||
+                "Unable to cancel order."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Order cancelled successfully."
+        );
+
+
+        window.location.href =
+            "orders.html";
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "Unable to cancel order."
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CONTINUE WAITING
+===================================================== */
+
+function continueWaiting(){
+
+    const box =
+        document.getElementById(
+            "orderTimeoutBox"
+        );
+
+
+    if(box){
+
+        box.remove();
+
+    }
+
+}
+
+
+
+/* =====================================================
+   SHOW TIMEOUT POPUP
+===================================================== */
+
+function showTimeoutOption(
+    title,
+    message
+){
+
+    const existing =
+        document.getElementById(
+            "orderTimeoutBox"
+        );
+
+
+    if(existing){
+
+        return;
+
+    }
+
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.id =
+        "orderTimeoutBox";
+
+
+    box.innerHTML = `
+
+        <div class="timeout-overlay">
+
+            <div class="timeout-box">
+
+                <div class="timeout-icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    ${title}
+                </h2>
+
+                <p>
+                    ${message}
+                </p>
+
+                <p class="timeout-question">
+                    What would you like to do?
+                </p>
+
+                <div class="timeout-actions">
+
+                    <button
+                        class="timeout-cancel"
+                        onclick="cancelOrderFromTimeout()"
+                    >
+                        Cancel Order
+                    </button>
+
+                    <button
+                        class="timeout-wait"
+                        onclick="continueWaiting()"
+                    >
+                        Wait
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        box
+    );
+
+}
+
+
+
+/* =====================================================
+   RIDER ASSIGNMENT TIMER
+===================================================== */
+
+
+function updateRiderAssignmentTimer(order, effectiveStatus){
+
+    const eta = document.getElementById("eta");
+
+    const etaLabel =
+        document.querySelector(".eta p");
+
+    const card =
+        document.getElementById("riderTimerCard");
+
+
+    if(!eta || !etaLabel){
+        return;
+    }
+
+
+    // STOP OLD TIMER
+    if(riderCountdownInterval){
+
+        clearInterval(
+            riderCountdownInterval
+        );
+
+        riderCountdownInterval = null;
+
+    }
+
+
+    const riderAssigned =
+        order.delivery_partner_id != null;
+
+
+    /* ==========================================
+       RIDER ASSIGNED
+    ========================================== */
+
+    if(riderAssigned){
+
+        if(card){
+            card.style.display = "none";
+        }
+
+
+        etaLabel.innerText =
+            "Estimated arrival";
+
+
+        eta.style.fontSize =
+            "28px";
+
+
+        eta.style.color =
+            "#ff5a00";
+
+
+        /*
+           IMPORTANT:
+           DO NOT CHANGE ETA TO "--"
+           Google Maps will update this to:
+           6 mins, 8 mins etc.
+        */
+
+        if(
+            eta.innerText === "--" ||
+            !eta.innerText
+        ){
+
+            eta.innerText =
+                "Calculating...";
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* ==========================================
+       NO RIDER YET
+       SHOW WAITING TIMER
+    ========================================== */
+
+    const status =
+        String(
+            effectiveStatus || ""
+        )
+        .trim();
+
+
+    // These statuses mean rider may still be assigned
+    const waitingStatuses = [
+
+        "Accepted",
+
+        "Preparing",
+
+        "Delivery Assigned",
+
+        "Reached Restaurant"
+
+    ];
+
+
+    if(
+        !waitingStatuses.includes(status)
+    ){
+
+        if(card){
+            card.style.display = "none";
+        }
+
+
+        eta.innerText =
+            "--";
+
+
+        etaLabel.innerText =
+            "Estimated delivery";
+
+
+        return;
+
+    }
+
+
+    if(card){
+        card.style.display = "none";
+    }
+
+
+    const storageKey =
+        `darvoz_rider_deadline_${order.id}`;
+
+
+    let deadline;
+
+
+    if(order.rider_response_deadline){
+
+        deadline =
+            new Date(
+                String(
+                    order.rider_response_deadline
+                )
+                .replace(" ","T")
+            ).getTime();
+
+    }
+
+    else{
+
+        const savedDeadline =
+            localStorage.getItem(
+                storageKey
+            );
+
+
+        if(savedDeadline){
+
+            deadline =
+                Number(savedDeadline);
+
+        }
+
+        else{
+
+            deadline =
+                Date.now() +
+                (10 * 60 * 1000);
+
+
+            localStorage.setItem(
+                storageKey,
+                String(deadline)
+            );
+
+        }
+
+    }
+
+
+    if(!Number.isFinite(deadline)){
+        return;
+    }
+
+
+    function tick(){
+
+        const remaining =
+            deadline - Date.now();
+
+
+        if(remaining <= 0){
+
+            eta.innerText =
+                "00:00";
+
+
+            etaLabel.innerText =
+                "Delivery partner not assigned";
+
+
+            eta.style.color =
+                "#dc3545";
+
+
+            clearInterval(
+                riderCountdownInterval
+            );
+
+
+            riderCountdownInterval =
+                null;
+
+
+            return;
+
+        }
+
+
+        const totalSeconds =
+            Math.floor(
+                remaining / 1000
+            );
+
+
+        const minutes =
+            Math.floor(
+                totalSeconds / 60
+            );
+
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        eta.innerText =
+            `${minutes}:${String(seconds).padStart(2,"0")}`;
+
+
+        etaLabel.innerText =
+            "Waiting for delivery partner";
+
+    }
+
+
+    tick();
+
+
+    riderCountdownInterval =
+        setInterval(
+            tick,
+            1000
+        );
+
+}
+
+
+
+function updateOrderDetails(order){
+
+    const itemsContainer =
+        document.getElementById("orderItems");
+
+    if(!itemsContainer){
+        return;
+    }
+
+    console.log(
+        "ORDER DETAILS:",
+        order
+    );
+
+
+    const items =
+        order.items ||
+        order.order_items ||
+        order.orderItems ||
+        order.products ||
+        order.cart_items ||
+        [];
+
+
+    console.log(
+        "ORDER ITEMS:",
+        items
+    );
+
+
+    if(
+        !Array.isArray(items) ||
+        items.length === 0
+    ){
+
+        itemsContainer.innerHTML = `
+
+            <div class="no-items">
+
+                <div style="font-size:30px;">
+                    🍽️
+                </div>
+
+                <p>
+                    No order items available
+                </p>
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        itemsContainer.innerHTML = "";
+
+
+        items.forEach(item => {
+
+            const name =
+                item.name ||
+                item.item_name ||
+                item.product_name ||
+                item.food_name ||
+                "Food Item";
+
+
+            const quantity =
+                Number(
+                    item.quantity ||
+                    item.qty ||
+                    1
+                );
+
+
+            let price =
+                Number(
+                    item.price ||
+                    item.item_price ||
+                    item.total ||
+                    item.amount ||
+                    0
+                );
+
+
+            // If backend sends total price for item,
+            // you can display it directly
+            const itemTotal =
+                item.total ||
+                item.total_price ||
+                (price * quantity);
+
+
+            itemsContainer.innerHTML += `
+
+                <div class="order-item">
+
+                    <div class="item-image">
+                        🍽️
+                    </div>
+
+                    <span class="item-qty">
+                        ${quantity}×
+                    </span>
+
+                    <div class="item-name">
+                        ${name}
+                    </div>
+
+                    <div class="item-price">
+                        ₹${itemTotal}
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+
+  // =============================================
+// ORDER TOTAL - SHOW ACTUAL CUSTOMER PAYMENT
+// =============================================
+
+
+const totalElement =
+    document.getElementById("orderTotal");
+
+
+if(totalElement){
+
+    const getAmount = (...values) => {
+
+        for(const value of values){
+
+            if(
+                value !== null &&
+                value !== undefined &&
+                value !== ""
+            ){
+
+                const amount =
+                    Number(
+                        String(value)
+                        .replace(/[^\d.]/g, "")
+                    );
+
+                if(
+                    Number.isFinite(amount) &&
+                    amount >= 0
+                ){
+
+                    return amount;
+
+                }
+
+            }
+
+        }
+
+        return 0;
+
+    };
+
+
+    const paidAmount = getAmount(
+
+        order.payment_amount,
+        order.final_amount,
+        order.final_total,
+        order.payable_amount,
+        order.grand_total,
+        order.total_amount,
+        order.amount,
+        order.total
+
+    );
+
+
+    totalElement.innerText =
+        `₹${paidAmount.toFixed(2)}`;
+
+}
+
+
+    
+
+}
+
+
+/* =====================================================
+   CALL RIDER
+===================================================== */
+
+function callRider(){
+
+    if(!riderMobile){
+
+        alert(
+            "Delivery partner has not been assigned yet."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "tel:" + riderMobile;
+
+}
+
+
+
+/* =====================================================
+   SOCKET CONNECT
+===================================================== */
+
+socket.on(
+
+    "connect",
+
+    () => {
+
+        console.log(
+            "Track Socket Connected:",
+            socket.id
+        );
+
+    }
+
+);
+
+
+
+/* =====================================================
+   REFRESH EVERY 5 SECONDS
+===================================================== */
+
+setInterval(
+    loadOrder,
+    5000
+);
+
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+loadOrder();
+
+async function loadOrderItems(orderId) {
+
+    try {
+
+        const response = await fetch(
+            `${API}/orders/items/${orderId}`
+        );
+
+        const data = await response.json();
+
+        console.log("ORDER ITEMS:", data);
+
+        const itemsContainer =
+            document.getElementById("orderItems");
+
+        if (!itemsContainer) {
+            console.error("orderItems container not found");
+            return;
+        }
+
+        if (
+            !data.success ||
+            !data.items ||
+            data.items.length === 0
+        ) {
+
+            itemsContainer.innerHTML = `
+                <p>No items found</p>
+            `;
+
+            return;
+        }
+
+        itemsContainer.innerHTML = "";
+
+        data.items.forEach((item) => {
+
+            const total =
+                Number(item.price) *
+                Number(item.qty);
+
+            itemsContainer.innerHTML += `
+
+                <div class="order-item">
+
+                    <div class="item-info">
+
+                        <div class="item-name">
+                            ${item.product_name}
+                        </div>
+
+                        <div class="item-price">
+                            ₹${Number(item.price).toFixed(2)}
+                            × ${item.qty}
+                        </div>
+
+                    </div>
+
+                    <div class="item-total">
+                        ₹${total.toFixed(2)}
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "LOAD ORDER ITEMS ERROR:",
+            error
+        );
+
+    }
+
+}
+
+/* =====================================================
+   BILL POPUP
+===================================================== */
+
+function openBillPopup(){
+
+    const overlay =
+        document.getElementById("billOverlay");
+
+    if(!overlay){
+        console.error("billOverlay not found");
+        return;
+    }
+
+    overlay.classList.add("show");
+
+    document.body.style.overflow =
+        "hidden";
+
+    loadBillData();
+
+}
+
+
+/* =====================================================
+   CLOSE BILL POPUP
+===================================================== */
+
+function closeBillPopup(){
+
+    const overlay =
+        document.getElementById("billOverlay");
+
+    if(!overlay){
+        return;
+    }
+
+    overlay.classList.remove("show");
+
+    document.body.style.overflow = "";
+
+}
+
+
+/* =====================================================
+   CLOSE WHEN CLICKING OUTSIDE
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const overlay =
+            document.getElementById("billOverlay");
+
+        if(!overlay){
+            return;
+        }
+
+        overlay.addEventListener(
+            "click",
+            function(e){
+
+                if(e.target === overlay){
+
+                    closeBillPopup();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   FORMAT MONEY
+===================================================== */
+
+function formatBillAmount(value){
+
+    const amount =
+        Number(value || 0);
+
+    return amount.toFixed(2);
+
+}
+
+
+/* =====================================================
+   GET REAL ORDER AMOUNT
+===================================================== */
+
+function getBillAmount(...values){
+
+    for(const value of values){
+
+        if(
+            value !== null &&
+            value !== undefined &&
+            value !== ""
+        ){
+
+            const amount =
+                Number(
+                    String(value)
+                    .replace(/[^\d.]/g, "")
+                );
+
+            if(
+                Number.isFinite(amount) &&
+                amount >= 0
+            ){
+
+                return amount;
+
+            }
+
+        }
+
+    }
+
+    return 0;
+
+}
+
+async function loadBillData(){
+
+    if(!currentOrder){
+
+        console.log("Order data not loaded yet");
+        return;
+
+    }
+
+
+    const order = currentOrder;
+
+
+    /* ==========================================
+       MONEY FORMAT - SAME STYLE AS CHECKOUT
+    ========================================== */
+
+    const money = (value) => {
+
+        return "₹" + Number(
+            value || 0
+        ).toLocaleString(
+            "en-IN",
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }
+        );
+
+    };
+
+
+    /* ==========================================
+       ORDER ID
+    ========================================== */
+
+    const orderId =
+        order.id ||
+        order.orderId ||
+        order._id ||
+        "";
+
+    document.getElementById(
+        "billOrderId"
+    ).textContent =
+        "Order #" + orderId;
+
+
+    /* ==========================================
+       LOAD ORDER ITEMS
+    ========================================== */
+
+    const billItems =
+        document.getElementById(
+            "billItems"
+        );
+
+    if(billItems){
+
+        billItems.innerHTML = "";
+
+        try{
+
+            const response =
+                await fetch(
+                    `${API}/orders/items/${orderId}`
+                );
+
+            const data =
+                await response.json();
+
+
+            if(
+                data.success &&
+                Array.isArray(data.items) &&
+                data.items.length > 0
+            ){
+
+                data.items.forEach(
+                    function(item){
+
+                        const name =
+                            item.product_name ||
+                            item.name ||
+                            item.item_name ||
+                            "Product";
+
+
+                        const quantity =
+                            Number(
+                                item.quantity ||
+                                item.qty ||
+                                1
+                            );
+
+
+                        const price =
+                            Number(
+                                item.price ||
+                                0
+                            );
+
+
+                        const itemTotal =
+                            price * quantity;
+
+
+                        billItems.innerHTML += `
+
+                            <div class="bill-item">
+
+                                <div class="bill-item-left">
+
+                                    <div class="bill-item-icon">
+                                        🍽️
+                                    </div>
+
+                                    <div class="bill-item-info">
+
+                                        <h4>
+                                            ${escapeHTML(name)}
+                                        </h4>
+
+                                        <p>
+                                            Qty: ${quantity}
+                                            × ${money(price)}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="bill-item-price">
+                                    ${money(itemTotal)}
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+            }
+
+            else{
+
+                billItems.innerHTML = `
+                    <div class="no-items">
+                        No order items found
+                    </div>
+                `;
+
+            }
+
+        }
+
+        catch(error){
+
+            console.error(
+                "BILL ITEMS ERROR:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================
+       EXACT VALUES SENT FROM CHECKOUT.HTML
+
+       checkout sends:
+
+       subtotal
+       delivery_fee
+       gst
+       discount
+       amount
+    ========================================== */
+
+
+    const subtotal =
+        Number(
+            order.subtotal || 0
+        );
+
+
+    const deliveryFee =
+        Number(
+            order.delivery_fee || 0
+        );
+
+
+    const gst =
+        Number(
+            order.gst || 0
+        );
+
+
+    const discount =
+        Number(
+            order.discount || 0
+        );
+
+
+    const grandTotal =
+        Number(
+            order.amount ||
+            order.grand_total ||
+            order.grandTotal ||
+            order.total_amount ||
+            order.total ||
+            0
+        );
+
+
+    console.log(
+        "TRACK BILL DATA:",
+        {
+            subtotal,
+            deliveryFee,
+            gst,
+            discount,
+            grandTotal
+        }
+    );
+
+
+    /* ==========================================
+       ITEM TOTAL
+    ========================================== */
+
+    document.getElementById(
+        "billSubtotal"
+    ).textContent =
+        money(subtotal);
+
+
+    /* ==========================================
+       DELIVERY FEE
+
+       SAME AS CHECKOUT:
+       IF 0 → FREE
+    ========================================== */
+
+    const deliveryElement =
+        document.getElementById(
+            "billDeliveryFee"
+        );
+
+
+    if(deliveryElement){
+
+        if(deliveryFee === 0){
+
+            deliveryElement.textContent =
+                "FREE";
+
+            deliveryElement.style.color =
+                "green";
+
+            deliveryElement.style.fontWeight =
+                "600";
+
+        }
+
+        else{
+
+            deliveryElement.textContent =
+                money(deliveryFee);
+
+            deliveryElement.style.color = "";
+            deliveryElement.style.fontWeight = "";
+
+        }
+
+    }
+
+
+    /* ==========================================
+       GST
+    ========================================== */
+
+    document.getElementById(
+        "billGst"
+    ).textContent =
+        money(gst);
+
+
+    /* ==========================================
+       DISCOUNT
+
+       CHECKOUT ALWAYS SHOWS DISCOUNT,
+       EVEN WHEN ₹0
+    ========================================== */
+
+    const discountRow =
+        document.getElementById(
+            "billDiscountRow"
+        );
+
+
+    if(discountRow){
+
+        discountRow.style.display =
+            "flex";
+
+    }
+
+
+    document.getElementById(
+        "billDiscount"
+    ).textContent =
+        "- " + money(discount);
+
+
+    /* ==========================================
+       GRAND TOTAL
+    ========================================== */
+
+    document.getElementById(
+        "billTotal"
+    ).textContent =
+        money(grandTotal);
+
+
+    /* ==========================================
+       PAYMENT METHOD
+    ========================================== */
+
+    const paymentMethod =
+        order.payment ||
+        order.payment_method ||
+        order.paymentMethod ||
+        "Payment";
+
+
+    document.getElementById(
+        "billPaymentMethod"
+    ).textContent =
+        paymentMethod;
+
+
+    /* ==========================================
+       PAYMENT STATUS
+    ========================================== */
+
+    const paymentStatus =
+        String(
+            order.payment_status ||
+            order.paymentStatus ||
+            ""
+        ).toLowerCase();
+
+
+    const paymentStatusElement =
+        document.getElementById(
+            "billPaymentStatus"
+        );
+
+
+    if(paymentStatusElement){
+
+        if(paymentMethod === "COD"){
+
+            paymentStatusElement.textContent =
+                "Pay on delivery";
+
+        }
+
+        else if(
+
+            paymentStatus === "paid" ||
+            paymentStatus === "completed" ||
+            paymentStatus === "success"
+
+        ){
+
+            paymentStatusElement.textContent =
+                "Payment completed";
+
+        }
+
+        else{
+
+            paymentStatusElement.textContent =
+                "Payment pending";
+
+        }
+
+    }
+
+}
+
+/* =====================================================
+   ESCAPE BILL HTML
+===================================================== */
+
+function escapeBillHTML(text){
+
+    const div =
+        document.createElement("div");
+
+
+    div.innerText =
+        text == null
+            ? ""
+            : String(text);
+
+
+    return div.innerHTML;
+
+}
+
+
+
+
+</script>
+<script src="helpBot.js"></script>
+
+
+</body>
+</html>

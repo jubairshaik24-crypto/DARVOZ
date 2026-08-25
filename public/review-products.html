@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ - Review Products</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+padding-bottom:110px;
+}
+
+/* HEADER */
+
+.header{
+position:sticky;
+top:0;
+background:#ff5a00;
+color:white;
+padding:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+z-index:100;
+}
+
+.header h2{
+font-size:22px;
+}
+
+.header p{
+font-size:13px;
+margin-top:5px;
+}
+
+/* SEARCH */
+
+.search{
+background:white;
+padding:15px;
+}
+
+.search input{
+width:100%;
+padding:12px;
+border:1px solid #ddd;
+border-radius:8px;
+outline:none;
+font-size:15px;
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+gap:10px;
+padding:12px;
+}
+
+.box{
+flex:1;
+background:white;
+border-radius:10px;
+padding:15px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.box h3{
+font-size:24px;
+color:#ff5a00;
+}
+
+.box p{
+font-size:13px;
+margin-top:5px;
+color:#666;
+}
+
+/* TABLE */
+
+.table-box{
+padding:10px;
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
+}
+
+th{
+background:#ff5a00;
+color:white;
+padding:12px 8px;
+font-size:13px;
+}
+
+td{
+padding:10px 6px;
+text-align:center;
+border-bottom:1px solid #eee;
+font-size:13px;
+}
+
+td input{
+width:120px;
+padding:7px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+td select{
+padding:7px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+.deleteBtn{
+background:#e53935;
+color:white;
+border:none;
+padding:8px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* BUTTON */
+
+.addBtn{
+width:calc(100% - 30px);
+margin:15px;
+padding:13px;
+background:#2196f3;
+color:white;
+border:none;
+border-radius:8px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+}
+
+/* FOOTER */
+
+.bottom{
+position:fixed;
+left:0;
+bottom:0;
+width:100%;
+background:white;
+padding:15px;
+box-shadow:0 -2px 10px rgba(0,0,0,.15);
+}
+.nameInput{
+    width:100%;
+    min-width:300px;
+}
+#saveBtn{
+width:100%;
+padding:15px;
+background:#ff5a00;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h2>🤖 AI Menu Review</h2>
+<p id="count">0 Products Found</p>
+</div>
+
+<div class="search">
+<input
+type="text"
+id="search"
+placeholder="Search Product">
+</div>
+
+<div class="stats">
+
+<div class="box">
+<h3 id="totalProducts">0</h3>
+<p>Products</p>
+</div>
+
+<div class="box">
+<h3 id="vegCount">0</h3>
+<p>🟢 Veg</p>
+</div>
+
+<div class="box">
+<h3 id="nonVegCount">0</h3>
+<p>🔴 Non Veg</p>
+</div>
+
+</div>
+
+<div class="table-box">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Category</th>
+<th>Price</th>
+<th>Delete</th>
+</tr>
+
+</thead>
+
+<tbody id="productTable">
+
+<!-- Products loaded by JavaScript -->
+
+</tbody>
+
+</table>
+
+</div>
+
+<button class="addBtn" id="addProduct">
++ Add Product
+</button>
+
+<div class="bottom">
+<button id="saveBtn">
+💾 Save Menu
+</button>
+</div>
+
+<script>
+    // ================================
+// LOAD PRODUCTS
+// ================================
+
+const partner = JSON.parse(localStorage.getItem("partner")) || {};
+
+const params = new URLSearchParams(window.location.search);
+
+const businessType = params.get("business");
+
+console.log("Business Type:", businessType);
+
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+renderTable();
+
+
+// ================================
+// RENDER TABLE
+// ================================
+
+function renderTable(list = products){
+
+    const table = document.getElementById("productTable");
+
+    table.innerHTML = "";
+
+    let veg = 0;
+    let nonVeg = 0;
+
+    document.getElementById("count").innerHTML =
+        list.length + " Products Found";
+
+    list.forEach((item,index)=>{
+
+        if(item.type==="Veg")
+            veg++;
+        else
+            nonVeg++;
+
+        table.innerHTML += `
+
+<tr>
+
+<td>
+<input
+type="text"
+class="nameInput"
+value="${item.name || ""}"
+onchange="products[${index}].name=this.value">
+
+</td>
+
+<td>
+
+<select onchange="products[${index}].type=this.value">
+
+<option value="Veg"
+${item.type==="Veg"?"selected":""}>
+🟢 Veg
+</option>
+
+<option value="Non Veg"
+${item.type==="Non Veg"?"selected":""}>
+🔴 Non Veg
+</option>
+
+</select>
+
+</td>
+
+<td>
+
+<select onchange="products[${index}].category=this.value">
+
+<option value="Biryani"
+${item.category==="Biryani"?"selected":""}>
+Biryani
+</option>
+
+<option value="Rice"
+${item.category==="Rice"?"selected":""}>
+Rice
+</option>
+
+<option value="Starters"
+${item.category==="Starters"?"selected":""}>
+Starters
+</option>
+
+<option value="Breads"
+${item.category==="Breads"?"selected":""}>
+Breads
+</option>
+
+<option value="Beverages"
+${item.category==="Beverages"?"selected":""}>
+Beverages
+</option>
+
+<option value="Desserts"
+${item.category==="Desserts"?"selected":""}>
+Desserts
+</option>
+
+<option value="Other"
+${item.category==="Other"?"selected":""}>
+Other
+</option>
+
+</select>
+
+</td>
+
+<td>
+
+<input
+type="number"
+value="${item.price || 0}"
+onchange="products[${index}].price=this.value">
+
+</td>
+
+<td>
+
+<button
+class="deleteBtn"
+onclick="deleteProduct(${index})">
+
+🗑
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+    });
+
+    document.getElementById("totalProducts").innerHTML = list.length;
+    document.getElementById("vegCount").innerHTML = veg;
+    document.getElementById("nonVegCount").innerHTML = nonVeg;
+
+}
+
+
+// ================================
+// SEARCH
+// ================================
+
+document.getElementById("search").addEventListener("input",function(){
+
+const keyword = this.value.toLowerCase().trim();
+
+const filtered = products.filter(item=>{
+
+return (item.name || "")
+.toLowerCase()
+.includes(keyword);
+
+});
+
+renderTable(filtered);
+
+});
+// ================================
+// DELETE PRODUCT
+// ================================
+
+function deleteProduct(index){
+
+    if(confirm("Delete this product?")){
+
+        products.splice(index,1);
+
+        localStorage.setItem(
+            "products",
+            JSON.stringify(products)
+        );
+
+        renderTable();
+
+    }
+
+}
+
+
+// ================================
+// ADD PRODUCT
+// ================================
+
+document.getElementById("addProduct").addEventListener("click",()=>{
+
+    products.push({
+
+        name:"",
+        type:"Veg",
+        category:"Other",
+        price:0
+
+    });
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+    renderTable();
+
+});
+
+
+// ================================
+// AUTO SAVE
+// ================================
+
+setInterval(()=>{
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+},5000);
+
+
+window.addEventListener("beforeunload",()=>{
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+});
+
+
+// ================================
+// SAVE MENU
+// ================================
+
+document.getElementById("saveBtn").addEventListener("click",async()=>{
+
+    if(products.length===0){
+
+        alert("Please add at least one product.");
+        return;
+
+    }
+
+    try{
+        console.log("Partner Object:", partner);
+console.log("Partner ID:", partner.id);
+        const response = await fetch("/products/import", {
+
+    method: "POST",
+
+    headers: {
+        "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+
+        products: products.map(product => ({
+
+            partner_id: partner.id,
+
+            name: product.name,
+
+            price: Number(product.price),
+
+            category: product.category || "Other",
+
+            image: product.image || null,
+
+            business_type: businessType
+
+        }))
+
+    })
+
+});
+
+        const result = await response.json();
+
+        if(result.success){
+
+            alert("✅ Menu Saved Successfully!");
+
+            localStorage.removeItem("products");
+
+            window.location.href="partner-menu.html";
+
+        }
+
+        else{
+
+            alert(result.message || "Failed to save menu.");
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert("❌ Server Error!");
+
+    }
+
+});
+// ================================
+// INITIAL CHECK
+// ================================
+
+if(products.length===0){
+
+    console.log("No OCR products found in localStorage.");
+
+    // Uncomment this only for testing
+
+    /*
+    products = [
+
+        {
+            name:"Chicken Biryani",
+            type:"Non Veg",
+            category:"Biryani",
+            price:220
+        },
+
+        {
+            name:"Paneer Biryani",
+            type:"Veg",
+            category:"Biryani",
+            price:180
+        }
+
+    ];
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+    */
+
+}
+
+renderTable();
+
+console.log("Products Loaded :", products);
+
+</script>
+
+</body>
+</html>

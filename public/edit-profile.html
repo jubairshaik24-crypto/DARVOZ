@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Profile | DARVOZ</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#f6f6f6;
+padding-bottom:120px;
+}
+
+/* Header */
+
+.header{
+
+background:#ff6b00;
+
+padding:22px;
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+color:#fff;
+
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+}
+
+.header i{
+
+font-size:22px;
+
+cursor:pointer;
+
+}
+
+.header h2{
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+/* Container */
+
+.container{
+
+max-width:700px;
+
+margin:25px auto;
+
+padding:0 18px;
+
+}
+
+/* Card */
+
+.card{
+
+background:#fff;
+
+border-radius:25px;
+
+padding:28px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+margin-bottom:25px;
+
+}
+
+/* Profile Image */
+
+.profile-box{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+margin-bottom:25px;
+
+}
+
+.profile-photo{
+
+width:130px;
+
+height:130px;
+
+border-radius:50%;
+
+overflow:hidden;
+
+border:5px solid #ff6b00;
+
+margin-bottom:15px;
+
+background:#fff3ea;
+
+}
+
+.profile-photo img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.upload-btn{
+
+background:#ff6b00;
+
+color:#fff;
+
+padding:10px 24px;
+
+border-radius:30px;
+
+cursor:pointer;
+
+font-size:15px;
+
+font-weight:600;
+
+}
+
+.upload-btn input{
+
+display:none;
+
+}
+
+/* Form */
+
+.form-group{
+
+margin-bottom:18px;
+
+}
+
+.form-group label{
+
+display:block;
+
+font-size:15px;
+
+font-weight:600;
+
+margin-bottom:8px;
+
+color:#333;
+
+}
+
+.form-group input{
+
+width:100%;
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:14px;
+
+font-size:16px;
+
+outline:none;
+
+transition:.3s;
+
+}
+
+.form-group input:focus{
+
+border-color:#ff6b00;
+
+box-shadow:0 0 8px rgba(255,107,0,.2);
+
+}
+
+.readonly{
+
+background:#f2f2f2;
+
+cursor:not-allowed;
+
+}
+
+.section-title{
+
+font-size:22px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+color:#333;
+
+}
+ 
+ /* =========================
+Address
+========================= */
+
+.location-btn{
+
+width:100%;
+
+padding:16px;
+
+background:#fff3eb;
+
+color:#ff6b00;
+
+border:2px solid #ff6b00;
+
+border-radius:15px;
+
+font-size:17px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+margin-top:10px;
+
+}
+
+.location-btn:hover{
+
+background:#ff6b00;
+
+color:#fff;
+
+}
+
+.location-btn i{
+
+margin-right:10px;
+
+}
+
+.location-note{
+
+margin-top:15px;
+
+padding:15px;
+
+background:#fff8f3;
+
+border-left:4px solid #ff6b00;
+
+border-radius:12px;
+
+color:#666;
+
+font-size:14px;
+
+line-height:22px;
+
+}
+
+.location-note i{
+
+color:#ff6b00;
+
+margin-right:8px;
+
+}
+
+.save-btn{
+
+width:100%;
+
+padding:18px;
+
+background:#ff6b00;
+
+border:none;
+
+border-radius:16px;
+
+color:#fff;
+
+font-size:19px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.save-btn:hover{
+
+background:#e65c00;
+
+}
+
+.save-btn i{
+
+margin-right:10px;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<i class="fa-solid fa-arrow-left"
+onclick="history.back()"></i>
+
+<h2>Edit Profile</h2>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<div class="profile-box">
+
+<div class="profile-photo">
+
+<img id="profilePreview"
+
+src="images/default-profile.png">
+
+</div>
+
+<label class="upload-btn">
+
+Change Photo
+
+<input
+
+type="file"
+
+id="profileImage"
+
+accept="image/*">
+
+</label>
+
+</div>
+
+<div class="section-title">
+
+Personal Details
+
+</div>
+
+<div class="form-group">
+
+<label>Full Name</label>
+
+<input
+
+type="text"
+
+id="name"
+
+placeholder="Enter Full Name">
+
+</div>
+
+<div class="form-group">
+
+<label>Mobile Number</label>
+
+<input
+
+type="text"
+
+id="mobile"
+
+class="readonly"
+
+readonly>
+
+</div>
+
+<div class="form-group">
+
+<label>Email Address</label>
+
+<input
+
+type="email"
+
+id="email"
+
+placeholder="Enter Email">
+
+</div>
+<!-- =========================
+     Address Details
+========================= -->
+
+<div class="section-title">
+
+Address Details
+
+</div>
+
+<div class="form-group">
+
+<label>House / Flat No.</label>
+
+<input
+type="text"
+id="house"
+placeholder="Flat No, House No">
+
+</div>
+
+<div class="form-group">
+
+<label>Street</label>
+
+<input
+type="text"
+id="street"
+placeholder="Street Name">
+
+</div>
+
+<div class="form-group">
+
+<label>Area / Landmark</label>
+
+<input
+type="text"
+id="area"
+placeholder="Area or Landmark">
+
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+
+<div class="form-group">
+
+<label>City</label>
+
+<input
+type="text"
+id="city"
+placeholder="City">
+
+</div>
+
+<div class="form-group">
+
+<label>State</label>
+
+<input
+type="text"
+id="state"
+placeholder="State">
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>Pincode</label>
+
+<input
+type="text"
+id="pincode"
+placeholder="Pincode">
+
+</div>
+
+<button class="location-btn" onclick="useCurrentLocation()">
+
+<i class="fa-solid fa-location-crosshairs"></i>
+
+Use Current Location
+
+</button>
+
+<div class="location-note">
+
+<i class="fa-solid fa-circle-info"></i>
+
+Your current location will automatically fill City, State and Address.
+
+</div>
+
+</div>
+
+<!-- Save Button -->
+
+<div class="card">
+
+<button class="save-btn" onclick="saveProfile()">
+
+<i class="fa-solid fa-floppy-disk"></i>
+
+Save Changes
+
+</button>
+
+</div>
+<script>
+
+/* =====================================================
+   API + CUSTOMER ID
+===================================================== */
+
+const API = window.location.origin;
+
+const customerId =
+    localStorage.getItem("customerId");
+
+
+/* =====================================================
+   LOGIN CHECK
+===================================================== */
+
+if(!customerId){
+
+    window.location.href =
+        "customer-login.html";
+
+}
+
+
+/* =====================================================
+   LOAD EXISTING PROFILE
+===================================================== */
+
+async function loadProfile(){
+
+    try{
+
+        console.log(
+            "Loading customer:",
+            customerId
+        );
+
+
+        const response =
+            await fetch(
+                `${API}/customer/profile/${customerId}`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "PROFILE RESPONSE:",
+            result
+        );
+
+
+        if(
+            !result.success ||
+            !result.customer
+        ){
+
+            alert(
+                result.message ||
+                "Unable to load profile"
+            );
+
+            return;
+
+        }
+
+
+        const c =
+            result.customer;
+
+
+        /* =================================================
+           PERSONAL DETAILS
+        ================================================= */
+
+        document.getElementById("name").value =
+            c.name || "";
+
+
+        document.getElementById("mobile").value =
+            c.mobile || "";
+
+
+        document.getElementById("email").value =
+            c.email || "";
+
+
+        /* =================================================
+           ADDRESS DETAILS
+        ================================================= */
+
+        document.getElementById("house").value =
+            c.house || "";
+
+
+        document.getElementById("street").value =
+            c.street || "";
+
+
+        document.getElementById("area").value =
+            c.area || "";
+
+
+        document.getElementById("city").value =
+            c.city || "";
+
+
+        document.getElementById("state").value =
+            c.state || "";
+
+
+        document.getElementById("pincode").value =
+            c.pincode || "";
+
+
+        /* =================================================
+           PROFILE IMAGE
+        ================================================= */
+
+        if(c.profile_image){
+
+            let imageUrl =
+                c.profile_image;
+
+
+            /*
+             * Cloudinary / complete URL
+             */
+
+            if(
+                imageUrl.startsWith("http://") ||
+                imageUrl.startsWith("https://")
+            ){
+
+                document.getElementById(
+                    "profilePreview"
+                ).src =
+                    imageUrl;
+
+            }
+
+            /*
+             * Old local upload
+             */
+
+            else{
+
+                document.getElementById(
+                    "profilePreview"
+                ).src =
+                    `${API}/uploads/${imageUrl}`;
+
+            }
+
+        }
+
+
+        console.log(
+            "✅ Profile automatically filled"
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "❌ LOAD PROFILE ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to load your profile"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   IMAGE PREVIEW
+===================================================== */
+
+document
+.getElementById("profileImage")
+.addEventListener(
+    "change",
+    function(){
+
+        const file =
+            this.files[0];
+
+
+        if(!file){
+
+            return;
+
+        }
+
+
+        if(
+            !file.type.startsWith("image/")
+        ){
+
+            alert(
+                "Please select an image."
+            );
+
+            this.value = "";
+
+            return;
+
+        }
+
+
+        const preview =
+            document.getElementById(
+                "profilePreview"
+            );
+
+
+        preview.src =
+            URL.createObjectURL(file);
+
+    }
+);
+
+
+/* =====================================================
+   USE CURRENT LOCATION
+===================================================== */
+
+async function useCurrentLocation(){
+
+    if(
+        !navigator.geolocation
+    ){
+
+        alert(
+            "Location is not supported by this browser."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.querySelector(
+            ".location-btn"
+        );
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+        `<i class="fa-solid fa-spinner fa-spin"></i>
+         Detecting Location...`;
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        async(position)=>{
+
+            try{
+
+                const lat =
+                    position.coords.latitude;
+
+                const lng =
+                    position.coords.longitude;
+
+
+                console.log(
+                    "GPS:",
+                    lat,
+                    lng
+                );
+
+
+                /* =========================================
+                   SAVE GPS LOCATION
+                ========================================= */
+
+                const locationResponse =
+                    await fetch(
+                        `${API}/customer/update-location`,
+                        {
+                            method:"POST",
+
+                            headers:{
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:JSON.stringify({
+
+                                customerId:
+                                    customerId,
+
+                                latitude:
+                                    lat,
+
+                                longitude:
+                                    lng
+
+                            })
+
+                        }
+                    );
+
+
+                console.log(
+                    "LOCATION UPDATE:",
+                    await locationResponse.json()
+                );
+
+
+                /* =========================================
+                   REVERSE GEOCODING
+                ========================================= */
+
+                const response =
+                    await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`,
+                        {
+                            headers:{
+                                "Accept":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                const address =
+                    data.address || {};
+
+
+                /* =========================================
+                   AUTO FILL ADDRESS
+                ========================================= */
+
+                document.getElementById(
+                    "city"
+                ).value =
+                    address.city ||
+                    address.town ||
+                    address.village ||
+                    "";
+
+
+                document.getElementById(
+                    "state"
+                ).value =
+                    address.state ||
+                    "";
+
+
+                document.getElementById(
+                    "street"
+                ).value =
+                    address.road ||
+                    "";
+
+
+                document.getElementById(
+                    "area"
+                ).value =
+                    address.suburb ||
+                    address.neighbourhood ||
+                    address.residential ||
+                    "";
+
+
+                document.getElementById(
+                    "pincode"
+                ).value =
+                    address.postcode ||
+                    "";
+
+
+                /* HOUSE NUMBER */
+
+                if(address.house_number){
+
+                    document.getElementById(
+                        "house"
+                    ).value =
+                        address.house_number;
+
+                }
+
+
+                alert(
+                    "📍 Current location detected successfully!"
+                );
+
+
+            }
+            catch(error){
+
+                console.error(
+                    "LOCATION ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to fetch address."
+                );
+
+            }
+            finally{
+
+                button.disabled = false;
+
+                button.innerHTML =
+                    `<i class="fa-solid fa-location-crosshairs"></i>
+                     Use Current Location`;
+
+            }
+
+        },
+
+        (error)=>{
+
+            console.error(
+                "GPS ERROR:",
+                error
+            );
+
+
+            button.disabled = false;
+
+            button.innerHTML =
+                `<i class="fa-solid fa-location-crosshairs"></i>
+                 Use Current Location`;
+
+
+            if(
+                error.code ===
+                error.PERMISSION_DENIED
+            ){
+
+                alert(
+                    "Please allow location permission."
+                );
+
+            }
+            else{
+
+                alert(
+                    "Unable to detect your location."
+                );
+
+            }
+
+        },
+
+        {
+            enableHighAccuracy:true,
+            timeout:15000,
+            maximumAge:0
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   SAVE PROFILE
+===================================================== */
+async function saveProfile(){
+
+    try{
+
+        const formData = new FormData();
+
+        formData.append(
+            "customerId",
+            customerId
+        );
+
+        formData.append(
+            "name",
+            document.getElementById("name").value.trim()
+        );
+
+        formData.append(
+            "email",
+            document.getElementById("email").value.trim()
+        );
+
+        formData.append(
+            "house",
+            document.getElementById("house").value.trim()
+        );
+
+        formData.append(
+            "street",
+            document.getElementById("street").value.trim()
+        );
+
+        formData.append(
+            "area",
+            document.getElementById("area").value.trim()
+        );
+
+        formData.append(
+            "city",
+            document.getElementById("city").value.trim()
+        );
+
+        formData.append(
+            "state",
+            document.getElementById("state").value.trim()
+        );
+
+        formData.append(
+            "pincode",
+            document.getElementById("pincode").value.trim()
+        );
+
+
+        /* ================================
+           PROFILE IMAGE
+        ================================ */
+
+        const imageFile =
+            document.getElementById(
+                "profileImage"
+            ).files[0];
+
+
+        if(imageFile){
+
+            /*
+             * IMPORTANT:
+             * Backend expects "profileImage"
+             */
+            formData.append(
+                "profileImage",
+                imageFile
+            );
+
+        }
+
+
+        console.log(
+            "Saving profile..."
+        );
+
+
+        const response =
+            await fetch(
+                `${API}/customer/update-profile`,
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "UPDATE PROFILE RESPONSE:",
+            result
+        );
+
+
+        if(
+            !response.ok ||
+            !result.success
+        ){
+
+            throw new Error(
+                result.message ||
+                "Unable to update profile"
+            );
+
+        }
+
+
+        alert(
+            "✅ Profile updated successfully!"
+        );
+
+
+        window.location.href =
+            "profile.html";
+
+
+    }
+    catch(error){
+
+        console.error(
+            "SAVE PROFILE ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to save profile"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadProfile();
+
+</script>
+</body>
+</html>

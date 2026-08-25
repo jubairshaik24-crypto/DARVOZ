@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Partner Menu</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+
+background:#f5f6fa;
+
+}
+
+.header{
+
+background:linear-gradient(135deg,#ff5a00,#ff7a00);
+padding:22px;
+color:#fff;
+border-radius:0 0 30px 30px;
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+}
+
+.header h2{
+
+font-size:28px;
+font-weight:700;
+
+}
+
+.header p{
+
+margin-top:6px;
+opacity:.9;
+font-size:14px;
+
+}
+
+.search{
+
+padding:18px;
+
+}
+
+.search input{
+
+width:100%;
+padding:14px 18px;
+border-radius:14px;
+border:1px solid #ddd;
+font-size:15px;
+outline:none;
+background:#fff;
+
+}
+
+#categoryList{
+
+padding:0 18px 90px;
+
+}
+
+.categoryCard{
+
+background:#fff;
+border-radius:20px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.categoryTop{
+
+display:flex;
+align-items:center;
+gap:16px;
+
+}
+
+.categoryIcon{
+
+width:70px;
+height:70px;
+border-radius:18px;
+background:#fff4eb;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:36px;
+
+}
+
+.categoryInfo{
+
+flex:1;
+
+}
+
+.categoryInfo h3{
+
+font-size:22px;
+color:#222;
+
+}
+
+.categoryInfo p{
+
+font-size:14px;
+margin-top:5px;
+color:#777;
+
+}
+
+.categoryStats{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px;
+
+}
+
+.stat{
+
+background:#fafafa;
+border-radius:14px;
+padding:14px;
+text-align:center;
+
+}
+
+.stat strong{
+
+display:block;
+font-size:24px;
+color:#ff5a00;
+
+}
+
+.stat span{
+
+font-size:13px;
+color:#777;
+
+}
+
+.categoryButtons{
+
+display:flex;
+gap:12px;
+margin-top:22px;
+
+}
+
+.categoryButtons button{
+
+flex:1;
+border:none;
+padding:14px;
+border-radius:14px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+
+}
+
+.viewBtn{
+
+background:#fff;
+border:2px solid #ff5a00 !important;
+color:#ff5a00;
+
+}
+
+.importBtn{
+
+background:#ff5a00;
+color:#fff;
+
+}
+
+.bottom{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#fff;
+padding:14px;
+box-shadow:0 -4px 12px rgba(0,0,0,.08);
+
+}
+
+.dashboardBtn{
+
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+background:#ff5a00;
+color:#fff;
+font-size:17px;
+font-weight:600;
+cursor:pointer;
+
+}
+
+@media(max-width:768px){
+
+.header{
+
+padding:18px;
+
+}
+
+.categoryIcon{
+
+width:60px;
+height:60px;
+font-size:30px;
+
+}
+
+.categoryInfo h3{
+
+font-size:20px;
+
+}
+
+.categoryButtons{
+
+flex-direction:column;
+
+}
+
+} 
+
+
+.modal{
+
+display:none;
+
+position:fixed;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.55);
+
+justify-content:center;
+
+align-items:center;
+
+z-index:999;
+
+}
+
+.modalBox{
+
+width:400px;
+
+max-width:95%;
+
+background:white;
+
+border-radius:20px;
+
+padding:25px;
+
+text-align:center;
+
+animation:popup .25s;
+
+}
+
+@keyframes popup{
+
+from{
+
+transform:scale(.85);
+
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.modalButtons{
+
+display:flex;
+
+gap:12px;
+
+margin-top:25px;
+
+}
+
+.closeBtn{
+
+width:100%;
+
+margin-top:15px;
+
+padding:13px;
+
+border:none;
+
+border-radius:12px;
+
+background:#eee;
+
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>🍽 Partner Menu</h2>
+
+<p id="businessCount">
+
+Loading Business Categories...
+
+</p>
+
+</div>
+
+<div class="search">
+
+<input
+type="text"
+id="searchCategory"
+placeholder="Search Business Category">
+
+</div>
+
+<div id="categoryList">
+
+
+
+</div>
+
+<div class="bottom">
+
+<button
+class="dashboardBtn"
+onclick="goDashboard()">
+
+🏠 Go To Dashboard
+
+</button>
+
+</div>
+
+<!-- ===========================
+MENU OPTIONS MODAL
+=========================== -->
+
+<div id="menuModal" class="modal">
+
+<div class="modalBox">
+
+<h2 id="modalBusiness">
+
+Restaurant Menu
+
+</h2>
+
+<p id="modalMessage">
+
+Loading...
+
+</p>
+
+<div class="modalButtons">
+
+<button
+class="importBtn"
+onclick="continueImport()">
+
+📥 Import More
+
+</button>
+
+<button
+class="viewBtn"
+onclick="openMenu()">
+
+👁 View Menu
+
+</button>
+
+</div>
+
+<button
+
+class="closeBtn"
+
+onclick="closeModal()">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+<script>
+
+    const partner =
+    JSON.parse(
+        localStorage.getItem("partner")
+    );
+
+if(!partner || !partner.id){
+
+    alert("Partner login session not found.");
+
+    window.location.href =
+        "partner-login.html";
+}
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const businessType =
+    params.get("business");
+
+console.log("PARTNER:", partner);
+console.log("BUSINESS:", businessType);
+
+
+
+let businessTypes=[];
+
+loadCategories();
+
+async function loadCategories(){
+
+    try{
+
+        const res=await fetch(
+
+            `/partner/business-types/${partner.id}`
+
+        );
+
+        const data=await res.json();
+
+        if(data.success){
+
+            businessTypes=data.businessTypes;
+
+            renderCategories();
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+function getIcon(type){
+
+    switch(type){
+
+        case "Restaurant":
+            return "🍽";
+
+        case "Ice Cream":
+            return "🍦";
+
+        case "Meat":
+            return "🥩";
+
+        case "Bakery":
+            return "🥐";
+
+        case "Cafe":
+            return "☕";
+
+        case "Juices":
+            return "🥤";
+
+        case "Grocery":
+            return "🛒";
+
+        default:
+            return "📦";
+
+    }
+
+}
+
+function renderCategories(){
+
+    const list=document.getElementById("categoryList");
+
+    list.innerHTML="";
+
+    document.getElementById("businessCount").innerHTML=
+
+    businessTypes.length+" Business Categories";
+
+    businessTypes.forEach(item=>{
+        list.innerHTML+=`
+
+<div class="categoryCard">
+
+<div class="categoryTop">
+
+<div class="categoryIcon">
+
+${getIcon(item.name)}
+
+</div>
+
+<div class="categoryInfo">
+
+<h3>${item.name}</h3>
+
+<p>Manage ${item.name} Menu</p>
+
+</div>
+
+</div>
+<div class="categoryStats">
+
+<div class="stat">
+
+<strong>
+
+${item.total}
+
+</strong>
+
+<span>
+
+Products
+
+</span>
+
+</div>
+
+<div class="stat">
+
+<strong>
+
+${item.available}
+
+</strong>
+
+<span>
+
+Available
+
+</span>
+
+</div>
+
+</div>
+
+<div class="categoryButtons">
+
+<button
+
+class="viewBtn"
+
+onclick="viewMenu('${item.name}')">
+
+👁 View Menu
+
+</button>
+
+<button
+
+class="importBtn"
+
+onclick="importMenu('${item.name}')">
+
+📥 Import JPG
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+    });
+
+}
+
+async function viewMenu(type){
+
+    if(!type){
+
+        alert("Business type not found.");
+
+        return;
+
+    }
+
+    const business =
+        String(type).trim();
+
+    console.log("================================");
+    console.log("VIEW MENU CLICKED");
+    console.log("Business:", business);
+    console.log("Partner ID:", partner.id);
+    console.log("================================");
+
+
+    // =====================================
+    // GROCERY
+    // =====================================
+
+    if(
+        business.toLowerCase() === "grocery" ||
+        business.toLowerCase() === "groceries"
+    ){
+
+        try{
+
+            console.log(
+                "Preparing default Grocery menu..."
+            );
+
+            const response = await fetch(
+                `/partner/prepare-grocery-menu/${partner.id}`,
+                {
+                    method:"POST"
+                }
+            );
+
+            const data =
+                await response.json();
+
+            console.log(
+                "GROCERY PREPARE RESPONSE:",
+                data
+            );
+
+
+            if(!data.success){
+
+                alert(
+                    data.message ||
+                    "Unable to prepare Grocery Menu"
+                );
+
+                return;
+
+            }
+
+        }
+        catch(error){
+
+            console.error(
+                "GROCERY PREPARE ERROR:",
+                error
+            );
+
+            alert(
+                "Unable to prepare Grocery Menu"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    // =====================================
+    // OPEN CATEGORY MENU
+    // =====================================
+
+    const url =
+        "partner-category-menu.html?business=" +
+        encodeURIComponent(business);
+
+    console.log(
+        "REDIRECTING TO:",
+        url
+    );
+
+    window.location.href = url;
+
+}
+async function importMenu(type){
+
+selectedBusiness=type;
+
+const res=await fetch(
+
+`/partner/menu-count/${partner.id}/${encodeURIComponent(type)}`
+
+);
+
+const data=await res.json();
+
+if(!data.success){
+
+return;
+
+}
+
+totalProducts=data.total;
+
+if(totalProducts==0){
+
+window.location=
+
+`importmenu.html?business=${encodeURIComponent(type)}`;
+
+return;
+
+}
+
+document.getElementById("menuModal")
+
+.style.display="flex";
+
+document.getElementById("modalBusiness")
+
+.innerHTML=type;
+
+document.getElementById("modalMessage")
+
+.innerHTML=
+
+`✅ ${totalProducts} products already exist.<br><br>Would you like to import more menu or edit existing menu?`;
+
+}
+
+function continueImport(){
+
+window.location=
+
+`importmenu.html?business=${encodeURIComponent(selectedBusiness)}`;
+
+}
+
+function openMenu(){
+
+window.location=
+
+`partner-category-menu.html?business=${encodeURIComponent(selectedBusiness)}`;
+
+}
+
+function closeModal(){
+
+document.getElementById("menuModal")
+
+.style.display="none";
+
+}
+function goDashboard(){
+
+window.location="partner-dashboard.html";
+
+}
+
+document
+
+.getElementById("searchCategory")
+
+.addEventListener("input",function(){
+
+const keyword=this.value.toLowerCase();
+
+const cards=document.querySelectorAll(".categoryCard");
+
+cards.forEach(card=>{
+
+const text=card.innerText.toLowerCase();
+
+card.style.display=
+
+text.includes(keyword)
+
+?
+
+"block"
+
+:
+
+"none";
+
+});
+
+});
+let selectedBusiness="";
+
+let totalProducts=0;
+
+</script>
+</body>
+</html>

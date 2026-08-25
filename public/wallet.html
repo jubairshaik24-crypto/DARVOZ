@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Wallet</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f6f8;
+    color:#111827;
+}
+
+.header{
+    background:#ff7a00;
+    color:white;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.back{
+    font-size:25px;
+    cursor:pointer;
+}
+
+.header h2{
+    font-size:21px;
+}
+
+.wallet-user{
+    margin-top:3px;
+    font-size:11px;
+    opacity:.85;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:18px;
+}
+
+/* =========================
+BALANCE
+========================= */
+
+.balance-card{
+    background:linear-gradient(135deg,#ff7a00,#ff9500);
+    color:white;
+    padding:28px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 8px 25px rgba(255,122,0,.25);
+}
+
+.balance-card p{
+    opacity:.9;
+    font-size:14px;
+}
+
+.balance{
+    font-size:38px;
+    font-weight:bold;
+    margin:8px 0 20px;
+}
+
+.withdraw-btn{
+    width:100%;
+    background:white;
+    color:#ff7a00;
+    border:none;
+    padding:13px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* =========================
+EARNINGS
+========================= */
+
+.earnings{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-bottom:22px;
+}
+
+.earning-card{
+    background:white;
+    padding:18px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.earning-card p{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.earning-card h3{
+    margin-top:7px;
+    font-size:21px;
+}
+
+/* =========================
+SECTION
+========================= */
+
+.section{
+    background:white;
+    padding:18px;
+    border-radius:16px;
+    margin-bottom:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.section-title h3{
+    font-size:17px;
+}
+
+/* =========================
+WITHDRAWALS
+========================= */
+
+.withdrawal{
+    border-bottom:1px solid #eee;
+    padding:13px 0;
+}
+
+.withdrawal:last-child{
+    border-bottom:none;
+}
+
+.withdrawal-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+.amount{
+    font-weight:bold;
+}
+
+.pending{
+    color:#d97706;
+}
+
+.approved{
+    color:#16a34a;
+}
+
+.rejected{
+    color:#dc2626;
+}
+
+.date{
+    color:#6b7280;
+    font-size:12px;
+    margin-top:5px;
+}
+
+/* =========================
+TRANSACTIONS
+========================= */
+
+.transaction{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 0;
+    border-bottom:1px solid #eee;
+}
+
+.transaction:last-child{
+    border-bottom:none;
+}
+
+.transaction-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.transaction-info small{
+    color:#6b7280;
+}
+
+.credit{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.debit{
+    color:#dc2626;
+    font-weight:bold;
+}
+
+/* =========================
+MODAL
+========================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:700px;
+    border-radius:22px 22px 0 0;
+    padding:22px;
+}
+
+.modal-box h2{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:7px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    margin-bottom:15px;
+}
+
+.submit{
+    width:100%;
+    background:#ff7a00;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cancel{
+    width:100%;
+    margin-top:10px;
+    background:#eee;
+    color:#333;
+    border:none;
+    padding:13px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+/* =========================
+EMPTY
+========================= */
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#888;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:480px){
+
+    .container{
+        padding:12px;
+    }
+
+    .balance{
+        font-size:32px;
+    }
+
+    .earning-card h3{
+        font-size:18px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =========================
+HEADER
+========================= -->
+
+<div class="header">
+
+    <div
+        class="back"
+        onclick="history.back()">
+
+        ←
+
+    </div>
+
+
+    <div>
+
+        <h2>DARVOZ Wallet</h2>
+
+        <div
+            class="wallet-user"
+            id="walletUser">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =========================
+BALANCE
+========================= -->
+
+<div class="balance-card">
+
+    <p>Available Balance</p>
+
+    <div
+        class="balance"
+        id="balance">
+
+        ₹0.00
+
+    </div>
+
+
+    <button
+        class="withdraw-btn"
+        onclick="openWithdraw()">
+
+        Withdraw Money
+
+    </button>
+
+</div>
+
+
+<!-- =========================
+EARNINGS
+========================= -->
+
+<div class="earnings">
+
+
+    <div class="earning-card">
+
+        <p>Today's Earnings</p>
+
+        <h3 id="today">
+
+            ₹0.00
+
+        </h3>
+
+    </div>
+
+
+    <div class="earning-card">
+
+        <p>This Week</p>
+
+        <h3 id="week">
+
+            ₹0.00
+
+        </h3>
+
+    </div>
+
+
+    <div class="earning-card">
+
+        <p>This Month</p>
+
+        <h3 id="month">
+
+            ₹0.00
+
+        </h3>
+
+    </div>
+
+
+    <div class="earning-card">
+
+        <p>Total Earnings</p>
+
+        <h3 id="total">
+
+            ₹0.00
+
+        </h3>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+WITHDRAWAL HISTORY
+========================= -->
+
+<div class="section">
+
+    <div class="section-title">
+
+        <h3>
+            Withdrawal History
+        </h3>
+
+    </div>
+
+
+    <div id="withdrawals">
+
+        <div class="empty">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+TRANSACTIONS
+========================= -->
+
+<div class="section">
+
+    <div class="section-title">
+
+        <h3>
+            Recent Transactions
+        </h3>
+
+    </div>
+
+
+    <div id="transactions">
+
+        <div class="empty">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- =========================
+WITHDRAW MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="withdrawModal">
+
+
+    <div class="modal-box">
+
+
+        <h2>
+            Withdraw Money
+        </h2>
+
+
+        <label>
+            Amount
+        </label>
+
+
+        <input
+            type="number"
+            id="withdrawAmount"
+            placeholder="Enter amount"
+            min="1">
+
+
+        <button
+            class="submit"
+            onclick="submitWithdrawal()">
+
+            Submit Withdrawal
+
+        </button>
+
+
+        <button
+            class="cancel"
+            onclick="closeWithdraw()">
+
+            Cancel
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =====================================
+DARVOZ WALLET
+
+Supports:
+- PARTNER
+- DELIVERY PARTNER
+
+URL EXAMPLES:
+
+wallet.html?userType=partner&userId=2
+
+wallet.html?userType=delivery&userId=2
+===================================== */
+
+
+/* =====================================
+GET URL PARAMETERS
+===================================== */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const urlUserType =
+    params.get("userType");
+
+
+const urlUserId =
+    params.get("userId");
+
+
+/* =====================================
+WALLET USER VARIABLES
+===================================== */
+
+let walletUser =
+    null;
+
+
+let userType =
+    null;
+
+
+let userId =
+    null;
+
+
+/* =====================================
+GET USERS FROM LOCAL STORAGE
+===================================== */
+
+let partner =
+    null;
+
+
+let delivery =
+    null;
+
+
+try{
+
+    partner =
+        JSON.parse(
+            localStorage.getItem(
+                "partner"
+            )
+        );
+
+}
+catch(err){
+
+    console.error(
+        "Partner localStorage error:",
+        err
+    );
+
+}
+
+
+try{
+
+    delivery =
+        JSON.parse(
+            localStorage.getItem(
+                "deliveryPartner"
+            )
+        );
+
+}
+catch(err){
+
+    console.error(
+        "Delivery localStorage error:",
+        err
+    );
+
+}
+
+
+/* =====================================
+IMPORTANT:
+URL HAS HIGHEST PRIORITY
+
+This fixes:
+
+wallet.html?userType=delivery&userId=2
+
+incorrectly loading partner wallet.
+===================================== */
+
+if(
+    urlUserType === "delivery" &&
+    urlUserId
+){
+
+    userType =
+        "delivery";
+
+
+    userId =
+        Number(
+            urlUserId
+        );
+
+
+    /*
+    Use delivery object only for
+    displaying user information.
+    */
+
+    walletUser =
+        delivery;
+
+
+}
+
+
+else if(
+    urlUserType === "partner" &&
+    urlUserId
+){
+
+    userType =
+        "partner";
+
+
+    userId =
+        Number(
+            urlUserId
+        );
+
+
+    /*
+    Use partner object only for
+    displaying user information.
+    */
+
+    walletUser =
+        partner;
+
+}
+
+
+/* =====================================
+FALLBACK
+
+If URL parameters don't exist,
+detect currently logged-in user.
+===================================== */
+
+else{
+
+
+    /*
+    Prefer delivery if only delivery
+    wallet page is being opened.
+    */
+
+    if(
+        delivery &&
+        delivery.id &&
+        !partner
+    ){
+
+        walletUser =
+            delivery;
+
+
+        userType =
+            "delivery";
+
+
+        userId =
+            Number(
+                delivery.id
+            );
+
+    }
+
+
+    else if(
+        partner &&
+        partner.id
+    ){
+
+        walletUser =
+            partner;
+
+
+        userType =
+            "partner";
+
+
+        userId =
+            Number(
+                partner.id
+            );
+
+    }
+
+
+    else if(
+        delivery &&
+        delivery.id
+    ){
+
+        walletUser =
+            delivery;
+
+
+        userType =
+            "delivery";
+
+
+        userId =
+            Number(
+                delivery.id
+            );
+
+    }
+
+
+    else{
+
+
+        alert(
+            "Wallet login not found."
+        );
+
+
+        window.location.href =
+            "partner-login.html";
+
+
+        throw new Error(
+            "No wallet user logged in"
+        );
+
+    }
+
+}
+
+
+/* =====================================
+VALIDATE USER TYPE
+===================================== */
+
+if(
+    userType !== "partner" &&
+    userType !== "delivery"
+){
+
+    console.error(
+        "❌ Invalid wallet user type:",
+        userType
+    );
+
+
+    alert(
+        "Invalid wallet user."
+    );
+
+
+    throw new Error(
+        "Invalid wallet user type"
+    );
+
+}
+
+
+/* =====================================
+VALIDATE USER ID
+===================================== */
+
+if(
+    !userId ||
+    userId <= 0
+){
+
+    console.error(
+        "❌ Invalid wallet user ID:",
+        userId
+    );
+
+
+    alert(
+        "Invalid wallet user ID."
+    );
+
+
+    throw new Error(
+        "Invalid wallet user ID"
+    );
+
+}
+
+
+/* =====================================
+DEBUG
+===================================== */
+
+console.log(
+    "================================="
+);
+
+
+console.log(
+    "💰 DARVOZ WALLET"
+);
+
+
+console.log(
+    "URL User Type:",
+    urlUserType
+);
+
+
+console.log(
+    "URL User ID:",
+    urlUserId
+);
+
+
+console.log(
+    "Final User Type:",
+    userType
+);
+
+
+console.log(
+    "Final User ID:",
+    userId
+);
+
+
+console.log(
+    "User:",
+    walletUser
+);
+
+
+console.log(
+    "================================="
+);
+
+
+/* =====================================
+UPDATE HEADER
+===================================== */
+
+const walletUserElement =
+    document.getElementById(
+        "walletUser"
+    );
+
+
+if(walletUserElement){
+
+
+    if(
+        userType === "partner"
+    ){
+
+        walletUserElement.textContent =
+            "DARVOZ Partner";
+
+    }
+
+
+    else if(
+        userType === "delivery"
+    ){
+
+        walletUserElement.textContent =
+            "Delivery Partner";
+
+    }
+
+
+}
+
+
+/* =====================================
+FORMAT MONEY
+===================================== */
+
+function money(value){
+
+
+    return "₹" +
+        Number(
+            value || 0
+        )
+        .toLocaleString(
+            "en-IN",
+            {
+
+                minimumFractionDigits:2,
+
+                maximumFractionDigits:2
+
+            }
+        );
+
+}
+
+
+/* =====================================
+LOAD WALLET
+===================================== */
+
+async function loadWallet(){
+
+
+    try{
+
+
+        if(
+            !userType ||
+            !userId
+        ){
+
+            console.error(
+                "❌ Wallet user information missing"
+            );
+
+            return;
+
+        }
+
+
+        /*
+        CORRECT URL:
+
+        Partner:
+        /wallet/partner/2
+
+        Delivery:
+        /wallet/delivery/2
+        */
+
+        const walletUrl =
+            `/wallet/${userType}/${userId}`;
+
+
+        console.log(
+            "💰 Wallet URL:",
+            walletUrl
+        );
+
+
+        const res =
+            await fetch(
+                walletUrl
+            );
+
+
+        console.log(
+            "Wallet HTTP Status:",
+            res.status
+        );
+
+
+        if(
+            !res.ok
+        ){
+
+            throw new Error(
+                `Wallet HTTP error: ${res.status}`
+            );
+
+        }
+
+
+        const data =
+            await res.json();
+
+
+        console.log(
+            "💰 Wallet API Response:",
+            data
+        );
+
+
+        if(
+            !data.success
+        ){
+
+            console.error(
+                "❌ Wallet API Error:",
+                data.message
+            );
+
+
+            alert(
+                data.message ||
+                "Unable to load wallet."
+            );
+
+
+            return;
+
+        }
+
+
+        /* =============================
+        BALANCE
+        ============================= */
+
+        const balance =
+            Number(
+                data.balance || 0
+            );
+
+
+        const balanceElement =
+            document.getElementById(
+                "balance"
+            );
+
+
+        if(
+            balanceElement
+        ){
+
+            balanceElement.innerText =
+                money(
+                    balance
+                );
+
+        }
+
+
+        /* =============================
+        EARNINGS
+        ============================= */
+
+        document
+            .getElementById(
+                "today"
+            )
+            .innerText =
+            money(
+                data.today
+            );
+
+
+        document
+            .getElementById(
+                "week"
+            )
+            .innerText =
+            money(
+                data.week
+            );
+
+
+        document
+            .getElementById(
+                "month"
+            )
+            .innerText =
+            money(
+                data.month
+            );
+
+
+        document
+            .getElementById(
+                "total"
+            )
+            .innerText =
+            money(
+                data.total
+            );
+
+
+        /* =============================
+        TRANSACTIONS
+        ============================= */
+
+        renderTransactions(
+            data.transactions || []
+        );
+
+
+        /* =============================
+        WITHDRAWALS
+        ============================= */
+
+        loadWithdrawals();
+
+
+        console.log(
+            "✅ WALLET DISPLAYED:",
+            money(
+                balance
+            )
+        );
+
+
+    }
+    catch(err){
+
+
+        console.error(
+            "❌ WALLET LOAD ERROR:",
+            err
+        );
+
+
+        const transactionBox =
+            document.getElementById(
+                "transactions"
+            );
+
+
+        if(transactionBox){
+
+            transactionBox.innerHTML = `
+
+                <div class="empty">
+
+                    Unable to load wallet.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================
+RENDER TRANSACTIONS
+===================================== */
+
+function renderTransactions(data){
+
+
+    const box =
+        document.getElementById(
+            "transactions"
+        );
+
+
+    if(!box){
+
+        return;
+
+    }
+
+
+    if(
+        !Array.isArray(data) ||
+        data.length === 0
+    ){
+
+
+        box.innerHTML = `
+
+            <div class="empty">
+
+                No transactions yet.
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    data.forEach(
+        t => {
+
+
+            const type =
+                String(
+                    t.type || ""
+                )
+                .toLowerCase();
+
+
+            const isCredit =
+                type === "credit";
+
+
+            const cls =
+                isCredit
+                    ? "credit"
+                    : "debit";
+
+
+            const sign =
+                isCredit
+                    ? "+"
+                    : "-";
+
+
+            html += `
+
+                <div class="transaction">
+
+
+                    <div class="transaction-info">
+
+
+                        <strong>
+
+                            ${t.type || "Transaction"}
+
+                        </strong>
+
+
+                        <small>
+
+                            ${
+                                t.order_id
+                                    ? "Order #" +
+                                      t.order_id
+                                    : "Wallet Transaction"
+                            }
+
+                        </small>
+
+
+                        <small>
+
+                            ${formatDate(
+                                t.created_at
+                            )}
+
+                        </small>
+
+
+                    </div>
+
+
+                    <div class="${cls}">
+
+                        ${sign}${money(
+                            t.amount
+                        )}
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    box.innerHTML =
+        html;
+
+}
+
+
+/* =====================================
+LOAD WITHDRAWALS
+===================================== */
+
+async function loadWithdrawals(){
+
+
+    try{
+
+
+        const withdrawalUrl =
+            `/wallet/withdrawals/${userType}/${userId}`;
+
+
+        console.log(
+            "💸 Withdrawal URL:",
+            withdrawalUrl
+        );
+
+
+        const res =
+            await fetch(
+                withdrawalUrl
+            );
+
+
+        if(
+            !res.ok
+        ){
+
+            throw new Error(
+                `Withdrawal HTTP error: ${res.status}`
+            );
+
+        }
+
+
+        const data =
+            await res.json();
+
+
+        console.log(
+            "💸 Withdrawal API Response:",
+            data
+        );
+
+
+        const box =
+            document.getElementById(
+                "withdrawals"
+            );
+
+
+        if(!box){
+
+            return;
+
+        }
+
+
+        if(
+            !data.success ||
+            !Array.isArray(
+                data.withdrawals
+            ) ||
+            data.withdrawals.length === 0
+        ){
+
+
+            box.innerHTML = `
+
+                <div class="empty">
+
+                    No withdrawal requests yet.
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        let html = "";
+
+
+        data.withdrawals.forEach(
+            w => {
+
+
+                const status =
+                    String(
+                        w.status || ""
+                    )
+                    .toLowerCase();
+
+
+                html += `
+
+                    <div class="withdrawal">
+
+
+                        <div class="withdrawal-top">
+
+
+                            <strong>
+
+                                Withdrawal #${w.id}
+
+                            </strong>
+
+
+                            <span class="amount">
+
+                                ${money(
+                                    w.amount
+                                )}
+
+                            </span>
+
+
+                        </div>
+
+
+                        <div class="${status}">
+
+                            ${w.status || "Pending"}
+
+                        </div>
+
+
+                        <div class="date">
+
+                            Requested:
+                            ${formatDate(
+                                w.requested_at
+                            )}
+
+                        </div>
+
+
+                        ${
+                            w.processed_at
+                                ? `
+
+                                    <div class="date">
+
+                                        Processed:
+                                        ${formatDate(
+                                            w.processed_at
+                                        )}
+
+                                    </div>
+
+                                `
+                                : ""
+                        }
+
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        box.innerHTML =
+            html;
+
+
+    }
+    catch(err){
+
+
+        console.error(
+            "❌ WITHDRAWAL ERROR:",
+            err
+        );
+
+
+        const box =
+            document.getElementById(
+                "withdrawals"
+            );
+
+
+        if(box){
+
+            box.innerHTML = `
+
+                <div class="empty">
+
+                    Unable to load withdrawals.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================
+OPEN WITHDRAW
+===================================== */
+
+function openWithdraw(){
+
+
+    document
+        .getElementById(
+            "withdrawModal"
+        )
+        .style.display =
+        "flex";
+
+}
+
+
+/* =====================================
+CLOSE WITHDRAW
+===================================== */
+
+function closeWithdraw(){
+
+
+    document
+        .getElementById(
+            "withdrawModal"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+/* =====================================
+SUBMIT WITHDRAWAL
+===================================== */
+
+async function submitWithdrawal(){
+
+
+    const input =
+        document.getElementById(
+            "withdrawAmount"
+        );
+
+
+    const amount =
+        Number(
+            input.value
+        );
+
+
+    if(
+        !amount ||
+        amount <= 0
+    ){
+
+
+        alert(
+            "Enter a valid amount."
+        );
+
+
+        return;
+
+    }
+
+
+    try{
+
+
+        const res =
+            await fetch(
+                "/wallet/withdraw",
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            {
+
+                                userType:
+                                    userType,
+
+                                userId:
+                                    userId,
+
+                                amount:
+                                    amount
+
+                            }
+                        )
+
+                }
+            );
+
+
+        const data =
+            await res.json();
+
+
+        console.log(
+            "💸 Withdrawal Submit Response:",
+            data
+        );
+
+
+        if(
+            !data.success
+        ){
+
+
+            alert(
+                data.message ||
+                "Withdrawal failed."
+            );
+
+
+            return;
+
+        }
+
+
+        alert(
+            "Withdrawal request submitted successfully."
+        );
+
+
+        input.value =
+            "";
+
+
+        closeWithdraw();
+
+
+        await loadWallet();
+
+
+    }
+    catch(err){
+
+
+        console.error(
+            "❌ WITHDRAW ERROR:",
+            err
+        );
+
+
+        alert(
+            "Server error."
+        );
+
+    }
+
+}
+
+
+/* =====================================
+FORMAT DATE
+===================================== */
+
+function formatDate(date){
+
+
+    if(!date){
+
+        return "-";
+
+    }
+
+
+    const d =
+        new Date(date);
+
+
+    if(
+        isNaN(
+            d.getTime()
+        )
+    ){
+
+        return "-";
+
+    }
+
+
+    return d.toLocaleString(
+        "en-IN",
+        {
+
+            day:"2-digit",
+
+            month:"short",
+
+            year:"numeric",
+
+            hour:"2-digit",
+
+            minute:"2-digit"
+
+        }
+    );
+
+}
+
+
+/* =====================================
+INITIAL LOAD
+===================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+
+        console.log(
+            "🚀 Loading wallet..."
+        );
+
+
+        console.log(
+            "Current URL:",
+            window.location.href
+        );
+
+
+        loadWallet();
+
+
+    }
+);
+
+
+/* =====================================
+AUTO REFRESH
+
+Refresh every 10 seconds.
+===================================== */
+
+setInterval(
+    () => {
+
+
+        loadWallet();
+
+
+    },
+    10000
+);
+
+
+</script>
+
+</body>
+
+</html>

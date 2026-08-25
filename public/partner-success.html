@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Registration Successful</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f7fb;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card{
+    width:420px;
+    background:#fff;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+.tick{
+    font-size:70px;
+    color:#28a745;
+}
+
+h1{
+    color:#28a745;
+    margin:15px 0;
+}
+
+.partner{
+    background:#f3f3f3;
+    padding:15px;
+    border-radius:10px;
+    font-size:24px;
+    font-weight:bold;
+    margin:20px 0;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    background:#ff6b00;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+<div class="tick">✅</div>
+
+<h1>Congratulations!</h1>
+
+<p>Your DARVOZ Partner account has been created successfully.</p>
+
+<div class="partner">
+Partner ID<br>
+<span id="partnerId"></span>
+</div>
+
+<p>
+Please take a screenshot of this page.<br>
+Your Partner ID is required to login after Admin Approval.
+</p>
+
+<button onclick="location.href='partner-login.html'">
+Go to Login
+</button>
+
+</div>
+
+<script>
+document.getElementById("partnerId").innerHTML=
+localStorage.getItem("partnerId");
+</script>
+
+</body>
+</html>

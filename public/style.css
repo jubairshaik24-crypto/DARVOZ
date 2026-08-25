@@ -1,0 +1,2411 @@
+/* ==========================================
+   DARVOZ UI
+   Part 3A-1
+   Global + Navbar
+========================================== */
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Reset */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f8f9fc;
+    color:#222;
+    overflow-x:hidden;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+img{
+    width:100%;
+    display:block;
+}
+
+button{
+    border:none;
+    outline:none;
+    cursor:pointer;
+}
+
+input{
+    outline:none;
+    border:none;
+}
+
+/* Variables */
+
+:root{
+
+    --primary:#6C3BFF;
+    --primary2:#8B5CF6;
+    --secondary:#FF4D6D;
+
+    --dark:#1f2937;
+
+    --gray:#666;
+
+    --light:#ffffff;
+
+    --bg:#f8f9fc;
+
+    --shadow:0 8px 30px rgba(0,0,0,.08);
+
+    --radius:18px;
+
+}
+
+/* Container */
+
+.container{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:auto;
+
+}
+
+/* ===========================
+HEADER
+=========================== */
+
+header{
+
+    position:sticky;
+
+    top:0;
+
+    width:100%;
+
+    z-index:999;
+
+    background:#fff;
+
+    box-shadow:0 2px 20px rgba(0,0,0,.05);
+
+}
+
+/* Navbar */
+
+.navbar{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:auto;
+
+    height:76px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+}
+
+/* Logo */
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.logo img{
+
+    width:52px;
+
+    height:52px;
+
+    object-fit:contain;
+
+}
+
+.logo h2{
+
+    font-size:28px;
+
+    color:var(--primary);
+
+    font-weight:800;
+
+}
+
+.logo p{
+
+    font-size:12px;
+
+    color:#888;
+
+}
+
+/* Location */
+
+.location{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:#fafafa;
+
+    padding:10px 18px;
+
+    border-radius:40px;
+
+    transition:.3s;
+
+}
+
+.location:hover{
+
+    background:#f1edff;
+
+}
+
+.location i{
+
+    color:var(--secondary);
+
+    font-size:20px;
+
+}
+
+.location h4{
+
+    font-size:14px;
+
+}
+
+.location p{
+
+    font-size:12px;
+
+    color:#777;
+
+}
+
+/* ==========================================
+   PART 3A-2
+   Search + Navigation + Icons
+========================================== */
+
+/* Search Box */
+
+.search-box{
+    flex:1;
+    max-width:620px;
+    height:50px;
+    background:#f4f6fb;
+    border:2px solid transparent;
+    border-radius:50px;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    transition:.3s ease;
+}
+
+.search-box:hover,
+.search-box:focus-within{
+    background:#fff;
+    border-color:var(--primary);
+    box-shadow:0 8px 25px rgba(108,59,255,.15);
+}
+
+.search-box input{
+    flex:1;
+    height:100%;
+    background:transparent;
+    padding:0 20px;
+    font-size:15px;
+    color:#333;
+}
+
+.search-box input::placeholder{
+    color:#9aa0a6;
+}
+
+.search-box button{
+    width:56px;
+    height:100%;
+    background:var(--primary);
+    color:#fff;
+    font-size:18px;
+    transition:.3s;
+}
+
+.search-box button:hover{
+    background:#5a2ee8;
+}
+
+/* Navigation */
+
+.nav-menu{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.nav-menu a{
+    color:#333;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+    position:relative;
+}
+
+.nav-menu a:hover{
+    color:var(--primary);
+}
+
+.nav-menu a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0;
+    height:2px;
+    background:var(--primary);
+    transition:.3s;
+}
+
+.nav-menu a:hover::after{
+    width:100%;
+}
+
+/* Right Icons */
+
+.nav-icons{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.icon-btn{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:#f4f6fb;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:.3s;
+    position:relative;
+}
+
+.icon-btn i{
+    font-size:18px;
+    color:#333;
+    transition:.3s;
+}
+
+.icon-btn:hover{
+    background:var(--primary);
+    transform:translateY(-2px);
+}
+
+.icon-btn:hover i{
+    color:#fff;
+}
+
+.badge{
+    position:absolute;
+    top:-2px;
+    right:-2px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#ff3b30;
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* Login Button */
+
+.login-btn{
+    padding:11px 24px;
+    border-radius:50px;
+    background:var(--primary);
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.login-btn:hover{
+    background:#5a2ee8;
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(108,59,255,.25);
+}
+
+/* Mobile Menu */
+
+.menu-toggle{
+    display:none;
+    width:46px;
+    height:46px;
+    border-radius:12px;
+    background:#f4f6fb;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.menu-toggle i{
+    font-size:20px;
+    color:#333;
+}
+/* ==========================================
+   PART 3A-3
+   HERO SECTION
+========================================== */
+
+.hero{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:30px auto;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    align-items:center;
+
+    gap:40px;
+
+    min-height:320px;
+
+    padding:45px 55px;
+
+    border-radius:28px;
+
+    background:linear-gradient(135deg,#6C3BFF,#8B5CF6,#A855F7);
+
+    overflow:hidden;
+
+    position:relative;
+
+    box-shadow:0 20px 45px rgba(108,59,255,.18);
+
+}
+
+/* Decorative Circles */
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:320px;
+
+    height:320px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:50%;
+
+    right:-100px;
+
+    top:-80px;
+
+}
+
+.hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    background:rgba(255,255,255,.06);
+
+    border-radius:50%;
+
+    left:-70px;
+
+    bottom:-70px;
+
+}
+
+/* Left Content */
+
+.hero-left{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.hero-left h1{
+
+    color:#fff;
+
+    font-size:58px;
+
+    font-weight:800;
+
+    line-height:1.1;
+
+}
+
+.hero-left h1 span{
+
+    color:#FFE66D;
+
+}
+
+.hero-left p{
+
+    margin:18px 0 30px;
+
+    color:#f2f2f2;
+
+    font-size:18px;
+
+    max-width:520px;
+
+    line-height:1.7;
+
+}
+
+/* Buttons */
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:16px;
+
+    margin-top:15px;
+
+}
+
+.hero-btn{
+
+    padding:15px 32px;
+
+    border-radius:50px;
+
+    background:#fff;
+
+    color:#6C3BFF;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.hero-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+
+}
+
+.hero-btn-outline{
+
+    padding:15px 32px;
+
+    border-radius:50px;
+
+    border:2px solid rgba(255,255,255,.4);
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.hero-btn-outline:hover{
+
+    background:#fff;
+
+    color:#6C3BFF;
+
+}
+
+/* Feature Boxes */
+
+.hero-features{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:35px;
+
+    flex-wrap:wrap;
+
+}
+
+.hero-feature{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:rgba(255,255,255,.14);
+
+    padding:12px 18px;
+
+    border-radius:16px;
+
+    color:#fff;
+
+    backdrop-filter:blur(8px);
+
+}
+
+.hero-feature i{
+
+    font-size:20px;
+
+    color:#FFE66D;
+
+}
+
+/* Right Image */
+
+.hero-right{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.hero-right img{
+
+    width:100%;
+
+    max-width:520px;
+
+    height:280px;
+
+    object-fit:cover;
+
+    border-radius:24px;
+
+    box-shadow:0 18px 35px rgba(0,0,0,.18);
+
+}
+
+/* ==========================================
+   PART 3A-4
+   Hero Animations & Effects
+========================================== */
+
+/* Floating Animation */
+
+@keyframes floatImage{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+.hero-right img{
+
+    animation:floatImage 4s ease-in-out infinite;
+
+}
+
+/* Fade Animation */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.hero-left h1{
+
+    animation:fadeUp .8s ease forwards;
+
+}
+
+.hero-left p{
+
+    animation:fadeUp 1s ease forwards;
+
+}
+
+.hero-buttons{
+
+    animation:fadeUp 1.2s ease forwards;
+
+}
+
+.hero-features{
+
+    animation:fadeUp 1.4s ease forwards;
+
+}
+
+/* Hero Image Hover */
+
+.hero-right{
+
+    transition:.4s;
+
+}
+
+.hero-right:hover{
+
+    transform:scale(1.02);
+
+}
+
+/* Hero Image */
+
+.hero-right img{
+
+    transition:.4s;
+
+}
+
+.hero-right img:hover{
+
+    transform:rotate(-1deg) scale(1.03);
+
+}
+
+/* Buttons Hover */
+
+.hero-btn,
+
+.hero-btn-outline{
+
+    transition:all .35s ease;
+
+}
+
+.hero-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+
+}
+
+.hero-btn-outline:hover{
+
+    transform:translateY(-4px);
+
+}
+
+/* Hero Features */
+
+.hero-feature{
+
+    transition:.35s;
+
+}
+
+.hero-feature:hover{
+
+    transform:translateY(-5px);
+
+    background:rgba(255,255,255,.22);
+
+}
+
+/* Decorative Glow */
+
+.hero::before{
+
+    animation:pulseGlow 7s infinite ease-in-out;
+
+}
+
+.hero::after{
+
+    animation:pulseGlow 7s infinite ease-in-out reverse;
+
+}
+
+@keyframes pulseGlow{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.12);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* Scroll Indicator */
+
+.scroll-indicator{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    color:#fff;
+
+    font-size:24px;
+
+    animation:bounce 1.6s infinite;
+
+}
+
+@keyframes bounce{
+
+    0%,
+    100%{
+
+        transform:translate(-50%,0);
+
+    }
+
+    50%{
+
+        transform:translate(-50%,10px);
+
+    }
+
+}
+
+/* Hero Text Selection */
+
+.hero h1::selection,
+.hero p::selection{
+
+    background:#FFE66D;
+
+    color:#222;
+
+}
+/* ==========================================
+   PART 3B-1
+   Categories Section
+========================================== */
+
+.categories{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:45px auto;
+
+}
+
+/* Section Heading */
+
+.section-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.section-title h2{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+.section-title a{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.section-title a:hover{
+
+    color:#4f2ce0;
+
+}
+
+/* Category Slider */
+
+.category-slider{
+
+    display:flex;
+
+    gap:22px;
+
+    overflow-x:auto;
+
+    scroll-behavior:smooth;
+
+    padding:10px 5px 15px;
+
+}
+
+.category-slider::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+/* Category Card */
+
+.category-card{
+
+    min-width:130px;
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:20px 15px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+    transition:.35s ease;
+
+    cursor:pointer;
+
+    border:1px solid transparent;
+
+    flex-shrink:0;
+
+}
+
+.category-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:var(--primary);
+
+    box-shadow:0 20px 40px rgba(108,59,255,.15);
+
+}
+
+/* Icon */
+
+.category-card img{
+
+    width:68px;
+
+    height:68px;
+
+    margin:auto;
+
+    object-fit:contain;
+
+    transition:.35s;
+
+}
+
+.category-card:hover img{
+
+    transform:scale(1.12);
+
+}
+
+/* Category Name */
+
+.category-card h4{
+
+    margin-top:15px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#333;
+
+}
+
+/* Active Category */
+
+.category-card.active{
+
+    background:linear-gradient(135deg,#6C3BFF,#8B5CF6);
+
+}
+
+.category-card.active h4{
+
+    color:#fff;
+
+}
+
+.category-card.active img{
+
+    filter:brightness(1.1);
+
+}
+/* ==========================================
+   PART 3B-2
+   Restaurant Cards
+========================================== */
+
+.restaurants{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:60px auto;
+
+}
+
+/* Grid */
+
+.restaurant-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:28px;
+
+}
+
+/* Card */
+
+.restaurant-card{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+
+    transition:.35s ease;
+
+    cursor:pointer;
+
+    position:relative;
+
+}
+
+.restaurant-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 22px 45px rgba(108,59,255,.18);
+
+}
+
+/* Image */
+
+.restaurant-image{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.restaurant-image img{
+
+    width:100%;
+
+    height:210px;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+.restaurant-card:hover .restaurant-image img{
+
+    transform:scale(1.08);
+
+}
+
+/* Rating */
+
+.rating{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    background:#16A34A;
+
+    color:#fff;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+/* Offer Badge */
+
+.offer-badge{
+
+    position:absolute;
+
+    left:15px;
+
+    bottom:15px;
+
+    background:#FF4D6D;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+/* Favourite */
+
+.favorite{
+
+    position:absolute;
+
+    top:15px;
+
+    left:15px;
+
+    width:40px;
+
+    height:40px;
+
+    background:rgba(255,255,255,.95);
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:18px;
+
+    color:#FF4D6D;
+
+    transition:.3s;
+
+}
+
+.favorite:hover{
+
+    transform:scale(1.12);
+
+}
+
+/* Content */
+
+.restaurant-info{
+
+    padding:18px;
+
+}
+
+.restaurant-info h3{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+    color:#222;
+
+}
+
+.restaurant-info p{
+
+    color:#777;
+
+    font-size:14px;
+
+    margin-bottom:14px;
+
+}
+
+/* Details */
+
+.restaurant-details{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    color:#555;
+
+    font-size:13px;
+
+    margin-bottom:18px;
+
+}
+
+/* Price */
+
+.price{
+
+    color:#6C3BFF;
+
+    font-weight:700;
+
+}
+
+/* Order Button */
+
+.order-btn{
+
+    width:100%;
+
+    padding:13px;
+
+    border-radius:14px;
+
+    background:#6C3BFF;
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.order-btn:hover{
+
+    background:#512BD4;
+
+    transform:translateY(-2px);
+
+}
+
+/* Delivery Tag */
+
+.delivery{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    background:#EEF8F1;
+
+    color:#16A34A;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+/* Restaurant Name Hover */
+
+.restaurant-card:hover h3{
+
+    color:#6C3BFF;
+
+}
+/* ==========================================
+   PART 3B-2 (CONTINUED)
+   Restaurant Card Extras
+========================================== */
+
+/* Restaurant Footer */
+
+.restaurant-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:16px;
+
+    padding-top:16px;
+
+    border-top:1px solid #ececec;
+
+}
+
+/* Delivery Time */
+
+.delivery-time{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+.delivery-time i{
+
+    color:#6C3BFF;
+
+}
+
+/* Distance */
+
+.distance{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    font-size:13px;
+
+    color:#777;
+
+}
+
+.distance i{
+
+    color:#ff6b35;
+
+}
+
+/* Restaurant Tags */
+
+.restaurant-tags{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin:14px 0;
+
+}
+
+.restaurant-tag{
+
+    padding:6px 12px;
+
+    border-radius:50px;
+
+    background:#f5f5f7;
+
+    color:#555;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.restaurant-tag:hover{
+
+    background:#6C3BFF;
+
+    color:#fff;
+
+}
+
+/* Card Overlay */
+
+.restaurant-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(to top,
+        rgba(0,0,0,.55),
+        transparent 55%);
+
+    opacity:0;
+
+    transition:.35s;
+
+    pointer-events:none;
+
+}
+
+.restaurant-card:hover .restaurant-overlay{
+
+    opacity:1;
+
+}
+
+/* Restaurant Status */
+
+.restaurant-status{
+
+    position:absolute;
+
+    bottom:16px;
+
+    right:16px;
+
+    background:#22C55E;
+
+    color:#fff;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    z-index:2;
+
+}
+
+.restaurant-status.closed{
+
+    background:#ef4444;
+
+}
+
+/* New Restaurant Badge */
+
+.new-badge{
+
+    position:absolute;
+
+    top:62px;
+
+    left:15px;
+
+    background:#2563EB;
+
+    color:#fff;
+
+    padding:5px 12px;
+
+    border-radius:30px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+/* Card Entrance Animation */
+
+.restaurant-card{
+
+    animation:cardFade .6s ease both;
+
+}
+
+@keyframes cardFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ==========================================
+   PART 3B-3
+   Offers & Promo Section
+========================================== */
+
+.offers-section{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:60px auto;
+
+}
+
+/* Offer Slider */
+
+.offer-slider{
+
+    display:flex;
+
+    gap:24px;
+
+    overflow-x:auto;
+
+    scroll-behavior:smooth;
+
+    padding:8px 5px 18px;
+
+}
+
+.offer-slider::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+/* Offer Card */
+
+.offer-card{
+
+    min-width:380px;
+
+    height:200px;
+
+    border-radius:26px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:35px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.35s ease;
+
+    flex-shrink:0;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+
+}
+
+.offer-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 28px 50px rgba(108,59,255,.20);
+
+}
+
+/* Background Gradients */
+
+.offer-card.purple{
+
+    background:linear-gradient(135deg,#6C3BFF,#9D4EDD);
+
+}
+
+.offer-card.orange{
+
+    background:linear-gradient(135deg,#FF7A18,#FFB800);
+
+}
+
+.offer-card.green{
+
+    background:linear-gradient(135deg,#16A34A,#22C55E);
+
+}
+
+.offer-card.red{
+
+    background:linear-gradient(135deg,#EF4444,#F97316);
+
+}
+
+/* Offer Content */
+
+.offer-content{
+
+    z-index:2;
+
+    max-width:60%;
+
+}
+
+.offer-content span{
+
+    display:inline-block;
+
+    background:rgba(255,255,255,.18);
+
+    padding:7px 15px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    margin-bottom:14px;
+
+}
+
+.offer-content h2{
+
+    font-size:34px;
+
+    line-height:1.15;
+
+    margin-bottom:10px;
+
+    font-weight:800;
+
+}
+
+.offer-content p{
+
+    font-size:15px;
+
+    opacity:.95;
+
+    margin-bottom:22px;
+
+}
+
+/* Offer Button */
+
+.offer-btn{
+
+    display:inline-block;
+
+    padding:12px 24px;
+
+    border-radius:50px;
+
+    background:#fff;
+
+    color:#222;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.offer-btn:hover{
+
+    transform:translateY(-3px);
+
+    background:#f5f5f5;
+
+}
+
+/* Offer Image */
+
+.offer-image{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+.offer-image img{
+
+    width:170px;
+
+    height:170px;
+
+    object-fit:contain;
+
+    transition:.4s;
+
+}
+
+.offer-card:hover .offer-image img{
+
+    transform:scale(1.08) rotate(-4deg);
+
+}
+
+/* Decorative Circles */
+
+.offer-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:240px;
+
+    height:240px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:50%;
+
+    right:-70px;
+
+    top:-70px;
+
+}
+
+.offer-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+
+    height:130px;
+
+    background:rgba(255,255,255,.06);
+
+    border-radius:50%;
+
+    left:-40px;
+
+    bottom:-40px;
+
+}
+
+/* Pagination Dots */
+
+.offer-dots{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-top:22px;
+
+}
+
+.offer-dot{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#d4d4d4;
+
+    transition:.3s;
+
+}
+
+.offer-dot.active{
+
+    width:34px;
+
+    border-radius:20px;
+
+    background:#6C3BFF;
+
+}
+/* ==========================================
+   PART 3C-1
+   Footer
+========================================== */
+
+.footer{
+
+    background:#111827;
+
+    color:#fff;
+
+    margin-top:80px;
+
+    padding:70px 0 25px;
+
+}
+
+.footer-container{
+
+    width:92%;
+
+    max-width:1450px;
+
+    margin:auto;
+
+}
+
+/* Footer Grid */
+
+.footer-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr 1fr 1.2fr;
+
+    gap:45px;
+
+    padding-bottom:45px;
+
+    border-bottom:1px solid rgba(255,255,255,.12);
+
+}
+
+/* Logo */
+
+.footer-logo{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    color:#fff;
+
+    margin-bottom:18px;
+
+}
+
+.footer-logo span{
+
+    color:#6C3BFF;
+
+}
+
+/* Description */
+
+.footer-about p{
+
+    color:#cbd5e1;
+
+    line-height:1.8;
+
+    font-size:15px;
+
+    margin-bottom:22px;
+
+}
+
+/* Social Icons */
+
+.footer-social{
+
+    display:flex;
+
+    gap:14px;
+
+}
+
+.footer-social a{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#1f2937;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    transition:.3s;
+
+}
+
+.footer-social a:hover{
+
+    background:#6C3BFF;
+
+    transform:translateY(-4px);
+
+}
+
+/* Headings */
+
+.footer h3{
+
+    font-size:18px;
+
+    margin-bottom:22px;
+
+    font-weight:700;
+
+}
+
+/* Links */
+
+.footer-links{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.footer-links a{
+
+    color:#cbd5e1;
+
+    transition:.3s;
+
+}
+
+.footer-links a:hover{
+
+    color:#fff;
+
+    padding-left:8px;
+
+}
+
+/* Contact */
+
+.footer-contact{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+.footer-contact div{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    color:#cbd5e1;
+
+    line-height:1.6;
+
+}
+
+.footer-contact i{
+
+    color:#6C3BFF;
+
+    font-size:18px;
+
+    margin-top:2px;
+
+}
+
+/* Newsletter */
+
+.newsletter{
+
+    margin-top:22px;
+
+    display:flex;
+
+    background:#1f2937;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+}
+
+.newsletter input{
+
+    flex:1;
+
+    padding:15px 18px;
+
+    background:transparent;
+
+    color:#fff;
+
+}
+
+.newsletter input::placeholder{
+
+    color:#94a3b8;
+
+}
+
+.newsletter button{
+
+    padding:0 24px;
+
+    background:#6C3BFF;
+
+    color:#fff;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.newsletter button:hover{
+
+    background:#512BD4;
+
+}
+
+/* App Buttons */
+
+.app-buttons{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:22px;
+
+}
+
+.app-buttons a{
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    background:#1f2937;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.3s;
+
+}
+
+.app-buttons a:hover{
+
+    background:#6C3BFF;
+
+}
+
+/* Bottom */
+
+.footer-bottom{
+
+    margin-top:28px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+}
+
+.footer-bottom p{
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+.footer-bottom-links{
+
+    display:flex;
+
+    gap:22px;
+
+}
+
+.footer-bottom-links a{
+
+    color:#94a3b8;
+
+    transition:.3s;
+
+}
+
+.footer-bottom-links a:hover{
+
+    color:#fff;
+
+}
+/* ==========================================
+   PART 3C-2
+   Footer Responsive & Back To Top
+========================================== */
+
+/* Back To Top */
+
+.back-to-top{
+
+    position:fixed;
+
+    right:28px;
+
+    bottom:28px;
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#6C3BFF,#8B5CF6);
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    box-shadow:0 15px 35px rgba(108,59,255,.35);
+
+    cursor:pointer;
+
+    z-index:999;
+
+    transition:.35s;
+
+    opacity:0;
+
+    visibility:hidden;
+
+}
+
+.back-to-top.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+.back-to-top:hover{
+
+    transform:translateY(-6px) scale(1.05);
+
+    box-shadow:0 22px 45px rgba(108,59,255,.45);
+
+}
+
+/* Tablet */
+
+@media(max-width:992px){
+
+    .footer-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:35px;
+
+    }
+
+    .footer-bottom{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .footer-bottom-links{
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+
+    }
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .footer{
+
+        padding:55px 0 20px;
+
+    }
+
+    .footer-grid{
+
+        grid-template-columns:1fr;
+
+        gap:30px;
+
+        text-align:center;
+
+    }
+
+    .footer-social{
+
+        justify-content:center;
+
+    }
+
+    .footer-contact div{
+
+        justify-content:center;
+
+    }
+
+    .newsletter{
+
+        flex-direction:column;
+
+        border-radius:18px;
+
+    }
+
+    .newsletter input{
+
+        width:100%;
+
+        text-align:center;
+
+    }
+
+    .newsletter button{
+
+        width:100%;
+
+        padding:15px;
+
+    }
+
+    .app-buttons{
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+
+    }
+
+    .footer-bottom-links{
+
+        gap:14px;
+
+    }
+
+    .back-to-top{
+
+        width:48px;
+
+        height:48px;
+
+        right:18px;
+
+        bottom:18px;
+
+        font-size:18px;
+
+    }
+
+}
+
+/* Small Phones */
+
+@media(max-width:480px){
+
+    .footer-logo{
+
+        font-size:28px;
+
+    }
+
+    .footer h3{
+
+        font-size:17px;
+
+    }
+
+    .footer-about p,
+
+    .footer-links a,
+
+    .footer-contact div{
+
+        font-size:14px;
+
+    }
+
+    .app-buttons a{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}
+
+/* Footer Fade Animation */
+
+.footer-grid > *{
+
+    animation:footerFade .8s ease both;
+
+}
+
+@keyframes footerFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}

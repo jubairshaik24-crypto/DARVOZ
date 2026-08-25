@@ -1,0 +1,4087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Partner Profile</title>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:"Poppins",sans-serif;
+
+    background:#f7f7f7;
+
+    color:#222;
+
+    padding-bottom:82px;
+
+}
+
+button,
+input,
+textarea{
+
+    font-family:inherit;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    height:64px;
+
+    background:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    box-shadow:
+        0 2px 12px rgba(0,0,0,.06);
+
+}
+
+.menu-btn,
+.notify{
+
+    width:40px;
+
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.menu-btn i,
+.notify i{
+
+    font-size:20px;
+
+}
+
+.logo h2{
+
+    color:#ff6b00;
+
+    font-size:24px;
+
+    font-weight:800;
+
+    letter-spacing:.3px;
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.container{
+
+    width:100%;
+
+    max-width:650px;
+
+    margin:auto;
+
+    padding:18px 14px 30px;
+
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.page-title{
+
+    margin:5px 3px 16px;
+
+}
+
+.page-title h2{
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.page-title p{
+
+    color:#888;
+
+    font-size:11px;
+
+    margin-top:3px;
+
+}
+
+
+/* =====================================================
+   PROFILE HEADER
+===================================================== */
+
+.profile-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:22px 18px;
+
+    text-align:center;
+
+    margin-bottom:14px;
+
+    box-shadow:
+        0 3px 15px rgba(0,0,0,.05);
+
+}
+
+.logo-wrap{
+
+    width:95px;
+
+    height:95px;
+
+    margin:auto;
+
+    position:relative;
+
+}
+
+.logo-image{
+
+    width:95px;
+
+    height:95px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid #fff;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.15);
+
+}
+
+.logo-placeholder{
+
+    width:95px;
+
+    height:95px;
+
+    border-radius:50%;
+
+    background:#fff2e9;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:34px;
+
+}
+
+.logo-camera{
+
+    position:absolute;
+
+    right:-2px;
+
+    bottom:0;
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    border:3px solid #fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.logo-camera i{
+
+    font-size:13px;
+
+}
+
+.profile-card h2{
+
+    font-size:20px;
+
+    margin-top:12px;
+
+}
+
+.owner-name{
+
+    color:#777;
+
+    font-size:11px;
+
+    margin-top:3px;
+
+}
+
+.partner-id{
+
+    color:#999;
+
+    font-size:10px;
+
+    margin-top:7px;
+
+}
+
+.partner-id strong{
+
+    color:#333;
+
+}
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    margin-top:9px;
+
+    font-size:10px;
+
+    font-weight:600;
+
+}
+
+.status.approved{
+
+    background:#eaf8ef;
+
+    color:#168b48;
+
+}
+
+.status.pending{
+
+    background:#fff5df;
+
+    color:#b77a00;
+
+}
+
+.status.rejected{
+
+    background:#ffeded;
+
+    color:#d33;
+
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.card{
+
+    background:#fff;
+
+    border-radius:17px;
+
+    padding:17px;
+
+    margin-bottom:14px;
+
+    box-shadow:
+        0 3px 15px rgba(0,0,0,.04);
+
+}
+
+.card-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+
+}
+
+.card-title i{
+
+    color:#ff6b00;
+
+}
+
+
+/* =====================================================
+   PROFILE ROW
+===================================================== */
+
+.profile-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    min-height:64px;
+
+    padding:9px 0;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.profile-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.row-icon{
+
+    width:39px;
+
+    height:39px;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    background:#fff3eb;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.row-icon i{
+
+    font-size:15px;
+
+}
+
+.row-content{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+.row-label{
+
+    display:block;
+
+    color:#999;
+
+    font-size:9px;
+
+    margin-bottom:3px;
+
+}
+
+.display-value{
+
+    color:#222;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    word-break:break-word;
+
+    line-height:1.5;
+
+}
+
+.pencil{
+
+    width:35px;
+
+    height:35px;
+
+    flex-shrink:0;
+
+    border:1px solid #ff6b00;
+
+    border-radius:9px;
+
+    background:#fff;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.pencil:hover{
+
+    background:#ff6b00;
+
+    color:#fff;
+
+}
+
+.pencil i{
+
+    font-size:12px;
+
+}
+
+
+/* =====================================================
+   INLINE EDIT
+===================================================== */
+
+.edit-box{
+
+    display:none;
+
+    align-items:center;
+
+    gap:5px;
+
+}
+
+.edit-box.show{
+
+    display:flex;
+
+}
+
+.edit-box input,
+.edit-box textarea{
+
+    width:100%;
+
+    flex:1;
+
+    min-width:0;
+
+    border:1px solid #ff6b00;
+
+    border-radius:8px;
+
+    outline:none;
+
+    padding:8px 9px;
+
+    font-size:12px;
+
+    background:#fff;
+
+}
+
+.edit-box textarea{
+
+    min-height:60px;
+
+    resize:vertical;
+
+}
+
+.edit-save,
+.edit-cancel{
+
+    width:33px;
+
+    height:33px;
+
+    flex-shrink:0;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.edit-save{
+
+    background:#ff6b00;
+
+    color:#fff;
+
+}
+
+.edit-cancel{
+
+    background:#eee;
+
+    color:#555;
+
+}
+
+.edit-save i,
+.edit-cancel i{
+
+    font-size:12px;
+
+}
+
+
+/* =====================================================
+   STORE IMAGES
+===================================================== */
+
+.image-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+}
+
+.image-box{
+
+    border:1px solid #eee;
+
+    border-radius:12px;
+
+    padding:9px;
+
+}
+
+.image-title{
+
+    font-size:11px;
+
+    font-weight:700;
+
+    margin-bottom:7px;
+
+}
+
+.image-preview{
+
+    width:100%;
+
+    height:120px;
+
+    border-radius:9px;
+
+    object-fit:cover;
+
+    background:#f5f5f5;
+
+}
+
+.image-empty{
+
+    width:100%;
+
+    height:120px;
+
+    border-radius:9px;
+
+    background:#f5f5f5;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#aaa;
+
+    font-size:10px;
+
+}
+
+.image-empty i{
+
+    font-size:27px;
+
+    margin-bottom:6px;
+
+}
+
+.change-image{
+
+    width:100%;
+
+    height:34px;
+
+    margin-top:7px;
+
+    border:1px solid #ff6b00;
+
+    background:#fff;
+
+    color:#ff6b00;
+
+    border-radius:8px;
+
+    font-size:10px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.change-image:hover{
+
+    background:#ff6b00;
+
+    color:#fff;
+
+}
+
+
+/* =====================================================
+   DOCUMENTS
+===================================================== */
+
+.document-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+}
+
+.document{
+
+    border:1px solid #eee;
+
+    border-radius:12px;
+
+    padding:15px 10px;
+
+    text-align:center;
+
+}
+
+.document-icon{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:11px;
+
+    background:#fff3eb;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:auto auto 8px;
+
+}
+
+.document h4{
+
+    font-size:11px;
+
+}
+
+.document p{
+
+    color:#999;
+
+    font-size:9px;
+
+    margin-top:2px;
+
+}
+
+.document a{
+
+    display:inline-block;
+
+    margin-top:8px;
+
+    color:#ff6b00;
+
+    text-decoration:none;
+
+    font-size:9px;
+
+    font-weight:600;
+
+}
+
+.lock-note{
+
+    background:#fafafa;
+
+    border-radius:9px;
+
+    padding:9px;
+
+    color:#888;
+
+    font-size:9px;
+
+    margin-bottom:11px;
+
+}
+
+.lock-note i{
+
+    color:#777;
+
+    margin-right:4px;
+
+}
+
+
+/* =====================================================
+   BANK
+===================================================== */
+
+.readonly{
+
+    background:#fafafa;
+
+    border-radius:9px;
+
+    padding:8px 10px;
+
+    color:#888;
+
+    font-size:9px;
+
+    margin-bottom:9px;
+
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    text-align:center;
+
+    padding:70px 10px;
+
+    color:#888;
+
+    font-size:12px;
+
+}
+
+.loading i{
+
+    color:#ff6b00;
+
+    font-size:25px;
+
+    margin-bottom:8px;
+
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    height:68px;
+
+    background:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-around;
+
+    box-shadow:
+        0 -2px 12px rgba(0,0,0,.08);
+
+    z-index:2000;
+
+}
+
+.bottom-nav a{
+
+    color:#777;
+
+    text-decoration:none;
+
+    text-align:center;
+
+    font-size:9px;
+
+}
+
+.bottom-nav a i{
+
+    display:block;
+
+    font-size:17px;
+
+    margin-bottom:3px;
+
+}
+
+.bottom-nav a.active{
+
+    color:#ff6b00;
+
+    font-weight:600;
+
+}
+
+
+/* =====================================================
+   SIDE MENU
+===================================================== */
+
+.side-menu{
+
+    position:fixed;
+
+    top:0;
+
+    left:-280px;
+
+    width:270px;
+
+    height:100vh;
+
+    background:#fff;
+
+    z-index:5000;
+
+    padding:18px;
+
+    box-shadow:
+        5px 0 20px rgba(0,0,0,.15);
+
+    transition:.25s;
+
+}
+
+.side-menu.active{
+
+    left:0;
+
+}
+
+.side-close{
+
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-end;
+
+    cursor:pointer;
+
+    font-size:21px;
+
+}
+
+.side-menu a{
+
+    display:block;
+
+    padding:14px 4px;
+
+    color:#333;
+
+    text-decoration:none;
+
+    border-bottom:1px solid #eee;
+
+    font-size:12px;
+
+}
+
+.side-menu a i{
+
+    width:27px;
+
+    color:#ff6b00;
+
+}
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.4);
+
+    z-index:4000;
+
+    display:none;
+
+}
+
+.overlay.active{
+
+    display:block;
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:82px;
+
+    transform:
+        translate(-50%,20px);
+
+    background:#222;
+
+    color:#fff;
+
+    padding:10px 16px;
+
+    border-radius:9px;
+
+    font-size:11px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:9000;
+
+    white-space:nowrap;
+
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:430px){
+
+    .container{
+
+        padding-left:10px;
+
+        padding-right:10px;
+
+    }
+
+    .card{
+
+        padding:14px;
+
+    }
+
+    .image-grid{
+
+        grid-template-columns:1fr 1fr;
+
+    }
+
+}
+
+@media(max-width:350px){
+
+    .image-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div
+        class="menu-btn"
+        id="menuBtn"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </div>
+
+
+    <div class="logo">
+
+        <h2>DARVOZ</h2>
+
+    </div>
+
+
+    <div class="notify">
+
+        <i class="fa-solid fa-bell"></i>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h2>Store Profile</h2>
+
+        <p>
+            Manage your store information
+        </p>
+
+    </div>
+
+
+    <div
+        id="loading"
+        class="loading"
+    >
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <br>
+
+        Loading profile...
+
+    </div>
+
+
+
+    <div
+        id="profileContent"
+        style="display:none;"
+    >
+
+
+        <!-- =================================================
+             PROFILE HEADER
+        ================================================= -->
+
+        <section class="profile-card">
+
+
+            <div class="logo-wrap">
+
+
+                <img
+                    id="logoImage"
+                    class="logo-image"
+                    style="display:none;"
+                    alt="Store Logo"
+                >
+
+
+                <div
+                    id="logoPlaceholder"
+                    class="logo-placeholder"
+                >
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+
+                <label
+                    class="logo-camera"
+                    title="Change Logo"
+                >
+
+                    <i class="fa-solid fa-camera"></i>
+
+                    <input
+                        type="file"
+                        id="logoInput"
+                        accept="image/jpeg,image/png,image/webp"
+                        hidden
+                    >
+
+                </label>
+
+            </div>
+
+
+            <h2 id="restaurantName">
+                -
+            </h2>
+
+
+            <div class="owner-name">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span id="topOwnerName">
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="partner-id">
+
+                Partner ID:
+
+                <strong id="partnerId">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div
+                id="statusBadge"
+                class="status approved"
+            >
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <span id="statusText">
+                    -
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STORE IMAGES
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <i class="fa-solid fa-images"></i>
+
+                Store Images
+
+            </div>
+
+
+            <div class="image-grid">
+
+
+                <!-- LOGO -->
+
+                <div class="image-box">
+
+                    <div class="image-title">
+                        Store Logo
+                    </div>
+
+
+                    <div id="logoPreviewArea">
+
+                        <div class="image-empty">
+
+                            <i class="fa-solid fa-image"></i>
+
+                            No logo
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="change-image"
+                        id="changeLogoBtn"
+                    >
+
+                        <i class="fa-solid fa-camera"></i>
+
+                        Change Logo
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- STORE PHOTO -->
+
+                <div class="image-box">
+
+                    <div class="image-title">
+                        Store Photo
+                    </div>
+
+
+                    <div id="storePhotoPreviewArea">
+
+                        <div class="image-empty">
+
+                            <i class="fa-solid fa-store"></i>
+
+                            No store photo
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="change-image"
+                        id="changeStorePhotoBtn"
+                    >
+
+                        <i class="fa-solid fa-camera"></i>
+
+                        Change Store Photo
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STORE DETAILS
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <i class="fa-solid fa-store"></i>
+
+                Store Details
+
+            </div>
+
+
+            <!-- STORE NAME -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Store / Business Name
+                    </span>
+
+
+                    <div
+                        id="storeNameDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="storeNameEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="storeNameInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('restaurant_name','storeName')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('storeName')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('storeName')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- OWNER -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Owner Name
+                    </span>
+
+
+                    <div
+                        id="ownerNameDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="ownerNameEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="ownerNameInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('owner_name','ownerName')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('ownerName')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('ownerName')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- MOBILE -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-phone"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Mobile Number
+                    </span>
+
+
+                    <div
+                        id="mobileDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="mobileEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="mobileInput"
+                            type="tel"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('mobile','mobile')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('mobile')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('mobile')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Email
+                    </span>
+
+
+                    <div
+                        id="emailDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="emailEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="emailInput"
+                            type="email"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('email','email')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('email')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('email')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- ADDRESS -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Address
+                    </span>
+
+
+                    <div
+                        id="addressDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="addressEdit"
+                        class="edit-box"
+                    >
+
+                        <textarea
+                            id="addressInput"
+                        ></textarea>
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('address','address')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('address')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('address')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- CITY -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-city"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        City
+                    </span>
+
+
+                    <div
+                        id="cityDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="cityEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="cityInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('city','city')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('city')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('city')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- STATE -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-map"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        State
+                    </span>
+
+
+                    <div
+                        id="stateDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="stateEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="stateInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('state','state')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('state')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('state')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- PINCODE -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-location-crosshairs"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Pincode
+                    </span>
+
+
+                    <div
+                        id="pincodeDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="pincodeEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="pincodeInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('pincode','pincode')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('pincode')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('pincode')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOCATION
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <i class="fa-solid fa-map-location-dot"></i>
+
+                Store Location
+
+            </div>
+
+
+            <!-- LATITUDE -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-crosshairs"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Latitude
+                    </span>
+
+
+                    <div
+                        id="latitudeDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="latitudeEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="latitudeInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('latitude','latitude')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('latitude')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('latitude')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- LONGITUDE -->
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-location-arrow"></i>
+
+                </div>
+
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Longitude
+                    </span>
+
+
+                    <div
+                        id="longitudeDisplay"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+
+                    <div
+                        id="longitudeEdit"
+                        class="edit-box"
+                    >
+
+                        <input
+                            id="longitudeInput"
+                            type="text"
+                        >
+
+                        <button
+                            class="edit-save"
+                            onclick="saveField('longitude','longitude')"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <button
+                            class="edit-cancel"
+                            onclick="cancelEdit('longitude')"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="pencil"
+                    onclick="openEdit('longitude')"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FSSAI / GST
+             READ ONLY
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <i class="fa-solid fa-file-shield"></i>
+
+                Documents
+
+            </div>
+
+
+            <div class="lock-note">
+
+                <i class="fa-solid fa-lock"></i>
+
+                FSSAI and GST documents cannot be
+                changed from the partner profile.
+
+            </div>
+
+
+            <div class="document-grid">
+
+
+                <!-- FSSAI -->
+
+                <div class="document">
+
+                    <div class="document-icon">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                    </div>
+
+                    <h4>
+                        FSSAI
+                    </h4>
+
+                    <p id="fssaiStatus">
+                        Not uploaded
+                    </p>
+
+                    <a
+                        id="fssaiLink"
+                        href="#"
+                        target="_blank"
+                        style="display:none;"
+                    >
+                        View Document
+                    </a>
+
+                </div>
+
+
+
+                <!-- GST -->
+
+                <div class="document">
+
+                    <div class="document-icon">
+
+                        <i class="fa-solid fa-file-invoice"></i>
+
+                    </div>
+
+                    <h4>
+                        GST
+                    </h4>
+
+                    <p id="gstStatus">
+                        Not uploaded
+                    </p>
+
+                    <a
+                        id="gstLink"
+                        href="#"
+                        target="_blank"
+                        style="display:none;"
+                    >
+                        View Document
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BANK
+             READ ONLY
+        ================================================= -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <i class="fa-solid fa-building-columns"></i>
+
+                Bank Details
+
+            </div>
+
+
+            <div class="readonly">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Bank details cannot be changed
+                from this page.
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Account Holder
+                    </span>
+
+                    <div
+                        id="accountHolder"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                </div>
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Bank Name
+                    </span>
+
+                    <div
+                        id="bankName"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-credit-card"></i>
+
+                </div>
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        Account Number
+                    </span>
+
+                    <div
+                        id="accountNumber"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-code"></i>
+
+                </div>
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        IFSC
+                    </span>
+
+                    <div
+                        id="ifsc"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <div class="row-icon">
+
+                    <i class="fa-solid fa-mobile-screen"></i>
+
+                </div>
+
+                <div class="row-content">
+
+                    <span class="row-label">
+                        UPI
+                    </span>
+
+                    <div
+                        id="upi"
+                        class="display-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<nav class="bottom-nav">
+
+    <a href="partner-dashboard.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        Home
+
+    </a>
+
+
+    <a href="partner-orders.html">
+
+        <i class="fa-solid fa-box"></i>
+
+        Orders
+
+    </a>
+
+
+    <a href="import-menu.html">
+
+        <i class="fa-solid fa-utensils"></i>
+
+        Menu
+
+    </a>
+
+
+    <a href="partner-earnings.html">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        Earnings
+
+    </a>
+
+
+    <a
+        href="partner-profile.html"
+        class="active"
+    >
+
+        <i class="fa-solid fa-user"></i>
+
+        Profile
+
+    </a>
+
+</nav>
+
+
+
+<!-- =====================================================
+     SIDE MENU
+===================================================== -->
+
+<div
+    class="side-menu"
+    id="sideMenu"
+>
+
+
+    <div
+        class="side-close"
+        id="sideClose"
+    >
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </div>
+
+
+    <a href="partner-dashboard.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        Dashboard
+
+    </a>
+
+
+    <a href="partner-menu.html">
+
+        <i class="fa-solid fa-utensils"></i>
+
+        Food Menu
+
+    </a>
+
+
+    <a href="partner-orders.html">
+
+        <i class="fa-solid fa-box"></i>
+
+        Orders
+
+    </a>
+
+
+    <a href="partner-earnings.html">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        Earnings
+
+    </a>
+
+
+    <a href="partner-profile.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        Store Profile
+
+    </a>
+
+
+    <a
+        href="#"
+        id="logoutBtn"
+    >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+
+</div>
+
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+
+<!-- =====================================================
+     HIDDEN FILE INPUTS
+===================================================== -->
+
+<input
+    type="file"
+    id="hiddenLogoInput"
+    accept="image/jpeg,image/png,image/webp"
+    style="display:none;"
+>
+
+<input
+    type="file"
+    id="hiddenStorePhotoInput"
+    accept="image/jpeg,image/png,image/webp"
+    style="display:none;"
+>
+
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+
+<script>
+
+/* =====================================================
+   API
+===================================================== */
+
+const API =
+    window.location.origin;
+
+
+/* =====================================================
+   PARTNER LOGIN
+===================================================== */
+
+const partner =
+    JSON.parse(
+        localStorage.getItem("partner")
+    );
+
+
+if(!partner){
+
+    window.location.href =
+        "partner-login.html";
+
+}
+
+
+/* =====================================================
+   CURRENT PROFILE
+===================================================== */
+
+let currentProfile =
+    null;
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function el(id){
+
+    return document.getElementById(id);
+
+}
+
+
+function safeValue(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+
+        return "-";
+
+    }
+
+    return String(value);
+
+}
+
+
+function showToast(message){
+
+    const toast =
+        el("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =====================================================
+   LOAD PROFILE
+===================================================== */
+
+async function loadProfile(){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/partner/profile/${partner.id}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success &&
+            !data.id
+        ){
+
+            throw new Error(
+                data.message ||
+                "Unable to load profile"
+            );
+
+        }
+
+
+        currentProfile =
+            data;
+
+
+        renderProfile(data);
+
+
+        el("loading").style.display =
+            "none";
+
+        el("profileContent").style.display =
+            "block";
+
+
+    }catch(error){
+
+        console.error(
+            "PROFILE ERROR:",
+            error
+        );
+
+
+        el("loading").innerHTML = `
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+            <br>
+
+            ${error.message}
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER PROFILE
+===================================================== */
+
+function renderProfile(data){
+
+
+    /* ================================================
+       TOP
+    ================================================ */
+
+    el("restaurantName").textContent =
+        safeValue(data.restaurant_name);
+
+
+    el("topOwnerName").textContent =
+        safeValue(data.owner_name);
+
+
+    el("partnerId").textContent =
+        safeValue(
+            data.restaurant_id ||
+            partner.partnerId
+        );
+
+
+    /* ================================================
+       STATUS
+    ================================================ */
+
+    renderStatus(
+        data.status
+    );
+
+
+    /* ================================================
+       STORE DETAILS
+    ================================================ */
+
+    el("storeNameDisplay").textContent =
+        safeValue(data.restaurant_name);
+
+
+    el("ownerNameDisplay").textContent =
+        safeValue(data.owner_name);
+
+
+    el("mobileDisplay").textContent =
+        safeValue(data.mobile);
+
+
+    el("emailDisplay").textContent =
+        safeValue(data.email);
+
+
+    el("addressDisplay").textContent =
+        safeValue(data.address);
+
+
+    el("cityDisplay").textContent =
+        safeValue(data.city);
+
+
+    el("stateDisplay").textContent =
+        safeValue(data.state);
+
+
+    el("pincodeDisplay").textContent =
+        safeValue(data.pincode);
+
+
+    el("latitudeDisplay").textContent =
+        safeValue(data.latitude);
+
+
+    el("longitudeDisplay").textContent =
+        safeValue(data.longitude);
+
+
+    /* ================================================
+       BANK
+    ================================================ */
+
+    el("accountHolder").textContent =
+        safeValue(data.account_holder);
+
+
+    el("bankName").textContent =
+        safeValue(data.bank_name);
+
+
+    el("accountNumber").textContent =
+        safeValue(data.account_number);
+
+
+    el("ifsc").textContent =
+        safeValue(data.ifsc);
+
+
+    el("upi").textContent =
+        safeValue(data.upi);
+
+
+    /* ================================================
+       LOGO
+    ================================================ */
+
+    renderLogo(
+        data.logo
+    );
+
+
+    /* ================================================
+       STORE PHOTO
+    ================================================ */
+
+    renderStorePhoto(
+        data.storePhoto
+    );
+
+
+    /* ================================================
+       DOCUMENTS
+    ================================================ */
+
+    renderDocuments(data);
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function renderStatus(status){
+
+    const badge =
+        el("statusBadge");
+
+
+    const value =
+        status || "Pending";
+
+
+    if(value === "Approved"){
+
+        badge.className =
+            "status approved";
+
+        badge.innerHTML = `
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span>
+                Approved
+            </span>
+
+        `;
+
+    }
+
+    else if(value === "Rejected"){
+
+        badge.className =
+            "status rejected";
+
+        badge.innerHTML = `
+
+            <i class="fa-solid fa-circle-xmark"></i>
+
+            <span>
+                Rejected
+            </span>
+
+        `;
+
+    }
+
+    else{
+
+        badge.className =
+            "status pending";
+
+        badge.innerHTML = `
+
+            <i class="fa-solid fa-clock"></i>
+
+            <span>
+                Pending
+            </span>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+function renderLogo(url){
+
+    if(url){
+
+        el("logoImage").src =
+            url;
+
+        el("logoImage").style.display =
+            "block";
+
+        el("logoPlaceholder").style.display =
+            "none";
+
+
+        el("logoPreviewArea").innerHTML = `
+
+            <img
+                src="${escapeHtml(url)}"
+                class="image-preview"
+                alt="Store Logo"
+            >
+
+        `;
+
+    }
+
+    else{
+
+        el("logoImage").style.display =
+            "none";
+
+        el("logoPlaceholder").style.display =
+            "flex";
+
+
+        el("logoPreviewArea").innerHTML = `
+
+            <div class="image-empty">
+
+                <i class="fa-solid fa-image"></i>
+
+                No logo
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   STORE PHOTO
+===================================================== */
+
+function renderStorePhoto(url){
+
+    if(url){
+
+        el("storePhotoPreviewArea").innerHTML = `
+
+            <img
+                src="${escapeHtml(url)}"
+                class="image-preview"
+                alt="Store Photo"
+            >
+
+        `;
+
+    }
+
+    else{
+
+        el("storePhotoPreviewArea").innerHTML = `
+
+            <div class="image-empty">
+
+                <i class="fa-solid fa-store"></i>
+
+                No store photo
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   DOCUMENTS
+===================================================== */
+
+function renderDocuments(data){
+
+    /* FSSAI */
+
+    if(data.fssai){
+
+        el("fssaiStatus").textContent =
+            "Uploaded";
+
+        el("fssaiLink").href =
+            data.fssai;
+
+        el("fssaiLink").style.display =
+            "inline-block";
+
+    }
+
+    else{
+
+        el("fssaiStatus").textContent =
+            "Not uploaded";
+
+        el("fssaiLink").style.display =
+            "none";
+
+    }
+
+
+    /* GST */
+
+    if(data.gst){
+
+        el("gstStatus").textContent =
+            "Uploaded";
+
+        el("gstLink").href =
+            data.gst;
+
+        el("gstLink").style.display =
+            "inline-block";
+
+    }
+
+    else{
+
+        el("gstStatus").textContent =
+            "Not uploaded";
+
+        el("gstLink").style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   INLINE EDIT
+===================================================== */
+
+const fieldConfig = {
+
+    storeName: {
+        input:"storeNameInput",
+        edit:"storeNameEdit",
+        display:"storeNameDisplay"
+    },
+
+    ownerName: {
+        input:"ownerNameInput",
+        edit:"ownerNameEdit",
+        display:"ownerNameDisplay"
+    },
+
+    mobile: {
+        input:"mobileInput",
+        edit:"mobileEdit",
+        display:"mobileDisplay"
+    },
+
+    email: {
+        input:"emailInput",
+        edit:"emailEdit",
+        display:"emailDisplay"
+    },
+
+    address: {
+        input:"addressInput",
+        edit:"addressEdit",
+        display:"addressDisplay"
+    },
+
+    city: {
+        input:"cityInput",
+        edit:"cityEdit",
+        display:"cityDisplay"
+    },
+
+    state: {
+        input:"stateInput",
+        edit:"stateEdit",
+        display:"stateDisplay"
+    },
+
+    pincode: {
+        input:"pincodeInput",
+        edit:"pincodeEdit",
+        display:"pincodeDisplay"
+    },
+
+    latitude: {
+        input:"latitudeInput",
+        edit:"latitudeEdit",
+        display:"latitudeDisplay"
+    },
+
+    longitude: {
+        input:"longitudeInput",
+        edit:"longitudeEdit",
+        display:"longitudeDisplay"
+    }
+
+};
+
+
+/* =====================================================
+   OPEN EDIT
+===================================================== */
+
+function openEdit(field){
+
+    const config =
+        fieldConfig[field];
+
+    if(!config)
+        return;
+
+
+    /* close any other open field */
+
+    document
+        .querySelectorAll(".edit-box.show")
+        .forEach(box => {
+
+            box.classList.remove("show");
+
+        });
+
+
+    /* hide all display values */
+
+    document
+        .querySelectorAll(".display-value")
+        .forEach(value => {
+
+            value.style.display =
+                "block";
+
+        });
+
+
+    const display =
+        el(config.display);
+
+
+    const input =
+        el(config.input);
+
+
+    let value =
+        display.textContent;
+
+
+    if(value === "-"){
+
+        value = "";
+
+    }
+
+
+    input.value =
+        value;
+
+
+    display.style.display =
+        "none";
+
+
+    el(config.edit)
+        .classList
+        .add("show");
+
+
+    input.focus();
+
+}
+
+
+/* =====================================================
+   CANCEL EDIT
+===================================================== */
+
+function cancelEdit(field){
+
+    const config =
+        fieldConfig[field];
+
+
+    el(config.edit)
+        .classList
+        .remove("show");
+
+
+    el(config.display)
+        .style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   SAVE FIELD
+===================================================== */
+
+async function saveField(
+    databaseField,
+    field
+){
+
+    const config =
+        fieldConfig[field];
+
+
+    const input =
+        el(config.input);
+
+
+    const value =
+        input.value.trim();
+
+
+    if(!value){
+
+        showToast(
+            "Value cannot be empty"
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    try{
+
+        /*
+        IMPORTANT:
+
+        We send ALL editable profile
+        values because your current
+        backend PUT route updates
+        the profile using these fields.
+        */
+
+        const body = {
+
+            restaurant_name:
+                currentProfile.restaurant_name || "",
+
+            owner_name:
+                currentProfile.owner_name || "",
+
+            mobile:
+                currentProfile.mobile || "",
+
+            email:
+                currentProfile.email || "",
+
+            address:
+                currentProfile.address || "",
+
+            city:
+                currentProfile.city || "",
+
+            state:
+                currentProfile.state || "",
+
+            pincode:
+                currentProfile.pincode || "",
+
+            latitude:
+                currentProfile.latitude || "",
+
+            longitude:
+                currentProfile.longitude || ""
+
+        };
+
+
+        body[databaseField] =
+            value;
+
+
+        const response =
+            await fetch(
+
+                `${API}/partner/profile/${partner.id}`,
+
+                {
+
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(body)
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !result.success
+        ){
+
+            throw new Error(
+                result.message ||
+                "Update failed"
+            );
+
+        }
+
+
+        /* Update local object */
+
+        currentProfile[
+            databaseField
+        ] =
+            value;
+
+
+        /* Update display */
+
+        el(config.display)
+            .textContent =
+            value;
+
+
+        el(config.display)
+            .style.display =
+            "block";
+
+
+        el(config.edit)
+            .classList
+            .remove("show");
+
+
+        /* Update top */
+
+        if(
+            databaseField ===
+            "restaurant_name"
+        ){
+
+            el("restaurantName")
+                .textContent =
+                value;
+
+        }
+
+
+        if(
+            databaseField ===
+            "owner_name"
+        ){
+
+            el("topOwnerName")
+                .textContent =
+                value;
+
+        }
+
+
+        showToast(
+            "Updated successfully ✓"
+        );
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "SAVE FIELD ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Unable to update"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGO CHANGE
+===================================================== */
+
+el("changeLogoBtn")
+    .onclick =
+function(){
+
+    el("hiddenLogoInput")
+        .click();
+
+};
+
+
+el("logoInput")
+    .onchange =
+function(){
+
+    if(this.files[0]){
+
+        uploadLogo(
+            this.files[0]
+        );
+
+    }
+
+};
+
+
+el("hiddenLogoInput")
+    .onchange =
+function(){
+
+    if(this.files[0]){
+
+        uploadLogo(
+            this.files[0]
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   STORE PHOTO CHANGE
+===================================================== */
+
+el("changeStorePhotoBtn")
+    .onclick =
+function(){
+
+    el("hiddenStorePhotoInput")
+        .click();
+
+};
+
+
+el("hiddenStorePhotoInput")
+    .onchange =
+function(){
+
+    if(this.files[0]){
+
+        uploadStorePhoto(
+            this.files[0]
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   UPLOAD LOGO
+===================================================== */
+
+async function uploadLogo(file){
+
+    if(!validateImage(file))
+        return;
+
+
+    try{
+
+        showToast(
+            "Uploading logo..."
+        );
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "logo",
+            file
+        );
+
+
+        const response =
+            await fetch(
+
+                `${API}/partner/upload-documents`,
+
+                {
+
+                    method:"POST",
+
+                    body:formData
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !result.success
+        ){
+
+            throw new Error(
+                result.message ||
+                "Logo upload failed"
+            );
+
+        }
+
+
+        /*
+        Now save Cloudinary URL
+        into restaurants table.
+        */
+
+        const body = {
+
+            restaurant_name:
+                currentProfile.restaurant_name || "",
+
+            owner_name:
+                currentProfile.owner_name || "",
+
+            mobile:
+                currentProfile.mobile || "",
+
+            email:
+                currentProfile.email || "",
+
+            address:
+                currentProfile.address || "",
+
+            city:
+                currentProfile.city || "",
+
+            state:
+                currentProfile.state || "",
+
+            pincode:
+                currentProfile.pincode || "",
+
+            latitude:
+                currentProfile.latitude || "",
+
+            longitude:
+                currentProfile.longitude || "",
+
+            logo:
+                result.logo,
+
+            logo_public_id:
+                result.logo_public_id
+
+        };
+
+
+        /*
+        Your current PUT route may only
+        update profile details.
+
+        Therefore this checks whether
+        the server accepts the image fields.
+        */
+
+        const updateResponse =
+            await fetch(
+
+                `${API}/partner/profile/${partner.id}`,
+
+                {
+
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(body)
+
+                }
+
+            );
+
+
+        const updateResult =
+            await updateResponse.json();
+
+
+        if(
+            !updateResponse.ok ||
+            !updateResult.success
+        ){
+
+            throw new Error(
+                updateResult.message ||
+                "Unable to save logo"
+            );
+
+        }
+
+
+        currentProfile.logo =
+            result.logo;
+
+
+        currentProfile.logo_public_id =
+            result.logo_public_id;
+
+
+        renderLogo(
+            result.logo
+        );
+
+
+        showToast(
+            "Logo updated successfully ✓"
+        );
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "LOGO ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Logo upload failed"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   UPLOAD STORE PHOTO
+===================================================== */
+
+async function uploadStorePhoto(file){
+
+    if(!validateImage(file))
+        return;
+
+
+    try{
+
+        showToast(
+            "Uploading store photo..."
+        );
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "storePhoto",
+            file
+        );
+
+
+        const response =
+            await fetch(
+
+                `${API}/partner/upload-documents`,
+
+                {
+
+                    method:"POST",
+
+                    body:formData
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !result.success
+        ){
+
+            throw new Error(
+                result.message ||
+                "Store photo upload failed"
+            );
+
+        }
+
+
+        const body = {
+
+            restaurant_name:
+                currentProfile.restaurant_name || "",
+
+            owner_name:
+                currentProfile.owner_name || "",
+
+            mobile:
+                currentProfile.mobile || "",
+
+            email:
+                currentProfile.email || "",
+
+            address:
+                currentProfile.address || "",
+
+            city:
+                currentProfile.city || "",
+
+            state:
+                currentProfile.state || "",
+
+            pincode:
+                currentProfile.pincode || "",
+
+            latitude:
+                currentProfile.latitude || "",
+
+            longitude:
+                currentProfile.longitude || "",
+
+            storePhoto:
+                result.storePhoto,
+
+            storePhoto_public_id:
+                result.storePhoto_public_id
+
+        };
+
+
+        const updateResponse =
+            await fetch(
+
+                `${API}/partner/profile/${partner.id}`,
+
+                {
+
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(body)
+
+                }
+
+            );
+
+
+        const updateResult =
+            await updateResponse.json();
+
+
+        if(
+            !updateResponse.ok ||
+            !updateResult.success
+        ){
+
+            throw new Error(
+                updateResult.message ||
+                "Unable to save store photo"
+            );
+
+        }
+
+
+        currentProfile.storePhoto =
+            result.storePhoto;
+
+
+        currentProfile.storePhoto_public_id =
+            result.storePhoto_public_id;
+
+
+        renderStorePhoto(
+            result.storePhoto
+        );
+
+
+        showToast(
+            "Store photo updated successfully ✓"
+        );
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "STORE PHOTO ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Store photo upload failed"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   IMAGE VALIDATION
+===================================================== */
+
+function validateImage(file){
+
+    if(!file){
+
+        return false;
+
+    }
+
+
+    const allowed = [
+
+        "image/jpeg",
+
+        "image/png",
+
+        "image/webp"
+
+    ];
+
+
+    if(
+        !allowed.includes(
+            file.type
+        )
+    ){
+
+        showToast(
+            "Only JPG, PNG or WEBP allowed"
+        );
+
+        return false;
+
+    }
+
+
+    if(
+        file.size >
+        5 * 1024 * 1024
+    ){
+
+        showToast(
+            "Image must be below 5MB"
+        );
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   SIDE MENU
+===================================================== */
+
+el("menuBtn")
+    .onclick =
+function(){
+
+    el("sideMenu")
+        .classList
+        .add("active");
+
+    el("overlay")
+        .classList
+        .add("active");
+
+};
+
+
+el("sideClose")
+    .onclick =
+closeMenu;
+
+
+el("overlay")
+    .onclick =
+closeMenu;
+
+
+function closeMenu(){
+
+    el("sideMenu")
+        .classList
+        .remove("active");
+
+    el("overlay")
+        .classList
+        .remove("active");
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+el("logoutBtn")
+    .onclick =
+function(e){
+
+    e.preventDefault();
+
+
+    if(
+        confirm("Logout?")
+    ){
+
+        localStorage.removeItem(
+            "partner"
+        );
+
+
+        window.location.href =
+            "partner-login.html";
+
+    }
+
+};
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadProfile();
+
+</script>
+
+</body>
+
+</html>

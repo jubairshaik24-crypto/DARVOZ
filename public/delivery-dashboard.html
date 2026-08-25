@@ -1,0 +1,3190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
+<title>DARVOZ | Delivery Partner</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+/* =====================================
+   RESET
+===================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,Arial,sans-serif;
+}
+
+:root{
+
+    --orange:#ff5a00;
+    --green:#1ba672;
+    --red:#e53935;
+    --blue:#1677d2;
+    --purple:#8254c7;
+
+    --bg:#f6f6f6;
+    --text:#222;
+    --muted:#777;
+
+    --white:#fff;
+    --border:#eee;
+
+}
+
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    padding-bottom:85px;
+
+}
+
+button{
+
+    font-family:inherit;
+
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+.header{
+
+    background:white;
+
+    padding:15px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.header-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+}
+
+.menu-btn{
+
+    font-size:24px;
+
+    color:#222;
+
+    cursor:pointer;
+
+}
+
+.logo-area h1{
+
+    color:var(--orange);
+
+    font-size:28px;
+
+    line-height:28px;
+
+    font-weight:800;
+
+}
+
+.logo-area p{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    margin-top:2px;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+.wallet-header-btn{
+
+    height:42px;
+
+    padding:0 13px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#fff1e8;
+
+    color:var(--orange);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    font-size:13px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+}
+
+.wallet-header-btn i{
+
+    font-size:17px;
+
+}
+
+.wallet-header-btn:active{
+
+    transform:scale(.96);
+
+}
+.notification{
+
+    position:relative;
+
+    font-size:23px;
+
+    cursor:pointer;
+
+}
+
+.notification-badge{
+
+    position:absolute;
+
+    top:-7px;
+
+    right:-7px;
+
+    background:#e91e32;
+
+    color:white;
+
+    width:19px;
+
+    height:19px;
+
+    border-radius:50%;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:10px;
+
+    font-weight:700;
+
+}
+
+.profile-circle{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    background:#eee;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.profile-circle img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.profile-circle i{
+
+    font-size:22px;
+
+    color:#888;
+
+}
+
+
+/* =====================================
+   CONTAINER
+===================================== */
+
+.container{
+
+    width:100%;
+
+    max-width:720px;
+
+    margin:auto;
+
+    padding:14px;
+
+}
+
+
+/* =====================================
+   ONLINE / OFFLINE
+===================================== */
+
+.online-card{
+
+    background:#fffaf5;
+
+    border:1px solid #ffe4d0;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:14px;
+
+}
+
+.online-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+}
+
+.online-dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:#999;
+
+}
+
+.online-dot.online{
+
+    background:var(--green);
+
+}
+
+.online-dot.offline{
+
+    background:var(--red);
+
+}
+
+.online-subtitle{
+
+    margin-top:6px;
+
+    font-size:13px;
+
+    color:#666;
+
+}
+
+
+/* SWITCH */
+
+.switch{
+
+    position:relative;
+
+    width:62px;
+
+    height:34px;
+
+}
+
+.switch input{
+
+    display:none;
+
+}
+
+.slider{
+
+    position:absolute;
+
+    inset:0;
+
+    background:#ccc;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.slider:before{
+
+    content:"";
+
+    position:absolute;
+
+    width:28px;
+
+    height:28px;
+
+    left:3px;
+
+    top:3px;
+
+    background:white;
+
+    border-radius:50%;
+
+    transition:.25s;
+
+    box-shadow:0 2px 5px rgba(0,0,0,.2);
+
+}
+
+.switch input:checked + .slider{
+
+    background:var(--orange);
+
+}
+
+.switch input:checked + .slider:before{
+
+    transform:translateX(28px);
+
+}
+
+
+/* =====================================
+   STATS
+===================================== */
+
+.stats{
+
+    background:white;
+
+    border-radius:20px;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    padding:18px 5px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    margin-bottom:14px;
+
+}
+
+.stat{
+
+    text-align:center;
+
+    padding:0 5px;
+
+    border-right:1px solid #eee;
+
+}
+
+.stat:last-child{
+
+    border-right:none;
+
+}
+
+.stat-icon{
+
+    font-size:25px;
+
+    color:var(--orange);
+
+    margin-bottom:8px;
+
+}
+
+.stat:nth-child(2) .stat-icon{
+
+    color:#d63384;
+
+}
+
+.stat:nth-child(3) .stat-icon{
+
+    color:#1677d2;
+
+}
+
+.stat:nth-child(4) .stat-icon{
+
+    color:#8254c7;
+
+}
+
+.stat-value{
+
+    font-size:19px;
+
+    font-weight:800;
+
+}
+
+.stat-label{
+
+    margin-top:4px;
+
+    font-size:11px;
+
+    color:#777;
+
+}
+
+
+/* =====================================
+   SEARCHING
+===================================== */
+
+.searching-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    margin-bottom:14px;
+
+}
+
+.search-icon{
+
+    width:65px;
+
+    height:65px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#fff2e9;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--orange);
+
+    font-size:27px;
+
+}
+
+.searching-card h3{
+
+    margin-top:15px;
+
+    font-size:18px;
+
+}
+
+.searching-card p{
+
+    margin-top:7px;
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+.spinner{
+
+    margin:16px auto 0;
+
+    width:25px;
+
+    height:25px;
+
+    border:3px solid #eee;
+
+    border-top-color:var(--orange);
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+/* =====================================
+   NEW ORDER
+===================================== */
+
+.new-order{
+
+    display:none;
+
+    background:#fffaf5;
+
+    border:1px solid #ffe1cd;
+
+    border-radius:20px;
+
+    padding:16px;
+
+    margin-bottom:14px;
+
+}
+
+.new-order-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+
+}
+
+.new-order-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:18px;
+
+    font-weight:800;
+
+}
+
+.order-number{
+
+    background:#e91e32;
+
+    color:white;
+
+    width:23px;
+
+    height:23px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:11px;
+
+}
+
+.timer{
+
+    color:#e53935;
+
+    font-weight:700;
+
+    font-size:14px;
+
+}
+
+.order-box{
+
+    background:white;
+
+    border-radius:17px;
+
+    padding:15px;
+
+}
+
+.location-row{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:18px;
+
+}
+
+.location-line{
+
+    width:3px;
+
+    background:#ddd;
+
+    position:relative;
+
+    margin-left:6px;
+
+}
+
+.location-line:before,
+.location-line:after{
+
+    content:"";
+
+    position:absolute;
+
+    left:-5px;
+
+    width:13px;
+
+    height:13px;
+
+    border-radius:50%;
+
+}
+
+.location-line:before{
+
+    top:0;
+
+    background:var(--orange);
+
+}
+
+.location-line:after{
+
+    bottom:0;
+
+    background:var(--green);
+
+}
+
+.location-content{
+
+    flex:1;
+
+}
+
+.location-label{
+
+    font-size:13px;
+
+    color:#666;
+
+}
+
+.location-name{
+
+    margin-top:3px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+}
+
+.location-address{
+
+    margin-top:3px;
+
+    color:#666;
+
+    font-size:12px;
+
+}
+
+.order-info{
+
+    background:#fff7f0;
+
+    border-radius:14px;
+
+    padding:13px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    margin-top:5px;
+
+}
+
+.info-box{
+
+    text-align:center;
+
+}
+
+.info-box:first-child{
+
+    border-right:1px solid #eee;
+
+}
+
+.info-label{
+
+    color:#666;
+
+    font-size:12px;
+
+}
+
+.info-value{
+
+    margin-top:3px;
+
+    font-size:16px;
+
+    font-weight:800;
+
+}
+
+.order-buttons{
+
+    display:grid;
+
+    grid-template-columns:1fr 1.4fr;
+
+    gap:10px;
+
+    margin-top:12px;
+
+}
+
+.reject-btn,
+.accept-btn{
+
+    height:48px;
+
+    border-radius:11px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+.reject-btn{
+
+    background:white;
+
+    border:1px solid #e53935;
+
+    color:#e53935;
+
+}
+
+.accept-btn{
+
+    background:var(--orange);
+
+    border:none;
+
+    color:white;
+
+}
+
+.accept-btn:disabled{
+
+    opacity:.6;
+
+}
+
+
+/* =====================================
+   CURRENT ORDER
+===================================== */
+
+.current-order{
+
+    display:none;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:17px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    margin-bottom:14px;
+
+}
+
+.current-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.current-header h3{
+
+    font-size:18px;
+
+}
+
+.current-status{
+
+    background:#fff1e8;
+
+    color:var(--orange);
+
+    padding:7px 12px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.order-id{
+
+    margin-top:7px;
+
+    font-size:13px;
+
+    color:#555;
+
+}
+
+
+/* =====================================
+   PROGRESS
+===================================== */
+
+.progress{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    margin:24px 0;
+
+}
+
+.progress-step{
+
+    flex:1;
+
+    text-align:center;
+
+    position:relative;
+
+}
+
+.progress-step:not(:last-child):after{
+
+    content:"";
+
+    position:absolute;
+
+    top:17px;
+
+    left:60%;
+
+    width:80%;
+
+    height:3px;
+
+    background:#ddd;
+
+}
+
+.progress-step.active:not(:last-child):after{
+
+    background:var(--orange);
+
+}
+
+.progress-circle{
+
+    position:relative;
+
+    z-index:2;
+
+    margin:auto;
+
+    width:35px;
+
+    height:35px;
+
+    border-radius:50%;
+
+    background:#e9ecef;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#777;
+
+}
+
+.progress-step.active .progress-circle{
+
+    background:var(--orange);
+
+    color:white;
+
+}
+
+.progress-label{
+
+    margin-top:7px;
+
+    font-size:11px;
+
+}
+
+.progress-time{
+
+    margin-top:2px;
+
+    font-size:9px;
+
+    color:#777;
+
+}
+
+
+/* =====================================
+   CONTACT
+===================================== */
+
+.contact-card{
+
+    border:1px solid #eee;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+.contact-row{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:13px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.contact-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.contact-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.contact-icon{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:#fff1e8;
+
+    color:var(--orange);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.contact-info strong{
+
+    display:block;
+
+    font-size:14px;
+
+}
+
+.contact-info span{
+
+    display:block;
+
+    margin-top:2px;
+
+    color:#666;
+
+    font-size:11px;
+
+}
+
+.call-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+    background:white;
+
+    color:var(--green);
+
+    cursor:pointer;
+
+}
+
+
+/* =====================================
+   MAP / ACTION BUTTONS
+===================================== */
+
+.map-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#fff4eb;
+
+    color:#e85b00;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+.map-btn:disabled{
+
+    opacity:.65;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =====================================
+   PICKUP SECTION
+===================================== */
+
+.pickup-section{
+
+    display:none;
+
+    margin-top:10px;
+
+    padding:16px;
+
+    background:#fffaf5;
+
+    border:1px solid #ffe1cd;
+
+    border-radius:15px;
+
+}
+
+.pickup-section h3{
+
+    font-size:17px;
+
+    margin-bottom:12px;
+
+}
+
+.pickup-detail{
+
+    padding:10px 0;
+
+    border-bottom:1px solid #eee;
+
+    font-size:14px;
+
+}
+
+.pickup-detail:last-child{
+
+    border-bottom:none;
+
+}
+
+.pickup-items{
+
+    margin-top:10px;
+
+    padding:12px;
+
+    background:white;
+
+    border-radius:12px;
+
+    font-size:13px;
+
+}
+
+.pickup-waiting{
+
+    margin-top:12px;
+
+    color:#e85b00;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+/* =====================================
+   REACHED RESTAURANT
+===================================== */
+
+.reached-restaurant-btn{
+
+    background:#fff4eb;
+
+    color:#e85b00;
+
+}
+
+
+/* =====================================
+   REACHED CUSTOMER
+===================================== */
+
+.reached-customer-btn{
+
+    display:none;
+
+    background:#effaf5;
+
+    color:#1ba672;
+
+}
+
+
+/* =====================================
+   OTP
+===================================== */
+
+.otp-section{
+
+    display:none;
+
+    margin-top:10px;
+
+    padding:18px;
+
+    background:white;
+
+    border:1px solid #eee;
+
+    border-radius:15px;
+
+    text-align:center;
+
+}
+
+.otp-section h3{
+
+    font-size:18px;
+
+}
+
+.otp-section p{
+
+    margin-top:7px;
+
+    color:#777;
+
+    font-size:13px;
+
+    line-height:20px;
+
+}
+
+.otp-input{
+
+    width:100%;
+
+    margin-top:14px;
+
+    height:48px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    padding:10px;
+
+    font-size:20px;
+
+    text-align:center;
+
+    outline:none;
+
+}
+
+.otp-input:focus{
+
+    border-color:var(--orange);
+
+}
+
+.verify-btn{
+
+    background:var(--orange);
+
+    color:white;
+
+}
+
+
+/* =====================================
+   DELIVERY SUCCESS
+===================================== */
+
+.delivery-success{
+
+    display:none;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:30px 20px;
+
+    text-align:center;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    margin-bottom:14px;
+
+}
+
+.success-icon{
+
+    width:75px;
+
+    height:75px;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    background:#effaf5;
+
+    color:var(--green);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:35px;
+
+}
+
+.delivery-success h2{
+
+    margin-top:15px;
+
+}
+
+.delivery-success p{
+
+    margin-top:7px;
+
+    color:#777;
+
+}
+
+.earned{
+
+    margin-top:20px;
+
+    padding:16px;
+
+    background:#fff7f0;
+
+    border-radius:15px;
+
+}
+
+.earned-label{
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+.earned-amount{
+
+    margin-top:5px;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:var(--orange);
+
+}
+
+.back-dashboard{
+
+    margin-top:16px;
+
+    width:100%;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--orange);
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+
+/* =====================================
+   SUMMARY
+===================================== */
+
+.summary{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:17px;
+
+    margin-bottom:14px;
+
+}
+
+.summary-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+}
+
+.summary-header h3{
+
+    font-size:16px;
+
+}
+
+.summary-header button{
+
+    border:none;
+
+    background:none;
+
+    color:var(--orange);
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    margin-top:17px;
+
+}
+
+.summary-item{
+
+    text-align:center;
+
+}
+
+.summary-icon{
+
+    font-size:20px;
+
+    color:var(--green);
+
+}
+
+.summary-item:nth-child(2) .summary-icon{
+
+    color:#8254c7;
+
+}
+
+.summary-item:nth-child(3) .summary-icon{
+
+    color:#1677d2;
+
+}
+
+.summary-value{
+
+    margin-top:5px;
+
+    font-size:16px;
+
+    font-weight:800;
+
+}
+
+.summary-label{
+
+    color:#777;
+
+    font-size:11px;
+
+}
+
+
+/* =====================================
+   BOTTOM NAV
+===================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    height:70px;
+
+    background:white;
+
+    box-shadow:0 -2px 12px rgba(0,0,0,.1);
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    z-index:1000;
+
+}
+
+.bottom-nav a{
+
+    text-decoration:none;
+
+    color:#666;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:11px;
+
+    gap:5px;
+
+}
+
+.bottom-nav i{
+
+    font-size:20px;
+
+}
+
+.bottom-nav a.active{
+
+    color:var(--orange);
+
+}
+
+
+/* =====================================
+   DELIVERY WALLET
+===================================== */
+
+.wallet-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:16px 18px;
+
+    margin-bottom:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+    border:1px solid #eee;
+
+}
+
+.wallet-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.wallet-icon{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:14px;
+
+    background:#fff1e8;
+
+    color:var(--orange);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:21px;
+
+}
+
+.wallet-label{
+
+    font-size:12px;
+
+    color:#777;
+
+}
+
+.wallet-balance{
+
+    margin-top:2px;
+
+    font-size:23px;
+
+    font-weight:800;
+
+    color:#222;
+
+}
+
+.wallet-status{
+
+    font-size:11px;
+
+    font-weight:700;
+
+    color:var(--green);
+
+    background:#effaf5;
+
+    padding:7px 10px;
+
+    border-radius:20px;
+
+}
+
+.wallet-status i{
+
+    margin-right:3px;
+
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media(max-width:480px){
+
+    .logo-area h1{
+
+        font-size:26px;
+
+    }
+
+    .stats{
+
+        padding:15px 2px;
+
+    }
+
+    .stat-value{
+
+        font-size:16px;
+
+    }
+
+    .stat-label{
+
+        font-size:9px;
+
+    }
+
+    .progress-label{
+
+        font-size:9px;
+
+    }
+
+    .container{
+
+        padding:10px;
+
+    }
+
+}
+
+
+/* =====================================
+   DESKTOP
+===================================== */
+
+@media(min-width:900px){
+
+    .container{
+
+        max-width:760px;
+
+    }
+
+}
+
+
+/* =====================================
+   HIDE
+===================================== */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     HEADER
+===================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <div class="menu-btn">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </div>
+
+
+        <div class="logo-area">
+
+            <h1>DARVOZ</h1>
+
+            <p>Delivery Partner</p>
+
+        </div>
+
+    </div>
+
+
+   <div class="header-right">
+
+    <div
+        class="notification"
+        onclick="openNotifications()">
+
+        <i class="fa-solid fa-bell"></i>
+
+        <span
+            class="notification-badge"
+            id="badge">
+
+            0
+
+        </span>
+
+    </div>
+
+
+    <button
+        class="wallet-header-btn"
+        onclick="openWallet()">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        <span>Wallet</span>
+
+    </button>
+
+</div>
+
+</header>
+
+
+
+<div class="container">
+
+
+<!-- =====================================
+     ONLINE CARD
+===================================== -->
+
+<div class="online-card">
+
+    <div>
+
+        <div class="online-title">
+
+            <span
+            id="onlineDot"
+            class="online-dot offline">
+
+            </span>
+
+
+            <span id="onlineTitle">
+
+                You are Offline
+
+            </span>
+
+        </div>
+
+
+        <div
+        id="onlineSubtitle"
+        class="online-subtitle">
+
+            Go online to receive orders
+
+        </div>
+
+    </div>
+
+
+    <label class="switch">
+
+        <input
+        type="checkbox"
+        id="onlineToggle">
+
+        <span class="slider"></span>
+
+    </label>
+
+</div>
+
+
+
+<!-- =====================================
+     STATS
+===================================== -->
+
+<div class="stats">
+
+
+    <!-- EARNINGS -->
+
+    <div class="stat">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+
+        <div
+        class="stat-value"
+        id="earnings">
+
+            ₹0.00
+
+        </div>
+
+
+        <div class="stat-label">
+
+            Earnings Today
+
+        </div>
+
+    </div>
+
+
+    <!-- ORDERS -->
+
+    <div class="stat">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-bag-shopping"></i>
+
+        </div>
+
+
+        <div
+        class="stat-value"
+        id="deliveries">
+
+            0
+
+        </div>
+
+
+        <div class="stat-label">
+
+            Orders Today
+
+        </div>
+
+    </div>
+
+
+    <!-- ONLINE TIME -->
+
+    <div class="stat">
+
+        <div class="stat-icon">
+
+            <i class="fa-regular fa-clock"></i>
+
+        </div>
+
+
+        <div
+        class="stat-value"
+        id="onlineTime">
+
+            0h 00m
+
+        </div>
+
+
+        <div class="stat-label">
+
+            Online Time
+
+        </div>
+
+    </div>
+
+
+    <!-- DISTANCE -->
+
+    <div class="stat">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-route"></i>
+
+        </div>
+
+
+        <div
+        class="stat-value"
+        id="distance">
+
+            0 km
+
+        </div>
+
+
+        <div class="stat-label">
+
+            Distance
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     SEARCHING
+===================================== -->
+
+<div
+class="searching-card"
+id="searchingCard">
+
+
+    <div class="search-icon">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+    </div>
+
+
+    <h3 id="searchTitle">
+
+        Searching for orders...
+
+    </h3>
+
+
+    <p id="searchText">
+
+        Looking for nearby delivery orders
+
+    </p>
+
+
+    <div class="spinner">
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     NEW ORDER
+===================================== -->
+
+<div
+class="new-order"
+id="newOrderCard">
+
+
+    <div class="new-order-header">
+
+
+        <div class="new-order-title">
+
+            <i
+            class="fa-solid fa-motorcycle"
+            style="color:#ff5a00">
+
+            </i>
+
+
+            New Order
+
+
+            <span
+            class="order-number"
+            id="orderCount">
+
+                1
+
+            </span>
+
+        </div>
+
+
+        <span
+        class="timer"
+        id="orderTimer">
+
+            --
+
+        </span>
+
+    </div>
+
+
+
+    <div class="order-box">
+
+
+        <!-- PICKUP -->
+
+        <div class="location-row">
+
+
+            <div class="location-line">
+
+            </div>
+
+
+            <div class="location-content">
+
+
+                <div class="location-label">
+
+                    Pickup from
+
+                </div>
+
+
+                <div
+                class="location-name"
+                id="restaurant">
+
+                    -
+
+                </div>
+
+
+                <div
+                class="location-address"
+                id="restaurantAddress">
+
+                    -
+
+                </div>
+
+
+                <div
+                id="pickupDistance"
+                style="
+                margin-top:4px;
+                font-size:12px;
+                font-weight:700;
+                ">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CUSTOMER -->
+
+        <div class="location-row">
+
+
+            <div
+            class="location-line"
+            style="background:transparent">
+
+            </div>
+
+
+            <div class="location-content">
+
+
+                <div class="location-label">
+
+                    Drop to
+
+                </div>
+
+
+                <div
+                class="location-name"
+                id="customer">
+
+                    -
+
+                </div>
+
+
+                <div
+                class="location-address"
+                id="customerAddress">
+
+                    -
+
+                </div>
+
+
+                <div
+                id="dropDistance"
+                style="
+                margin-top:4px;
+                font-size:12px;
+                font-weight:700;
+                ">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ORDER INFO -->
+
+        <div class="order-info">
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+
+                    Delivery Fee
+
+                </div>
+
+
+                <div
+                class="info-value"
+                id="deliveryFee">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+
+                    Order Total
+
+                </div>
+
+
+                <div
+                class="info-value"
+                id="amount">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACCEPT / REJECT -->
+
+        <div class="order-buttons">
+
+
+            <button
+            class="reject-btn"
+            id="rejectOrder">
+
+                Reject
+
+            </button>
+
+
+            <button
+            class="accept-btn"
+            id="acceptOrder">
+
+                Accept Order
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     CURRENT ORDER
+===================================== -->
+
+<div
+class="current-order"
+id="currentOrder">
+
+
+    <!-- HEADER -->
+
+    <div class="current-header">
+
+
+        <h3>
+
+            Current Order
+
+        </h3>
+
+
+        <span
+        class="current-status"
+        id="currentStatus">
+
+            In Progress
+
+        </span>
+
+    </div>
+
+
+    <!-- =====================================
+     WALLET BALANCE
+===================================== -->
+
+<div class="wallet-card">
+
+    <div class="wallet-left">
+
+        <div class="wallet-icon">
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+
+        <div>
+
+            <div class="wallet-label">
+                Delivery Wallet
+            </div>
+
+            <div
+                class="wallet-balance"
+                id="walletBalance">
+
+                ₹0.00
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="wallet-status">
+        <i class="fa-solid fa-circle-check"></i>
+        Active
+    </div>
+
+</div>
+
+
+
+    <div
+    class="order-id"
+    id="currentOrderId">
+
+        Order ID: -
+
+    </div>
+
+
+
+    <!-- =================================
+         PROGRESS
+    ================================= -->
+
+    <div class="progress">
+
+
+        <!-- ACCEPTED -->
+
+        <div
+        class="progress-step active"
+        id="stepAccepted">
+
+
+            <div class="progress-circle">
+
+                <i
+                class="fa-solid fa-motorcycle">
+
+                </i>
+
+            </div>
+
+
+            <div class="progress-label">
+
+                Accepted
+
+            </div>
+
+
+            <div
+            class="progress-time"
+            id="acceptedTime">
+
+                --
+
+            </div>
+
+        </div>
+
+
+
+        <!-- REACHED RESTAURANT -->
+
+        <div
+        class="progress-step"
+        id="stepReached">
+
+
+            <div class="progress-circle">
+
+                <i
+                class="fa-solid fa-store">
+
+                </i>
+
+            </div>
+
+
+            <div class="progress-label">
+
+                Reached Restaurant
+
+            </div>
+
+
+            <div
+            class="progress-time"
+            id="reachedTime">
+
+                --
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PICKED -->
+
+        <div
+        class="progress-step"
+        id="stepPicked">
+
+
+            <div class="progress-circle">
+
+                <i
+                class="fa-solid fa-bag-shopping">
+
+                </i>
+
+            </div>
+
+
+            <div class="progress-label">
+
+                Picked Up
+
+            </div>
+
+
+            <div
+            class="progress-time"
+            id="pickedTime">
+
+                --
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DELIVERED -->
+
+        <div
+        class="progress-step"
+        id="stepDelivered">
+
+
+            <div class="progress-circle">
+
+                <i
+                class="fa-solid fa-flag-checkered">
+
+                </i>
+
+            </div>
+
+
+            <div class="progress-label">
+
+                Delivered
+
+            </div>
+
+
+            <div
+            class="progress-time"
+            id="deliveredTime">
+
+                --
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         CONTACT CARD
+    ================================= -->
+
+    <div class="contact-card">
+
+
+        <!-- RESTAURANT -->
+
+        <div class="contact-row">
+
+
+            <div class="contact-left">
+
+
+                <div class="contact-icon">
+
+                    <i
+                    class="fa-solid fa-store">
+
+                    </i>
+
+                </div>
+
+
+                <div class="contact-info">
+
+
+                    <strong
+                    id="currentRestaurant">
+
+                        -
+
+                    </strong>
+
+
+                    <span
+                    id="currentRestaurantAddress">
+
+                        -
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+            class="call-btn"
+            id="restaurantCall">
+
+                <i
+                class="fa-solid fa-phone">
+
+                </i>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- CUSTOMER -->
+
+        <div class="contact-row">
+
+
+            <div class="contact-left">
+
+
+                <div
+                class="contact-icon"
+                style="
+                color:#1ba672;
+                background:#effaf5;
+                ">
+
+                    <i
+                    class="fa-solid fa-location-dot">
+
+                    </i>
+
+                </div>
+
+
+                <div class="contact-info">
+
+
+                    <strong
+                    id="currentCustomer">
+
+                        -
+
+                    </strong>
+
+
+                    <span
+                    id="currentCustomerAddress">
+
+                        -
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+            class="call-btn"
+            id="customerCall">
+
+                <i
+                class="fa-solid fa-phone">
+
+                </i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         NAVIGATE RESTAURANT
+    ================================= -->
+
+    <button
+    class="map-btn"
+    id="navigatePickup">
+
+        <i
+        class="fa-solid fa-map">
+
+        </i>
+
+        Navigate to Restaurant
+
+
+        <i
+        class="fa-solid fa-chevron-right"
+        style="
+        float:right;
+        margin-top:3px;
+        ">
+
+        </i>
+
+    </button>
+
+
+
+
+
+
+    <!-- =================================
+         PICKUP SECTION
+    ================================= -->
+
+    <div
+    class="pickup-section"
+    id="pickupSection">
+
+
+        <h3>
+
+            📦 Pickup Order
+
+        </h3>
+
+
+        <div class="pickup-detail">
+
+            <strong>
+
+                Order ID
+
+            </strong>
+
+
+            <div
+            id="pickupOrderId"
+            style="margin-top:4px;">
+
+                -
+
+            </div>
+
+        </div>
+
+
+        <div class="pickup-detail">
+
+            <strong>
+
+                Customer
+
+            </strong>
+
+
+            <div
+            id="pickupCustomer"
+            style="margin-top:4px;">
+
+                -
+
+            </div>
+
+        </div>
+
+
+        <div class="pickup-items"
+        id="pickupItems">
+
+            Loading order items...
+
+        </div>
+
+
+        <div
+        class="pickup-waiting"
+        id="pickupWaiting">
+
+            ⏳ Waiting for partner pickup confirmation...
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         NAVIGATE CUSTOMER
+    ================================= -->
+
+    <button
+    class="map-btn"
+    id="navigateCustomer"
+    style="
+    display:none;
+    margin-top:7px;
+    ">
+
+
+        <i
+        class="fa-solid fa-location-arrow">
+
+        </i>
+
+        Navigate to Customer
+
+
+        <i
+        class="fa-solid fa-chevron-right"
+        style="
+        float:right;
+        margin-top:3px;
+        ">
+
+        </i>
+
+    </button>
+
+
+
+
+
+    <!-- =================================
+         OTP VERIFICATION
+    ================================= -->
+
+    <div
+    class="otp-section"
+    id="otpSection">
+
+
+        <h3>
+
+            🔐 Delivery Verification
+
+        </h3>
+
+
+        <p>
+
+            Ask the customer for the OTP
+            received on WhatsApp.
+
+        </p>
+
+
+        <input
+        id="deliveryOtp"
+        class="otp-input"
+        type="text"
+        inputmode="numeric"
+        maxlength="6"
+        placeholder="Enter OTP">
+
+
+        <button type="button" id="verifyOtpBtn">
+    Verify OTP
+</button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     DELIVERY SUCCESS
+===================================== -->
+
+<div
+class="delivery-success"
+id="deliverySuccess">
+
+
+    <div class="success-icon">
+
+        <i
+        class="fa-solid fa-check">
+
+        </i>
+
+    </div>
+
+
+    <h2>
+
+        Delivery Completed 🎉
+
+    </h2>
+
+
+    <p>
+
+        Thank you for delivering with DARVOZ.
+
+    </p>
+
+
+    <div class="earned">
+
+
+        <div class="earned-label">
+
+            You earned
+
+        </div>
+
+
+        <div
+        class="earned-amount"
+        id="earnedAmount">
+
+            ₹0.00
+
+        </div>
+
+
+        <div
+        style="
+        margin-top:5px;
+        color:#777;
+        font-size:12px;
+        ">
+
+            Delivery Fee
+
+        </div>
+
+    </div>
+
+
+    <button
+    class="back-dashboard"
+    id="backDashboard">
+
+        Back to Dashboard
+
+    </button>
+
+</div>
+
+
+
+<!-- =====================================
+     TODAY SUMMARY
+===================================== -->
+
+<div class="summary">
+
+
+    <div class="summary-header">
+
+
+        <h3>
+
+            Today's Summary
+
+        </h3>
+
+
+        <button
+        onclick="
+        window.location.href='delivery-history.html'
+        ">
+
+            View All
+
+        </button>
+
+    </div>
+
+
+
+    <div class="summary-grid">
+
+
+        <!-- EARNINGS -->
+
+        <div class="summary-item">
+
+
+            <div class="summary-icon">
+
+                <i
+                class="fa-solid fa-indian-rupee-sign">
+
+                </i>
+
+            </div>
+
+
+            <div
+            class="summary-value"
+            id="summaryEarnings">
+
+                ₹0
+
+            </div>
+
+
+            <div class="summary-label">
+
+                Earnings
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ORDERS -->
+
+        <div class="summary-item">
+
+
+            <div class="summary-icon">
+
+                <i
+                class="fa-solid fa-bag-shopping">
+
+                </i>
+
+            </div>
+
+
+            <div
+            class="summary-value"
+            id="summaryOrders">
+
+                0
+
+            </div>
+
+
+            <div class="summary-label">
+
+                Orders
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ONLINE TIME -->
+
+        <div class="summary-item">
+
+
+            <div class="summary-icon">
+
+                <i
+                class="fa-regular fa-clock">
+
+                </i>
+
+            </div>
+
+
+            <div
+            class="summary-value"
+            id="summaryTime">
+
+                0h 00m
+
+            </div>
+
+
+            <div class="summary-label">
+
+                Online Time
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================
+     BOTTOM NAVIGATION
+===================================== -->
+
+<nav class="bottom-nav">
+
+
+    <a
+    href="delivery-dashboard.html"
+    class="active">
+
+        <i
+        class="fa-solid fa-house">
+
+        </i>
+
+        <span>
+
+            Home
+
+        </span>
+
+    </a>
+
+
+
+    <a
+    href="delivery-earnings.html">
+
+        <i
+        class="fa-solid fa-chart-simple">
+
+        </i>
+
+        <span>
+
+            Earnings
+
+        </span>
+
+    </a>
+
+
+
+    <a
+    href="delivery-history.html">
+
+        <i
+        class="fa-solid fa-bag-shopping">
+
+        </i>
+
+        <span>
+
+            Orders
+
+        </span>
+
+    </a>
+
+
+
+    <a
+    href="delivery-profile.html">
+
+        <i
+        class="fa-solid fa-user">
+
+        </i>
+
+        <span>
+
+            Profile
+
+        </span>
+
+    </a>
+
+</nav>
+
+
+
+<!-- =====================================
+     SOCKET.IO
+===================================== -->
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<!-- =====================================
+     DASHBOARD JS
+===================================== -->
+
+<script src="delivery-dashboard.js"></script>
+
+
+</body>
+
+</html>

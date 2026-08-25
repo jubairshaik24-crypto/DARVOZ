@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ Customer Login</title>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+<style>
+
+/* =========================================
+   RESET
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#f5f6fa;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:30px;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.container{
+
+    width:100%;
+    max-width:500px;
+
+    min-height:700px;
+
+    background:#fff;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.12);
+}
+
+
+/* =========================================
+   ORANGE HEADER
+========================================= */
+
+.header{
+
+    height:245px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff8a00,
+            #ff6200
+        );
+
+    color:#fff;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+
+/* decorative circles */
+
+.header::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.07);
+
+    top:-180px;
+    right:-80px;
+}
+
+.header::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.06);
+
+    bottom:-190px;
+    left:-80px;
+}
+
+
+/* =========================================
+   DARVOZ NAME
+========================================= */
+
+.brand{
+
+    position:relative;
+    z-index:2;
+
+    font-size:48px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    color:#fff;
+}
+
+.tagline{
+
+    position:relative;
+    z-index:2;
+
+    margin-top:5px;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    letter-spacing:3px;
+
+    color:#fff;
+}
+
+
+/* =========================================
+   FORM AREA
+========================================= */
+
+.form-area{
+
+    padding:30px 25px 35px;
+
+    background:#fff;
+}
+
+.form-area h1{
+
+    text-align:center;
+
+    font-size:27px;
+
+    font-weight:800;
+
+    color:#222;
+}
+
+.subtitle{
+
+    text-align:center;
+
+    margin-top:5px;
+
+    color:#777;
+
+    font-size:11px;
+}
+
+
+/* =========================================
+   CONTINUOUS CATEGORY SCROLL
+========================================= */
+
+.category-scroll{
+
+    width:100%;
+
+    overflow:hidden;
+
+    margin:20px 0 22px;
+
+    position:relative;
+}
+
+
+/*
+   Track contains TWO identical sets.
+
+   CSS moves the track from 0 to -50%.
+   Because both sets are identical,
+   the movement appears continuous.
+*/
+
+.track{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    width:max-content;
+
+    animation:
+        categoryScroll
+        22s
+        linear
+        infinite;
+}
+
+
+/* continuous animation */
+
+@keyframes categoryScroll{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+
+}
+
+
+/* =========================================
+   CATEGORY
+========================================= */
+
+.item{
+
+    width:52px;
+
+    min-width:52px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+}
+
+
+/* small emoji circle */
+
+.circle{
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    background:#fff7f2;
+
+    border:1px solid #ffe0c8;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:19px;
+
+    box-shadow:
+        0 3px 10px rgba(255,98,0,.08);
+}
+
+
+/* category name */
+
+.item span{
+
+    margin-top:5px;
+
+    font-size:8px;
+
+    font-weight:600;
+
+    color:#444;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================
+   MOBILE INPUT
+========================================= */
+
+.input-box{
+
+    width:100%;
+
+    height:52px;
+
+    border:1.5px solid #e7e7e7;
+
+    border-radius:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 16px;
+
+    margin-bottom:12px;
+
+    background:#fff;
+
+    transition:.25s;
+}
+
+.input-box:focus-within{
+
+    border-color:#ff6500;
+
+    box-shadow:
+        0 0 0 4px rgba(255,101,0,.08);
+}
+
+.country-code{
+
+    color:#ff6500;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    padding-right:12px;
+
+    margin-right:12px;
+
+    border-right:1px solid #ddd;
+}
+
+.input-box input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    font-size:13px;
+
+    color:#222;
+
+    background:none;
+}
+
+.input-box input::placeholder{
+
+    color:#999;
+}
+
+
+
+
+
+/* =========================================
+   CONTINUE BUTTON
+========================================= */
+
+.login-btn{
+
+    width:100%;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff8a00,
+            #ff6200
+        );
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.login-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(255,98,0,.25);
+}
+
+
+/* =========================================
+   OR
+========================================= */
+
+.or{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:18px 0;
+
+    color:#999;
+
+    font-size:11px;
+}
+
+.or::before,
+.or::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:#e5e5e5;
+}
+
+
+/* =========================================
+   OTP BUTTON
+========================================= */
+
+.otp-btn{
+
+    width:100%;
+
+    height:50px;
+
+    border-radius:15px;
+
+    border:1.5px solid #ff6500;
+
+    background:#fff;
+
+    color:#ff6500;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+}
+
+.otp-btn i{
+
+    font-size:16px;
+}
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+.register{
+
+    text-align:center;
+
+    margin-top:18px;
+
+    font-size:11px;
+
+    color:#777;
+}
+
+.register a{
+
+    color:#ff6200;
+
+    font-weight:700;
+
+    text-decoration:none;
+}
+
+
+/* =========================================
+   SOCIAL MEDIA
+========================================= */
+
+.social-follow{
+    text-align:center;
+    margin-top:18px;
+}
+
+.social-follow p{
+    font-size:10px;
+    color:#888;
+    margin-bottom:10px;
+}
+
+.social-links{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+}
+
+.social-link{
+    height:38px;
+    padding:0 16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    border-radius:20px;
+
+    text-decoration:none;
+    font-size:10px;
+    font-weight:700;
+
+    transition:.25s;
+}
+
+/* Instagram */
+
+.instagram-link{
+    background:#fff5f8;
+    border:1px solid #ffd6e2;
+    color:#e1306c;
+}
+
+.instagram-link:hover{
+    transform:translateY(-2px);
+    box-shadow:0 7px 15px rgba(225,48,108,.18);
+}
+
+/* WhatsApp */
+
+.whatsapp-link{
+    background:#f3fff7;
+    border:1px solid #ccefd8;
+    color:#25D366;
+}
+
+.whatsapp-link:hover{
+    transform:translateY(-2px);
+    box-shadow:0 7px 15px rgba(37,211,102,.18);
+}
+
+.social-link i{
+    font-size:17px;
+}
+
+/* =========================================
+   SECURITY
+========================================= */
+
+.security{
+
+    margin-top:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:7px;
+
+    color:#888;
+
+    font-size:9px;
+}
+
+.security i{
+
+    color:#ff6500;
+
+    font-size:14px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:600px){
+
+    body{
+
+        padding:0;
+
+        background:#fff;
+
+        align-items:flex-start;
+    }
+
+    .container{
+
+        width:100%;
+
+        min-height:100vh;
+
+        border-radius:0;
+
+        box-shadow:none;
+    }
+
+    .header{
+
+        height:190px;
+
+        border-bottom-left-radius:50% 12%;
+
+        border-bottom-right-radius:50% 12%;
+    }
+
+    .brand{
+
+        font-size:36px;
+    }
+
+    .tagline{
+
+        font-size:8px;
+
+        letter-spacing:2px;
+    }
+
+    .form-area{
+
+        padding:25px 18px 30px;
+    }
+
+    .form-area h1{
+
+        font-size:24px;
+    }
+
+    .subtitle{
+
+        font-size:10px;
+    }
+
+    .category-scroll{
+
+        margin:17px 0 20px;
+    }
+
+    .track{
+
+        gap:15px;
+
+        animation-duration:20s;
+    }
+
+    .item{
+
+        width:48px;
+
+        min-width:48px;
+    }
+
+    .circle{
+
+        width:39px;
+        height:39px;
+
+        font-size:17px;
+    }
+
+    .item span{
+
+        font-size:7px;
+
+        margin-top:4px;
+    }
+
+    .input-box,
+    .password-box,
+    .login-btn{
+
+        height:48px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media(max-width:390px){
+
+    .header{
+
+        height:175px;
+    }
+
+    .brand{
+
+        font-size:32px;
+    }
+
+    .form-area{
+
+        padding:22px 15px;
+    }
+
+    .track{
+
+        gap:13px;
+    }
+
+    .circle{
+
+        width:37px;
+        height:37px;
+
+        font-size:16px;
+    }
+
+}
+
+/* =========================================
+   SIMPLE TERMS TEXT
+========================================= */
+
+.terms-text{
+    text-align:center;
+    margin:12px 5px 18px;
+
+    font-size:9px;
+    line-height:1.6;
+
+    color:#888;
+}
+
+.terms-text a{
+    color:#ff6200;
+
+    font-weight:700;
+
+    text-decoration:none;
+}
+
+.terms-text a:hover{
+    text-decoration:underline;
+}
+/* =========================================
+   PREMIUM TERMS POPUP
+========================================= */
+
+.terms-popup-overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(15,15,20,.55);
+    backdrop-filter:blur(7px);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s ease;
+
+    z-index:9999;
+}
+
+.terms-popup-overlay.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.terms-popup{
+    width:100%;
+    max-width:360px;
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:32px 25px 25px;
+
+    text-align:center;
+
+    transform:translateY(25px) scale(.96);
+
+    transition:.35s cubic-bezier(.2,.8,.2,1);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.25);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.terms-popup-overlay.show .terms-popup{
+    transform:translateY(0) scale(1);
+}
+
+.terms-popup::before{
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    background:rgba(255,98,0,.08);
+
+    top:-100px;
+    right:-70px;
+}
+
+.popup-icon{
+    width:68px;
+    height:68px;
+
+    margin:0 auto 17px;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+        135deg,
+        #ff8a00,
+        #ff6200
+    );
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:27px;
+
+    box-shadow:
+        0 12px 25px rgba(255,98,0,.25);
+
+    position:relative;
+    z-index:1;
+}
+
+.terms-popup h2{
+    color:#222;
+
+    font-size:22px;
+    font-weight:800;
+
+    margin-bottom:9px;
+
+    position:relative;
+    z-index:1;
+}
+
+.terms-popup p{
+    color:#777;
+
+    font-size:12px;
+    line-height:1.7;
+
+    margin-bottom:22px;
+
+    position:relative;
+    z-index:1;
+}
+
+.terms-popup button{
+    width:100%;
+    height:48px;
+
+    border:none;
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        #ff8a00,
+        #ff6200
+    );
+
+    color:#fff;
+
+    font-size:14px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    position:relative;
+    z-index:1;
+
+    transition:.25s;
+}
+
+.terms-popup button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(255,98,0,.25);
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <div class="header">
+
+        <div class="brand">
+            DARVOZ
+        </div>
+
+        <div class="tagline">
+            ONE APP. EVERY NEED.
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         LOGIN FORM
+    ====================================== -->
+
+    <div class="form-area">
+
+        <h1>
+            Welcome Back 👋
+        </h1>
+
+        <div class="subtitle">
+    Enter your mobile number to continue
+</div>
+
+
+        <!-- =================================
+             CONTINUOUS CATEGORIES
+        ================================== -->
+
+        <div class="category-scroll">
+
+            <div class="track">
+
+
+                <!-- SET 1 -->
+
+                <div class="item">
+    <div class="circle">🍔</div>
+    <span>Food</span>
+</div>
+
+<div class="item">
+    <div class="circle">🛒</div>
+    <span>Grocery</span>
+</div>
+
+<div class="item">
+    <div class="circle">🥩</div>
+    <span>Meat</span>
+</div>
+
+<div class="item">
+    <div class="circle">🥤</div>
+    <span>Drinks</span>
+</div>
+
+<div class="item">
+    <div class="circle">🥐</div>
+    <span>Bakery</span>
+</div>
+
+<div class="item">
+    <div class="circle">🍦</div>
+    <span>Ice Cream</span>
+</div>
+
+<div class="item">
+    <div class="circle">🍟</div>
+    <span>Fast Food</span>
+</div>
+
+<div class="item">
+    <div class="circle">🌯</div>
+    <span>Rolls</span>
+</div>
+
+                <!-- SET 2 -->
+
+                <div class="item">
+                    <div class="circle">🍔</div>
+                    <span>Food</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🛒</div>
+                    <span>Grocery</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🥩</div>
+                    <span>Meat</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🥤</div>
+                    <span>Drinks</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🥐</div>
+                    <span>Bakery</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🍟</div>
+                    <span>Fast Food</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🌯</div>
+                    <span>Rolls</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🥪</div>
+                    <span>Sandwich</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🥤</div>
+                    <span>Shakes</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🍛</div>
+                    <span>Tiffin</span>
+                </div>
+
+                <div class="item">
+                    <div class="circle">🫓</div>
+                    <span>Paratha</span>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        
+
+        <!-- =================================
+             MOBILE
+        ================================== -->
+
+        <div class="input-box">
+
+            <span class="country-code">
+                +91
+            </span>
+
+            <input
+                type="tel"
+                id="mobile"
+                maxlength="10"
+                placeholder="Enter Mobile Number"
+            >
+
+        </div>
+
+
+
+<!-- TERMS & CONDITIONS -->
+
+<div class="terms-text">
+    By continuing, you agree to our
+    <a href="terms.html" target="_blank">Terms & Conditions</a>
+    and
+    <a href="privacy.html" target="_blank">Privacy Policy</a>.
+</div>
+
+
+
+
+
+        <button
+    type="button"
+    id="otpBtn"
+    class="otp-btn"
+    onclick="sendOTP()">
+
+    <i class="fa-solid fa-mobile-screen-button"></i>
+    Continue with OTP
+
+</button>
+
+        <!-- =================================
+             REGISTER
+        ================================== -->
+
+        <p class="register">
+
+            New Customer?
+
+            <a href="customer-register.html">
+                Create Account
+            </a>
+
+        </p>
+        
+        <!-- SOCIAL MEDIA -->
+
+<div class="social-follow">
+
+    <p>Follow us for more updates</p>
+
+    <div class="social-links">
+
+        <!-- INSTAGRAM -->
+
+        <a href="https://www.instagram.com/darvoz.in?igsi=ZDNlZDc0MzIxNw=="
+           target="_blank"
+           class="social-link instagram-link">
+
+            <i class="fa-brands fa-instagram"></i>
+            
+
+        </a>
+
+
+        <!-- WHATSAPP CHANNEL -->
+
+        <a href="https://whatsapp.com/channel/0029Vb8gpchKmCPHSrIVvX29"
+           target="_blank"
+           class="social-link whatsapp-link">
+
+            <i class="fa-brands fa-whatsapp"></i>
+            
+
+        </a>
+
+    </div>
+
+</div>
+
+
+        <!-- =================================
+             SECURITY
+        ================================== -->
+
+        <div class="security">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Your data is safe and secure with us
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<!-- PREMIUM TERMS POPUP -->
+<div class="terms-popup-overlay" id="termsPopup">
+
+    <div class="terms-popup">
+
+        <div class="popup-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <h2>One Small Step</h2>
+
+        <p>
+            Please accept our Terms & Conditions and Privacy Policy
+            to continue with DARVOZ.
+        </p>
+
+        <button onclick="closeTermsPopup()">
+            Got it
+        </button>
+
+    </div>
+
+</div>
+
+<script src="customer-login.js"></script>
+
+</body>
+
+</html>

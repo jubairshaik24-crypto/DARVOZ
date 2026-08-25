@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Business Location</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#fff8f2;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:30px;
+}
+
+.container{
+
+width:100%;
+max-width:700px;
+
+background:#fff;
+
+padding:40px;
+
+border-radius:25px;
+
+box-shadow:0 15px 40px rgba(0,0,0,.1);
+
+}
+
+h1{
+
+font-size:34px;
+
+margin-bottom:10px;
+
+}
+
+p{
+
+color:#777;
+
+margin-bottom:25px;
+
+}
+
+.input-group{
+
+margin-bottom:18px;
+
+}
+
+label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-weight:600;
+
+}
+
+input{
+
+width:100%;
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+font-size:16px;
+
+}
+
+.location-btn{
+
+width:100%;
+
+padding:15px;
+
+background:#0aa84f;
+
+color:white;
+
+border:none;
+
+border-radius:12px;
+
+font-size:17px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin-bottom:20px;
+
+}
+
+.buttons{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:30px;
+
+}
+
+.back{
+
+background:#ddd;
+
+color:#333;
+
+}
+
+.next{
+
+background:#ff6b00;
+
+color:#fff;
+
+}
+
+.buttons button{
+
+padding:15px 35px;
+
+border:none;
+
+border-radius:12px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+
+Business Location
+
+</h1>
+
+<p>
+
+Enter your shop address or use your current location.
+
+</p>
+
+<button
+class="location-btn"
+onclick="useCurrentLocation()">
+
+📍 Use Current Location
+
+</button>
+
+<div class="input-group">
+
+<label>Shop No / Building</label>
+
+<input
+id="house"
+type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>Street</label>
+
+<input
+id="street"
+type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>Area</label>
+
+<input
+id="area"
+type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>City</label>
+
+<input
+id="city"
+type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>State</label>
+
+<input
+id="state"
+type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>Pincode</label>
+
+<input
+id="pincode"
+type="text">
+
+</div>
+
+<input
+type="hidden"
+id="latitude">
+
+<input
+type="hidden"
+id="longitude">
+
+<div class="buttons">
+
+<button
+class="back"
+onclick="history.back()">
+
+Back
+
+</button>
+
+<button
+class="next"
+onclick="nextStep()">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+async function useCurrentLocation(){
+
+if(!navigator.geolocation){
+
+alert("Geolocation is not supported.");
+
+return;
+
+}
+
+navigator.geolocation.getCurrentPosition(
+
+async(position)=>{
+
+const lat=position.coords.latitude;
+const lng=position.coords.longitude;
+
+// Save coordinates
+document.getElementById("latitude").value=lat;
+document.getElementById("longitude").value=lng;
+
+try{
+
+const response=await fetch(
+
+`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`
+
+);
+
+const data=await response.json();
+
+const address=data.address;
+
+// Auto Fill
+
+document.getElementById("area").value=
+address.suburb ||
+address.neighbourhood ||
+address.village ||
+"";
+
+document.getElementById("city").value=
+address.city ||
+address.town ||
+address.county ||
+"";
+
+document.getElementById("state").value=
+address.state || "";
+
+document.getElementById("pincode").value=
+address.postcode || "";
+
+alert("Location Loaded Successfully");
+
+}catch(err){
+
+console.log(err);
+
+alert("Unable to fetch address.");
+
+}
+
+},
+
+()=>{
+
+alert("Location Permission Denied.");
+
+}
+
+);
+
+}
+
+function nextStep(){
+
+localStorage.setItem(
+
+"house",
+
+document.getElementById("house").value
+
+);
+
+localStorage.setItem(
+
+"street",
+
+document.getElementById("street").value
+
+);
+
+localStorage.setItem(
+
+"area",
+
+document.getElementById("area").value
+
+);
+
+localStorage.setItem(
+
+"city",
+
+document.getElementById("city").value
+
+);
+
+localStorage.setItem(
+
+"state",
+
+document.getElementById("state").value
+
+);
+
+localStorage.setItem(
+
+"pincode",
+
+document.getElementById("pincode").value
+
+);
+
+localStorage.setItem(
+
+"latitude",
+
+document.getElementById("latitude").value
+
+);
+
+localStorage.setItem(
+
+"longitude",
+
+document.getElementById("longitude").value
+
+);
+
+location.href="partner-upload.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

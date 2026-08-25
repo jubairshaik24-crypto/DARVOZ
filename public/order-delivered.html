@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order Delivered - DARVOZ</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #222;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        /* SUCCESS ICON */
+
+        .success-icon {
+            width: 85px;
+            height: 85px;
+
+            background: #ff5a00;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(255, 90, 0, 0.25);
+        }
+
+        .success-icon span {
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        /* DELIVERY IMAGE */
+
+        .delivery-image {
+            width: 260px;
+            max-width: 80%;
+
+            margin-bottom: 20px;
+        }
+
+        /* TITLE */
+
+        h1 {
+            color: #ff5a00;
+            font-size: 30px;
+            font-weight: 800;
+
+            margin-bottom: 12px;
+        }
+
+        .thank-you {
+            font-size: 18px;
+            color: #444;
+
+            margin-bottom: 25px;
+        }
+
+        .heart {
+            color: #ff5a00;
+        }
+
+        /* ENJOY */
+
+        .enjoy {
+            margin-top: 5px;
+        }
+
+        .smile {
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        .enjoy h2 {
+            color: #ff5a00;
+            font-size: 22px;
+
+            margin-bottom: 7px;
+        }
+
+        .enjoy p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        /* BUTTON */
+
+        .home-btn {
+            width: 100%;
+            max-width: 380px;
+
+            margin-top: 35px;
+
+            padding: 16px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #ff5a00;
+            color: white;
+
+            font-size: 17px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 18px rgba(255, 90, 0, 0.25);
+        }
+
+        .home-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 480px) {
+
+            .page {
+                padding: 20px 18px;
+            }
+
+            .success-icon {
+                width: 75px;
+                height: 75px;
+            }
+
+            .success-icon span {
+                font-size: 42px;
+            }
+
+            .delivery-image {
+                width: 230px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .thank-you {
+                font-size: 16px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- SUCCESS -->
+
+    <div class="success-icon">
+        <span>✓</span>
+    </div>
+
+
+    
+
+
+    <!-- TITLE -->
+
+    <h1>
+        Your Order is Delivered
+    </h1>
+
+
+    <!-- THANK YOU -->
+
+    <div class="thank-you">
+        Thank you for ordering Darvoz!
+        <span class="heart">♥</span>
+    </div>
+
+
+    <!-- ENJOY -->
+
+    <div class="enjoy">
+
+        <div class="smile">
+            😊
+        </div>
+
+        <h2>
+            Enjoy And Be Happy
+        </h2>
+
+        <p>
+            Your satisfaction is our priority.
+        </p>
+
+    </div>
+
+
+    <!-- HOME -->
+
+    <button
+        class="home-btn"
+        onclick="goHome()">
+
+        🏠 &nbsp; Back to Home
+
+    </button>
+
+</div>
+
+
+<script>
+
+function goHome() {
+
+    window.location.href = "index.html";
+
+}
+
+</script>
+
+</body>
+</html>

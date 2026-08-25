@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>DARVOZ - Order Success</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+  *{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+:root{
+
+--primary:#ff5a00;
+--green:#18b663;
+--bg:#f5f5f5;
+--white:#fff;
+--text:#222;
+--light:#777;
+
+}
+
+body{
+
+background:var(--bg);
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
+
+}
+
+.success-card{
+
+width:100%;
+max-width:460px;
+background:var(--white);
+border-radius:24px;
+padding:35px 28px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+text-align:center;
+
+}
+
+.success-icon{
+
+width:95px;
+height:95px;
+background:#e9fff2;
+border-radius:50%;
+margin:auto;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:48px;
+color:var(--green);
+
+animation:pop .5s ease;
+
+}
+
+@keyframes pop{
+
+0%{
+
+transform:scale(.5);
+
+opacity:0;
+
+}
+
+100%{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.success-card h1{
+
+margin-top:20px;
+font-size:30px;
+color:#222;
+
+}
+
+.subtitle{
+
+margin-top:8px;
+font-size:15px;
+color:#666;
+line-height:24px;
+
+}
+
+.info-box{
+
+margin-top:30px;
+background:#fafafa;
+border-radius:18px;
+padding:18px;
+
+}
+
+.info-row{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid #eee;
+
+}
+
+.info-row:last-child{
+
+border-bottom:none;
+
+}
+
+.label{
+
+font-size:14px;
+color:#777;
+
+}
+
+.value{
+
+font-size:16px;
+font-weight:700;
+color:#222;
+
+}
+
+.track-btn{
+
+margin-top:30px;
+width:100%;
+height:54px;
+border:none;
+background:var(--primary);
+color:white;
+font-size:17px;
+font-weight:700;
+border-radius:14px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+.track-btn:hover{
+
+background:#e14e00;
+
+}
+
+.home-btn{
+
+margin-top:15px;
+width:100%;
+height:54px;
+border:2px solid var(--primary);
+background:white;
+color:var(--primary);
+font-size:17px;
+font-weight:700;
+border-radius:14px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+.home-btn:hover{
+
+background:#fff3ed;
+
+}
+
+.thank-you{
+
+margin-top:18px;
+font-size:14px;
+color:#777;
+line-height:24px;
+
+}
+
+@media(max-width:500px){
+
+.success-card{
+
+padding:28px 22px;
+
+}
+
+.success-card h1{
+
+font-size:25px;
+
+}
+
+.success-icon{
+
+width:80px;
+height:80px;
+font-size:40px;
+
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="success-card">
+
+    <div class="success-icon">
+
+        <i class="fa-solid fa-check"></i>
+
+    </div>
+
+    <h1>Order Confirmed</h1>
+
+    <p class="subtitle">
+
+        Your payment was successful.<br>
+
+        The restaurant has received your order.
+
+    </p>
+
+    <div class="info-box">
+
+        <div class="info-row">
+
+            <span class="label">
+
+                Order ID
+
+            </span>
+
+            <span
+            class="value"
+            id="orderId">
+
+                #
+
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="label">
+
+                Estimated Delivery
+
+            </span>
+
+            <span class="value">
+
+                25 - 35 mins
+
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="label">
+
+                Payment
+
+            </span>
+
+            <span class="value">
+
+                Paid via Razorpay
+
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="label">
+
+                Status
+
+            </span>
+
+            <span
+            class="value"
+            style="color:#18b663;">
+
+                Confirmed
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <button
+    class="track-btn"
+    onclick="trackOrder()">
+
+        Track Order
+
+    </button>
+
+    <button
+    class="home-btn"
+    onclick="goHome()">
+
+        Back To Home
+
+    </button>
+
+    <div class="thank-you">
+
+        ❤️ Thank you for ordering with DARVOZ
+
+    </div>
+
+</div>
+
+
+<script>
+
+const orderId = localStorage.getItem("orderId");
+
+console.log("================================");
+console.log("DARVOZ ORDER SUCCESS PAGE");
+console.log("Order ID:", orderId);
+console.log("Cart:", localStorage.getItem("cart"));
+console.log("Last Order:", localStorage.getItem("lastOrder"));
+console.log("================================");
+
+
+/* ==============================
+   SHOW ORDER ID
+============================== */
+
+document.getElementById("orderId").innerText =
+    orderId
+        ? "#" + orderId
+        : "------";
+
+
+/* ==============================
+   TRACK ORDER
+============================== */
+
+function trackOrder(){
+
+    if(!orderId){
+
+        alert("Order ID not found.");
+
+        return;
+
+    }
+
+    window.location.href =
+        "track.html?id=" + orderId;
+
+}
+
+
+/* ==============================
+   HOME
+============================== */
+
+function goHome(){
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* ==============================
+   AUTO REDIRECT
+============================== */
+
+setTimeout(() => {
+
+    if(orderId){
+
+        window.location.href =
+            "track.html?id=" + orderId;
+
+    }
+
+}, 15000);
+
+
+
+</script>
+
+</body>
+
+</html>
