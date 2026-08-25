@@ -102,7 +102,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ==============================
 // ROUTES
 // ==============================
-const offerRoutes = require("./routes/offers");
 const whatsappRoutes = require("./routes/whatsapp");
 const restaurantsRoutes =require("./routes/restaurants");
 const supportRoutes =
@@ -151,7 +150,7 @@ app.use("/customer", customerRoutes);
 app.use("/wallet", walletRoutes);
 
 app.use("/deliveryPartner", deliveryPartnerRoutes);
-app.use("/admin/offers", offerRoutes);
+
 
 app.use("/orders", orderRoutes);
 
