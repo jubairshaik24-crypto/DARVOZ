@@ -3,29 +3,39 @@ const API = window.location.origin;
 /* =====================================================
    SEND OTP
 ===================================================== */
-
 async function sendOTP() {
 
-    const mobileInput = document.getElementById("mobile");
-    const otpButton = document.getElementById("otpBtn");
-   
+    const mobileInput =
+        document.getElementById("mobile");
+
+    const otpButton =
+        document.getElementById("otpBtn");
+
     if (!mobileInput) {
         console.error("Mobile input not found");
         return;
     }
 
-    const mobile = mobileInput.value.trim();
+    const mobile =
+        mobileInput.value.trim();
 
-    // Check mobile number
+    // ==============================
+    // VALIDATE MOBILE
+    // ==============================
+
     if (!/^[0-9]{10}$/.test(mobile)) {
-        alert("Please enter a valid 10-digit mobile number.");
+
+        alert(
+            "Please enter a valid 10-digit mobile number."
+        );
+
         mobileInput.focus();
+
         return;
     }
 
-    
-
-    const originalText = otpButton.innerHTML;
+    const originalText =
+        otpButton.innerHTML;
 
     try {
 
@@ -33,55 +43,201 @@ async function sendOTP() {
 
         otpButton.innerHTML = `
             <i class="fa-solid fa-spinner fa-spin"></i>
-            Sending OTP...
+            Please wait...
         `;
 
-        const response = await fetch(
-            `${API}/api/whatsapp/send-otp`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    phone: "91" + mobile
-                })
-            }
+
+        // ==============================
+        // CHECK IF CUSTOMER EXISTS
+        // ==============================
+
+        const checkResponse =
+            await fetch(
+                `${API}/api/whatsapp/check-customer`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        phone: mobile
+                    })
+                }
+            );
+
+
+        const checkData =
+            await checkResponse.json();
+
+
+        console.log(
+            "CUSTOMER CHECK:",
+            checkData
         );
 
-        const data = await response.json();
 
-        console.log("OTP RESPONSE:", data);
+        if (
+            !checkResponse.ok ||
+            !checkData.success
+        ) {
 
-        if (!response.ok || !data.success) {
-            alert(data.message || "Unable to send OTP.");
+            alert(
+                checkData.message ||
+                "Unable to check customer."
+            );
+
             return;
         }
 
-        // SAVE MOBILE NUMBER
-        localStorage.setItem("otpMobile", mobile);
+
+        // ==============================
+        // EXISTING CUSTOMER
+        // ==============================
+
+        if (checkData.exists) {
+
+            const customer =
+                checkData.customer;
+
+
+            // SAVE LOGIN DETAILS
+
+            localStorage.setItem(
+                "customerId",
+                customer._id
+            );
+
+            localStorage.setItem(
+                "customerName",
+                customer.name || ""
+            );
+
+            localStorage.setItem(
+                "mobile",
+                customer.mobile || mobile
+            );
+
+            localStorage.setItem(
+                "customerEmail",
+                customer.email || ""
+            );
+
+            localStorage.setItem(
+                "customerLoggedIn",
+                "true"
+            );
+
+            localStorage.setItem(
+                "customerLoginTime",
+                new Date().toISOString()
+            );
+
+
+            console.log(
+                "Existing customer found:",
+                customer
+            );
+
+
+            // DIRECTLY OPEN HOME PAGE
+
+            window.location.href =
+                "index.html";
+
+            return;
+        }
+
+
+        // ==============================
+        // NEW CUSTOMER
+        // SEND OTP
+        // ==============================
+
+        otpButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Sending OTP...
+        `;
+
+
+        const response =
+            await fetch(
+                `${API}/api/whatsapp/send-otp`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        phone: "91" + mobile
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
 
         console.log(
-            "Saved mobile:",
-            localStorage.getItem("otpMobile")
+            "OTP RESPONSE:",
+            data
         );
 
-        // GO TO OTP VERIFICATION PAGE
-        window.location.href = "verify-otp.html";
 
-    } catch (error) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
-        console.error("SEND OTP ERROR:", error);
+            alert(
+                data.message ||
+                "Unable to send OTP."
+            );
 
-        alert("Unable to connect to server. Please try again.");
+            return;
+        }
 
-    } finally {
+
+        // SAVE MOBILE FOR VERIFY PAGE
+
+        localStorage.setItem(
+            "otpMobile",
+            mobile
+        );
+
+
+        // OPEN OTP PAGE
+
+        window.location.href =
+            "verify-otp.html";
+
+    }
+    catch (error) {
+
+        console.error(
+            "SEND OTP ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to connect to server. Please try again."
+        );
+
+    }
+    finally {
 
         otpButton.disabled = false;
-        otpButton.innerHTML = originalText;
+
+        otpButton.innerHTML =
+            originalText;
     }
 }
-
 
 /* =====================================================
    MOBILE INPUT

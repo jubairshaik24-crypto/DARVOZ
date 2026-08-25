@@ -265,5 +265,50 @@ router.post("/verify-otp", async (req, res) => {
 
 });
 
+// ==============================
+// CHECK CUSTOMER
+// ==============================
 
+router.post("/check-customer", async (req, res) => {
+    try {
+
+        const mobile = normalizePhone(req.body.phone);
+
+        if (!mobile) {
+            return res.status(400).json({
+                success: false,
+                message: "Phone number is required"
+            });
+        }
+
+        const customer = await Customer.findOne({
+            mobile: mobile
+        });
+
+        if (customer) {
+            return res.json({
+                success: true,
+                exists: true,
+                customer: customer
+            });
+        }
+
+        return res.json({
+            success: true,
+            exists: false
+        });
+
+    } catch (error) {
+
+        console.error(
+            "CHECK CUSTOMER ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to check customer"
+        });
+    }
+});
 module.exports = router;
