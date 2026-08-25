@@ -108,6 +108,7 @@ const checkTemplates = async () => {
             )
         );
     }
+    
 };
 
 

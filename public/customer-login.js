@@ -107,7 +107,7 @@ async function sendOTP() {
 
             localStorage.setItem(
                 "customerId",
-                customer._id
+                customer.id
             );
 
             localStorage.setItem(
