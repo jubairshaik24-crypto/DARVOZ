@@ -334,7 +334,343 @@ h1{
 
 </div>
 
-<script src="verify-otp.js"></script>
+<script>
+
+const inputs =
+    document.querySelectorAll(".otp-input");
+
+
+/* ==============================
+   GET MOBILE FROM LOCAL STORAGE
+============================== */
+
+const mobile =
+    localStorage.getItem("otpMobile");
+
+
+/* ==============================
+   SHOW MOBILE NUMBER
+============================== */
+
+document.getElementById(
+    "mobileDisplay"
+).textContent =
+    mobile
+        ? "+91 " + mobile
+        : "your mobile number";
+
+
+/* ==============================
+   OTP INPUT AUTO MOVE
+============================== */
+
+inputs.forEach(
+    (input, index) => {
+
+        input.addEventListener(
+            "input",
+            () => {
+
+                input.value =
+                    input.value.replace(/\D/g, "");
+
+                if (
+                    input.value &&
+                    index < inputs.length - 1
+                ) {
+                    inputs[index + 1].focus();
+                }
+
+            }
+        );
+
+
+        input.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Backspace" &&
+                    !input.value &&
+                    index > 0
+                ) {
+                    inputs[index - 1].focus();
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* ==============================
+   VERIFY OTP
+============================== */
+
+async function verifyOTP(){
+
+    if(!mobile){
+
+        alert(
+            "Mobile number not found. Please enter your number again."
+        );
+
+        window.location.href =
+            "customer-login.html";
+
+        return;
+    }
+
+
+    const otp =
+        Array.from(inputs)
+            .map(input => input.value)
+            .join("");
+
+
+    if(otp.length !== 6){
+
+        alert(
+            "Please enter the complete 6-digit OTP"
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.querySelector(".verify-btn");
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Verifying...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/otp/verify-otp",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            phone: mobile,
+                            otp: otp
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message ||
+                "OTP verification failed"
+            );
+
+        }
+
+
+        alert(
+            "Phone number verified successfully!"
+        );
+
+
+        /* SAVE VERIFIED NUMBER */
+
+        localStorage.setItem(
+            "verifiedMobile",
+            data.mobile
+        );
+
+
+        /* REMOVE OTP TEMP DATA */
+
+        localStorage.removeItem(
+            "otpMobile"
+        );
+
+
+        /* REDIRECT */
+
+        window.location.href =
+            "customer-register.html";
+
+
+    }
+    catch(error){
+
+        console.error(
+            "VERIFY OTP ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "OTP verification failed"
+        );
+
+    }
+    finally{
+
+        button.disabled = false;
+
+        button.textContent =
+            "Verify & Continue";
+
+    }
+
+}
+
+
+/* ==============================
+   RESEND OTP
+============================== */
+
+async function resendOTP(){
+
+    if(!mobile){
+
+        alert(
+            "Mobile number not found"
+        );
+
+        return;
+    }
+
+
+    const resendButton =
+        document.querySelector(
+            ".resend button"
+        );
+
+
+    resendButton.disabled = true;
+
+    resendButton.textContent =
+        "Sending...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/otp/send-otp",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            phone: mobile
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message ||
+                "Failed to resend OTP"
+            );
+
+        }
+
+
+        inputs.forEach(
+            input => {
+                input.value = "";
+            }
+        );
+
+
+        inputs[0].focus();
+
+
+        alert(
+            "New OTP sent successfully!"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "RESEND OTP ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Failed to resend OTP"
+        );
+
+    }
+    finally{
+
+        resendButton.disabled = false;
+
+        resendButton.textContent =
+            "Resend OTP";
+
+    }
+
+}
+
+
+/* ==============================
+   GO BACK
+============================== */
+
+function goBack(){
+
+    localStorage.removeItem(
+        "otpMobile"
+    );
+
+    window.history.back();
+
+}
+
+
+/* ==============================
+   AUTO FOCUS FIRST OTP
+============================== */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        if(inputs.length){
+            inputs[0].focus();
+        }
+
+    }
+);
+
+</script>
 
 </body>
 </html>
