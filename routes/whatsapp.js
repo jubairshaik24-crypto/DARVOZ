@@ -139,9 +139,7 @@ router.post("/verify-otp", async (req, res) => {
 
     try {
 
-        const phone = String(
-            req.body.phone || ""
-        ).replace(/\D/g, "");
+        const phone = normalizePhone(req.body.phone);
 
         const otp = String(
             req.body.otp || ""
