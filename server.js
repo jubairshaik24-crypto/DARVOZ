@@ -4,6 +4,8 @@
 
 require("dotenv").config();
 
+
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -11,7 +13,10 @@ const http = require("http");
 
 const { Server } = require("socket.io");
 
-const db = require("./config/db");
+const connectDB = require("./config/db");
+connectDB();
+
+const Customer = require("./models/Customer");
 
 const dispatchService = require("./services/dispatchService");
 
@@ -93,22 +98,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // DATABASE
 // ==============================
 
-db.getConnection((err, connection) => {
 
-    if (err) {
-        console.log("MySQL Connection Failed");
-        console.log(err);
-    } else {
-        console.log("MySQL Connected");
-        connection.release();
-    }
-
-});
 
 // ==============================
 // ROUTES
 // ==============================
-
+const offerRoutes = require("./routes/offers");
 const whatsappRoutes = require("./routes/whatsapp");
 const restaurantsRoutes =require("./routes/restaurants");
 const supportRoutes =
@@ -121,8 +116,8 @@ console.log("typeof searchRoutes =", typeof searchRoutes);
 const adminRoutes = require("./routes/admin");
 const customerRoutes = require("./routes/customer");
 const walletRoutes = require("./routes/wallet");
-const deliveryOrderRoutes = require("./routes/deliveryOrders");
-const deliveryRoutes = require("./routes/delivery");
+
+const deliveryPartnerRoutes = require("./routes/deliveryPartnerRoutes");
 const adminDeliveryRoutes = require("./routes/adminDelivery");
 const partnerOrderRoutes = require("./routes/partnerOrders");
 const orderRoutes = require("./routes/orders");
@@ -136,7 +131,13 @@ const cartRoutes = require("./routes/cart");
 const addressRoutes = require("./routes/address");
 const paymentRoutes = require("./routes/payment");
 
+
 // APIs
+
+console.log("whatsappRoutes =", whatsappRoutes);
+console.log("typeof whatsappRoutes =", typeof whatsappRoutes);
+app.use("/api/whatsapp", whatsappRoutes);
+
 
 app.use(
     "/api/support",
@@ -148,13 +149,10 @@ app.use("/address", addressRoutes);
 
 app.use("/customer", customerRoutes);
 
-app.use("/api/whatsapp", whatsappRoutes);
-
 app.use("/wallet", walletRoutes);
 
-app.use("/delivery", deliveryRoutes);
-
-app.use("/orders", deliveryOrderRoutes);
+app.use("/deliveryPartner", deliveryPartnerRoutes);
+app.use("/admin/offers", offerRoutes);
 
 app.use("/orders", orderRoutes);
 
@@ -191,31 +189,47 @@ app.get("/", (req, res) => {
 // CUSTOMER PROFILE
 // ==============================
 
-app.get("/user/profile", (req, res) => {
+app.get("/user/profile", async (req, res) => {
 
-    const customerId = req.query.customerId;
+    try {
 
-    db.query(
+        const customerId = req.query.customerId;
 
-        "SELECT city,state FROM customers WHERE id=?",
-
-        [customerId],
-
-        (err, result) => {
-
-            if (err) {
-                return res.status(500).json(err);
-            }
-
-            if (result.length === 0) {
-                return res.json({});
-            }
-
-            res.json(result[0]);
-
+        if (!customerId) {
+            return res.status(400).json({
+                success: false,
+                message: "Customer ID is required"
+            });
         }
 
-    );
+        const customer = await Customer.findById(
+            customerId
+        )
+            .select("city state")
+            .lean();
+
+        if (!customer) {
+            return res.json({});
+        }
+
+        res.json({
+            city: customer.city || "",
+            state: customer.state || ""
+        });
+
+    } catch (error) {
+
+        console.error(
+            "CUSTOMER PROFILE ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Database Error"
+        });
+
+    }
 
 });
 
