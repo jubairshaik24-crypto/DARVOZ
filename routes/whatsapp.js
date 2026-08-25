@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
+const db = require("../config/db");
+
 const {
     sendWhatsAppOTP
 } = require("../services/whatsappService");
 
-const Customer = require("../models/Customer");
 const otpStore = new Map();
 
 
@@ -41,12 +42,10 @@ router.post("/send-otp", async (req, res) => {
         const phone = normalizePhone(req.body.phone);
 
         if (!phone) {
-
             return res.status(400).json({
                 success: false,
                 message: "Phone number is required"
             });
-
         }
 
 
@@ -62,22 +61,27 @@ router.post("/send-otp", async (req, res) => {
 
         // Store OTP for 5 minutes
         otpStore.set(phone, {
-
             otp: otp,
-
-            expiresAt:
-                Date.now() +
-                5 * 60 * 1000
-
+            expiresAt: Date.now() + 5 * 60 * 1000
         });
 
 
+        console.log(
+            "OTP STORED FOR:",
+            phone
+        );
+
+        console.log(
+            "OTP STORE KEYS:",
+            [...otpStore.keys()]
+        );
+
+
         // Send WhatsApp OTP
-        const result =
-            await sendWhatsAppOTP(
-                phone,
-                otp
-            );
+        const result = await sendWhatsAppOTP(
+            phone,
+            otp
+        );
 
 
         if (!result.success) {
@@ -85,32 +89,22 @@ router.post("/send-otp", async (req, res) => {
             otpStore.delete(phone);
 
             return res.status(500).json({
-
                 success: false,
-
                 message:
                     "Failed to send WhatsApp OTP",
-
                 error:
                     result.error
-
             });
-
         }
 
 
         return res.json({
-
             success: true,
-
             message:
                 "OTP sent successfully to WhatsApp"
-
         });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "SEND OTP ERROR:",
@@ -118,17 +112,12 @@ router.post("/send-otp", async (req, res) => {
         );
 
         return res.status(500).json({
-
             success: false,
-
             message:
                 error.message ||
                 "Unable to send OTP"
-
         });
-
     }
-
 });
 
 
@@ -140,7 +129,9 @@ router.post("/verify-otp", async (req, res) => {
 
     try {
 
-        const phone = normalizePhone(req.body.phone);
+        const phone = normalizePhone(
+            req.body.phone
+        );
 
         const otp = String(
             req.body.otp || ""
@@ -152,23 +143,29 @@ router.post("/verify-otp", async (req, res) => {
             phone
         );
 
+        console.log(
+            "VERIFY OTP:",
+            otp
+        );
+
+        console.log(
+            "AVAILABLE OTP KEYS:",
+            [...otpStore.keys()]
+        );
+
 
         // Validate
         if (!phone || !otp) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Phone number and OTP are required"
-
             });
-
         }
 
 
-        // Find saved OTP
+        // Find OTP
         const savedOTP =
             otpStore.get(phone);
 
@@ -176,14 +173,10 @@ router.post("/verify-otp", async (req, res) => {
         if (!savedOTP) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "OTP not found. Please request a new OTP."
-
             });
-
         }
 
 
@@ -196,14 +189,10 @@ router.post("/verify-otp", async (req, res) => {
             otpStore.delete(phone);
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "OTP expired. Please request a new OTP."
-
             });
-
         }
 
 
@@ -213,14 +202,10 @@ router.post("/verify-otp", async (req, res) => {
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Invalid OTP"
-
             });
-
         }
 
 
@@ -228,24 +213,20 @@ router.post("/verify-otp", async (req, res) => {
         otpStore.delete(phone);
 
 
-        const mobile =
-            normalizePhone(phone);
+        console.log(
+            "OTP VERIFIED SUCCESSFULLY:",
+            phone
+        );
 
 
         return res.json({
-
             success: true,
-
             message:
                 "Phone number verified successfully",
-
-            mobile: mobile
-
+            mobile: phone
         });
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "VERIFY OTP ERROR:",
@@ -253,48 +234,118 @@ router.post("/verify-otp", async (req, res) => {
         );
 
         return res.status(500).json({
-
             success: false,
-
             message:
                 error.message ||
                 "OTP verification failed"
-
         });
-
     }
-
 });
+
 
 // ==============================
 // CHECK CUSTOMER
 // ==============================
 
-router.post("/check-customer", async (req, res) => {
+router.post("/check-customer", (req, res) => {
+
     try {
 
-        const mobile = normalizePhone(req.body.phone);
+        const mobile = normalizePhone(
+            req.body.phone
+        );
 
-        console.log("CHECKING CUSTOMER:", mobile);
+
+        console.log(
+            "CHECKING CUSTOMER:",
+            mobile
+        );
+
 
         if (!mobile) {
+
             return res.status(400).json({
                 success: false,
-                message: "Phone number is required"
+                message:
+                    "Phone number is required"
             });
         }
 
-        const customer = await Customer.findOne({
-            mobile: mobile
-        }).lean();
 
-        console.log("CUSTOMER FOUND:", customer);
+        const sql = `
+            SELECT *
+            FROM customers
+            WHERE mobile = ?
+            LIMIT 1
+        `;
 
-        return res.json({
-            success: true,
-            exists: !!customer,
-            customer: customer || null
-        });
+
+        db.query(
+            sql,
+            [mobile],
+            (error, results) => {
+
+                if (error) {
+
+                    console.error(
+                        "CHECK CUSTOMER MYSQL ERROR:",
+                        error
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Unable to check customer",
+                        error:
+                            error.message
+                    });
+                }
+
+
+                console.log(
+                    "CUSTOMER QUERY RESULT:",
+                    results
+                );
+
+
+                // Existing customer
+                if (
+                    results &&
+                    results.length > 0
+                ) {
+
+                    const customer =
+                        results[0];
+
+
+                    console.log(
+                        "CUSTOMER FOUND:",
+                        customer
+                    );
+
+
+                    return res.json({
+                        success: true,
+                        exists: true,
+                        customer: customer
+                    });
+                }
+
+
+                // New customer
+                console.log(
+                    "CUSTOMER NOT FOUND:",
+                    mobile
+                );
+
+
+                return res.json({
+                    success: true,
+                    exists: false,
+                    customer: null
+                });
+            }
+        );
 
     } catch (error) {
 
@@ -305,10 +356,13 @@ router.post("/check-customer", async (req, res) => {
 
         return res.status(500).json({
             success: false,
-            message: "Unable to check customer",
-            error: error.message
+            message:
+                "Unable to check customer",
+            error:
+                error.message
         });
     }
 });
+
 
 module.exports = router;

@@ -13,10 +13,9 @@ const http = require("http");
 
 const { Server } = require("socket.io");
 
-const connectDB = require("./config/db");
-connectDB();
+const db = require("./config/db");
 
-const Customer = require("./models/Customer");
+
 
 const dispatchService = require("./services/dispatchService");
 
@@ -189,33 +188,63 @@ app.get("/", (req, res) => {
 // CUSTOMER PROFILE
 // ==============================
 
-app.get("/user/profile", async (req, res) => {
+app.get("/user/profile", (req, res) => {
 
     try {
 
         const customerId = req.query.customerId;
 
         if (!customerId) {
+
             return res.status(400).json({
                 success: false,
                 message: "Customer ID is required"
             });
         }
 
-        const customer = await Customer.findById(
-            customerId
-        )
-            .select("city state")
-            .lean();
 
-        if (!customer) {
-            return res.json({});
-        }
+        const sql = `
+            SELECT city, state
+            FROM customers
+            WHERE id = ?
+            LIMIT 1
+        `;
 
-        res.json({
-            city: customer.city || "",
-            state: customer.state || ""
-        });
+
+        db.query(
+            sql,
+            [customerId],
+            (error, results) => {
+
+                if (error) {
+
+                    console.error(
+                        "CUSTOMER PROFILE ERROR:",
+                        error
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message: "Database Error"
+                    });
+                }
+
+
+                if (!results || results.length === 0) {
+
+                    return res.json({});
+                }
+
+
+                const customer = results[0];
+
+
+                return res.json({
+                    city: customer.city || "",
+                    state: customer.state || ""
+                });
+            }
+        );
 
     } catch (error) {
 
@@ -228,10 +257,9 @@ app.get("/user/profile", async (req, res) => {
             success: false,
             message: "Database Error"
         });
-
     }
-
 });
+
 
 // ==============================
 // META WHATSAPP WEBHOOK
