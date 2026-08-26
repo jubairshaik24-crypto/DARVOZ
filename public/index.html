@@ -4071,8 +4071,7 @@ function addPickToCart(productId, partnerId){
          */
 
        window.location.href =
-    `restaurant.html?id=${encodeURIComponent(partnerId)}&product=${encodeURIComponent(productId)}`;
-        return;
+    `restaurant.html?id=${encodeURIComponent(partnerId)}&category=${encodeURIComponent(product.business_type || product.businessType || product.category || "")}&product=${encodeURIComponent(productId)}`;
 
     }
 
@@ -4266,8 +4265,9 @@ function addPickToCart(productId, partnerId){
     ================================================= */
 
    window.location.href =
-    `restaurant.html?id=${encodeURIComponent(partnerId)}&product=${encodeURIComponent(productId)}`;
+    `restaurant.html?id=${encodeURIComponent(partnerId)}&category=${encodeURIComponent(product.business_type || product.businessType || product.category || "")}&product=${encodeURIComponent(productId)}`;
 
+return;
 }
 
 async function checkServiceAvailability(){

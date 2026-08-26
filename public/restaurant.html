@@ -1959,7 +1959,8 @@ const restaurantId =
     .trim()
     .toLowerCase();
 
-    
+    let allProducts = [];
+
 
 let menuData = [];
 
@@ -3203,58 +3204,94 @@ function buildBusinessTypeButtons(){
 /* =========================================================
    SELECT BUSINESS TYPE
 ========================================================= */
+function selectBusinessType(type, button) {
 
-function selectBusinessType(
-    type,
-    button
-){
-
-    /* =========================================
-       SAVE SELECTED CATEGORY FIRST
-    ========================================= */
-
+    // ==========================================
+    // SAVE SELECTED CATEGORY
+    // ==========================================
     selectedBusinessType =
-        String(type)
-        .trim();
+        String(type || "").trim();
 
-
-    /* =========================================
-       REMOVE ACTIVE FROM ALL BUTTONS
-    ========================================= */
-
+    // ==========================================
+    // REMOVE OLD ACTIVE BUTTON
+    // ==========================================
     document
         .querySelectorAll(
             "#categoryScroll .category-button"
         )
-        .forEach(item => {
+        .forEach(btn => {
 
-            item.classList.remove(
-                "active"
+            btn.classList.remove("active");
+
+        });
+
+
+    // ==========================================
+    // ADD ACTIVE TO CLICKED BUTTON
+    // ==========================================
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+
+    // ==========================================
+    // FILTER USING menuData
+    // ==========================================
+    const selectedType =
+        selectedBusinessType
+            .toLowerCase()
+            .trim();
+
+
+    const filteredItems =
+        menuData.filter(item => {
+
+            const itemType =
+                String(
+                    item.business_type ||
+                    item.businessType ||
+                    item.partner_business_type ||
+                    item.partnerBusinessType ||
+                    item.business_category ||
+                    item.businessCategory ||
+                    item.category ||
+                    ""
+                )
+                .toLowerCase()
+                .trim();
+
+
+            return (
+                itemType === selectedType
             );
 
         });
 
 
-    /* =========================================
-       ADD ACTIVE TO CLICKED BUTTON
-    ========================================= */
+    console.log(
+        "SELECTED CATEGORY:",
+        selectedBusinessType
+    );
 
-    if(button){
+    console.log(
+        "ALL MENU:",
+        menuData
+    );
 
-        button.classList.add(
-            "active"
-        );
+    console.log(
+        "FILTERED MENU:",
+        filteredItems
+    );
 
-    }
 
+    // ==========================================
+    // DISPLAY SELECTED MENU
+    // ==========================================
+    displayFoodMenu(filteredItems);
 
-    /* =========================================
-       OPEN CORRECT UI
-    ========================================= */
-
-  
 }
-
 /* =========================================================
    LOAD PARTNER GROCERY
 ========================================================= */
@@ -3686,25 +3723,22 @@ function getItemsForBusinessType(
 /* =========================================================
    FOOD EMPTY
 ========================================================= */
-
-function showEmptyMenu(message){
+/* =========================================================
+   FOOD EMPTY
+========================================================= */
+function showEmptyMenu(message) {
 
     const container =
         document.getElementById(
             "menuContainer"
         );
 
-    if(!container){
+    if (!container) {
         return;
     }
 
-
     container.innerHTML = `
-
-        <div 
-        class="empty-menu"id="product-${item.id}"
-        
-        >
+        <div class="empty-menu">
 
             <i class="fa-solid fa-box-open"></i>
 
@@ -3713,15 +3747,11 @@ function showEmptyMenu(message){
             </p>
 
         </div>
-
     `;
-
 
     document.getElementById(
         "itemCount"
-    ).textContent =
-        "0 Items";
-
+    ).textContent = "0 Items";
 }
 
 
@@ -3952,27 +3982,42 @@ function displayFoodMenu(items){
 // OPEN & HIGHLIGHT PRODUCT FROM DARVOZ PICKS
 // ==========================================
 
-const urlParams = new URLSearchParams(window.location.search);
+// ==========================================
+// OPEN & HIGHLIGHT PRODUCT FROM DARVOZ PICKS
+// ==========================================
 
+const urlParams = new URLSearchParams(window.location.search);
 const targetProductId = urlParams.get("product");
 
-if(targetProductId){
+if (targetProductId) {
 
-    setTimeout(() => {
+    const targetProduct = document.getElementById(
+        `product-${targetProductId}`
+    );
 
-        const targetProduct = document.getElementById(
-            `product-${targetProductId}`
+    if (targetProduct) {
+
+        // IMPORTANT:
+        // Remove product parameter immediately
+        // so category changes don't highlight it again
+        const cleanUrl = window.location.pathname;
+
+        window.history.replaceState(
+            {},
+            document.title,
+            cleanUrl
         );
 
-        if(targetProduct){
+        setTimeout(() => {
 
             targetProduct.scrollIntoView({
                 behavior: "smooth",
                 block: "center"
             });
 
-            // Highlight selected product
-            targetProduct.classList.add("target-product-highlight");
+            targetProduct.classList.add(
+                "target-product-highlight"
+            );
 
             setTimeout(() => {
 
@@ -3980,20 +4025,18 @@ if(targetProductId){
                     "target-product-highlight"
                 );
 
-            }, 2500);
+            }, 2000);
 
-        }
-        else{
+        }, 300);
 
-            console.warn(
-                "Selected product not found:",
-                targetProductId
-            );
+    } else {
 
-        }
+        console.warn(
+            "Selected product not found:",
+            targetProductId
+        );
 
-    }, 300);
-
+    }
 }
 
 }
