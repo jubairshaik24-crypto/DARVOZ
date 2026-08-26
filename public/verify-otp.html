@@ -473,28 +473,24 @@ function getOTP() {
 // ==========================================
 // VERIFY OTP
 // ==========================================
+
 async function verifyOTP() {
 
     const otp = getOTP();
 
-
     // Check OTP length
     if (otp.length !== 6) {
 
-        alert(
-            "Please enter the complete 6-digit OTP."
-        );
+        alert("Please enter the complete 6-digit OTP.");
 
         return;
     }
-
 
     const button =
         document.querySelector(".verify-btn");
 
     const originalText =
         button.innerHTML;
-
 
     try {
 
@@ -505,10 +501,10 @@ async function verifyOTP() {
             Verifying...
         `;
 
-
-        // ==================================
+        // ==============================
         // GET SAME PHONE FORMAT
-        // ==================================
+        // ==============================
+
         const whatsappPhone =
             getWhatsAppPhone();
 
@@ -517,10 +513,10 @@ async function verifyOTP() {
             whatsappPhone
         );
 
+        // ==============================
+        // VERIFY OTP
+        // ==============================
 
-        // ==================================
-        // VERIFY OTP API
-        // ==================================
         const verifyResponse =
             await fetch(
                 `${API}/api/whatsapp/verify-otp`,
@@ -539,20 +535,18 @@ async function verifyOTP() {
                 }
             );
 
-
         const verifyData =
             await verifyResponse.json();
-
 
         console.log(
             "VERIFY OTP RESPONSE:",
             verifyData
         );
 
-
-        // ==================================
+        // ==============================
         // OTP FAILED
-        // ==================================
+        // ==============================
+
         if (
             !verifyResponse.ok ||
             !verifyData.success
@@ -566,61 +560,59 @@ async function verifyOTP() {
             return;
         }
 
+        // ==============================
+        // OTP VERIFIED SUCCESSFULLY
+        // ==============================
 
-        // ==================================
+        console.log(
+            "OTP VERIFIED SUCCESSFULLY"
+        );
+
+        const isExistingCustomer =
+            localStorage.getItem(
+                "otpExistingCustomer"
+            ) === "true";
+
+
+        // ==============================
         // EXISTING CUSTOMER
-        // ==================================
-        if (
-            verifyData.isNewCustomer === false
-        ) {
+        // ==============================
 
-            const customer =
-                verifyData.customer;
+        if (isExistingCustomer) {
 
-
-            localStorage.setItem(
-                "customerId",
-                String(customer._id)
+            console.log(
+                "Existing customer verified"
             );
 
-
-            localStorage.setItem(
-                "customerName",
-                customer.name || ""
-            );
-
-
-            localStorage.setItem(
-                "mobile",
-                customer.mobile || mobile
-            );
-
-
-            localStorage.setItem(
-                "customerEmail",
-                customer.email || ""
-            );
-
-
+            // Login only AFTER OTP verification
             localStorage.setItem(
                 "customerLoggedIn",
                 "true"
             );
 
-
             localStorage.setItem(
                 "customerLoginTime",
-                Date.now().toString()
+                new Date().toISOString()
             );
 
+            // Keep the customerId already saved
+            console.log(
+                "CUSTOMER ID:",
+                localStorage.getItem(
+                    "customerId"
+                )
+            );
 
-            // Remove temporary OTP mobile
+            // Remove temporary OTP data
             localStorage.removeItem(
                 "otpMobile"
             );
 
+            localStorage.removeItem(
+                "otpExistingCustomer"
+            );
 
-            // Go home
+            // Go to home
             window.location.href =
                 "index.html";
 
@@ -628,22 +620,30 @@ async function verifyOTP() {
         }
 
 
-        // ==================================
+        // ==============================
         // NEW CUSTOMER
-        // ==================================
-        localStorage.setItem(
-            "registerMobile",
-            verifyData.mobile || mobile
+        // ==============================
+
+        console.log(
+            "New customer verified"
         );
 
+        // Save verified mobile for registration
+        localStorage.setItem(
+            "registerMobile",
+            mobile
+        );
 
-        // Remove temporary OTP mobile
+        // Remove temporary OTP data
         localStorage.removeItem(
             "otpMobile"
         );
 
+        localStorage.removeItem(
+            "otpExistingCustomer"
+        );
 
-        // Go registration
+        // Go to registration page
         window.location.href =
             "customer-register.html";
 
@@ -666,7 +666,6 @@ async function verifyOTP() {
         button.innerHTML =
             originalText;
     }
-
 }
 
 

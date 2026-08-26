@@ -3,39 +3,27 @@ const API = window.location.origin;
 /* =====================================================
    SEND OTP
 ===================================================== */
+
 async function sendOTP() {
 
-    const mobileInput =
-        document.getElementById("mobile");
-
-    const otpButton =
-        document.getElementById("otpBtn");
+    const mobileInput = document.getElementById("mobile");
+    const otpButton = document.getElementById("otpBtn");
 
     if (!mobileInput) {
         console.error("Mobile input not found");
         return;
     }
 
-    const mobile =
-        mobileInput.value.trim();
+    const mobile = mobileInput.value.trim();
 
-    // ==============================
     // VALIDATE MOBILE
-    // ==============================
-
     if (!/^[0-9]{10}$/.test(mobile)) {
-
-        alert(
-            "Please enter a valid 10-digit mobile number."
-        );
-
+        alert("Please enter a valid 10-digit mobile number.");
         mobileInput.focus();
-
         return;
     }
 
-    const originalText =
-        otpButton.innerHTML;
+    const originalText = otpButton.innerHTML;
 
     try {
 
@@ -43,67 +31,46 @@ async function sendOTP() {
 
         otpButton.innerHTML = `
             <i class="fa-solid fa-spinner fa-spin"></i>
-            Please wait...
+            Checking...
         `;
 
-
         // ==============================
-        // CHECK IF CUSTOMER EXISTS
+        // CHECK CUSTOMER
         // ==============================
 
-        const checkResponse =
-            await fetch(
-                `${API}/api/whatsapp/check-customer`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        phone: mobile
-                    })
-                }
-            );
-
-
-        const checkData =
-            await checkResponse.json();
-
-
-        console.log(
-            "CUSTOMER CHECK:",
-            checkData
+        const checkResponse = await fetch(
+            `${API}/api/whatsapp/check-customer`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    phone: mobile
+                })
+            }
         );
 
+        const checkData = await checkResponse.json();
 
-        if (
-            !checkResponse.ok ||
-            !checkData.success
-        ) {
+        console.log("CUSTOMER CHECK:", checkData);
 
+        if (!checkResponse.ok || !checkData.success) {
             alert(
                 checkData.message ||
                 "Unable to check customer."
             );
-
             return;
         }
 
-
         // ==============================
-        // EXISTING CUSTOMER
+        // SAVE CUSTOMER DETAILS
+        // IF EXISTING CUSTOMER
         // ==============================
 
         if (checkData.exists) {
 
-            const customer =
-                checkData.customer;
-
-
-            // SAVE LOGIN DETAILS
+            const customer = checkData.customer;
 
             localStorage.setItem(
                 "customerId",
@@ -116,44 +83,23 @@ async function sendOTP() {
             );
 
             localStorage.setItem(
-                "mobile",
-                customer.mobile || mobile
-            );
-
-            localStorage.setItem(
                 "customerEmail",
                 customer.email || ""
             );
 
             localStorage.setItem(
-                "customerLoggedIn",
-                "true"
+                "mobile",
+                customer.mobile || mobile
             );
-
-            localStorage.setItem(
-                "customerLoginTime",
-                new Date().toISOString()
-            );
-
 
             console.log(
-                "Existing customer found:",
+                "Existing customer. OTP verification required:",
                 customer
             );
-
-
-            // DIRECTLY OPEN HOME PAGE
-
-            window.location.href =
-                "index.html";
-
-            return;
         }
 
-
         // ==============================
-        // NEW CUSTOMER
-        // SEND OTP
+        // SEND OTP FOR EVERYONE
         // ==============================
 
         otpButton.innerHTML = `
@@ -161,39 +107,25 @@ async function sendOTP() {
             Sending OTP...
         `;
 
-
-        const response =
-            await fetch(
-                `${API}/api/whatsapp/send-otp`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        phone: "91" + mobile
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "OTP RESPONSE:",
-            data
+        const response = await fetch(
+            `${API}/api/whatsapp/send-otp`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+                body: JSON.stringify({
+                    phone: mobile
+                })
+            }
         );
 
+        const data = await response.json();
 
-        if (
-            !response.ok ||
-            !data.success
-        ) {
+        console.log("OTP RESPONSE:", data);
+
+        if (!response.ok || !data.success) {
 
             alert(
                 data.message ||
@@ -203,22 +135,29 @@ async function sendOTP() {
             return;
         }
 
-
-        // SAVE MOBILE FOR VERIFY PAGE
+        // ==============================
+        // SAVE MOBILE FOR OTP PAGE
+        // ==============================
 
         localStorage.setItem(
             "otpMobile",
             mobile
         );
 
+        // Remember whether customer already exists
+        localStorage.setItem(
+            "otpExistingCustomer",
+            checkData.exists ? "true" : "false"
+        );
 
-        // OPEN OTP PAGE
+        // ==============================
+        // OPEN VERIFY OTP PAGE
+        // ==============================
 
         window.location.href =
             "verify-otp.html";
 
-    }
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "SEND OTP ERROR:",
@@ -229,13 +168,11 @@ async function sendOTP() {
             "Unable to connect to server. Please try again."
         );
 
-    }
-    finally {
+    } finally {
 
         otpButton.disabled = false;
+        otpButton.innerHTML = originalText;
 
-        otpButton.innerHTML =
-            originalText;
     }
 }
 
