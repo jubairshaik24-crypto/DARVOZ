@@ -1263,11 +1263,12 @@ body.is-grocery .grocery-page{
         line-height:1.15;
     }
 
-    .grocery-category-btn i{
-        width:28px;
-        height:28px;
-        font-size:12px;
-    }
+    .grocery-category-image{
+    width:28px;
+    height:28px;
+    border-radius:8px;
+    object-fit:cover;
+}
 
     .grocery-category-btn span{
         width:100%;
@@ -1692,6 +1693,72 @@ body.page-loading .restaurant-header,
 body.page-loading .main-content,
 body.page-loading .grocery-page{
     visibility:hidden !important;
+}
+
+/* =========================================
+   GROCERY CATEGORY REAL IMAGES
+========================================= */
+
+.grocery-category-btn{
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+}
+
+.grocery-category-image{
+    width:52px;
+    height:52px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
+}
+
+/* REMOVE OLD FONT AWESOME ICON SPACE */
+.grocery-category-btn i{
+    display:none !important;
+}
+
+
+/* =========================================
+   MOBILE - BIG CATEGORY IMAGES
+========================================= */
+
+@media(max-width:768px){
+
+    body.is-grocery .grocery-content{
+        grid-template-columns:92px minmax(0,1fr);
+        gap:8px;
+    }
+
+    body.is-grocery .grocery-content.no-categories{
+        grid-template-columns:92px minmax(0,1fr);
+    }
+
+    .grocery-categories{
+        width:92px;
+        padding:6px 4px;
+    }
+
+    .grocery-category-btn{
+        min-height:92px;
+        padding:7px 3px;
+        margin-bottom:6px;
+        gap:5px;
+    }
+
+    .grocery-category-image{
+        width:58px;
+        height:58px;
+        object-fit:contain;
+    }
+
+    .grocery-category-btn span{
+        font-size:8px;
+        line-height:1.2;
+        text-align:center;
+    }
+
 }
 </style>
 
@@ -4258,84 +4325,174 @@ function toggleFavorite(event, productId){
 /* =========================================================
    GROCERY CATEGORY ICON
 ========================================================= */
-
-function getCategoryIcon(category){
+function getCategoryImage(category){
 
     const value =
         String(category || "")
-            .toLowerCase();
-
+            .toLowerCase()
+            .trim();
 
     if(
-        value.includes("rice") ||
+        value.includes("rice")
+    ){
+        return "/images/categories/rice.png";
+    }
+ if(
+        value.includes("beverages")
+    ){
+        return "/images/categories/beverages.png";
+    }
+
+    if(
         value.includes("atta") ||
         value.includes("flour")
     ){
-        return "fa-solid fa-wheat-awn";
+        return "/images/categories/atta.png";
+    }
+      if(
+        value.includes("tea") ||
+        value.includes("coffee")
+    ){
+        return "/images/categories/tea-coffee.png";
     }
 
+    if(
+        value.includes("sugar") ||
+        value.includes("slat")
+    ){
+        return "/images/categories/salt.png";
+    }
     if(
         value.includes("dal") ||
         value.includes("pulse")
     ){
-        return "fa-solid fa-bowl-food";
+        return "/images/categories/dal.png";
     }
 
     if(
         value.includes("oil") ||
         value.includes("ghee")
     ){
-        return "fa-solid fa-bottle-droplet";
-    }
-
-    if(value.includes("spice")){
-        return "fa-solid fa-pepper-hot";
+        return "/images/categories/oil.png";
     }
 
     if(
-        value.includes("salt") ||
-        value.includes("sugar")
+        value.includes("spice") ||
+        value.includes("masala")
     ){
-        return "fa-solid fa-jar";
+        return "/images/categories/spices.png";
     }
 
     if(
         value.includes("biscuit") ||
         value.includes("snack")
     ){
-        return "fa-solid fa-cookie-bite";
+        return "/images/categories/snacks.png";
     }
 
     if(
         value.includes("beverage") ||
         value.includes("drink")
     ){
-        return "fa-solid fa-bottle-water";
+        return "/images/categories/drinks.png";
     }
-
+        if(
+        value.includes("Dry fruits") ||
+        value.includes("nuts")
+    ){
+        return "/images/categories/dry.png";
+    }
     if(
         value.includes("dairy") ||
         value.includes("milk")
     ){
-        return "fa-solid fa-bottle-droplet";
+        return "/images/categories/dairy.png";
     }
 
-    if(value.includes("personal")){
-        return "fa-solid fa-pump-soap";
+    if(
+        value.includes("fruit") ||
+        value.includes("vegetable")
+    ){
+        return "/images/categories/fruits.png";
     }
 
-    if(value.includes("home")){
-        return "fa-solid fa-house";
+    if(
+        value.includes("personal")
+    ){
+        return "/images/categories/personal-care.png";
     }
 
-    if(value.includes("baby")){
-        return "fa-solid fa-baby";
+    if(
+        value.includes("home") ||
+        value.includes("clean")
+    ){
+        return "/images/categories/home-care.png";
     }
 
-    return "fa-solid fa-basket-shopping";
+    if(
+        value.includes("baby")
+    ){
+        return "/images/categories/baby-care.png";
+    }
 
+    return "/images/categories/default.png";
 }
 
+// function getCategoryImage(categoryName){
+
+//     const name = String(categoryName || "")
+//         .trim()
+//         .toLowerCase();
+
+//     const categoryImages = {
+
+//         "all": "/images/categories/all.png",
+
+//         "beverages": "/images/categories/beverages.png",
+//         "drinks": "/images/categories/beverages.png",
+
+//         "dairy & eggs": "/images/categories/dairy.png",
+//         "dairy": "/images/categories/dairy.png",
+
+//         "tea & coffee": "/images/categories/tea-coffee.png",
+
+//         "biscuits & snacks": "/images/categories/biscuits-snacks.png",
+//         "biscuits": "/images/categories/biscuits-snacks.png",
+//         "snacks": "/images/categories/biscuits-snacks.png",
+
+//         "dry fruits & nuts": "/images/categories/dry-fruits.png",
+//         "dry fruits": "/images/categories/dry-fruits.png",
+
+//         "sugar & salt": "/images/categories/sugar-salt.png",
+
+//         "spices & masala": "/images/categories/spices.png",
+//         "spices": "/images/categories/spices.png",
+//         "masala": "/images/categories/spices.png",
+
+//         "cooking oil": "/images/categories/cooking-oil.png",
+//         "oil": "/images/categories/cooking-oil.png",
+
+//         "rice & grains": "/images/categories/rice-grains.png",
+//         "rice": "/images/categories/rice-grains.png",
+
+//         "atta & flour": "/images/categories/atta-flour.png",
+//         "atta": "/images/categories/atta-flour.png",
+//         "flour": "/images/categories/atta-flour.png",
+        
+//         "fruits & vegetables": "/images/categories/fruits-vegetables.png",
+
+//         "personal care": "/images/categories/personal-care.png",
+
+//         "cleaning": "/images/categories/cleaning.png",
+
+//         "baby care": "/images/categories/baby-care.png"
+//     };
+
+//     return (
+//         categoryImages[name] ||
+//         "/images/categories/all.png"
+//     );
+// }
 
 /* =========================================================
    BUILD GROCERY CATEGORIES
@@ -4679,11 +4836,17 @@ function buildGroceryCategories(groceryItems){
             data-category-id="ALL"
         >
 
-            <i class="fa-solid fa-border-all"></i>
+            <img
+    class="grocery-category-image"
+    src="/images/categories/all.png"
+    alt="All"
+>
 
-            <span>
-                All
-            </span>
+<span>
+    All
+</span>
+
+          
 
         </button>
 
@@ -4711,18 +4874,19 @@ function buildGroceryCategories(groceryItems){
         button.dataset.categoryId =
             category.id;
 
-
+const categoryImage = getCategoryImage(category.name);
         button.innerHTML = `
+    <img
+        class="grocery-category-image"
+        src="${getCategoryImage(category.name)}"
+        alt="${escapeHTML(category.name)}"
+        onerror="this.onerror=null;this.src='/images/categories/default.png';"
+    >
 
-            <i
-                class="${getCategoryIcon(category.name)}"
-            ></i>
-
-            <span>
-                ${escapeHTML(category.name)}
-            </span>
-
-        `;
+    <span>
+        ${escapeHTML(category.name)}
+    </span>
+`;
 
 
         button.addEventListener(
