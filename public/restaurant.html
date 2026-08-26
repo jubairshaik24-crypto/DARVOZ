@@ -837,13 +837,7 @@ body.is-grocery .grocery-page{
     font-weight:800;
 }
 
-.grocery-content.no-categories{
-    grid-template-columns:1fr;
-}
 
-.grocery-content.no-categories .grocery-categories{
-    display:none;
-}
 
 
 /* =========================================================
@@ -1448,12 +1442,13 @@ body.is-grocery .grocery-page{
 }
 
 .grocery-content.no-categories{
-    grid-template-columns:1fr;
+    grid-template-columns:185px 1fr;
 }
 
 .grocery-content.no-categories .grocery-categories{
-    display:none;
+    display:block;
 }
+
 
 /* =========================================================
    FORCE GROCERY CATEGORY SIDEBAR
@@ -1488,6 +1483,10 @@ body.is-grocery .grocery-content.no-categories
 
     body.is-grocery .grocery-content.no-categories
     .grocery-categories{
+        display:block;
+    }
+
+    .grocery-content.no-categories .grocery-categories{
         display:block;
     }
 
@@ -1554,12 +1553,17 @@ body.is-grocery .grocery-content.no-categories
 }
 
 /* Hide menu until correct business UI is ready */
+/* =========================================
+   PREVENT FOOD / GROCERY UI FLASH
+========================================= */
+
 body.page-loading #menuContainer,
-body.page-loading #groceryMenu,
-body.page-loading #groceryCategories,
-body.page-loading .grocery-section,
-body.page-loading .food-section {
+body.page-loading #groceryContainer,
+body.page-loading #categoryScroll,
+body.page-loading #menuTitle,
+body.page-loading #itemCount {
     visibility: hidden !important;
+
 }
 
 .page-loading #menuContainer{
@@ -1569,6 +1573,125 @@ body.page-loading .food-section {
 .page-loading .restaurant-menu-section,
 .page-loading .grocery-menu-section{
     visibility: hidden !important;
+}
+
+/* =========================================
+   NORMAL FOOD MODE
+========================================= */
+
+#groceryContainer {
+    display: none;
+}
+
+/* =========================================
+   GROCERY MODE
+========================================= */
+
+body.is-grocery #menuContainer {
+    display: none !important;
+}
+
+body.is-grocery #groceryContainer {
+    display: grid !important;
+}
+
+body.page-loading #menuContainer,
+body.page-loading #groceryContainer,
+body.page-loading #categoryScroll {
+    visibility: hidden !important;
+}
+
+#groceryContainer{
+    display:none;
+}
+
+body.is-grocery #menuContainer{
+    display:none !important;
+}
+
+body.is-grocery #groceryContainer{
+    display:grid !important;
+}
+
+/* =========================================
+   DARVOZ GROCERY SPLASH SCREEN
+========================================= */
+
+.grocery-splash{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    background:#ff5a00;
+
+    opacity:1;
+    visibility:visible;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+}
+
+.grocery-splash.show{
+    display:flex;
+}
+
+.grocery-splash.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.grocery-splash-content{
+    text-align:center;
+    color:#fff;
+    animation:grocerySplashEnter .45s ease;
+}
+
+.grocery-splash-name{
+    font-size:clamp(42px,10vw,78px);
+    font-weight:900;
+    letter-spacing:3px;
+    line-height:1;
+}
+
+.grocery-splash-subtitle{
+    margin-top:10px;
+    font-size:clamp(14px,3vw,22px);
+    font-weight:700;
+    letter-spacing:8px;
+}
+
+.grocery-splash-icon{
+    margin-top:22px;
+    font-size:38px;
+}
+
+@keyframes grocerySplashEnter{
+
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* =========================================
+   HIDE ALL STORE UI WHILE PAGE LOADS
+========================================= */
+
+body.page-loading .restaurant-header,
+body.page-loading .main-content,
+body.page-loading .grocery-page{
+    visibility:hidden !important;
 }
 </style>
 
@@ -1926,6 +2049,20 @@ body.page-loading .food-section {
 </div>
 
 
+<!-- DARVOZ GROCERY SPLASH -->
+<div id="grocerySplash" class="grocery-splash">
+    <div class="grocery-splash-content">
+        <div class="grocery-splash-name">
+            DARVOZ
+        </div>
+
+        <div class="grocery-splash-subtitle">
+            GROCERY
+        </div>
+
+        <i class="fa-solid fa-basket-shopping grocery-splash-icon"></i>
+    </div>
+</div>
 <script>
 
 /* =========================================================
@@ -3204,17 +3341,20 @@ function buildBusinessTypeButtons(){
 /* =========================================================
    SELECT BUSINESS TYPE
 ========================================================= */
-function selectBusinessType(type, button) {
+async function selectBusinessType(type, button) {
 
     // ==========================================
     // SAVE SELECTED CATEGORY
     // ==========================================
+
     selectedBusinessType =
         String(type || "").trim();
+
 
     // ==========================================
     // REMOVE OLD ACTIVE BUTTON
     // ==========================================
+
     document
         .querySelectorAll(
             "#categoryScroll .category-button"
@@ -3227,8 +3367,9 @@ function selectBusinessType(type, button) {
 
 
     // ==========================================
-    // ADD ACTIVE TO CLICKED BUTTON
+    // ADD ACTIVE BUTTON
     // ==========================================
+
     if (button) {
 
         button.classList.add("active");
@@ -3237,61 +3378,81 @@ function selectBusinessType(type, button) {
 
 
     // ==========================================
-    // FILTER USING menuData
+    // CHECK CATEGORY TYPE
     // ==========================================
+
     const selectedType =
         selectedBusinessType
             .toLowerCase()
             .trim();
 
 
-    const filteredItems =
-        menuData.filter(item => {
-
-            const itemType =
-                String(
-                    item.business_type ||
-                    item.businessType ||
-                    item.partner_business_type ||
-                    item.partnerBusinessType ||
-                    item.business_category ||
-                    item.businessCategory ||
-                    item.category ||
-                    ""
-                )
-                .toLowerCase()
-                .trim();
+    const isGroceryCategory =
+        selectedType === "grocery" ||
+        selectedType === "groceries" ||
+        selectedType.includes("grocery");
 
 
-            return (
-                itemType === selectedType
-            );
+    // ==========================================
+    // GROCERY CATEGORY
+    // ==========================================
 
-        });
+    if (isGroceryCategory) {
 
+        console.log(
+            "🛒 OPENING GROCERY CATEGORY:",
+            selectedBusinessType
+        );
+
+
+        // Load grocery products if needed
+        if (
+            !Array.isArray(partnerGroceryMenu) ||
+            partnerGroceryMenu.length === 0
+        ) {
+
+            await loadPartnerGroceryMenu();
+
+        }
+
+
+        applyBusinessMode(
+            selectedBusinessType
+        );
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // FOOD CATEGORY
+    // ==========================================
 
     console.log(
-        "SELECTED CATEGORY:",
+        "🍽️ OPENING FOOD CATEGORY:",
         selectedBusinessType
     );
 
-    console.log(
-        "ALL MENU:",
-        menuData
+
+    // Load food menu if needed
+    if (
+        !Array.isArray(menuData) ||
+        menuData.length === 0
+    ) {
+
+        await loadMenu();
+
+    }
+
+
+    applyBusinessMode(
+        selectedBusinessType
     );
-
-    console.log(
-        "FILTERED MENU:",
-        filteredItems
-    );
-
-
-    // ==========================================
-    // DISPLAY SELECTED MENU
-    // ==========================================
-    displayFoodMenu(filteredItems);
 
 }
+
+
 /* =========================================================
    LOAD PARTNER GROCERY
 ========================================================= */
@@ -6321,11 +6482,55 @@ function scrollToTargetProduct(){
 
 }
 
+function showGrocerySplash(){
+
+    const splash =
+        document.getElementById(
+            "grocerySplash"
+        );
+
+    if(!splash){
+        return;
+    }
+
+    splash.classList.remove("hide");
+    splash.classList.add("show");
+}
+
+
+function hideGrocerySplash(){
+
+    const splash =
+        document.getElementById(
+            "grocerySplash"
+        );
+
+    if(!splash){
+        return;
+    }
+
+    splash.classList.add("hide");
+
+    setTimeout(() => {
+
+        splash.classList.remove(
+            "show"
+        );
+
+    }, 350);
+}
+
 /* =========================================================
    INITIALIZE
 ========================================================= */
 
 async function initialize(){
+
+    pageInitialized = false;
+
+    document.body.classList.add(
+        "page-loading"
+    );
 
     console.log(
         "================================="
@@ -6345,6 +6550,10 @@ async function initialize(){
     );
 
 
+    /* ================================
+       PREVENT INVALID PAGE
+    ================================= */
+
     if(!restaurantId){
 
         showRestaurantFallback(
@@ -6355,8 +6564,11 @@ async function initialize(){
             "Restaurant ID missing"
         );
 
-        return;
+        document.body.classList.remove(
+            "page-loading"
+        );
 
+        return;
     }
 
 
@@ -6382,7 +6594,7 @@ async function initialize(){
 
     /* ================================
        LOAD RESTAURANT FIRST
-       We need business type first
+       WE NEED BUSINESS TYPE FIRST
     ================================= */
 
     const restaurantLoaded =
@@ -6396,7 +6608,6 @@ async function initialize(){
         );
 
         return;
-
     }
 
 
@@ -6411,11 +6622,9 @@ async function initialize(){
         requestedCategory &&
         partnerBusinessTypes.some(
             type =>
-
                 String(type)
                 .trim()
                 .toLowerCase() ===
-
                 String(requestedCategory)
                 .trim()
                 .toLowerCase()
@@ -6425,20 +6634,19 @@ async function initialize(){
         categoryToOpen =
             partnerBusinessTypes.find(
                 type =>
-
                     String(type)
                     .trim()
                     .toLowerCase() ===
-
                     String(requestedCategory)
                     .trim()
                     .toLowerCase()
             );
-
     }
 
 
-    /* PARTNER FIRST CATEGORY */
+    /* ================================
+       PARTNER FIRST CATEGORY
+    ================================= */
 
     if(
         !categoryToOpen &&
@@ -6447,22 +6655,22 @@ async function initialize(){
 
         categoryToOpen =
             partnerBusinessTypes[0];
-
     }
 
 
-    /* FINAL DEFAULT */
+    /* ================================
+       FINAL DEFAULT
+    ================================= */
 
     if(!categoryToOpen){
 
         categoryToOpen =
             "Restaurant";
-
     }
 
 
     /* ================================
-       SET FINAL CATEGORY NOW
+       SET FINAL CATEGORY
        BEFORE ANY MENU RENDERING
     ================================= */
 
@@ -6477,93 +6685,198 @@ async function initialize(){
 
 
     /* ================================
-       LOAD ONLY THE REQUIRED DATA
+       CHECK BUSINESS TYPE
     ================================= */
 
     const selectedValue =
-    String(
-        selectedBusinessType || ""
-    )
-    .trim()
-    .toLowerCase();
+        String(
+            selectedBusinessType || ""
+        )
+        .trim()
+        .toLowerCase();
 
-console.log(
-    "🔍 CHECKING CATEGORY:",
-    JSON.stringify(selectedValue)
-);
-
-const isGroceryCategory =
-    selectedValue === "grocery" ||
-    selectedValue === "groceries" ||
-    selectedValue.includes("grocery") ||
-    selectedValue.includes("groceries");
-
-console.log(
-    "🛒 IS GROCERY:",
-    isGroceryCategory
-);
-
-if(isGroceryCategory){
 
     console.log(
-        "🛒 LOADING GROCERY FIRST"
+        "🔍 CHECKING CATEGORY:",
+        JSON.stringify(selectedValue)
     );
 
-    await loadPartnerGroceryMenu();
 
-}
-else{
+    const isGroceryCategory =
+
+        selectedValue === "grocery" ||
+
+        selectedValue === "groceries" ||
+
+        selectedValue.includes(
+            "grocery"
+        ) ||
+
+        selectedValue.includes(
+            "groceries"
+        );
+
+
+    console.log(
+        "🛒 IS GROCERY:",
+        isGroceryCategory
+    );
+
+
+    /* =====================================================
+       LOAD ONLY REQUIRED DATA
+    ===================================================== */
+
+    if(isGroceryCategory){
+
+        console.log(
+            "🛒 SHOWING DARVOZ GROCERY SPLASH"
+        );
+
+
+        /* START SPLASH TIMER */
+        const splashStartTime =
+            Date.now();
+
+
+        /* SHOW ORANGE GROCERY SPLASH */
+        showGrocerySplash();
+
+
+        console.log(
+            "🛒 LOADING GROCERY DATA"
+        );
+
+
+        /* LOAD GROCERY PRODUCTS */
+        await loadPartnerGroceryMenu();
+
+
+        /* ================================
+           NOW GROCERY DATA IS READY
+        ================================= */
+
+        pageInitialized = true;
+
+
+        /* BUILD BUSINESS BUTTONS */
+        buildBusinessTypeButtons();
+
+
+        /* APPLY GROCERY MODE */
+        applyBusinessMode(
+            selectedBusinessType
+        );
+
+
+        /* PRODUCT SCROLL */
+        scrollToTargetProduct();
+
+
+        /* CART */
+        updateCartUI();
+
+
+        /* ================================
+           KEEP SPLASH VISIBLE
+           FOR AT LEAST 1 SECOND
+        ================================= */
+
+        const elapsed =
+            Date.now() - splashStartTime;
+
+
+        const minimumSplashTime =
+            1000;
+
+
+        if(
+            elapsed < minimumSplashTime
+        ){
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        minimumSplashTime - elapsed
+                    )
+            );
+        }
+
+
+        /* ================================
+           GROCERY UI IS NOW FULLY READY
+        ================================= */
+
+        document.body.classList.remove(
+            "page-loading"
+        );
+
+
+        /* HIDE SPLASH */
+        hideGrocerySplash();
+
+
+        console.log(
+            "================================="
+        );
+
+        console.log(
+            "DARVOZ GROCERY PAGE READY"
+        );
+
+        console.log(
+            "FINAL MODE:",
+            selectedBusinessType
+        );
+
+        console.log(
+            "================================="
+        );
+
+
+        return;
+    }
+
+
+    /* =====================================================
+       NORMAL FOOD MODE
+    ===================================================== */
 
     console.log(
         "🍽️ LOADING FOOD FIRST"
     );
 
-    await loadMenu();
 
-}
+    await loadMenu();
 
 
     /* ================================
-       NOW PAGE IS READY
+       NOW FOOD PAGE IS READY
     ================================= */
 
     pageInitialized = true;
 
 
-    /* ================================
-       BUILD BUTTONS
-       AFTER CATEGORY IS FINAL
-    ================================= */
-
+    /* BUILD BUTTONS */
     buildBusinessTypeButtons();
 
 
-    /* ================================
-       RENDER ONLY ONE UI
-    ================================= */
-
+    /* APPLY FOOD MODE */
     applyBusinessMode(
         selectedBusinessType
     );
 
 
-    /* ================================
-       PRODUCT SCROLL
-    ================================= */
-
+    /* PRODUCT SCROLL */
     scrollToTargetProduct();
 
 
-    /* ================================
-       CART
-    ================================= */
-
+    /* CART */
     updateCartUI();
 
 
-    /* ================================
-       SHOW PAGE
-    ================================= */
+    /* SHOW PAGE */
 
     document.body.classList.remove(
         "page-loading"
@@ -6586,8 +6899,8 @@ else{
     console.log(
         "================================="
     );
-
 }
+
 
 
 /* =========================================================

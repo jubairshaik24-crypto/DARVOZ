@@ -4069,6 +4069,29 @@ function addPickToCart(productId, partnerId){
          * Still open the correct restaurant
          * instead of doing nothing.
          */
+console.log(
+    "DARVOZ PICK REDIRECT:",
+    {
+        partnerId,
+        productId,
+        businessType:
+            product.business_type ||
+            product.businessType ||
+            product.category ||
+            ""
+    }
+);
+
+window.location.href =
+    `restaurant.html?id=${encodeURIComponent(partnerId)}&category=${encodeURIComponent(
+        product.business_type ||
+        product.businessType ||
+        product.category ||
+        ""
+    )}&product=${encodeURIComponent(productId)}`;
+
+return;
+
 
        window.location.href =
     `restaurant.html?id=${encodeURIComponent(partnerId)}&category=${encodeURIComponent(product.business_type || product.businessType || product.category || "")}&product=${encodeURIComponent(productId)}`;
