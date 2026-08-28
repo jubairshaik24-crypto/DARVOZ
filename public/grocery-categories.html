@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>DARVOZ Grocery Categories</title>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f7f8f7;
+    color:#222;
+}
+
+button,
+input{
+    font-family:'Poppins',sans-serif;
+}
+
+button{
+    cursor:pointer;
+}
+
+img{
+    display:block;
+    max-width:100%;
+}
+
+.page{
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.grocery-header{
+
+    background:
+        linear-gradient(
+            135deg,
+            #159447,
+            #0f7f38
+        );
+
+    color:#fff;
+
+    padding:
+        20px
+        max(20px,5vw)
+        30px;
+
+    border-radius:
+        0
+        0
+        28px
+        28px;
+
+}
+
+.header-top{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+}
+
+.back-button{
+
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:15px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    color:#fff;
+
+    font-size:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.header-title{
+
+    flex:1;
+
+}
+
+.header-title h1{
+
+    font-size:28px;
+    font-weight:800;
+
+}
+
+.header-title p{
+
+    margin-top:2px;
+
+    font-size:11px;
+
+    opacity:.9;
+
+}
+
+.cart-button{
+
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:15px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    color:#fff;
+
+    font-size:20px;
+
+    position:relative;
+
+}
+
+.cart-badge{
+
+    position:absolute;
+
+    right:-4px;
+    top:-5px;
+
+    min-width:19px;
+    height:19px;
+
+    padding:0 5px;
+
+    border-radius:50%;
+
+    background:#ef4444;
+
+    color:#fff;
+
+    font-size:9px;
+    font-weight:800;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search-section{
+
+    max-width:1200px;
+
+    margin:
+        -18px
+        auto
+        0;
+
+    padding:
+        0
+        max(18px,4vw);
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+.search-box{
+
+    height:58px;
+
+    background:#fff;
+
+    border-radius:17px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:0 18px;
+
+    border:1px solid #eee;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.10);
+
+}
+
+.search-box i{
+
+    color:#777;
+
+    font-size:19px;
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    min-width:0;
+
+    border:none;
+
+    outline:none;
+
+    font-size:14px;
+
+    background:transparent;
+
+}
+
+.search-box input::placeholder{
+
+    color:#999;
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+
+    width:
+        min(1250px,100%);
+
+    margin:auto;
+
+    padding:
+        28px
+        max(20px,4vw)
+        30px;
+
+}
+
+.section-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+}
+
+.section-header h2{
+
+    font-size:23px;
+
+    font-weight:800;
+
+}
+
+.category-count{
+
+    color:#159447;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+
+/* =====================================================
+   CATEGORY GRID
+===================================================== */
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap:16px;
+
+}
+
+
+/* =====================================================
+   CATEGORY CARD
+===================================================== */
+
+.category-card{
+
+    border:none;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:16px;
+
+    min-height:220px;
+
+    border:1px solid #e9ece9;
+
+    box-shadow:
+        0 5px 18px
+        rgba(0,0,0,.045);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+
+    text-align:center;
+
+}
+
+.category-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,.09);
+
+}
+
+
+/* IMAGE */
+
+.category-image{
+
+    width:150px;
+    height:150px;
+
+    margin:0 auto 8px;
+
+    border-radius:50%;
+
+    background:
+        #f2f8ec;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+}
+
+.category-image img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+}
+
+.category-placeholder{
+
+    font-size:45px;
+
+    color:#159447;
+
+}
+
+
+/* NAME */
+
+.category-name{
+
+    font-size:15px;
+
+    font-weight:800;
+
+    line-height:1.25;
+
+    color:#222;
+
+}
+
+
+/* ITEM COUNT */
+
+.category-items{
+
+    margin-top:4px;
+
+    font-size:11px;
+
+    color:#159447;
+
+    font-weight:700;
+
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    grid-column:1/-1;
+
+    min-height:300px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#777;
+
+}
+
+.loading i{
+
+    font-size:30px;
+
+    color:#159447;
+
+    margin-bottom:10px;
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty{
+
+    grid-column:1/-1;
+
+    text-align:center;
+
+    padding:70px 20px;
+
+    color:#777;
+
+}
+
+.empty i{
+
+    font-size:40px;
+
+    color:#159447;
+
+    margin-bottom:12px;
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error{
+
+    grid-column:1/-1;
+
+    text-align:center;
+
+    padding:60px 20px;
+
+    color:#dc2626;
+
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:0;
+
+    transform:translateX(-50%);
+
+    width:min(700px,100%);
+
+    height:70px;
+
+    background:#fff;
+
+    border-radius:
+        22px
+        22px
+        0
+        0;
+
+    box-shadow:
+        0 -5px 25px
+        rgba(0,0,0,.10);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-around;
+
+    z-index:1000;
+
+}
+
+.nav-item{
+
+    border:none;
+
+    background:none;
+
+    color:#777;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:4px;
+
+    font-size:9px;
+
+    font-weight:600;
+
+}
+
+.nav-item i{
+
+    font-size:19px;
+
+}
+
+.nav-item.active{
+
+    color:#159447;
+
+}
+
+.nav-item.active i{
+
+    color:#159447;
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:1000px){
+
+    .category-grid{
+
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px){
+
+    .grocery-header{
+
+        padding:
+            14px
+            14px
+            25px;
+
+        border-radius:
+            0
+            0
+            24px
+            24px;
+
+    }
+
+    .back-button,
+    .cart-button{
+
+        width:42px;
+        height:42px;
+
+        border-radius:13px;
+
+    }
+
+    .header-title h1{
+
+        font-size:21px;
+
+    }
+
+    .header-title p{
+
+        font-size:9px;
+
+    }
+
+    .search-section{
+
+        margin-top:-17px;
+
+        padding:
+            0
+            14px;
+
+    }
+
+    .search-box{
+
+        height:53px;
+
+        border-radius:16px;
+
+        padding:
+            0
+            15px;
+
+    }
+
+    .search-box input{
+
+        font-size:12px;
+
+    }
+
+    .main{
+
+        padding:
+            25px
+            12px
+            95px;
+
+    }
+
+    .section-header{
+
+        margin-bottom:13px;
+
+    }
+
+    .section-header h2{
+
+        font-size:19px;
+
+    }
+
+    .category-count{
+
+        font-size:9px;
+
+    }
+
+    .category-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+        gap:10px;
+
+    }
+
+    .category-card{
+
+        min-height:190px;
+
+        padding:10px;
+
+        border-radius:15px;
+
+    }
+
+    .category-image{
+
+        width:125px;
+        height:125px;
+
+        margin-bottom:7px;
+
+    }
+
+    .category-name{
+
+        font-size:12px;
+
+    }
+
+    .category-items{
+
+        font-size:9px;
+
+    }
+
+    .bottom-nav{
+
+        height:65px;
+
+        border-radius:
+            18px
+            18px
+            0
+            0;
+
+    }
+
+}
+
+
+/* =====================================================
+   SMALL PHONE
+===================================================== */
+
+@media(max-width:380px){
+
+    .category-grid{
+
+        gap:8px;
+
+    }
+
+    .category-card{
+
+        min-height:175px;
+
+        padding:8px;
+
+    }
+
+    .category-image{
+
+        width:108px;
+        height:108px;
+
+    }
+
+    .category-name{
+
+        font-size:11px;
+
+    }
+
+}
+/* =====================================================
+   DARVOZ GROCERY SPLASH
+===================================================== */
+
+.grocery-splash{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #159447,
+            #0f7f38
+        );
+
+    opacity:1;
+    visibility:visible;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+}
+
+.grocery-splash.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.grocery-splash-content{
+    text-align:center;
+    color:#fff;
+
+    animation:
+        grocerySplashEnter .45s ease;
+}
+
+.grocery-splash-name{
+    font-size:clamp(42px,10vw,78px);
+    font-weight:900;
+    letter-spacing:3px;
+    line-height:1;
+}
+
+.grocery-splash-subtitle{
+    margin-top:10px;
+    font-size:clamp(14px,3vw,22px);
+    font-weight:700;
+    letter-spacing:8px;
+}
+
+.grocery-splash-icon{
+    margin-top:22px;
+    font-size:38px;
+}
+
+@keyframes grocerySplashEnter{
+
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+</style>
+
+</head>
+
+
+<body>
+
+    <!-- DARVOZ GROCERY SPLASH -->
+
+<div
+    id="grocerySplash"
+    class="grocery-splash"
+>
+
+    <div class="grocery-splash-content">
+
+        <div class="grocery-splash-name">
+            DARVOZ
+        </div>
+
+        <div class="grocery-splash-subtitle">
+            GROCERY
+        </div>
+
+        <i
+            class="fa-solid fa-basket-shopping grocery-splash-icon"
+        ></i>
+
+    </div>
+
+</div>
+
+<div class="page">
+
+
+    <!-- =============================================
+         HEADER
+    ============================================== -->
+
+    <header class="grocery-header">
+
+        <div class="header-top">
+
+            <button
+                class="back-button"
+                onclick="goBack()"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+
+            <div class="header-title">
+
+                <h1>
+                    Groceries
+                </h1>
+
+                <p>
+                    Shop daily essentials
+                </p>
+
+            </div>
+
+
+            <button
+                class="cart-button"
+                onclick="openCart()"
+            >
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <span
+                    id="cartBadge"
+                    class="cart-badge"
+                >
+                    0
+                </span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =============================================
+         SEARCH
+    ============================================== -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="categorySearch"
+                placeholder="Search grocery categories..."
+                autocomplete="off"
+            >
+
+        </div>
+
+    </section>
+
+
+    <!-- =============================================
+         MAIN
+    ============================================== -->
+
+    <main class="main">
+
+        <div class="section-header">
+
+            <h2>
+                All Categories
+            </h2>
+
+            <span
+                id="categoryCount"
+                class="category-count"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+        <div
+            id="categoryGrid"
+            class="category-grid"
+        >
+
+            <div class="loading">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <span>
+                    Loading categories...
+                </span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =============================================
+         BOTTOM NAV
+    ============================================== -->
+
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-item"
+            onclick="goHome()"
+        >
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Home
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="goCategories()"
+        >
+
+            <i class="fa-solid fa-grip"></i>
+
+            <span>
+                Categories
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item active"
+        >
+
+            <i class="fa-solid fa-basket-shopping"></i>
+
+            <span>
+                Grocery
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openCart()"
+        >
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <span>
+                Cart
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openProfile()"
+        >
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>
+                Profile
+            </span>
+
+        </button>
+
+    </nav>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let groceryCategories = [];
+
+let filteredCategories = [];
+
+
+/* =====================================================
+   GET PARTNER / RESTAURANT ID
+===================================================== */
+const partnerData =
+    JSON.parse(
+        localStorage.getItem("partner")
+    );
+
+const partnerId =
+    partnerData?.id;
+
+console.log(
+    "GROCERY CATEGORY PARTNER:",
+    partnerData
+);
+
+console.log(
+    "GROCERY CATEGORY PARTNER ID:",
+    partnerId
+);
+
+if(!partnerId){
+    throw new Error(
+        "Partner session not found. Please login again."
+    );
+}
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+/* =====================================================
+   GROCERY SPLASH
+===================================================== */
+
+function hideGrocerySplash(){
+
+    const splash =
+        document.getElementById(
+            "grocerySplash"
+        );
+
+    if(!splash){
+        return;
+    }
+
+    splash.classList.add("hide");
+
+}
+/* =====================================================
+   LOAD CATEGORIES
+===================================================== */
+
+async function loadGroceryCategories(){
+
+    const grid =
+        document.getElementById(
+            "categoryGrid"
+        );
+
+
+    try{
+
+        if(!partnerId){
+
+            throw new Error(
+                "Partner ID is missing."
+            );
+
+        }
+
+
+        console.log(
+            "LOADING GROCERY CATEGORIES:",
+            partnerId
+        );
+
+
+        /*
+         * SAME API USED BY
+         * partner-category-menu.html
+         */
+
+        const response =
+            await fetch(
+                `/partner/grocery-categories/${partnerId}`,
+                {
+                    method:"GET",
+                    cache:"no-store"
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `HTTP Error ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "GROCERY CATEGORY RESPONSE:",
+            data
+        );
+
+
+        if(!data.success){
+
+            throw new Error(
+                data.message ||
+                "Unable to load grocery categories."
+            );
+
+        }
+
+
+        groceryCategories =
+            Array.isArray(
+                data.categories
+            )
+            ?
+            data.categories
+            :
+            [];
+
+
+        filteredCategories =
+            [...groceryCategories];
+
+
+        document.getElementById(
+            "categoryCount"
+        ).textContent =
+            `${groceryCategories.length} categories`;
+
+
+        renderCategories();
+
+    }
+    catch(error){
+
+        console.error(
+            "GROCERY CATEGORY ERROR:",
+            error
+        );
+
+
+        grid.innerHTML = `
+
+            <div class="error">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <p>
+                    ${escapeHtml(
+                        error.message ||
+                        "Unable to load categories."
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER CATEGORIES
+===================================================== */
+
+function renderCategories(){
+
+    const grid =
+        document.getElementById(
+            "categoryGrid"
+        );
+
+
+    if(!filteredCategories.length){
+
+        grid.innerHTML = `
+
+            <div class="empty">
+
+                <i class="fa-solid fa-basket-shopping"></i>
+
+                <p>
+                    No grocery categories found.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML = "";
+
+
+    filteredCategories.forEach(
+        category => {
+
+            const categoryId =
+                category.id;
+
+
+            const categoryName =
+                category.category_name ||
+                category.name ||
+                "Other";
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Partner page already supports
+             * these image fields.
+             */
+
+            const imageUrl =
+                category.category_image ||
+                category.image_url ||
+                category.image ||
+                category.default_image ||
+                "";
+
+
+            const card =
+                document.createElement(
+                    "button"
+                );
+
+
+            card.className =
+                "category-card";
+
+
+            card.type =
+                "button";
+
+
+            card.onclick =
+                () =>
+                    openCategory(
+                        categoryId,
+                        categoryName
+                    );
+
+
+            let imageHtml;
+
+
+            if(imageUrl){
+
+                imageHtml = `
+
+                    <img
+                        src="${escapeHtml(imageUrl)}"
+                        alt="${escapeHtml(categoryName)}"
+                        loading="lazy"
+                        onerror="
+                            this.style.display='none';
+                            this.parentElement.innerHTML=
+                            '<span class=&quot;category-placeholder&quot;>🛒</span>';
+                        "
+                    >
+
+                `;
+
+            }
+            else{
+
+                imageHtml = `
+
+                    <span
+                        class="category-placeholder"
+                    >
+                        🛒
+                    </span>
+
+                `;
+
+            }
+
+
+            card.innerHTML = `
+
+                <div class="category-image">
+
+                    ${imageHtml}
+
+                </div>
+
+
+                <div class="category-name">
+
+                    ${escapeHtml(categoryName)}
+
+                </div>
+
+
+                <div class="category-items">
+
+                    Shop Now
+
+                </div>
+
+            `;
+
+
+            grid.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document
+    .getElementById("categorySearch")
+    .addEventListener(
+        "input",
+        function(){
+
+            const search =
+                this.value
+                    .trim()
+                    .toLowerCase();
+
+
+            filteredCategories =
+                groceryCategories.filter(
+                    category => {
+
+                        const name =
+                            category.category_name ||
+                            category.name ||
+                            "";
+
+                        return name
+                            .toLowerCase()
+                            .includes(search);
+
+                    }
+                );
+
+
+            document.getElementById(
+                "categoryCount"
+            ).textContent =
+                `${filteredCategories.length} categories`;
+
+
+            renderCategories();
+
+        }
+    );
+
+
+/* =====================================================
+   OPEN CATEGORY
+===================================================== */
+function openCategory(categoryId, categoryName){
+
+    console.log(
+        "OPEN GROCERY CATEGORY:",
+        categoryId,
+        categoryName
+    );
+
+    // Save selected category temporarily
+    sessionStorage.setItem(
+        "selectedGroceryCategoryId",
+        String(categoryId)
+    );
+
+    sessionStorage.setItem(
+        "selectedGroceryCategoryName",
+        String(categoryName)
+    );
+
+   const url =
+    `restaurant.html?id=${encodeURIComponent(partnerId)}` +
+    `&business=Groceries` +
+    `&categoryId=${encodeURIComponent(categoryId)}`;
+
+    window.location.href = url;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function goBack(){
+
+    if(
+        window.history.length > 1
+    ){
+
+        window.history.back();
+
+    }
+    else{
+
+        window.location.href =
+            "index.html";
+
+    }
+
+}
+
+
+function goHome(){
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+function goCategories(){
+
+    window.location.href =
+        "categories.html";
+
+}
+
+
+function openCart(){
+
+    /*
+     * CHANGE THIS ONLY IF
+     * YOUR CART PAGE HAS A DIFFERENT NAME.
+     */
+
+    window.location.href =
+        "cart.html";
+
+}
+
+
+function openProfile(){
+
+    window.location.href =
+        "profile.html";
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        /*
+         * Keep Grocery splash visible
+         * while categories are loading.
+         */
+
+        await loadGroceryCategories();
+
+        /*
+         * Categories are now ready.
+         * Hide splash.
+         */
+
+        hideGrocerySplash();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

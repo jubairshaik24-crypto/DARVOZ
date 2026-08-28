@@ -886,36 +886,37 @@ body{
 }
 
 /* =========================================
-   SPECIAL RIDER BOTTOM NAV BUTTON
+   SPECIAL GROCERY BOTTOM NAV BUTTON
 ========================================= */
 
-.bottom-nav .rider-nav {
+.bottom-nav .grocery-nav {
     position: relative;
     transform: translateY(-8px);
 }
 
-.bottom-nav .rider-icon {
+.bottom-nav .grocery-icon {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: #ff6b00;
+    background: var(--green);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 2px;
-    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
+    box-shadow: 0 4px 12px rgba(32, 182, 75, 0.35);
     border: 3px solid #fff;
 }
 
-.bottom-nav .rider-icon i {
+.bottom-nav .grocery-icon i {
     font-size: 20px;
     color: #fff;
 }
 
-.bottom-nav .rider-nav span {
+.bottom-nav .grocery-nav span {
     font-size: 10px;
     font-weight: 700;
 }
+
 
 /* =====================================================
    ACTIVE ORDER POPUP
@@ -2628,13 +2629,13 @@ Track
         <span>Categories</span>
     </a>
 
-    <!-- Special Rider Button -->
-    <a href="rider.html" class="rider-nav">
-        <div class="rider-icon">
-            <i class="fa-solid fa-motorcycle"></i>
-        </div>
-        <span>Rider</span>
-    </a>
+   <!-- Special Grocery Button -->
+<a href="grocery-categories.html" class="grocery-nav">
+    <div class="grocery-icon">
+        <i class="fa-solid fa-basket-shopping"></i>
+    </div>
+    <span>Grocery</span>
+</a>
 
     <!-- Cart -->
     <a href="cart.html">

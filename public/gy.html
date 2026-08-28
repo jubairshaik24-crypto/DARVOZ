@@ -1668,12 +1668,9 @@ body.is-grocery #groceryContainer{
 ========================================= */
 
 body.page-loading .restaurant-header,
-body.page-loading .main-content{
-    visibility:hidden !important;
-}
-
+body.page-loading .main-content,
 body.page-loading .grocery-page{
-    visibility:visible !important;
+    visibility:hidden !important;
 }
 
 /* =========================================
@@ -2126,63 +2123,15 @@ body.is-grocery .grocery-price-line s.onwards{
     font-size:12px;
 }
 
-/* =========================================
-   DARVOZ PAGE LOADER
-========================================= */
-
-#pageLoader{
-    position:fixed;
-    inset:0;
-    z-index:999999;
-    background:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    gap:14px;
-}
-
-#pageLoader .loader-circle{
-    width:48px;
-    height:48px;
-    border:5px solid #ffe0cc;
-    border-top-color:#ff5a00;
-    border-radius:50%;
-    animation:darvozSpin .8s linear infinite;
-}
-
-#pageLoader .loader-text{
-    font-size:13px;
-    font-weight:700;
-    color:#555;
-}
-
-@keyframes darvozSpin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-#pageLoader.hide{
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-    transition:opacity .25s ease, visibility .25s ease;
-}
-
 </style>
 
 </head>
 
+
 <body>
 
-<!-- DARVOZ LOADING -->
-<div id="pageLoader">
-    <div class="loader-circle"></div>
-    <div class="loader-text">Loading...</div>
-</div>
-
 <div class="app">
+
 
 <!-- =========================================================
      FOOD HEADER
@@ -7244,21 +7193,6 @@ function scrollToTargetProduct(){
 
 }
 
-function hidePageLoader(){
-
-    const loader =
-        document.getElementById("pageLoader");
-
-    if(loader){
-        loader.classList.add("hide");
-
-        setTimeout(() => {
-            loader.remove();
-        }, 300);
-    }
-
-}
-
 /* =========================================================
    INITIALIZE
 ========================================================= */
@@ -7306,12 +7240,6 @@ async function initialize(){
         document.body.classList.remove(
             "page-loading"
         );
-
-        const loader = document.getElementById("pageLoader");
-
-if(loader){
-    loader.classList.add("hide");
-}
 
         return;
     }
@@ -7563,8 +7491,6 @@ if (
             "page-loading"
         );
 
-        hidePageLoader();
-
         console.log(
             "================================="
         );
@@ -7627,8 +7553,6 @@ if (
     document.body.classList.remove(
         "page-loading"
     );
-
-    hidePageLoader();
 
 
     console.log(
