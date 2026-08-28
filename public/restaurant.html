@@ -2169,7 +2169,137 @@ body.is-grocery .grocery-price-line s.onwards{
     pointer-events:none;
     transition:opacity .25s ease, visibility .25s ease;
 }
+/* =========================================================
+   DIFFERENT RESTAURANT CART POPUP
+========================================================= */
 
+.cart-replace-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:99999;
+    backdrop-filter:blur(4px);
+}
+
+.cart-replace-overlay.show{
+    display:flex;
+}
+
+.cart-replace-popup{
+    width:min(420px,100%);
+    background:#fff;
+    border-radius:22px;
+    padding:25px 22px 20px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    text-align:center;
+    animation:cartReplacePop .2s ease-out;
+}
+
+@keyframes cartReplacePop{
+    from{
+        opacity:0;
+        transform:scale(.94) translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+.cart-replace-icon{
+    width:58px;
+    height:58px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    background:#fff3eb;
+    color:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+}
+
+.cart-replace-popup h3{
+    margin:0 0 10px;
+    font-size:20px;
+    font-weight:800;
+    color:#222;
+}
+
+.cart-replace-message{
+    margin:0 auto 22px;
+    color:#666;
+    font-size:14px;
+    line-height:1.55;
+    max-width:340px;
+}
+
+.cart-replace-old{
+    font-weight:800;
+    color:#222;
+}
+
+.cart-replace-new{
+    font-weight:800;
+    color:var(--orange);
+}
+
+.cart-replace-actions{
+    display:flex;
+    gap:10px;
+}
+
+.cart-replace-btn{
+    flex:1;
+    height:46px;
+    border-radius:13px;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.cart-replace-cancel{
+    background:#f3f3f3;
+    color:#333;
+    border:1px solid #e5e5e5;
+}
+
+.cart-replace-confirm{
+    background:var(--orange);
+    color:#fff;
+    border:1px solid var(--orange);
+}
+
+.cart-replace-cancel:active,
+.cart-replace-confirm:active{
+    transform:scale(.98);
+}
+
+@media(max-width:480px){
+
+    .cart-replace-popup{
+        border-radius:20px;
+        padding:22px 17px 17px;
+    }
+
+    .cart-replace-popup h3{
+        font-size:18px;
+    }
+
+    .cart-replace-message{
+        font-size:13px;
+    }
+
+    .cart-replace-btn{
+        height:44px;
+        font-size:12px;
+    }
+}
 </style>
 
 </head>
@@ -2541,6 +2671,56 @@ body.is-grocery .grocery-price-line s.onwards{
 
     </div>
 
+    <!-- =========================================================
+     DIFFERENT RESTAURANT CART POPUP
+========================================================= -->
+
+<div
+    class="cart-replace-overlay"
+    id="cartReplacePopup"
+>
+
+    <div class="cart-replace-popup">
+
+        <div class="cart-replace-icon">
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+
+        <h3>
+            Replace your cart?
+        </h3>
+
+        <p
+            class="cart-replace-message"
+            id="cartReplaceMessage"
+        >
+            Your cart contains items from another restaurant.
+        </p>
+
+        <div class="cart-replace-actions">
+
+            <button
+                type="button"
+                class="cart-replace-btn cart-replace-cancel"
+                onclick="closeCartReplacePopup()"
+            >
+                CANCEL
+            </button>
+
+            <button
+                type="button"
+                class="cart-replace-btn cart-replace-confirm"
+                onclick="confirmCartReplacement()"
+            >
+                REPLACE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 </div>
 
 
@@ -2589,6 +2769,10 @@ let defaultGroceryMenu = [];
 let groceryCategoryData = [];
 
 let cart = [];
+
+let currentRestaurantName = "Partner";
+
+let pendingCartAction = null;
 
 let isGrocery = false;
 
@@ -3584,23 +3768,31 @@ async function loadRestaurant(){
 
         const partnerName =
 
-            restaurant.restaurant_name ||
+    restaurant.restaurant_name ||
 
-            restaurant.name ||
+    restaurant.name ||
 
-            restaurant.store_name ||
+    restaurant.store_name ||
 
-            restaurant.business_name ||
+    restaurant.business_name ||
 
-            restaurant.partner_name ||
+    restaurant.partner_name ||
 
-            "Partner";
+    "Partner";
 
 
-        document.getElementById(
-            "restaurantName"
-        ).textContent =
-            partnerName;
+/* SAVE CURRENT RESTAURANT NAME */
+
+currentRestaurantName =
+    partnerName;
+
+
+/* SHOW RESTAURANT NAME */
+
+document.getElementById(
+    "restaurantName"
+).textContent =
+    partnerName;
 
 
         partnerBusinessTypes =
@@ -5957,10 +6149,15 @@ function displayGroceryMenu(
     items.forEach(item => {
 
         const cartItem =
-            cart.find(
-                x =>
-                    x.product_id == item.id
-            );
+    cart.find(
+        x =>
+            x.product_id == item.id &&
+            String(
+                x.partner_id
+            ) === String(
+                restaurantId
+            )
+    );
 
 
         const weights =
@@ -6190,7 +6387,7 @@ function displayGroceryMenu(
 }
 
 
-/* =========================================================
+ /* =========================================================
    DIRECT GROCERY ADD
 ========================================================= */
 
@@ -6206,7 +6403,9 @@ function addGroceryDirectly(
 
 
     if(!product){
+
         return;
+
     }
 
 
@@ -6214,6 +6413,9 @@ function addGroceryDirectly(
         getWeights(product);
 
 
+    /*
+     * PRODUCTS WITH PACK SIZES
+     */
     if(variants.length){
 
         openPackPopup(
@@ -6225,54 +6427,74 @@ function addGroceryDirectly(
     }
 
 
-    const existing =
-        cart.find(
-            item =>
-                item.product_id == productId &&
-                !item.cart_id
-        );
+    checkRestaurantCart(
+        restaurantId,
+        currentRestaurantName,
+
+        function(){
+
+            const existing =
+                cart.find(
+                    item =>
+                        item.product_id == productId &&
+                        !item.cart_id &&
+                        String(
+                            item.partner_id
+                        ) === String(
+                            restaurantId
+                        )
+                );
 
 
-    if(existing){
+            if(existing){
 
-        existing.quantity++;
+                existing.quantity++;
 
-    }
-    else{
+            }
+            else{
 
-        cart.push({
+                cart.push({
 
-            product_id:
-                product.id,
+                    product_id:
+                        product.id,
 
-            quantity:1,
+                    quantity:
+                        1,
 
-            product_name:
-                product.product_name ||
-                product.name,
+                    product_name:
+                        product.product_name ||
+                        product.name,
 
-            price:
-                getProductPrice(product),
+                    price:
+                        getProductPrice(product),
 
-            image:
-                getProductImage(product),
+                    image:
+                        getProductImage(product),
 
-            partner_id:
-                restaurantId,
+                    partner_id:
+                        restaurantId,
 
-            item_type:
-                "grocery"
+                    restaurant_name:
+                        currentRestaurantName,
 
-        });
+                    item_type:
+                        "grocery"
 
-    }
+                });
+
+            }
 
 
-    saveCart();
+            saveCart();
 
-    refreshCurrentView();
+            refreshCurrentView();
+
+        }
+
+    );
 
 }
+
 
 
 /* =========================================================
@@ -6433,7 +6655,9 @@ function addPackToCart(
 
 
     if(!product){
+
         return;
+
     }
 
 
@@ -6446,76 +6670,98 @@ function addPackToCart(
 
 
     if(!selectedPack){
+
         return;
-    }
-
-
-    const cartId =
-        `${product.id}_${String(
-            selectedPack.weight
-        )
-        .trim()
-        .replace(/\s+/g,"_")}`;
-
-
-    const existing =
-        cart.find(
-            item =>
-                item.cart_id === cartId
-        );
-
-
-    if(existing){
-
-        existing.quantity++;
-
-    }
-    else{
-
-        cart.push({
-
-            cart_id:
-                cartId,
-
-            product_id:
-                product.id,
-
-            quantity:1,
-
-            product_name:
-                product.product_name ||
-                product.name,
-
-            weight:
-                selectedPack.weight,
-
-            price:
-                Number(
-                    selectedPack.price || 0
-                ),
-
-            image:
-                getProductImage(product),
-
-            partner_id:
-                restaurantId,
-
-            item_type:
-                "grocery"
-
-        });
 
     }
 
 
-    saveCart();
+    checkRestaurantCart(
+        restaurantId,
+        currentRestaurantName,
 
-    closePackPopup();
+        function(){
 
-    refreshCurrentView();
+            const cartId =
+                `${product.id}_${String(
+                    selectedPack.weight
+                )
+                .trim()
+                .replace(/\s+/g,"_")}`;
+
+
+            const existing =
+                cart.find(
+                    item =>
+                        item.cart_id === cartId &&
+                        String(
+                            item.partner_id
+                        ) === String(
+                            restaurantId
+                        )
+                );
+
+
+            if(existing){
+
+                existing.quantity++;
+
+            }
+            else{
+
+                cart.push({
+
+                    cart_id:
+                        cartId,
+
+                    product_id:
+                        product.id,
+
+                    quantity:
+                        1,
+
+                    product_name:
+                        product.product_name ||
+                        product.name,
+
+                    weight:
+                        selectedPack.weight,
+
+                    price:
+                        Number(
+                            selectedPack.price || 0
+                        ),
+
+                    image:
+                        getProductImage(product),
+
+                    partner_id:
+                        restaurantId,
+
+                    restaurant_name:
+                        currentRestaurantName,
+
+                    item_type:
+                        "grocery"
+
+                });
+
+            }
+
+
+            saveCart();
+
+
+            closePackPopup();
+
+
+            refreshCurrentView();
+
+        }
+
+    );
 
 }
-
 
 /* =========================================================
    SORT
@@ -6587,6 +6833,217 @@ function saveCart(){
 
 }
 
+/* =========================================================
+   CART RESTAURANT CHECK
+========================================================= */
+
+function checkRestaurantCart(
+    partnerId,
+    partnerName,
+    action
+){
+
+    const currentPartnerId =
+        String(partnerId ?? "").trim();
+
+
+    /*
+     * CART EMPTY
+     * -------------------------
+     * Nothing to check.
+     */
+    if(!Array.isArray(cart) || cart.length === 0){
+
+        action();
+
+        return;
+    }
+
+
+    /*
+     * CHECK WHETHER CART BELONGS
+     * TO ANOTHER RESTAURANT
+     */
+    const differentRestaurantItem =
+        cart.find(item => {
+
+            const cartPartnerId =
+                String(
+                    item.partner_id ?? ""
+                ).trim();
+
+            return (
+                cartPartnerId &&
+                currentPartnerId &&
+                cartPartnerId !== currentPartnerId
+            );
+
+        });
+
+
+    /*
+     * SAME RESTAURANT
+     */
+    if(!differentRestaurantItem){
+
+        action();
+
+        return;
+    }
+
+
+    /*
+     * OLD RESTAURANT NAME
+     */
+    const oldRestaurantName =
+        differentRestaurantItem.restaurant_name ||
+        "another restaurant";
+
+
+    /*
+     * SAVE ACTION UNTIL USER CONFIRMS
+     */
+    pendingCartAction = action;
+
+
+    /*
+     * GET POPUP
+     */
+    const popup =
+        document.getElementById(
+            "cartReplacePopup"
+        );
+
+
+    const message =
+        document.getElementById(
+            "cartReplaceMessage"
+        );
+
+
+    if(!popup || !message){
+
+        /*
+         * Safety fallback
+         */
+        action();
+
+        return;
+    }
+
+
+    /*
+     * POPUP MESSAGE
+     */
+    message.innerHTML = `
+
+        Your cart contains items from
+
+        <span class="cart-replace-old">
+            ${escapeHTML(oldRestaurantName)}
+        </span>.
+
+        <br><br>
+
+        Do you want to discard the current cart
+        and add items from
+
+        <span class="cart-replace-new">
+            ${escapeHTML(
+                partnerName || "this restaurant"
+            )}
+        </span>?
+    `;
+
+
+    /*
+     * SHOW POPUP
+     */
+    popup.classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE CART REPLACE POPUP
+========================================================= */
+
+function closeCartReplacePopup(){
+
+    const popup =
+        document.getElementById(
+            "cartReplacePopup"
+        );
+
+
+    if(popup){
+
+        popup.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /*
+     * Do NOT execute pending action.
+     */
+    pendingCartAction =
+        null;
+
+}
+
+
+/* =========================================================
+   CONFIRM CART REPLACEMENT
+========================================================= */
+
+function confirmCartReplacement(){
+
+    const popup =
+        document.getElementById(
+            "cartReplacePopup"
+        );
+
+
+    /*
+     * CLEAR OLD CART
+     */
+    cart = [];
+
+
+    /*
+     * CLOSE POPUP
+     */
+    if(popup){
+
+        popup.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /*
+     * TAKE SAVED ACTION
+     */
+    const action =
+        pendingCartAction;
+
+
+    pendingCartAction =
+        null;
+
+
+    /*
+     * ADD NEW ITEM
+     */
+    if(typeof action === "function"){
+
+        action();
+
+    }
+}
 
 /* =========================================================
    FOOD ADD
@@ -6604,56 +7061,77 @@ function addFoodToCart(
 
 
     if(!product){
+
         return;
-    }
-
-
-    const existing =
-        cart.find(
-            item =>
-                item.product_id == productId &&
-                !item.cart_id
-        );
-
-
-    if(existing){
-
-        existing.quantity++;
-
-    }
-    else{
-
-        cart.push({
-
-            product_id:
-                product.id,
-
-            quantity:1,
-
-            product_name:
-                product.product_name ||
-                product.name,
-
-            price:
-                getProductPrice(product),
-
-            image:
-                getProductImage(product),
-
-            partner_id:
-                restaurantId,
-
-            item_type:
-                "food"
-
-        });
 
     }
 
 
-    saveCart();
+    checkRestaurantCart(
+        restaurantId,
+        currentRestaurantName,
 
-    refreshCurrentView();
+        function(){
+
+            const existing =
+                cart.find(
+                    item =>
+                        item.product_id == productId &&
+                        !item.cart_id &&
+                        String(
+                            item.partner_id
+                        ) === String(
+                            restaurantId
+                        )
+                );
+
+
+            if(existing){
+
+                existing.quantity++;
+
+            }
+            else{
+
+                cart.push({
+
+                    product_id:
+                        product.id,
+
+                    quantity:
+                        1,
+
+                    product_name:
+                        product.product_name ||
+                        product.name,
+
+                    price:
+                        getProductPrice(product),
+
+                    image:
+                        getProductImage(product),
+
+                    partner_id:
+                        restaurantId,
+
+                    restaurant_name:
+                        currentRestaurantName,
+
+                    item_type:
+                        "food"
+
+                });
+
+            }
+
+
+            saveCart();
+
+            refreshCurrentView();
+
+        }
+
+    );
 
 }
 
