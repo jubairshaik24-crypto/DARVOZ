@@ -438,8 +438,9 @@ router.get("/grocery/:partnerId", (req, res) => {
             pgp.featured,
             pgp.created_at,
             gc.category_name,
-            gdp.product_type,
-            gdp.product_image AS default_image
+gc.image AS category_image,
+gdp.product_type,
+gdp.product_image AS default_image
 
         FROM partner_grocery_products pgp
 
@@ -589,17 +590,29 @@ router.get("/grocery/:partnerId", (req, res) => {
 
             const categoryMap = new Map();
 
-            finalProducts.forEach(product => {
-                if (product.category_id !== null) {
-                    categoryMap.set(
-                        String(product.category_id),
-                        {
-                            id: product.category_id,
-                            name: product.category_name
-                        }
-                    );
-                }
-            });
+finalProducts.forEach(product => {
+
+    if (
+        product.category_id !== null &&
+        product.category_id !== undefined
+    ) {
+
+        categoryMap.set(
+            String(product.category_id),
+            {
+                id: product.category_id,
+
+                name:
+                    product.category_name || "Other",
+
+                category_image:
+                    product.category_image || null
+            }
+        );
+
+    }
+
+});
 
             return res.json({
                 success: true,

@@ -729,6 +729,719 @@ MOBILE
 
 }
 
+/* =====================================================
+   NEW GROCERY DASHBOARD UI
+===================================================== */
+
+body{
+    background:#f5f6fa;
+    padding:0 18px 90px;
+}
+
+.header{
+    margin-top:0;
+    border-radius:0 0 28px 28px;
+    padding:20px 28px;
+}
+
+.headerTop{
+    display:grid;
+    grid-template-columns:60px 1fr auto;
+}
+
+.backBtn{
+    grid-column:1;
+}
+
+.header h2{
+    grid-column:2;
+    grid-row:1;
+    margin:0;
+    align-self:end;
+}
+
+.header p{
+    grid-column:2;
+    grid-row:2;
+    margin:0;
+}
+
+.addBtn{
+    grid-column:3;
+    grid-row:1 / 3;
+    min-width:150px;
+    height:54px;
+}
+
+/* MAIN LAYOUT */
+
+.groceryLayout{
+    display:grid;
+    grid-template-columns:330px minmax(0,1fr);
+    gap:20px;
+    margin-top:22px;
+}
+
+/* SIDEBAR */
+
+.categorySidebar{
+    background:white;
+    border-radius:22px;
+    padding:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+
+    height:calc(100vh - 130px);
+    max-height:750px;
+    min-height:400px;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    position:sticky;
+    top:20px;
+}
+
+.categoryHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+}
+
+.categoryHead h3{
+    font-size:21px;
+    color:#252b35;
+}
+
+.categoryHead span{
+    color:#ff5a00;
+    font-size:24px;
+}
+
+
+.categoryList{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-right:4px;
+
+    overscroll-behavior:contain;
+}
+
+.categoryItem{
+    width:100%;
+    border:1px solid #edf0f3;
+    background:#fafbfc;
+    padding:14px 15px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    color:#444;
+    transition:.2s;
+}
+
+.categoryItem:hover,
+.categoryItem.active{
+    background:#fff7f1;
+    border-color:#ffb98d;
+    color:#e85b13;
+}
+
+.categoryCount{
+    min-width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#f2f3f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    color:#666;
+}
+
+.categoryItem.active .categoryCount{
+    background:#ffeadc;
+    color:#e85b13;
+}
+
+/* QUICK STATS */
+
+.quickStats{
+    margin-top:22px;
+    padding:18px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#fff7f0,#ffffff);
+    border:1px solid #fff0e6;
+}
+
+.quickStats h4{
+    font-size:16px;
+    color:#333;
+    margin-bottom:10px;
+}
+
+.quickStatsRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#666;
+    font-size:13px;
+}
+
+.quickStatsRow strong{
+    color:#f05a16;
+    font-size:22px;
+}
+
+/* CONTENT */
+
+.groceryContent{
+    min-width:0;
+}
+
+.search{
+    padding:0;
+    display:flex;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.search input{
+    flex:1;
+    height:58px;
+    border-radius:16px;
+    border:1px solid #e4e6eb;
+    box-shadow:0 3px 12px rgba(0,0,0,.03);
+    padding:0 20px;
+}
+
+.filterBtn{
+    min-width:115px;
+    height:58px;
+    border:1px solid #e4e6eb;
+    background:white;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:600;
+    color:#444;
+    cursor:pointer;
+}
+
+/* 4 STAT CARDS */
+
+.stats{
+    padding:0;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:16px;
+}
+
+.stat{
+    padding:18px;
+    min-height:102px;
+    display:flex;
+    align-items:center;
+    text-align:left;
+    gap:14px;
+    border-radius:18px;
+}
+
+.statIcon{
+    width:58px;
+    height:58px;
+    border-radius:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+    background:#fff4ec;
+}
+
+.statContent h3{
+    color:#252b35;
+    font-size:27px;
+}
+
+.statContent p{
+    margin-top:2px;
+}
+
+.stat.availableStat .statIcon{
+    background:#eaf8ef;
+}
+
+.stat.outStat .statIcon{
+    background:#fff0f0;
+}
+
+.stat.featuredStat .statIcon{
+    background:#fff8e8;
+}
+
+/* PRODUCTS TITLE */
+
+.productsHeader{
+    background:white;
+    padding:18px 20px;
+    border-radius:18px 18px 0 0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #eee;
+}
+
+.productsHeader h3{
+    font-size:20px;
+}
+
+.sortBox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+}
+
+.sortBox select{
+    border:1px solid #e3e5e8;
+    padding:10px 14px;
+    border-radius:12px;
+    background:white;
+    outline:none;
+}
+
+/* PRODUCT LIST */
+
+#productList{
+    padding:12px 0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.productCard{
+    width:100%;
+    padding:18px 20px;
+    border-radius:18px;
+    display:grid;
+    grid-template-columns:140px minmax(280px,1fr) auto;
+    align-items:center;
+    gap:18px;
+    box-shadow:0 4px 18px rgba(0,0,0,.055);
+}
+
+.productTop{
+    display:contents;
+}
+
+.productImage{
+    width:135px;
+    height:135px;
+    object-fit:contain;
+    border-radius:15px;
+    background:#fafafa;
+    padding:8px;
+}
+
+.productInfo{
+    width:100%;
+}
+
+.productInfo h3{
+    font-size:20px;
+    margin-bottom:7px;
+}
+
+.tag{
+    margin-bottom:8px;
+}
+
+.variantTitle{
+    margin-top:8px;
+}
+
+.variantContainer{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.variantBox{
+    min-width:118px;
+    padding:10px 12px;
+    border-radius:13px;
+    background:#fffaf6;
+}
+
+.status{
+    margin-top:12px;
+}
+
+.featured{
+    margin-left:6px;
+}
+
+/* RIGHT SIDE ACTIONS */
+
+.productActions{
+    min-width:140px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:12px;
+}
+
+.productPriceSide{
+    text-align:right;
+}
+
+.productPriceSide .mainSidePrice{
+    font-size:19px;
+    font-weight:800;
+    color:#252b35;
+}
+
+.productPriceSide .oldSidePrice{
+    font-size:13px;
+    color:#999;
+    text-decoration:line-through;
+    margin-top:3px;
+}
+
+.buttons{
+    margin-top:0;
+    display:flex;
+    gap:8px;
+}
+
+.buttons button{
+    width:58px;
+    height:50px;
+    flex:none;
+    padding:0;
+    border-radius:13px;
+    font-size:0;
+}
+
+.editBtn::after{
+    content:"✎";
+    font-size:22px;
+}
+
+.deleteBtn::after{
+    content:"🗑";
+    font-size:19px;
+}
+
+.bottom{
+    left:18px;
+    width:calc(100% - 36px);
+    background:transparent;
+    box-shadow:none;
+}
+
+.dashboardBtn{
+    background:linear-gradient(135deg,#ff5a00,#ff6b00);
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+
+    .groceryLayout{
+        grid-template-columns:1fr;
+    }
+
+    .categorySidebar{
+        position:static;
+    }
+
+    .categoryList{
+        max-height:none;
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:700px){
+
+    body{
+        padding:0 10px 90px;
+    }
+
+    .header{
+        padding:18px 15px;
+    }
+
+    .headerTop{
+        grid-template-columns:48px 1fr auto;
+    }
+
+    .addBtn{
+        min-width:auto;
+        padding:10px 13px;
+        font-size:12px;
+    }
+
+    .categoryList{
+        grid-template-columns:1fr;
+    }
+
+    .search{
+        flex-direction:column;
+    }
+
+    .filterBtn{
+        width:100%;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stat{
+        padding:13px;
+        min-height:88px;
+    }
+
+    .statIcon{
+        width:44px;
+        height:44px;
+        font-size:19px;
+    }
+
+    .statContent h3{
+        font-size:22px;
+    }
+
+    .productsHeader{
+        padding:15px;
+    }
+
+    .sortBox{
+        display:none;
+    }
+
+    .productCard{
+        grid-template-columns:90px 1fr;
+        padding:14px;
+        gap:12px;
+    }
+
+    .productImage{
+        width:90px;
+        height:90px;
+    }
+
+    .productInfo h3{
+        font-size:16px;
+    }
+
+    .productActions{
+        grid-column:1/-1;
+        width:100%;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .variantBox{
+        min-width:90px;
+    }
+
+    .bottom{
+        left:10px;
+        width:calc(100% - 20px);
+    }
+
+}
+
+.categoryLeft{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+}
+
+.categoryRight{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.categoryImage{
+    width:42px;
+    height:42px;
+    object-fit:cover;
+    border-radius:10px;
+    flex-shrink:0;
+}
+
+.categoryImageBox{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.allCategoryImage{
+    background:#fff3e8;
+}
+
+.categoryName{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.categoryEdit{
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.categoryEdit:hover{
+    background:#fff0e6;
+}
+
+.addCategoryBtn{
+    border:none;
+    background:#ff6b00;
+    color:white;
+    padding:7px 11px;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.addCategoryBtn:hover{
+    opacity:.9;
+}
+
+
+
+/* PRODUCT LIST */
+#productList {
+    padding-bottom: 30px;
+}
+
+.categoryHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.categoryHeadActions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addCategoryBtn {
+    border: none;
+    cursor: pointer;
+    padding: 7px 12px;
+    border-radius: 8px;
+}
+
+.categorySidebar {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.categorySidebar.closed {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    opacity: 0;
+    margin: 0;
+}
+
+.sidebarToggle {
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+}
+
+/* ================================
+   MOBILE CATEGORY SIDEBAR DRAWER
+================================ */
+
+@media (max-width: 768px) {
+
+    .categorySidebar {
+        position: fixed !important;
+
+        top: 0 !important;
+        left: -320px !important;
+
+        width: 280px !important;
+        height: 100vh !important;
+
+        z-index: 9999 !important;
+
+        overflow-y: auto !important;
+
+        transition: left 0.3s ease !important;
+    }
+
+    .categorySidebar.mobileOpen {
+        left: 0 !important;
+    }
+
+}
+
+.mobileSidebarOpen {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .mobileSidebarOpen {
+        display: block;
+        position: fixed;
+        left: 10px;
+        top: 80px;
+        z-index: 10000;
+
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 22px;
+    }
+
+    .categorySidebar.mobileOpen ~ .mobileSidebarOpen {
+        display: none;
+    }
+}
 </style>
 
 </head>
@@ -773,84 +1486,232 @@ HEADER
 </div>
 
 
-<!-- =====================================================
-SEARCH
-===================================================== -->
+<div class="groceryLayout">
 
-<div class="search">
+    <!-- ================= SIDEBAR ================= -->
 
-    <input
-        type="text"
-        id="search"
-        placeholder="🔍 Search Product...">
+    <aside class="categorySidebar">
 
-</div>
+        <div class="categoryHead">
 
+    <h3>▦ Categories</h3>
 
-<!-- =====================================================
-STATS
-===================================================== -->
+    <div class="categoryHeadActions">
 
-<div class="stats">
+        <button
+            class="addCategoryBtn"
+            onclick="openCategoryModal()">
+            + Add
+        </button>
 
-    <div class="stat">
-
-        <h3 id="totalProducts">
-            0
-        </h3>
-
-        <p>
-            Total Products
-        </p>
-
-    </div>
-
-    <div class="stat">
-
-        <h3 id="availableProducts">
-            0
-        </h3>
-
-        <p>
-            Available
-        </p>
-
-    </div>
-
-    <div class="stat">
-
-        <h3 id="featuredProducts">
-            0
-        </h3>
-
-        <p>
-            Featured
-        </p>
+        <span
+    class="sidebarToggle"
+    onclick="toggleCategorySidebar()">
+    ☰
+</span>
 
     </div>
 
 </div>
 
+        <div
+            class="categoryList"
+            id="categoryList">
 
-<!-- =====================================================
-PRODUCT LIST
-===================================================== -->
+            <button
+                class="categoryItem active"
+                onclick="filterCategory('all', this)">
 
-<div id="productList">
+                <span>🛒 All Categories</span>
 
-    <div class="loading">
+                <span
+                    class="categoryCount"
+                    id="allCategoryCount">
 
-        <div class="spinnerSmall"></div>
+                    0
 
-        <h3>
-            Loading Products...
-        </h3>
+                </span>
 
-        <p style="margin-top:7px;color:#777;">
-            Please wait...
-        </p>
+            </button>
 
-    </div>
+        </div>
+
+        <div class="quickStats">
+
+            <h4>📊 Quick Stats</h4>
+
+            <div class="quickStatsRow">
+
+                <span>Total Products</span>
+
+                <strong
+                    id="quickTotalProducts">
+
+                    0
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </aside>
+<button
+    class="mobileSidebarOpen"
+    onclick="toggleCategorySidebar()">
+    ☰
+</button>
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="groceryContent">
+
+        <!-- SEARCH -->
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="search"
+                placeholder="🔍 Search products by name, size, category...">
+
+            <button
+                class="filterBtn"
+                type="button">
+
+                ⚱ Filter
+
+            </button>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="statIcon">
+                    🛍
+                </div>
+
+                <div class="statContent">
+
+                    <h3 id="totalProducts">
+                        0
+                    </h3>
+
+                    <p>Total Products</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat availableStat">
+
+                <div class="statIcon">
+                    ✓
+                </div>
+
+                <div class="statContent">
+
+                    <h3 id="availableProducts">
+                        0
+                    </h3>
+
+                    <p>Available</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat outStat">
+
+                <div class="statIcon">
+                    ✕
+                </div>
+
+                <div class="statContent">
+
+                    <h3 id="outOfStockProducts">
+                        0
+                    </h3>
+
+                    <p>Out of Stock</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat featuredStat">
+
+                <div class="statIcon">
+                    ☆
+                </div>
+
+                <div class="statContent">
+
+                    <h3 id="featuredProducts">
+                        0
+                    </h3>
+
+                    <p>Featured</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCTS HEADER -->
+
+        <div class="productsHeader">
+
+            <h3>Products</h3>
+
+            <div class="sortBox">
+
+                <span>Sort by:</span>
+
+                <select
+                    id="sortProducts"
+                    onchange="sortProducts()">
+
+                    <option value="latest">
+                        Recently Added
+                    </option>
+
+                    <option value="name">
+                        Product Name
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT LIST -->
+
+        <div id="productList">
+
+            <div class="loading">
+
+                <div class="spinnerSmall"></div>
+
+                <h3>Loading Products...</h3>
+
+            </div>
+
+        </div>
+
+    </main>
 
 </div>
 
@@ -912,7 +1773,7 @@ ADD / EDIT MODAL
 
             </div>
 
-            <select
+            <!-- <select
                 id="defaultProductSelect"
                 class="defaultProductSelect">
 
@@ -920,10 +1781,10 @@ ADD / EDIT MODAL
                     Select product...
                 </option>
 
-            </select>
+            </select> -->
 
         </div>
-
+ 
 
         <!-- =================================================
         GROCERY CATEGORY
@@ -1150,6 +2011,91 @@ UPLOAD LOADER
 </div>
 
 
+
+<div
+    id="categoryModal"
+    class="modal">
+
+    <div class="modalBox">
+
+        <h2
+            id="categoryModalTitle">
+
+            Add Grocery Category
+
+        </h2>
+
+
+        <input
+            type="hidden"
+            id="editCategoryId"
+        >
+
+
+        <input
+            type="text"
+            id="categoryNameInput"
+            class="modalInput"
+            placeholder="Category Name"
+        >
+
+
+        <label class="modalLabel">
+
+            Category Image
+
+        </label>
+
+
+        <img
+            id="categoryPreviewImage"
+            class="previewImage"
+            src="/images/other.jpg"
+            onerror="
+                this.src='/images/other.jpg'
+            "
+        >
+
+
+        <input
+            type="file"
+            id="categoryImageInput"
+            accept="image/*"
+            class="modalInput"
+        >
+
+
+        <input
+            type="hidden"
+            id="categoryImageUrl"
+        >
+
+
+        <div class="modalActions">
+
+            <button
+                class="cancelBtn"
+                onclick="closeCategoryModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                class="saveBtn"
+                onclick="saveCategory()">
+
+                💾 Save Category
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script>
 
 /* =====================================================
@@ -1204,14 +2150,16 @@ if(businessType){
 /* =====================================================
 VARIABLES
 ===================================================== */
-
 let menu = [];
-
-let defaultGroceryProducts = [];
 
 let groceryCategories = [];
 
 let editId = null;
+
+// ==========================================
+// REMEMBER SELECTED GROCERY CATEGORY
+// ==========================================
+let selectedGroceryCategoryId = "all";
 
 let isGrocery =
     businessType &&
@@ -1283,7 +2231,10 @@ if(!businessType){
 
 }else if(isGrocery){
 
-    loadGroceryMenu();
+    Promise.all([
+        loadGroceryMenu(),
+        loadGroceryCategories()
+    ]);
 
 }else{
 
@@ -1332,9 +2283,13 @@ async function loadNormalMenu(){
         }
 
         menu =
-            data.products || [];
+    data.products || [];
 
-        renderMenu(menu);
+renderMenu(menu);
+
+if(groceryCategories.length > 0){
+    renderGrocerySidebarCategories();
+}
 
     }
     catch(error){
@@ -1360,47 +2315,188 @@ LOAD GROCERY MENU
 
 async function loadGroceryMenu(){
 
+   const previousCategoryId =
+    selectedGroceryCategoryId;
+
+
     showLoading(
         "Loading Grocery Menu..."
     );
 
     try{
 
-        const response =
-            await fetch(
+        const [
+            productsResponse,
+            categoriesResponse
+        ] =
+        await Promise.all([
+
+            fetch(
                 `/partner/grocery-products/${partner.id}`
-            );
+            ),
 
-        if(!response.ok){
+            fetch(
+                `/partner/grocery-categories/${partner.id}`
+            )
 
-            throw new Error(
-                "HTTP Error " +
-                response.status
-            );
+        ]);
 
-        }
 
-        const data =
-            await response.json();
-
-        console.log(
-            "GROCERY PRODUCTS:",
-            data
-        );
-
-        if(!data.success){
+        if(!productsResponse.ok){
 
             throw new Error(
-                data.message ||
                 "Unable to load Grocery products"
             );
 
         }
 
+
+        if(!categoriesResponse.ok){
+
+            throw new Error(
+                "Unable to load Grocery categories"
+            );
+
+        }
+
+
+        const productsData =
+            await productsResponse.json();
+
+        const categoriesData =
+            await categoriesResponse.json();
+
+
+        if(!productsData.success){
+
+            throw new Error(
+                productsData.message ||
+                "Unable to load Grocery products"
+            );
+
+        }
+
+
+        if(!categoriesData.success){
+
+            throw new Error(
+                categoriesData.message ||
+                "Unable to load Grocery categories"
+            );
+
+        }
+
+
         menu =
-            data.products || [];
+            productsData.products || [];
+
+
+        groceryCategories =
+            categoriesData.categories || [];
+
+populateCategorySelect();
+
+renderGrocerySidebarCategories();
+
+
+// ==========================================
+// RESTORE PREVIOUS CATEGORY
+// ==========================================
+// ==========================================
+// RESTORE PREVIOUS CATEGORY
+// ==========================================
+
+if (
+    previousCategoryId &&
+    previousCategoryId !== "all"
+) {
+
+    const categoryButton =
+        document.querySelector(
+            `.categoryItem[data-category-id="${previousCategoryId}"]`
+        );
+
+
+    if (categoryButton) {
+
+        // Set active
+        document
+            .querySelectorAll(".categoryItem")
+            .forEach(item => {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+        categoryButton.classList.add(
+            "active"
+        );
+
+
+        // Filter products
+        const filteredProducts =
+            menu.filter(product => {
+
+                return Number(
+                    product.category_id
+                ) ===
+                Number(previousCategoryId);
+
+            });
+
+
+        console.log(
+            "RESTORING CATEGORY:",
+            previousCategoryId
+        );
+
+        console.log(
+            "RESTORED PRODUCTS:",
+            filteredProducts
+        );
+
+
+        renderMenu(
+            filteredProducts
+        );
+
+    }
+    else {
+
+        // Category no longer exists
+        selectedGroceryCategoryId =
+            "all";
 
         renderMenu(menu);
+
+    }
+
+}
+else {
+
+    // All Categories
+    selectedGroceryCategoryId =
+        "all";
+
+    const allButton =
+        document.querySelector(
+            ".categoryItem"
+        );
+
+    if (allButton) {
+
+        allButton.classList.add(
+            "active"
+        );
+
+    }
+
+    renderMenu(menu);
+
+}
 
     }
     catch(error){
@@ -1420,66 +2516,6 @@ async function loadGroceryMenu(){
 }
 
 
-/* =====================================================
-LOAD GROCERY DEFAULT PRODUCTS
-===================================================== */
-
-async function loadDefaultGroceryProducts(){
-
-    try{
-
-        const response =
-            await fetch(
-                "/partner/grocery-default-products"
-            );
-
-        if(!response.ok){
-
-            throw new Error(
-                "Unable to load default Grocery products"
-            );
-
-        }
-
-        const data =
-            await response.json();
-
-        console.log(
-            "DEFAULT GROCERY PRODUCTS:",
-            data
-        );
-
-        if(!data.success){
-
-            throw new Error(
-                data.message ||
-                "Unable to load default products"
-            );
-
-        }
-
-        defaultGroceryProducts =
-            data.products || [];
-
-        populateDefaultProductSelect();
-
-    }
-    catch(error){
-
-        console.error(
-            "DEFAULT GROCERY ERROR:",
-            error
-        );
-
-        alert(
-            error.message ||
-            "Unable to load default Grocery products."
-        );
-
-    }
-
-}
-
 
 /* =====================================================
 LOAD GROCERY CATEGORIES
@@ -1491,7 +2527,7 @@ async function loadGroceryCategories(){
 
         const response =
             await fetch(
-                "/partner/grocery-categories"
+                `/partner/grocery-categories/${partner.id}`
             );
 
         if(!response.ok){
@@ -1524,6 +2560,8 @@ async function loadGroceryCategories(){
 
         populateCategorySelect();
 
+        renderGrocerySidebarCategories();
+
     }
     catch(error){
 
@@ -1536,48 +2574,6 @@ async function loadGroceryCategories(){
 
 }
 
-
-/* =====================================================
-POPULATE DEFAULT PRODUCTS
-===================================================== */
-
-function populateDefaultProductSelect(){
-
-    const select =
-        document.getElementById(
-            "defaultProductSelect"
-        );
-
-    select.innerHTML = `
-
-        <option value="">
-            Select product...
-        </option>
-
-    `;
-
-    defaultGroceryProducts.forEach(
-        product => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                product.id;
-
-            option.textContent =
-                product.product_name;
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
 
 
 /* =====================================================
@@ -1623,78 +2619,171 @@ function populateCategorySelect(){
 }
 
 
-/* =====================================================
-DEFAULT PRODUCT SELECTED
-===================================================== */
+function renderGrocerySidebarCategories(){
 
-document
-    .getElementById(
-        "defaultProductSelect"
-    )
-    .addEventListener(
-        "change",
-        function(){
+    const categoryList =
+        document.getElementById("categoryList");
 
-            const defaultId =
-                Number(this.value);
+    if(!categoryList){
+        console.error("❌ categoryList not found");
+        return;
+    }
 
-            if(!defaultId){
+    console.log(
+        "🎨 RENDERING GROCERY CATEGORIES:",
+        groceryCategories
+    );
 
-                return;
+    categoryList.innerHTML = `
+        <button
+            class="categoryItem active"
+            onclick="filterCategory('all', this)"
+        >
+            <div class="categoryLeft">
 
+                <div
+                    class="categoryImageBox allCategoryImage"
+                >
+                    🛒
+                </div>
+
+                <span>
+                    All Categories
+                </span>
+
+            </div>
+
+            <span
+                class="categoryCount"
+                id="allCategoryCount"
+            >
+                ${menu.length}
+            </span>
+
+        </button>
+    `;
+
+    groceryCategories.forEach(category => {
+
+        console.log(
+            "CATEGORY BEING RENDERED:",
+            category
+        );
+
+        const categoryId =
+            category.id;
+
+        const categoryName =
+            category.category_name ||
+            category.name ||
+            "Other";
+
+        // IMPORTANT: Cloudinary URL
+        const categoryImage =
+            category.category_image ||
+            category.image_url ||
+            category.image ||
+             category.default_image ||
+            "";
+
+        const productCount =
+            menu.filter(
+                product =>
+                    Number(product.category_id) ===
+                    Number(categoryId)
+            ).length;
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+    "categoryItem";
+
+button.type =
+    "button";
+
+
+// Remember category ID on button
+button.dataset.categoryId =
+    String(categoryId);
+
+       button.innerHTML = `
+    <div class="categoryLeft">
+
+        <div class="categoryImageBox">
+
+            ${
+                categoryImage
+                    ? `
+                        <img
+                            class="categoryImage"
+                            src="${escapeHtml(categoryImage)}"
+                            alt="${escapeHtml(categoryName)}"
+                            onerror="
+                                this.onerror=null;
+                                this.parentElement.innerHTML='🛒';
+                            "
+                        >
+                    `
+                    : `🛒`
             }
 
-            const product =
-                defaultGroceryProducts.find(
-                    item =>
-                        Number(item.id) ===
-                        defaultId
+        </div>
+
+        <span class="categoryName">
+            ${escapeHtml(categoryName)}
+        </span>
+
+    </div>
+
+    <div class="categoryRight">
+
+        <span class="categoryCount">
+            ${productCount}
+        </span>
+
+        <span
+            class="categoryEdit"
+            title="Edit Category"
+        >
+            ✏️
+        </span>
+
+    </div>
+`;
+
+        button.addEventListener(
+            "click",
+            function(event){
+
+                if(
+                    event.target.closest(
+                        ".categoryEdit"
+                    )
+                ){
+
+                    event.stopPropagation();
+
+                    openCategoryModal(category);
+
+                    return;
+                }
+
+                filterCategoryById(
+                    categoryId,
+                    button
                 );
 
-            if(!product){
-
-                return;
-
             }
+        );
 
-            document.getElementById(
-                "m_name"
-            ).value =
-                product.product_name || "";
+        categoryList.appendChild(button);
 
-            document.getElementById(
-                "m_type"
-            ).value =
-                product.product_type ||
-                "Veg";
+    });
 
-            document.getElementById(
-                "m_image_name"
-            ).value =
-                product.product_image ||
-                product.image_url ||
-                "";
+}
 
-            document.getElementById(
-                "previewImage"
-            ).src =
-                product.product_image ||
-                product.image_url ||
-                "/images/other.jpg";
 
-            if(product.category_id){
-
-                document.getElementById(
-                    "categorySelect"
-                ).value =
-                    product.category_id;
-
-                syncCategoryName();
-
-            }
-
-        }
-    );
 
 
 /* =====================================================
@@ -1776,13 +2865,8 @@ function renderMenu(list){
     productList.innerHTML = "";
 
     let available = 0;
-
+    let outOfStock = 0;
     let featured = 0;
-
-    document.getElementById(
-        "totalProducts"
-    ).innerHTML =
-        list.length;
 
     list.forEach(
         product => {
@@ -1794,12 +2878,14 @@ function renderMenu(list){
 
                 available++;
 
+            }else{
+
+                outOfStock++;
+
             }
 
             if(
-                Number(
-                    product.featured
-                ) === 1
+                Number(product.featured) === 1
             ){
 
                 featured++;
@@ -1811,7 +2897,7 @@ function renderMenu(list){
 
 
             /* ==========================================
-            VARIANTS
+               VARIANTS
             ========================================== */
 
             let variantsHTML = "";
@@ -1825,7 +2911,7 @@ function renderMenu(list){
 
                     <div class="variantTitle">
 
-                        📦 Available Sizes
+                        Available Sizes
 
                     </div>
 
@@ -1836,52 +2922,41 @@ function renderMenu(list){
                             .map(
                                 variant => {
 
-                                    const price =
+                                    const variantPrice =
                                         Number(
                                             variant.price || 0
                                         );
 
-                                    const offer =
+                                    const variantOffer =
                                         Number(
                                             variant.offer_price || 0
                                         );
 
-                                    let priceHTML =
-                                        `₹${price.toFixed(2)}`;
-
-                                    if(
-                                        offer > 0 &&
-                                        offer < price
-                                    ){
-
-                                        priceHTML = `
-
-                                            <span
-                                                class="variantOffer">
-
-                                                ₹${price.toFixed(2)}
-
-                                            </span>
-
-                                            ₹${offer.toFixed(2)}
-
-                                        `;
-
-                                    }
+                                    const finalPrice =
+                                        variantOffer > 0 &&
+                                        variantOffer < variantPrice
+                                        ?
+                                        variantOffer
+                                        :
+                                        variantPrice;
 
                                     return `
 
                                         <div
                                             class="variantBox">
 
-                                            ${escapeHtml(
-                                                variant.size
-                                            )}
+                                            <strong>
+
+                                                ${escapeHtml(
+                                                    variant.size
+                                                )}
+
+                                            </strong>
 
                                             <div
                                                 class="variantPrice">
 
-                                                ${priceHTML}
+                                                ₹${finalPrice.toFixed(2)}
 
                                             </div>
 
@@ -1912,191 +2987,256 @@ function renderMenu(list){
 
 
             /* ==========================================
-            NORMAL PRICE
+               PRODUCT PRICE FOR RIGHT SIDE
             ========================================== */
 
-            let normalPriceHTML = "";
-
-            const price =
-                Number(
-                    product.price || 0
-                );
-
-            const offer =
-                Number(
-                    product.offer_price || 0
-                );
+            let mainPrice = 0;
+            let oldPrice = 0;
 
             if(
-                offer > 0 &&
-                offer < price
+                product.variants &&
+                product.variants.length
             ){
 
-                normalPriceHTML = `
+                const firstVariant =
+                    product.variants[0];
 
-                    <div class="price">
+                const variantPrice =
+                    Number(
+                        firstVariant.price || 0
+                    );
 
-                        <span class="offer">
+                const variantOffer =
+                    Number(
+                        firstVariant.offer_price || 0
+                    );
 
-                            ₹${price.toFixed(2)}
+                mainPrice =
+                    variantOffer > 0 &&
+                    variantOffer < variantPrice
+                    ?
+                    variantOffer
+                    :
+                    variantPrice;
 
-                        </span>
-
-                        ₹${offer.toFixed(2)}
-
-                    </div>
-
-                `;
+                oldPrice =
+                    variantOffer > 0 &&
+                    variantOffer < variantPrice
+                    ?
+                    variantPrice
+                    :
+                    0;
 
             }else{
 
-                normalPriceHTML = `
+                const price =
+                    Number(
+                        product.price || 0
+                    );
 
-                    <div class="price">
+                const offer =
+                    Number(
+                        product.offer_price || 0
+                    );
 
-                        ₹${price.toFixed(2)}
+                mainPrice =
+                    offer > 0 &&
+                    offer < price
+                    ?
+                    offer
+                    :
+                    price;
 
-                    </div>
-
-                `;
+                oldPrice =
+                    offer > 0 &&
+                    offer < price
+                    ?
+                    price
+                    :
+                    0;
 
             }
 
 
             /* ==========================================
-            CARD
+               PRODUCT CARD
             ========================================== */
 
             productList.innerHTML += `
 
                 <div class="productCard">
 
-                    <div class="productTop">
 
-                        <img
-                            class="productImage"
-                            src="${escapeHtml(image)}"
-                            onerror="this.src='/images/other.jpg'"
-                        >
+                    <!-- IMAGE -->
 
-                        <div class="productInfo">
-
-                            <h3>
-
-                                ${escapeHtml(
-                                    product.product_name
-                                )}
-
-                            </h3>
+                    <img
+                        class="productImage"
+                        src="${escapeHtml(image)}"
+                        onerror="this.src='/images/other.jpg'"
+                    >
 
 
-                            <span
-                                class="tag ${
-                                    product.type === "Non Veg"
-                                    ?
-                                    "nonveg"
-                                    :
-                                    "veg"
-                                }">
+                    <!-- PRODUCT INFO -->
 
-                                ${
-                                    product.type === "Non Veg"
-                                    ?
-                                    "🔴 Non Veg"
-                                    :
-                                    "🟢 Veg"
-                                }
+                    <div class="productInfo">
 
-                            </span>
-
-
-                            <span class="tag category">
-
-                                ${escapeHtml(
-                                    product.category_name ||
-                                    product.category ||
-                                    "Other"
-                                )}
-
-                            </span>
-
+                        <span
+                            class="tag ${
+                                product.type === "Non Veg"
+                                ?
+                                "nonveg"
+                                :
+                                "veg"
+                            }">
 
                             ${
-                                product.variants &&
-                                product.variants.length
+                                product.type === "Non Veg"
                                 ?
-                                variantsHTML
+                                "🔴 Non Veg"
                                 :
-                                normalPriceHTML
+                                "🟢 Veg"
                             }
 
+                        </span>
 
-                            <div
-                                class="status ${
-                                    product.status ===
-                                    "Available"
-                                    ?
-                                    "available"
-                                    :
-                                    "out"
-                                }">
 
-                                ${
-                                    product.status ===
-                                    "Available"
-                                    ?
-                                    "🟢 Available"
-                                    :
-                                    "🔴 Out Of Stock"
-                                }
+                        <h3>
+
+                            ${escapeHtml(
+                                product.product_name
+                            )}
+
+                        </h3>
+
+
+                        <span class="tag category">
+
+                            ${escapeHtml(
+                                product.category_name ||
+                                product.category ||
+                                "Other"
+                            )}
+
+                        </span>
+
+
+                        ${
+                            Number(product.featured) === 1
+                            ?
+                            `
+
+                                <span class="featured">
+
+                                    ⭐ Featured
+
+                                </span>
+
+                            `
+                            :
+                            ""
+                        }
+
+
+                        ${
+                            variantsHTML ||
+                            `
+
+                                <div class="price">
+
+                                    ₹${mainPrice.toFixed(2)}
+
+                                </div>
+
+                            `
+                        }
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="productActions">
+
+
+                        <div class="productPriceSide">
+
+                            <div class="mainSidePrice">
+
+                                ₹${mainPrice.toFixed(2)}
 
                             </div>
 
-
                             ${
-                                Number(
-                                    product.featured
-                                ) === 1
+                                oldPrice > 0
                                 ?
-
-                                `
-                                <div class="featured">
-
-                                    ⭐ Featured Product
-
-                                </div>
                                 `
 
+                                    <div
+                                        class="oldSidePrice">
+
+                                        ₹${oldPrice.toFixed(2)}
+
+                                    </div>
+
+                                `
                                 :
-
                                 ""
                             }
 
                         </div>
 
+
+                        <div
+                            class="status ${
+                                product.status ===
+                                "Available"
+                                ?
+                                "available"
+                                :
+                                "out"
+                            }">
+
+                            ${
+                                product.status ===
+                                "Available"
+                                ?
+                                "🟢 Available"
+                                :
+                                "🔴 Out of Stock"
+                            }
+
+                        </div>
+
+
+                        <div class="buttons">
+
+                            <button
+                                class="editBtn"
+                                title="Edit"
+                                onclick="editProduct(
+                                    ${Number(product.id)}
+                                )">
+
+                                Edit
+
+                            </button>
+
+
+                            <button
+                                class="deleteBtn"
+                                title="Delete"
+                                onclick="deleteProduct(
+                                    ${Number(product.id)}
+                                )">
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
                     </div>
 
-
-                    <div class="buttons">
-
-                        <button
-                            class="editBtn"
-                            onclick="editProduct(${Number(product.id)})">
-
-                            ✏ Edit
-
-                        </button>
-
-
-                        <button
-                            class="deleteBtn"
-                            onclick="deleteProduct(${Number(product.id)})">
-
-                            🗑 Delete
-
-                        </button>
-
-                    </div>
 
                 </div>
 
@@ -2106,16 +3246,55 @@ function renderMenu(list){
     );
 
 
+    /* ==========================================
+       UPDATE STATS
+    ========================================== */
+
+    document.getElementById(
+        "totalProducts"
+    ).innerHTML =
+        menu.length;
+
     document.getElementById(
         "availableProducts"
     ).innerHTML =
-        available;
+        menu.filter(
+            product =>
+                product.status ===
+                "Available"
+        ).length;
+
+    document.getElementById(
+        "outOfStockProducts"
+    ).innerHTML =
+        menu.filter(
+            product =>
+                product.status !==
+                "Available"
+        ).length;
 
     document.getElementById(
         "featuredProducts"
     ).innerHTML =
-        featured;
+        menu.filter(
+            product =>
+                Number(product.featured) === 1
+        ).length;
 
+    document.getElementById(
+        "quickTotalProducts"
+    ).innerHTML =
+        menu.length;
+
+    document.getElementById(
+        "allCategoryCount"
+    ).innerHTML =
+        menu.length;
+
+
+    /* ==========================================
+       EMPTY
+    ========================================== */
 
     if(list.length === 0){
 
@@ -2124,21 +3303,15 @@ function renderMenu(list){
             <div class="empty">
 
                 <div class="emptyIcon">
-
                     🛒
-
                 </div>
 
                 <h2>
-
                     No Products Found
-
                 </h2>
 
                 <p>
-
                     Add a product to your menu.
-
                 </p>
 
             </div>
@@ -2148,8 +3321,207 @@ function renderMenu(list){
     }
 
 }
+function renderCategorySidebar(){
+
+    const categoryList =
+        document.getElementById(
+            "categoryList"
+        );
+
+    if(!categoryList){
+        return;
+    }
+
+    const categories =
+        {};
+
+    menu.forEach(
+        product => {
+
+            const category =
+                product.category_name ||
+                product.category ||
+                "Other";
+
+            if(!categories[category]){
+
+                categories[category] = 0;
+
+            }
+
+            categories[category]++;
+
+        }
+    );
 
 
+    categoryList.innerHTML = `
+
+        <button
+            class="categoryItem active"
+            onclick="filterCategory('all', this)">
+
+            <span>
+                🛒 All Categories
+            </span>
+
+            <span
+                class="categoryCount">
+
+                ${menu.length}
+
+            </span>
+
+        </button>
+
+    `;
+
+
+    Object.keys(categories)
+        .sort()
+        .forEach(
+            category => {
+
+                categoryList.innerHTML += `
+
+                    <button
+                        class="categoryItem"
+                        onclick='filterCategory(
+                            ${JSON.stringify(category)},
+                            this
+                        )'>
+
+                        <span>
+
+                            📦 ${escapeHtml(category)}
+
+                        </span>
+
+                        <span
+                            class="categoryCount">
+
+                            ${categories[category]}
+
+                        </span>
+
+                    </button>
+
+                `;
+
+            }
+        );
+
+}
+
+function filterCategory(category, element) {
+
+    // ==========================================
+    // REMEMBER SELECTED CATEGORY
+    // ==========================================
+
+    selectedGroceryCategoryId =
+        category === "all"
+            ? "all"
+            : Number(category);
+
+
+    // ==========================================
+    // REMOVE ACTIVE
+    // ==========================================
+
+    document
+        .querySelectorAll(".categoryItem")
+        .forEach(item => {
+            item.classList.remove("active");
+        });
+
+
+    // ==========================================
+    // SET ACTIVE
+    // ==========================================
+
+    if (element) {
+        element.classList.add("active");
+    }
+
+
+    // ==========================================
+    // FILTER PRODUCTS
+    // ==========================================
+
+    if (category === "all") {
+
+        renderMenu(menu);
+
+    } else {
+
+        const filtered =
+            menu.filter(product =>
+                Number(product.category_id) ===
+                Number(category)
+            );
+
+        renderMenu(filtered);
+    }
+
+
+    // ==========================================
+    // MOBILE
+    // ==========================================
+
+    if (window.innerWidth <= 768) {
+
+        const sidebar =
+            document.querySelector(
+                ".categorySidebar"
+            );
+
+        if (sidebar) {
+            sidebar.classList.remove(
+                "mobileOpen"
+            );
+        }
+    }
+}
+
+
+function sortProducts(){
+
+    const value =
+        document.getElementById(
+            "sortProducts"
+        ).value;
+
+    let sorted =
+        [...menu];
+
+    if(value === "name"){
+
+        sorted.sort(
+            (a,b) =>
+                String(
+                    a.product_name || ""
+                )
+                .localeCompare(
+                    String(
+                        b.product_name || ""
+                    )
+                )
+        );
+
+    }else{
+
+        sorted.sort(
+            (a,b) =>
+                Number(b.id || 0) -
+                Number(a.id || 0)
+        );
+
+    }
+
+    renderMenu(sorted);
+
+}
 /* =====================================================
 SEARCH
 ===================================================== */
@@ -2208,127 +3580,85 @@ async function openAddModal(){
 
     editId = null;
 
-    document.getElementById(
-        "modalTitle"
-    ).innerHTML =
-        isGrocery
-        ?
-        "Add Grocery Product"
-        :
-        "Add Product";
+    const modalTitle = document.getElementById("modalTitle");
+    const nameInput = document.getElementById("m_name");
+    const typeInput = document.getElementById("m_type");
+    const normalCategoryInput = document.getElementById("m_category");
+    const priceInput = document.getElementById("m_price");
+    const offerInput = document.getElementById("m_offer");
+    const statusInput = document.getElementById("m_status");
+    const featuredInput = document.getElementById("m_featured");
+    const previewImage = document.getElementById("previewImage");
+    const imageNameInput = document.getElementById("m_image_name");
+    const imageInput = document.getElementById("m_image");
+    const variantList = document.getElementById("variantList");
+    const categorySelect = document.getElementById("categorySelect");
+    const variantEditor = document.getElementById("variantEditor");
+    const productModal = document.getElementById("productModal");
 
+    if (!productModal) {
+        console.error("productModal element not found.");
+        alert("Unable to open product form. Please refresh the page.");
+        return;
+    }
 
-    document.getElementById(
-        "m_name"
-    ).value = "";
+    if (modalTitle) {
+        modalTitle.innerHTML =
+            isGrocery
+            ? "Add Grocery Product"
+            : "Add Product";
+    }
 
-    document.getElementById(
-        "m_type"
-    ).value =
-        "Veg";
+    if (nameInput) nameInput.value = "";
+    if (typeInput) typeInput.value = "Veg";
+    if (normalCategoryInput) normalCategoryInput.value = "Other";
+    if (priceInput) priceInput.value = "";
+    if (offerInput) offerInput.value = "";
+    if (statusInput) statusInput.value = "Available";
+    if (featuredInput) featuredInput.checked = false;
 
-    document.getElementById(
-        "m_category"
-    ).value =
-        "Other";
+    if (previewImage) {
+        previewImage.src = "/images/other.jpg";
+    }
 
-    document.getElementById(
-        "m_price"
-    ).value = "";
+    if (imageNameInput) imageNameInput.value = "";
+    if (imageInput) imageInput.value = "";
+    if (variantList) variantList.innerHTML = "";
 
-    document.getElementById(
-        "m_offer"
-    ).value = "";
+    if (isGrocery) {
 
-    document.getElementById(
-        "m_status"
-    ).value =
-        "Available";
+        // NO default grocery product selector
+        if (categorySelect) {
+            categorySelect.style.display = "block";
+        }
 
-    document.getElementById(
-        "m_featured"
-    ).checked =
-        false;
+        if (normalCategoryInput) {
+            normalCategoryInput.style.display = "none";
+        }
 
-    document.getElementById(
-        "previewImage"
-    ).src =
-        "/images/other.jpg";
-
-    document.getElementById(
-        "m_image_name"
-    ).value =
-        "";
-
-    document.getElementById(
-        "m_image"
-    ).value =
-        "";
-
-    document.getElementById(
-        "variantList"
-    ).innerHTML =
-        "";
-
-    if(isGrocery){
-
-        document.getElementById(
-            "grocerySelector"
-        ).style.display =
-            "block";
-
-        document.getElementById(
-            "categorySelect"
-        ).style.display =
-            "block";
-
-        document.getElementById(
-            "m_category"
-        ).style.display =
-            "none";
-
-        document.getElementById(
-            "variantEditor"
-        ).style.display =
-            "block";
-
-
-        await loadDefaultGroceryProducts();
+        if (variantEditor) {
+            variantEditor.style.display = "block";
+        }
 
         await loadGroceryCategories();
 
-    }else{
+    } else {
 
-        document.getElementById(
-            "grocerySelector"
-        ).style.display =
-            "none";
+        if (categorySelect) {
+            categorySelect.style.display = "none";
+        }
 
-        document.getElementById(
-            "categorySelect"
-        ).style.display =
-            "none";
+        if (normalCategoryInput) {
+            normalCategoryInput.style.display = "block";
+        }
 
-        document.getElementById(
-            "m_category"
-        ).style.display =
-            "block";
-
-        document.getElementById(
-            "variantEditor"
-        ).style.display =
-            "none";
-
+        if (variantEditor) {
+            variantEditor.style.display = "none";
+        }
     }
 
-
-    document.getElementById(
-        "productModal"
-    ).style.display =
-        "flex";
-
+    productModal.style.display = "flex";
 }
-
 
 /* =====================================================
 CLOSE MODAL
@@ -3176,9 +4506,9 @@ async function saveProduct(){
 
         }
 
-        closeModal();
+closeModal();
 
-        await loadNormalMenu();
+await loadGroceryMenu();
 
     }
     catch(error){
@@ -3229,27 +4559,12 @@ async function saveGroceryProduct(){
     }
 
 
-    const defaultProductId =
-        Number(
-            document.getElementById(
-                "defaultProductSelect"
-            ).value
-        );
-
+   
 
     /* =================================================
     ADD
     ================================================= */
 
-    if(!editId && !defaultProductId){
-
-        alert(
-            "Please select a default Grocery product."
-        );
-
-        return;
-
-    }
 
 
     const body = {
@@ -3257,8 +4572,7 @@ async function saveGroceryProduct(){
         partner_id:
             partner.id,
 
-        default_product_id:
-            defaultProductId || null,
+        
 
         product_name:
             productName,
@@ -3512,6 +4826,449 @@ document
         }
     );
 
+function openCategoryModal(category = null){
+
+    const modal =
+        document.getElementById(
+            "categoryModal"
+        );
+
+
+    document.getElementById(
+        "editCategoryId"
+    ).value =
+        category
+        ?
+        category.id
+        :
+        "";
+
+
+    document.getElementById(
+        "categoryNameInput"
+    ).value =
+        category
+        ?
+        (
+            category.category_name ||
+            category.name ||
+            ""
+        )
+        :
+        "";
+
+
+    const imageUrl =
+        category
+        ?
+        (
+            category.category_image ||
+            category.image ||
+            category.image_url ||
+            "/images/other.jpg"
+        )
+        :
+        "/images/other.jpg";
+
+
+    document.getElementById(
+        "categoryImageUrl"
+    ).value =
+        category
+        ?
+        imageUrl
+        :
+        "";
+
+
+    document.getElementById(
+        "categoryPreviewImage"
+    ).src =
+        imageUrl;
+
+
+    document.getElementById(
+        "categoryImageInput"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "categoryModalTitle"
+    ).textContent =
+        category
+        ?
+        "Edit Grocery Category"
+        :
+        "Add Grocery Category";
+
+
+    modal.style.display =
+        "flex";
+
+}
+
+document
+    .getElementById("categoryImageInput")
+    .addEventListener(
+        "change",
+        function(){
+
+            const file = this.files[0];
+
+            if(!file){
+                return;
+            }
+
+            /* Show selected image immediately */
+            document.getElementById(
+                "categoryPreviewImage"
+            ).src =
+                URL.createObjectURL(file);
+
+
+            /* Start upload and SAVE THE PROMISE */
+            categoryImageUploadPromise =
+                (async () => {
+
+                    const loader =
+                        document.getElementById(
+                            "uploadLoader"
+                        );
+
+                    try{
+
+                        loader.style.display =
+                            "flex";
+
+                        const formData =
+                            new FormData();
+
+                        formData.append(
+                            "image",
+                            file
+                        );
+
+                        const response =
+                            await fetch(
+                                "/partner/upload-product-image",
+                                {
+                                    method:"POST",
+                                    body:formData
+                                }
+                            );
+
+                        const data =
+                            await response.json();
+
+                        console.log(
+                            "CATEGORY IMAGE UPLOAD RESPONSE:",
+                            data
+                        );
+
+                        if(
+                            !response.ok ||
+                            !data.success
+                        ){
+                            throw new Error(
+                                data.message ||
+                                "Image upload failed"
+                            );
+                        }
+
+
+                        /* IMPORTANT */
+                        const uploadedImageUrl =
+                            data.imageUrl ||
+                            data.image ||
+                            data.url;
+
+                        if(!uploadedImageUrl){
+
+                            throw new Error(
+                                "Server did not return image URL"
+                            );
+
+                        }
+
+
+                        /* Save Cloudinary URL */
+                        document.getElementById(
+                            "categoryImageUrl"
+                        ).value =
+                            uploadedImageUrl;
+
+
+                        /* Show actual Cloudinary image */
+                        document.getElementById(
+                            "categoryPreviewImage"
+                        ).src =
+                            uploadedImageUrl;
+
+
+                        console.log(
+                            "✅ CATEGORY IMAGE READY:",
+                            uploadedImageUrl
+                        );
+
+                        return uploadedImageUrl;
+
+                    }
+                    catch(error){
+
+                        console.error(
+                            "CATEGORY IMAGE ERROR:",
+                            error
+                        );
+
+                        document.getElementById(
+                            "categoryImageUrl"
+                        ).value =
+                            "";
+
+                        alert(
+                            error.message ||
+                            "Unable to upload category image."
+                        );
+
+                        throw error;
+
+                    }
+                    finally{
+
+                        loader.style.display =
+                            "none";
+
+                    }
+
+                })();
+
+        }
+    );
+
+    function closeCategoryModal() {
+    const modal = document.getElementById("categoryModal");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+async function saveCategory() {
+
+    try {
+
+        const id =
+            document.getElementById("editCategoryId").value;
+
+        const categoryName =
+            document.getElementById("categoryNameInput")
+            ?.value
+            ?.trim();
+
+        const categoryImage =
+            document.getElementById("categoryImageUrl")
+            ?.value
+            ?.trim();
+
+        console.log("CATEGORY NAME:", categoryName);
+        console.log("CATEGORY IMAGE:", categoryImage);
+
+        if (!categoryName) {
+            alert("Please enter category name.");
+            return;
+        }
+
+        /*
+        WAIT FOR IMAGE UPLOAD IF STILL UPLOADING
+        */
+        if (typeof categoryImageUploadPromise !== "undefined"
+            && categoryImageUploadPromise) {
+
+            await categoryImageUploadPromise;
+        }
+
+        const finalImage =
+            document.getElementById("categoryImageUrl")
+            ?.value
+            ?.trim() || "/images/other.jpg";
+
+        const body = {
+            category_name: categoryName,
+            category_image: finalImage
+        };
+
+        console.log("CATEGORY SAVE BODY:", body);
+
+        const url = id
+            ? `/partner/grocery-categories/${id}`
+            : "/partner/grocery-categories";
+
+        const method = id
+            ? "PUT"
+            : "POST";
+
+        const response = await fetch(url, {
+            method: method,
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        console.log(
+            "CATEGORY SAVE RESPONSE:",
+            data
+        );
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message ||
+                "Unable to save category"
+            );
+        }
+
+        closeCategoryModal();
+
+        /*
+        Reload fresh categories from database
+        */
+        await loadGroceryCategories();
+
+        /*
+        Reload products/counts
+        */
+        await loadGroceryMenu();
+
+        alert(
+            id
+                ? "Category updated successfully!"
+                : "Category added successfully!"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "CATEGORY SAVE ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to save category."
+        );
+    }
+}
+
+function filterCategoryById(
+    categoryId,
+    clickedButton
+) {
+
+    console.log(
+        "FILTERING CATEGORY ID:",
+        categoryId
+    );
+
+
+    // ==========================================
+    // REMEMBER CATEGORY
+    // ==========================================
+
+    selectedGroceryCategoryId =
+        Number(categoryId);
+
+
+    // ==========================================
+    // REMOVE ACTIVE STATE
+    // ==========================================
+
+    document
+        .querySelectorAll(".categoryItem")
+        .forEach(item => {
+            item.classList.remove("active");
+        });
+
+
+    // ==========================================
+    // SET ACTIVE CATEGORY
+    // ==========================================
+
+    if (clickedButton) {
+
+        clickedButton.classList.add(
+            "active"
+        );
+
+    }
+
+
+    // ==========================================
+    // FILTER PRODUCTS
+    // ==========================================
+
+    const filteredProducts =
+        menu.filter(product => {
+
+            return Number(
+                product.category_id
+            ) === Number(categoryId);
+
+        });
+
+
+    console.log(
+        "FILTERED PRODUCTS:",
+        filteredProducts
+    );
+
+
+    renderMenu(
+        filteredProducts
+    );
+
+
+    // ==========================================
+    // MOBILE
+    // ==========================================
+
+    if (window.innerWidth <= 768) {
+
+        const sidebar =
+            document.querySelector(
+                ".categorySidebar"
+            );
+
+        if (sidebar) {
+
+            sidebar.classList.remove(
+                "mobileOpen"
+            );
+
+        }
+
+    }
+
+}
+
+
+function toggleCategorySidebar() {
+
+    const sidebar =
+        document.querySelector(".categorySidebar");
+
+    if (!sidebar) return;
+
+    // Mobile
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle("mobileOpen");
+    }
+}
 
 </script>
 

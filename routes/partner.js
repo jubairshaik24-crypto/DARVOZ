@@ -3427,24 +3427,21 @@ router.get(
 
         db.query(
 
-            `
-            SELECT
-
-                p.id,
-                p.partner_id,
-                p.default_product_id,
-                p.product_name,
-                p.category_id,
-                c.category_name,
-                p.image,
-                p.status,
-                p.featured,
-                p.created_at
-
-            FROM partner_grocery_products p
-
-            LEFT JOIN grocery_categories c
-                ON c.id=p.category_id
+            `SELECT
+    p.id,
+    p.partner_id,
+    p.default_product_id,
+    p.product_name,
+    p.category_id,
+    c.category_name,
+    c.image AS category_image,
+    p.image,
+    p.status,
+    p.featured,
+    p.created_at
+FROM partner_grocery_products p
+LEFT JOIN grocery_categories c
+    ON c.id=p.category_id
 
             WHERE p.partner_id=?
 
@@ -5016,62 +5013,6 @@ router.get(
 // GET GROCERY CATEGORIES
 // =====================================================
 
-router.get(
-    "/grocery-categories",
-    (req, res) => {
-
-        db.query(
-
-            `
-            SELECT
-
-                id,
-                category_name,
-                image,
-                status,
-                sort_order
-
-            FROM grocery_categories
-
-            WHERE status='Active'
-
-            ORDER BY
-                sort_order ASC,
-                id ASC
-            `,
-
-            (err, categories) => {
-
-                if (err) {
-
-                    console.log(
-                        "GROCERY CATEGORY ERROR:",
-                        err
-                    );
-
-                    return res.status(500).json({
-
-                        success: false,
-
-                        message:
-                            "Unable to load Grocery categories"
-                    });
-                }
-
-
-                res.json({
-
-                    success: true,
-
-                    categories:
-                        categories
-                });
-
-            }
-        );
-    }
-);
-
 
 // =====================================================
 // GET DEFAULT GROCERY PRODUCTS
@@ -5141,6 +5082,7 @@ router.get(
 
 // =====================================================
 // ADD GROCERY PRODUCT
+// POST /partner/grocery-products
 // =====================================================
 
 router.post(
@@ -5148,16 +5090,19 @@ router.post(
     (req, res) => {
 
         const {
-
             partner_id,
-            default_product_id,
             product_name,
             category_id,
             image,
             status,
             featured
-
         } = req.body;
+
+
+        console.log("=================================");
+        console.log("ADD GROCERY PRODUCT");
+        console.log("BODY:", req.body);
+        console.log("=================================");
 
 
         if (
@@ -5167,159 +5112,98 @@ router.post(
         ) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Partner, product name and category are required"
             });
+
         }
 
 
-        // -------------------------------------------------
-        // CHECK DUPLICATE
-        // -------------------------------------------------
+        // =================================================
+        // INSERT NEW PARTNER GROCERY PRODUCT
+        // NO default_product_id
+        // =================================================
+
+        const sql = `
+            INSERT INTO partner_grocery_products
+            (
+                partner_id,
+                product_name,
+                category_id,
+                image,
+                status,
+                featured
+            )
+            VALUES
+            (?, ?, ?, ?, ?, ?)
+        `;
+
+
+        const values = [
+
+            partner_id,
+
+            product_name,
+
+            category_id,
+
+            image || null,
+
+            status || "Available",
+
+            featured ? 1 : 0
+
+        ];
+
 
         db.query(
+            sql,
+            values,
+            (insertErr, result) => {
 
-            `
-            SELECT id
+                if (insertErr) {
 
-            FROM partner_grocery_products
-
-            WHERE partner_id=?
-
-            AND default_product_id=?
-
-            LIMIT 1
-            `,
-
-            [
-                partner_id,
-                default_product_id || null
-            ],
-
-            (checkErr, existing) => {
-
-                if (checkErr) {
-
-                    console.log(
-                        "GROCERY DUPLICATE CHECK ERROR:",
-                        checkErr
+                    console.error(
+                        "❌ GROCERY PRODUCT INSERT ERROR:",
+                        insertErr
                     );
 
                     return res.status(500).json({
-
                         success: false,
-
                         message:
-                            "Database Error"
+                            "Unable to add Grocery product",
+                        error:
+                            insertErr.sqlMessage
                     });
+
                 }
 
 
-                if (
-                    default_product_id &&
-                    existing.length > 0
-                ) {
-
-                    return res.status(400).json({
-
-                        success: false,
-
-                        message:
-                            "This Grocery product is already added to your menu"
-                    });
-                }
-
-
-                // -------------------------------------------------
-                // INSERT
-                // -------------------------------------------------
-
-                db.query(
-
-                    `
-                    INSERT INTO partner_grocery_products
-                    (
-                        partner_id,
-                        default_product_id,
-                        product_name,
-                        category_id,
-                        image,
-                        status,
-                        featured
-                    )
-
-                    VALUES
-                    (?, ?, ?, ?, ?, ?, ?)
-                    `,
-
-                    [
-
-                        partner_id,
-
-                        default_product_id || null,
-
-                        product_name,
-
-                        category_id,
-
-                        image || null,
-
-                        status ||
-                            "Available",
-
-                        featured
-                            ? 1
-                            : 0
-
-                    ],
-
-                    (insertErr, result) => {
-
-                        if (insertErr) {
-
-                            console.log(
-                                "GROCERY INSERT ERROR:",
-                                insertErr
-                            );
-
-                            return res.status(500).json({
-
-                                success: false,
-
-                                message:
-                                    "Unable to add Grocery product"
-                            });
-                        }
-
-
-                        console.log(
-                            "✅ Grocery product added:",
-                            result.insertId
-                        );
-
-
-                        return res.json({
-
-                            success: true,
-
-                            id:
-                                result.insertId,
-
-                            partnerProductId:
-                                result.insertId,
-
-                            message:
-                                "Grocery product added successfully"
-                        });
-
-                    }
+                console.log(
+                    "✅ Grocery product added:",
+                    result.insertId
                 );
+
+
+                return res.json({
+
+                    success: true,
+
+                    id:
+                        result.insertId,
+
+                    partnerProductId:
+                        result.insertId,
+
+                    message:
+                        "Grocery product added successfully"
+
+                });
 
             }
         );
+
     }
 );
 
@@ -5569,194 +5453,505 @@ router.get(
 // SAVE / REPLACE GROCERY VARIANTS
 // =====================================================
 
+// =====================================================
+// SAVE GROCERY PRODUCT VARIANTS
+// PUT /partner/grocery-products/:id/variants
+// =====================================================
+
 router.put(
     "/grocery-products/:id/variants",
     (req, res) => {
 
         const partnerProductId =
-            req.params.id;
+            Number(req.params.id);
 
         const variants =
-            req.body.variants;
+            Array.isArray(req.body.variants)
+                ? req.body.variants
+                : [];
 
 
-        if (!Array.isArray(variants)) {
+        console.log("=================================");
+        console.log("SAVE GROCERY VARIANTS");
+        console.log("PARTNER PRODUCT ID:", partnerProductId);
+        console.log("VARIANTS:", variants);
+        console.log("=================================");
+
+
+        if (
+            !Number.isInteger(partnerProductId) ||
+            partnerProductId <= 0
+        ) {
 
             return res.status(400).json({
-
                 success: false,
-
-                message:
-                    "Invalid variants"
+                message: "Invalid Grocery product ID"
             });
+
         }
 
 
-        // -------------------------------------------------
+        // =================================================
         // DELETE OLD VARIANTS
-        // -------------------------------------------------
+        // =================================================
 
         db.query(
-
             `
             DELETE FROM partner_grocery_variants
-
-            WHERE partner_product_id=?
+            WHERE partner_product_id = ?
             `,
-
             [partnerProductId],
 
             deleteErr => {
 
                 if (deleteErr) {
 
-                    console.log(
-                        "DELETE OLD VARIANTS ERROR:",
+                    console.error(
+                        "❌ DELETE VARIANTS ERROR:",
                         deleteErr
                     );
 
                     return res.status(500).json({
-
                         success: false,
-
                         message:
-                            "Unable to remove old variants"
+                            "Unable to remove old Grocery variants"
                     });
+
                 }
 
 
-                // No variants
+                // =================================================
+                // NO VARIANTS
+                // =================================================
 
                 if (!variants.length) {
+
+                    return res.json({
+                        success: true,
+                        message:
+                            "Grocery product saved without variants"
+                    });
+
+                }
+
+
+                // =================================================
+                // INSERT NEW VARIANTS
+                // =================================================
+
+                let completed = 0;
+                let failed = false;
+
+
+                variants.forEach(variant => {
+
+                    const size =
+                        String(
+                            variant.size || ""
+                        ).trim();
+
+
+                    const price =
+                        Number(
+                            variant.price
+                        ) || 0;
+
+
+                    const offerPrice =
+                        variant.offer_price !== null &&
+                        variant.offer_price !== undefined &&
+                        variant.offer_price !== "" &&
+                        Number(variant.offer_price) > 0
+
+                            ? Number(
+                                variant.offer_price
+                            )
+
+                            : null;
+
+
+                    const stock =
+                        Number(
+                            variant.stock
+                        ) || 0;
+
+
+                    const status =
+                        stock > 0
+                            ? "Available"
+                            : "Out of Stock";
+
+
+                    if (
+                        !size ||
+                        price <= 0
+                    ) {
+
+                        completed++;
+
+                        return checkFinished();
+
+                    }
+
+
+                    db.query(
+                        `
+                        INSERT INTO partner_grocery_variants
+                        (
+                            partner_product_id,
+                            size,
+                            price,
+                            offer_price,
+                            stock,
+                            status
+                        )
+                        VALUES
+                        (?, ?, ?, ?, ?, ?)
+                        `,
+
+                        [
+                            partnerProductId,
+                            size,
+                            price,
+                            offerPrice,
+                            stock,
+                            status
+                        ],
+
+                        insertErr => {
+
+                            completed++;
+
+
+                            if (insertErr) {
+
+                                console.error(
+                                    "❌ INSERT VARIANT ERROR:",
+                                    insertErr
+                                );
+
+                                failed = true;
+
+                            } else {
+
+                                console.log(
+                                    "✅ VARIANT SAVED:",
+                                    partnerProductId,
+                                    size,
+                                    price,
+                                    offerPrice,
+                                    stock
+                                );
+
+                            }
+
+
+                            checkFinished();
+
+                        }
+                    );
+
+
+                });
+
+
+                function checkFinished() {
+
+                    if (
+                        completed !==
+                        variants.length
+                    ) {
+                        return;
+                    }
+
+
+                    if (failed) {
+
+                        return res.status(500).json({
+                            success: false,
+                            message:
+                                "Some Grocery variants could not be saved"
+                        });
+
+                    }
+
 
                     return res.json({
 
                         success: true,
 
                         message:
-                            "Variants removed successfully"
+                            "Grocery variants saved successfully"
+
+                    });
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =====================================================
+// GROCERY CATEGORIES
+// =====================================================
+
+// GET GROCERY CATEGORIES FOR PARTNER
+router.get(
+    "/grocery-categories/:partnerId",
+    (req, res) => {
+
+        db.query(
+            `
+            SELECT
+                id,
+                category_name,
+                image,
+                status,
+                sort_order
+            FROM grocery_categories
+            ORDER BY sort_order ASC, id ASC
+            `,
+            (err, categories) => {
+
+                if (err) {
+                    console.error(
+                        "GET GROCERY CATEGORIES ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        categories: []
                     });
                 }
 
+                const finalCategories =
+                    categories.map(category => ({
+                        id: category.id,
 
-                let completed = 0;
+                        name: category.category_name,
 
-                let failed = false;
+                        category_name:
+                            category.category_name,
 
+                        image:
+                            category.image,
 
-                variants.forEach(
-                    variant => {
+                        category_image:
+                            category.image,
 
-                        db.query(
+                        status:
+                            category.status,
 
-                            `
-                            INSERT INTO partner_grocery_variants
-                            (
-                                partner_product_id,
-                                size,
-                                price,
-                                offer_price,
-                                stock,
-                                status
-                            )
+                        sort_order:
+                            category.sort_order
+                    }));
 
-                            VALUES
-                            (?, ?, ?, ?, ?, ?)
-                            `,
-
-                            [
-
-                                partnerProductId,
-
-                                variant.size,
-
-                                Number(
-                                    variant.price || 0
-                                ),
-
-                                variant.offer_price !==
-                                    undefined &&
-                                variant.offer_price !==
-                                    null &&
-                                variant.offer_price !==
-                                    ""
-                                    ?
-                                    Number(
-                                        variant.offer_price
-                                    )
-                                    :
-                                    null,
-
-                                Number(
-                                    variant.stock || 0
-                                ),
-
-                                variant.status ||
-                                    (
-                                        Number(
-                                            variant.stock || 0
-                                        ) > 0
-                                        ?
-                                        "Available"
-                                        :
-                                        "Out of Stock"
-                                    )
-
-                            ],
-
-                            insertErr => {
-
-                                completed++;
-
-
-                                if (insertErr) {
-
-                                    console.log(
-                                        "INSERT GROCERY VARIANT ERROR:",
-                                        insertErr
-                                    );
-
-                                    failed = true;
-                                }
-
-
-                                if (
-                                    completed ===
-                                    variants.length
-                                ) {
-
-                                    if (failed) {
-
-                                        return res.status(500).json({
-
-                                            success: false,
-
-                                            message:
-                                                "Some Grocery variants failed"
-                                        });
-                                    }
-
-
-                                    return res.json({
-
-                                        success: true,
-
-                                        message:
-                                            "Grocery variants updated successfully"
-                                    });
-                                }
-
-                            }
-                        );
-
-                    }
+                console.log(
+                    "GROCERY CATEGORIES SENT:",
+                    finalCategories
                 );
 
+                return res.json({
+                    success: true,
+                    categories: finalCategories
+                });
             }
         );
     }
 );
 
+
+// =====================================================
+// ADD GROCERY CATEGORY
+// =====================================================
+
+router.post(
+    "/grocery-categories/:partnerId",
+    (req, res) => {
+
+        const partnerId =
+            Number(req.params.partnerId);
+
+        const {
+            category_name,
+            category_image
+        } = req.body;
+
+        console.log(
+            "ADD GROCERY CATEGORY:",
+            req.body
+        );
+
+        if (
+            !Number.isInteger(partnerId) ||
+            partnerId <= 0
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid partner ID"
+            });
+        }
+
+        if (
+            !category_name ||
+            !String(category_name).trim()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Category name is required"
+            });
+        }
+
+        const image =
+            category_image || null;
+
+        db.query(
+            `
+            INSERT INTO grocery_categories
+            (
+                partner_id,
+                category_name,
+                image,
+                status,
+                sort_order
+            )
+            VALUES (?, ?, ?, ?, ?)
+            `,
+            [
+                partnerId,
+                String(category_name).trim(),
+                image,
+                "Active",
+                0
+            ],
+            (err, result) => {
+
+                if (err) {
+
+                    console.error(
+                        "ADD GROCERY CATEGORY ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Unable to add grocery category"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message:
+                        "Grocery category added successfully",
+
+                    category: {
+                        id: result.insertId,
+                        category_name:
+                            String(category_name).trim(),
+                        category_image:
+                            image
+                    }
+                });
+            }
+        );
+    }
+);
+
+
+// =====================================================
+// UPDATE GROCERY CATEGORY
+// =====================================================
+
+router.put(
+    "/grocery-categories/:id",
+    (req, res) => {
+
+        const categoryId =
+            Number(req.params.id);
+
+        const {
+            category_name,
+            category_image,
+            status,
+            sort_order
+        } = req.body;
+
+        console.log(
+            "UPDATE GROCERY CATEGORY:",
+            categoryId,
+            req.body
+        );
+
+        console.log(
+            "FINAL IMAGE SAVING:",
+            category_image
+        );
+
+        if (
+            !category_name ||
+            !String(category_name).trim()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Category name is required"
+            });
+        }
+
+        db.query(
+            `
+            UPDATE grocery_categories
+            SET
+                category_name = ?,
+                image = ?,
+                status = ?,
+                sort_order = ?
+            WHERE id = ?
+            `,
+            [
+                String(category_name).trim(),
+                category_image || null,
+                status || "Active",
+                Number(sort_order) || 0,
+                categoryId
+            ],
+            (err, result) => {
+
+                if (err) {
+                    console.error(
+                        "UPDATE GROCERY CATEGORY ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Unable to update grocery category"
+                    });
+                }
+
+                if (result.affectedRows === 0) {
+                    return res.status(404).json({
+                        success: false,
+                        message:
+                            "Grocery category not found"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message:
+                        "Grocery category updated successfully"
+                });
+            }
+        );
+    }
+);
 // =====================================================
 // EXPORT
 // =====================================================
