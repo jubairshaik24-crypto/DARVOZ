@@ -1111,22 +1111,18 @@ let groceryCategories = [];
 
 let filteredCategories = [];
 
-
 /* =====================================================
    GET PARTNER / RESTAURANT ID
 ===================================================== */
-const partnerData =
-    JSON.parse(
-        localStorage.getItem("partner")
-    );
+
+const urlParams = new URLSearchParams(
+    window.location.search
+);
 
 const partnerId =
-    partnerData?.id;
-
-console.log(
-    "GROCERY CATEGORY PARTNER:",
-    partnerData
-);
+    urlParams.get("id") ||
+    localStorage.getItem("partnerId") ||
+    localStorage.getItem("restaurantId");
 
 console.log(
     "GROCERY CATEGORY PARTNER ID:",
@@ -1134,10 +1130,27 @@ console.log(
 );
 
 if(!partnerId){
+
+    console.error(
+        "No partner/restaurant ID found."
+    );
+
+    document.getElementById(
+        "categoryGrid"
+    ).innerHTML = `
+        <div class="error">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p>
+                Grocery store information is missing.
+            </p>
+        </div>
+    `;
+
     throw new Error(
-        "Partner session not found. Please login again."
+        "Partner/Restaurant ID is missing."
     );
 }
+
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
