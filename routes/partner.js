@@ -5707,7 +5707,6 @@ router.get(
             `
             SELECT
                 id,
-                partner_id,
                 category_name,
                 image,
                 status,
@@ -5725,19 +5724,15 @@ router.get(
                     );
 
                     return res.status(500).json({
-                        success:false,
-                        categories:[]
+                        success: false,
+                        categories: []
                     });
                 }
 
                 const finalCategories =
                     categories.map(category => ({
 
-                        id:
-                            category.id,
-
-                        partner_id:
-                            category.partner_id,
+                        id: category.id,
 
                         name:
                             category.category_name,
@@ -5759,11 +5754,20 @@ router.get(
 
                     }));
 
+                console.log(
+                    "GROCERY CATEGORIES SENT:",
+                    finalCategories
+                );
+
                 return res.json({
-                    success:true,
+
+                    success: true,
+
                     categories:
                         finalCategories
+
                 });
+
             }
         );
     }
