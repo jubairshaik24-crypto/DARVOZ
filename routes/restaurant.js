@@ -644,46 +644,138 @@ router.post("/all/list", (req, res) => {
 // ======================================
 
 router.post("/:id", (req, res) => {
-    const id = Number(req.params.id);
+
+    const id = req.params.id;
 
     const {
         latitude,
         longitude
     } = req.body || {};
 
-    if (!Number.isInteger(id) || id <= 0) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid restaurant ID"
-        });
-    }
+    console.log("=================================");
+    console.log("RESTAURANT DETAILS REQUEST");
+    console.log("RESTAURANT ID:", id);
+    console.log("LATITUDE:", latitude);
+    console.log("LONGITUDE:", longitude);
+    console.log("=================================");
 
-    db.query(
-        "SELECT * FROM restaurants WHERE id = ? LIMIT 1",
-        [id],
-        (err, result) => {
-            if (err) {
-                console.error(
-                    "RESTAURANT DETAILS ERROR:",
-                    err
-                );
+    const sql = `
+        SELECT *
+        FROM restaurants
+        WHERE id = ?
+        LIMIT 1
+    `;
 
-                return res.status(500).json({});
-            }
+    db.query(sql, [id], (err, result) => {
 
-            if (result.length === 0) {
-                return res.status(404).json({});
-            }
+        if (err) {
 
-            const restaurant = addDistance(
-                result[0],
-                latitude,
-                longitude
+            console.error(
+                "RESTAURANT DETAILS SQL ERROR:",
+                err
             );
 
-            return res.json(restaurant);
+            return res.status(500).json({
+                success: false,
+                message: "Database error"
+            });
         }
-    );
+
+        if (!result || result.length === 0) {
+
+            console.log(
+                "RESTAURANT NOT FOUND:",
+                id
+            );
+
+            return res.status(404).json({
+                success: false,
+                message: "Restaurant not found"
+            });
+        }
+
+        const restaurant = result[0];
+
+        console.log(
+            "RESTAURANT FOUND:",
+            restaurant.id,
+            restaurant.restaurant_name,
+            restaurant.restaurant_id
+        );
+
+        // ======================================
+        // DISTANCE
+        // ======================================
+
+        addDistance(
+            restaurant,
+            latitude,
+            longitude
+        );
+
+        // ======================================
+        // RETURN RESTAURANT
+        // ======================================
+
+        return res.json(restaurant);
+
+    });
+
 });
 
+// ==========================================
+// GET PARTNER BUSINESS HOURS
+// GET /restaurants/:id/business-hours
+// ==========================================
+
+router.get("/:id/business-hours", (req, res) => {
+
+    const partnerId = req.params.id;
+
+    const sql = `
+        SELECT
+            id,
+            partner_id,
+            day_of_week,
+            is_closed,
+            opening_time,
+            closing_time
+        FROM partner_business_hours
+        WHERE partner_id = ?
+        ORDER BY FIELD(
+            day_of_week,
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+        )
+    `;
+
+    db.query(sql, [partnerId], (err, rows) => {
+
+        if (err) {
+
+            console.error(
+                "BUSINESS HOURS ERROR:",
+                err
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Unable to load business hours",
+                hours: []
+            });
+        }
+
+        res.json({
+            success: true,
+            hours: rows
+        });
+
+    });
+
+});
 module.exports = router;

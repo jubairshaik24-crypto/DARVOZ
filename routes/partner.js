@@ -5961,6 +5961,222 @@ router.put(
         );
     }
 );
+
+// =====================================================
+// BUSINESS HOURS - GET
+// =====================================================
+
+router.get("/business-hours/:id", (req, res) => {
+
+    const partnerId = req.params.id;
+
+    db.query(
+        `
+        SELECT
+            id,
+            partner_id,
+            day_of_week,
+            is_closed,
+            opening_time,
+            closing_time
+        FROM partner_business_hours
+        WHERE partner_id = ?
+        ORDER BY FIELD(
+            day_of_week,
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+        )
+        `,
+        [partnerId],
+
+        (err, result) => {
+
+            if (err) {
+
+                console.error(
+                    "GET BUSINESS HOURS ERROR:",
+                    err
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to load business hours"
+                });
+
+            }
+
+            res.json({
+                success: true,
+                hours: result
+            });
+
+        }
+    );
+
+});
+
+
+// =====================================================
+// BUSINESS HOURS - SAVE / UPDATE
+// =====================================================
+
+router.put("/business-hours/:id", (req, res) => {
+
+    const partnerId = req.params.id;
+
+    const hours = req.body.hours;
+
+
+    if (!Array.isArray(hours)) {
+
+        return res.status(400).json({
+            success: false,
+            message: "Invalid business hours data"
+        });
+
+    }
+
+
+    const allowedDays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+
+
+    const connection = db;
+
+
+    let completed = 0;
+
+
+    if (hours.length !== 7) {
+
+        return res.status(400).json({
+            success: false,
+            message: "All 7 days are required"
+        });
+
+    }
+
+
+    for (const day of hours) {
+
+        if (!allowedDays.includes(day.day_of_week)) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    `Invalid day: ${day.day_of_week}`
+            });
+
+        }
+
+    }
+
+
+    function saveNext(index) {
+
+        if (index >= hours.length) {
+
+            return res.json({
+                success: true,
+                message: "Business hours saved successfully"
+            });
+
+        }
+
+
+        const day = hours[index];
+
+
+        const isClosed =
+            Number(day.is_closed) === 1 ? 1 : 0;
+
+
+        const openingTime =
+            isClosed
+                ? null
+                : day.opening_time || null;
+
+
+        const closingTime =
+            isClosed
+                ? null
+                : day.closing_time || null;
+
+
+        connection.query(
+
+            `
+            INSERT INTO partner_business_hours
+            (
+                partner_id,
+                day_of_week,
+                is_closed,
+                opening_time,
+                closing_time
+            )
+            VALUES (?, ?, ?, ?, ?)
+
+            ON DUPLICATE KEY UPDATE
+
+                is_closed = VALUES(is_closed),
+
+                opening_time =
+                    VALUES(opening_time),
+
+                closing_time =
+                    VALUES(closing_time)
+            `,
+
+            [
+                partnerId,
+                day.day_of_week,
+                isClosed,
+                openingTime,
+                closingTime
+            ],
+
+            (err) => {
+
+                if (err) {
+
+                    console.error(
+                        "SAVE BUSINESS HOURS ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Unable to save business hours"
+                    });
+
+                }
+
+
+                saveNext(index + 1);
+
+            }
+
+        );
+
+    }
+
+
+    saveNext(0);
+
+});
 // =====================================================
 // EXPORT
 // =====================================================

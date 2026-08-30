@@ -23,17 +23,21 @@ font-family:Poppins,sans-serif;
 }
 
 body{
-background:#ececec;
-display:flex;
-justify-content:center;
+    margin:0;
+    padding:0;
+    background:#fff;
+    width:100%;
+    min-height:100vh;
+    min-height:100dvh;
 }
 
 .app{
-width:100%;
-max-width:390px;
-min-height:100vh;
-background:#fff;
-box-shadow:0 0 35px rgba(0,0,0,.12);
+    width:100%;
+    max-width:390px;
+    min-height:100vh;
+    min-height:100dvh;
+    background:#fff;
+    box-shadow:0 0 35px rgba(0,0,0,.12);
 }
 
 .header{
@@ -391,6 +395,26 @@ font-size:25px;
 }
 
 
+
+}
+@media(max-width:600px){
+
+    body{
+        background:#fff;
+    }
+
+    .app{
+        width:100%;
+        max-width:none;
+        min-height:100vh;
+        min-height:100dvh;
+        box-shadow:none;
+    }
+
+    .category-modal{
+        width:100%;
+        max-width:none;
+    }
 
 }
 

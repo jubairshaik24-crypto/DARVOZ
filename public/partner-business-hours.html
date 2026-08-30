@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>DARVOZ | Business Hours</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+
+    background:#f7f7f7;
+
+    color:#222;
+
+    padding-bottom:90px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    height:64px;
+
+    background:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:0 18px;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+
+.back-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#fff3eb;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    font-size:17px;
+}
+
+.header-title{
+
+    flex:1;
+}
+
+.header-title h2{
+
+    font-size:20px;
+
+    font-weight:700;
+}
+
+.header-title p{
+
+    color:#999;
+
+    font-size:10px;
+
+    margin-top:1px;
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+
+    width:100%;
+
+    max-width:650px;
+
+    margin:auto;
+
+    padding:18px 14px 30px;
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+.intro{
+
+    margin:3px 3px 16px;
+}
+
+.intro h1{
+
+    font-size:23px;
+
+    font-weight:800;
+}
+
+.intro p{
+
+    margin-top:4px;
+
+    color:#888;
+
+    font-size:11px;
+
+    line-height:1.6;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.hours-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:14px;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+
+/* =====================================================
+   DAY ROW
+===================================================== */
+
+.day-row{
+
+    padding:15px 0;
+
+    border-bottom:1px solid #eee;
+}
+
+.day-row:last-child{
+
+    border-bottom:none;
+}
+
+
+/* TOP */
+
+.day-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.day-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    min-width:0;
+}
+
+.day-icon{
+
+    width:39px;
+
+    height:39px;
+
+    flex-shrink:0;
+
+    border-radius:11px;
+
+    background:#fff3eb;
+
+    color:#ff6b00;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.day-icon i{
+
+    font-size:15px;
+}
+
+.day-name{
+
+    font-size:14px;
+
+    font-weight:700;
+}
+
+.day-status{
+
+    color:#999;
+
+    font-size:9px;
+
+    margin-top:1px;
+}
+
+
+/* =====================================================
+   SWITCH
+===================================================== */
+
+.switch{
+
+    position:relative;
+
+    width:47px;
+
+    height:25px;
+
+    flex-shrink:0;
+}
+
+.switch input{
+
+    display:none;
+}
+
+.slider{
+
+    position:absolute;
+
+    inset:0;
+
+    background:#ddd;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.slider:before{
+
+    content:"";
+
+    position:absolute;
+
+    width:19px;
+
+    height:19px;
+
+    left:3px;
+
+    top:3px;
+
+    background:#fff;
+
+    border-radius:50%;
+
+    transition:.25s;
+
+    box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+
+.switch input:checked + .slider{
+
+    background:#ff6b00;
+}
+
+.switch input:checked + .slider:before{
+
+    transform:translateX(22px);
+}
+
+
+/* =====================================================
+   TIME AREA
+===================================================== */
+
+.time-area{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+    margin-top:12px;
+
+    padding-left:49px;
+}
+
+.time-box{
+
+    position:relative;
+}
+
+.time-box label{
+
+    display:block;
+
+    color:#999;
+
+    font-size:9px;
+
+    margin-bottom:5px;
+
+    font-weight:500;
+}
+
+.time-input{
+
+    width:100%;
+
+    height:43px;
+
+    border:1px solid #ddd;
+
+    border-radius:11px;
+
+    padding:0 10px;
+
+    font-size:12px;
+
+    outline:none;
+
+    background:#fff;
+
+    color:#222;
+}
+
+.time-input:focus{
+
+    border-color:#ff6b00;
+}
+
+
+/* DISABLED */
+
+.day-row.closed .time-input{
+
+    background:#f5f5f5;
+
+    color:#aaa;
+
+    cursor:not-allowed;
+
+    border-color:#eee;
+}
+
+.day-row.closed .day-status{
+
+    color:#d33;
+}
+
+
+/* =====================================================
+   CLOSED TEXT
+===================================================== */
+
+.closed-message{
+
+    display:none;
+
+    margin-top:11px;
+
+    margin-left:49px;
+
+    color:#d33;
+
+    font-size:10px;
+
+    background:#fff1f1;
+
+    border-radius:9px;
+
+    padding:8px 10px;
+}
+
+.day-row.closed .closed-message{
+
+    display:block;
+}
+
+
+/* =====================================================
+   SAVE BUTTON
+===================================================== */
+
+.save-btn{
+
+    width:100%;
+
+    height:54px;
+
+    margin-top:16px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:#ff6b00;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:0 5px 15px rgba(255,107,0,.2);
+}
+
+.save-btn:active{
+
+    transform:scale(.99);
+}
+
+.save-btn:disabled{
+
+    opacity:.65;
+
+    cursor:not-allowed;
+}
+
+
+/* =====================================================
+   INFO
+===================================================== */
+
+.info-box{
+
+    margin-top:14px;
+
+    background:#fff8f2;
+
+    border-radius:14px;
+
+    padding:12px;
+
+    color:#777;
+
+    font-size:10px;
+
+    line-height:1.7;
+}
+
+.info-box i{
+
+    color:#ff6b00;
+
+    margin-right:5px;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:82px;
+
+    transform:translate(-50%,20px);
+
+    background:#222;
+
+    color:#fff;
+
+    padding:10px 16px;
+
+    border-radius:9px;
+
+    font-size:11px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:9000;
+
+    white-space:nowrap;
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:translate(-50%,0);
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    text-align:center;
+
+    padding:70px 10px;
+
+    color:#888;
+
+    font-size:12px;
+}
+
+.loading i{
+
+    color:#ff6b00;
+
+    font-size:25px;
+
+    margin-bottom:8px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:430px){
+
+    .container{
+
+        padding-left:10px;
+
+        padding-right:10px;
+    }
+
+    .hours-card{
+
+        padding:10px 13px;
+    }
+
+    .time-area{
+
+        padding-left:0;
+
+    }
+
+    .closed-message{
+
+        margin-left:0;
+    }
+}
+
+@media(max-width:350px){
+
+    .time-area{
+
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <button
+        class="back-btn"
+        onclick="history.back()">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+    </button>
+
+
+    <div class="header-title">
+
+        <h2>Business Hours</h2>
+
+        <p>Manage when your store is available</p>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+
+    <div class="intro">
+
+        <h1>Opening Hours</h1>
+
+        <p>
+            Set the days and times when customers can place orders.
+        </p>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+        id="loading"
+        class="loading">
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <br>
+
+        Loading business hours...
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div
+        id="content"
+        style="display:none;">
+
+        <section class="hours-card">
+
+            <div id="daysContainer"></div>
+
+
+            <button
+                id="saveBtn"
+                class="save-btn"
+                onclick="saveBusinessHours()">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                &nbsp;
+
+                Save Business Hours
+
+            </button>
+
+        </section>
+
+
+        <div class="info-box">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            When a day is marked
+            <b>Closed</b>, customers will see your store as
+            unavailable on that day.
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast">
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   API
+===================================================== */
+
+const API =
+    window.location.origin;
+
+
+/* =====================================================
+   PARTNER LOGIN
+===================================================== */
+
+const partner =
+    JSON.parse(
+        localStorage.getItem("partner")
+    );
+
+
+if(!partner){
+
+    window.location.href =
+        "partner-login.html";
+
+}
+
+
+/* =====================================================
+   DAYS
+===================================================== */
+
+const DAYS = [
+
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+
+];
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function el(id){
+
+    return document.getElementById(id);
+
+}
+
+
+function showToast(message){
+
+    const toast =
+        el("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =====================================================
+   CREATE DEFAULT HOURS
+===================================================== */
+
+function createDefaultHours(){
+
+    return DAYS.map(day => ({
+
+        day_of_week:day,
+
+        is_closed:0,
+
+        opening_time:"09:00",
+
+        closing_time:"22:00"
+
+    }));
+
+}
+
+
+/* =====================================================
+   LOAD BUSINESS HOURS
+===================================================== */
+
+async function loadBusinessHours(){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/partner/business-hours/${partner.id}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message ||
+                "Unable to load business hours"
+            );
+
+        }
+
+
+        let hours =
+            Array.isArray(data.hours)
+            ? data.hours
+            : [];
+
+
+        /*
+         If no rows exist yet,
+         create default values.
+        */
+
+        if(hours.length === 0){
+
+            hours =
+                createDefaultHours();
+
+        }
+        else{
+
+            /*
+             Make sure all 7 days exist.
+            */
+
+            hours =
+                DAYS.map(day => {
+
+                    const existing =
+                        hours.find(
+                            item =>
+                                item.day_of_week === day
+                        );
+
+
+                    return existing || {
+
+                        day_of_week:day,
+
+                        is_closed:0,
+
+                        opening_time:"09:00",
+
+                        closing_time:"22:00"
+
+                    };
+
+                });
+
+        }
+
+
+        renderDays(hours);
+
+
+        el("loading").style.display =
+            "none";
+
+        el("content").style.display =
+            "block";
+
+
+    }
+    catch(error){
+
+        console.error(
+            "BUSINESS HOURS ERROR:",
+            error
+        );
+
+
+        el("loading").innerHTML = `
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+            <br>
+
+            ${error.message}
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER DAYS
+===================================================== */
+
+function renderDays(hours){
+
+    const container =
+        el("daysContainer");
+
+
+    container.innerHTML = "";
+
+
+    hours.forEach((day,index) => {
+
+        const closed =
+            Number(day.is_closed) === 1;
+
+
+        const opening =
+            day.opening_time
+            ? String(day.opening_time).substring(0,5)
+            : "09:00";
+
+
+        const closing =
+            day.closing_time
+            ? String(day.closing_time).substring(0,5)
+            : "22:00";
+
+
+        const row =
+            document.createElement("div");
+
+
+        row.className =
+            "day-row" +
+            (closed ? " closed" : "");
+
+
+        row.dataset.day =
+            day.day_of_week;
+
+
+        row.innerHTML = `
+
+            <div class="day-top">
+
+                <div class="day-left">
+
+                    <div class="day-icon">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="day-name">
+                            ${day.day_of_week}
+                        </div>
+
+                        <div class="day-status">
+                            ${closed ? "Closed" : "Open"}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        class="day-toggle"
+                        ${closed ? "" : "checked"}>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="time-area">
+
+                <div class="time-box">
+
+                    <label>
+                        Opening Time
+                    </label>
+
+                    <input
+                        type="time"
+                        class="time-input opening-input"
+                        value="${opening}"
+                        ${closed ? "disabled" : ""}>
+
+                </div>
+
+
+                <div class="time-box">
+
+                    <label>
+                        Closing Time
+                    </label>
+
+                    <input
+                        type="time"
+                        class="time-input closing-input"
+                        value="${closing}"
+                        ${closed ? "disabled" : ""}>
+
+                </div>
+
+            </div>
+
+
+            <div class="closed-message">
+
+                <i class="fa-solid fa-store-slash"></i>
+
+                Store will be unavailable on this day.
+
+            </div>
+
+        `;
+
+
+        container.appendChild(row);
+
+
+        const toggle =
+            row.querySelector(".day-toggle");
+
+
+        toggle.addEventListener(
+            "change",
+            () => {
+
+                updateDayState(row);
+
+            }
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   UPDATE DAY STATE
+===================================================== */
+
+function updateDayState(row){
+
+    const toggle =
+        row.querySelector(".day-toggle");
+
+    const opening =
+        row.querySelector(".opening-input");
+
+    const closing =
+        row.querySelector(".closing-input");
+
+    const status =
+        row.querySelector(".day-status");
+
+
+    const isOpen =
+        toggle.checked;
+
+
+    if(isOpen){
+
+        row.classList.remove(
+            "closed"
+        );
+
+        opening.disabled =
+            false;
+
+        closing.disabled =
+            false;
+
+        status.textContent =
+            "Open";
+
+    }
+    else{
+
+        row.classList.add(
+            "closed"
+        );
+
+        opening.disabled =
+            true;
+
+        closing.disabled =
+            true;
+
+        status.textContent =
+            "Closed";
+
+    }
+
+}
+
+
+/* =====================================================
+   GET FORM DATA
+===================================================== */
+
+function getBusinessHours(){
+
+    const rows =
+        document.querySelectorAll(
+            ".day-row"
+        );
+
+
+    const hours = [];
+
+
+    rows.forEach(row => {
+
+        const day =
+            row.dataset.day;
+
+
+        const toggle =
+            row.querySelector(
+                ".day-toggle"
+            );
+
+
+        const opening =
+            row.querySelector(
+                ".opening-input"
+            );
+
+
+        const closing =
+            row.querySelector(
+                ".closing-input"
+            );
+
+
+        const isOpen =
+            toggle.checked;
+
+
+        hours.push({
+
+            day_of_week:day,
+
+            is_closed:
+                isOpen ? 0 : 1,
+
+            opening_time:
+                isOpen
+                ? opening.value
+                : null,
+
+            closing_time:
+                isOpen
+                ? closing.value
+                : null
+
+        });
+
+    });
+
+
+    return hours;
+
+}
+
+
+/* =====================================================
+   VALIDATE HOURS
+===================================================== */
+
+function validateHours(hours){
+
+    for(const day of hours){
+
+        if(day.is_closed === 1){
+
+            continue;
+
+        }
+
+
+        if(
+            !day.opening_time ||
+            !day.closing_time
+        ){
+
+            showToast(
+                `${day.day_of_week}: select opening and closing time`
+            );
+
+            return false;
+
+        }
+
+
+        if(
+            day.opening_time >=
+            day.closing_time
+        ){
+
+            showToast(
+                `${day.day_of_week}: closing time must be after opening time`
+            );
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =====================================================
+   SAVE BUSINESS HOURS
+===================================================== */
+
+async function saveBusinessHours(){
+
+    const hours =
+        getBusinessHours();
+
+
+    if(!validateHours(hours)){
+
+        return;
+
+    }
+
+
+    const saveBtn =
+        el("saveBtn");
+
+
+    saveBtn.disabled =
+        true;
+
+
+    saveBtn.innerHTML = `
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        &nbsp;
+
+        Saving...
+
+    `;
+
+
+    try{
+
+        const response =
+            await fetch(
+
+                `${API}/partner/business-hours/${partner.id}`,
+
+                {
+
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            hours:hours
+                        })
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !result.success
+        ){
+
+            throw new Error(
+                result.message ||
+                "Unable to save business hours"
+            );
+
+        }
+
+
+        showToast(
+            "Business hours saved successfully ✓"
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "SAVE BUSINESS HOURS ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Unable to save business hours"
+        );
+
+    }
+    finally{
+
+        saveBtn.disabled =
+            false;
+
+        saveBtn.innerHTML = `
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            &nbsp;
+
+            Save Business Hours
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadBusinessHours();
+
+</script>
+
+
+</body>
+
+</html>

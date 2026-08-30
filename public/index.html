@@ -757,6 +757,92 @@ body{
 }
 
 
+ /* =========================================
+   CLOSED RESTAURANT CARD
+========================================= */
+
+.restaurant-card.closed-card{
+    background:#fff;
+    border-color:#eee;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+}
+
+.restaurant-card.closed-card .restaurant-image-wrap{
+    position:relative;
+    background:#000;
+}
+
+/* Keep restaurant image visible */
+.restaurant-card.closed-card .restaurant-img{
+    filter:brightness(.55) grayscale(.10);
+}
+
+/* Semi-transparent black overlay */
+.restaurant-card.closed-card .restaurant-image-wrap::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.38);
+    z-index:1;
+    pointer-events:none;
+}
+
+/* Closed text sits above image */
+.restaurant-card.closed-card .closed-overlay{
+    position:absolute;
+    left:14px;
+    bottom:14px;
+    z-index:3;
+    color:#fff;
+}
+
+.restaurant-card.closed-card .closed-title{
+    font-size:17px;
+    font-weight:800;
+    line-height:1.2;
+}
+
+.restaurant-card.closed-card .closed-next{
+    margin-top:4px;
+    font-size:12px;
+    font-weight:600;
+    color:#fff;
+}
+
+.restaurant-card.closed-card .time-badge{
+    display:none;
+}
+
+/* Information below image stays WHITE */
+.restaurant-card.closed-card .restaurant-info{
+    background:#fff;
+}
+
+.restaurant-card.closed-card .restaurant-info h3{
+    color:#171717;
+}
+
+.restaurant-card.closed-card .restaurant-type{
+    color:#777;
+}
+
+.restaurant-card.closed-card .restaurant-rating{
+    color:#159447;
+}
+
+.restaurant-card.closed-card .restaurant-distance{
+    color:#666;
+}
+
+.restaurant-card.closed-card .restaurant-price{
+    color:var(--orange);
+}
+
+.restaurant-card.closed-card .restaurant-status{
+    display:none;
+}
+
+
 /* =====================================================
    BENEFITS
 ===================================================== */
@@ -4812,34 +4898,17 @@ if(!restaurantImage){
                Open / closed.
             */
 
-            let statusHTML = "";
+           let statusHTML = "";
 
-            if(r.isOpen === true){
+if(r.isOpen === true){
 
-                statusHTML = `
+    statusHTML = `
+        <div class="restaurant-status status-open">
+            🟢 Open
+        </div>
+    `;
 
-                    <div class="restaurant-status status-open">
-
-                        🟢 Open
-
-                    </div>
-
-                `;
-
-            }
-            else if(r.isOpen === false){
-
-                statusHTML = `
-
-                    <div class="restaurant-status status-closed">
-
-                        🔴 Closed
-
-                    </div>
-
-                `;
-
-            }
+}
 
 
             /*
@@ -4848,36 +4917,54 @@ if(!restaurantImage){
 
             html += `
 
-                <div
-                    class="restaurant-card"
-                    onclick="openRestaurant(${r.id})"
-                >
-
-
-                    <div
-                        class="restaurant-image-wrap"
-                    >
-
-                       <img
-    src="${restaurantImage}"
-    class="restaurant-img"
-    alt="${r.restaurant_name || "Restaurant"}"
-    loading="lazy"
-    onerror="
-        this.onerror=null;
-        this.src='images/restaurant-placeholder.png';
-    "
+               <div
+    class="restaurant-card ${r.isOpen === false ? "closed-card" : ""}"
+    onclick="openRestaurant(${r.id})"
 >
 
 
-                        <div class="time-badge">
+                 <div class="restaurant-image-wrap">
 
-                            🛵 ${deliveryTime}
+    <img
+        src="${restaurantImage}"
+        class="restaurant-img"
+        alt="${r.restaurant_name || "Restaurant"}"
+        loading="lazy"
+        onerror="
+            this.onerror=null;
+            this.src='images/restaurant-placeholder.png';
+        "
+    >
 
+    ${
+        r.isOpen === false
+        ? `
+            <div class="closed-overlay">
+
+                <div class="closed-title">
+                    Currently closed
+                </div>
+
+                ${
+                    r.nextOpeningText
+                    ? `
+                        <div class="closed-next">
+                            ${r.nextOpeningText}
                         </div>
+                    `
+                    : ""
+                }
 
+            </div>
+        `
+        : `
+            <div class="time-badge">
+                🛵 ${deliveryTime}
+            </div>
+        `
+    }
 
-                    </div>
+</div>
 
 
                     <div class="restaurant-info">

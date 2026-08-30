@@ -760,12 +760,24 @@ const longitude = localStorage.getItem("longitude");
 ===================================================== */
 
 const urlParams =
-new URLSearchParams(window.location.search);
+    new URLSearchParams(window.location.search);
 
-const selectedCategory =
-(urlParams.get("category") ||
-localStorage.getItem("darvozSelectedCategory") ||
-"").toLowerCase().trim();
+let selectedCategory =
+    (urlParams.get("category") || "")
+        .toLowerCase()
+        .trim();
+
+// ==========================================
+// SEE ALL = SHOW ALL RESTAURANTS
+// ==========================================
+
+if (
+    selectedCategory === "all" ||
+    selectedCategory === "see-all" ||
+    selectedCategory === "see all"
+) {
+    selectedCategory = "";
+}
 
 const restaurantList = document.getElementById("restaurantList");
 const loading = document.getElementById("loading");
@@ -1169,9 +1181,7 @@ renderRestaurants(filtered);
 
 });
 
-// ==========================
-// OPEN RESTAURANT
-// ==========================
+
 
 /* =====================================================
    OPEN RESTAURANT

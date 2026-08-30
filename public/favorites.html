@@ -477,10 +477,7 @@ a{
         min-height:30px;
     }
 
-    .food-description{
-        font-size:8px;
-        min-height:24px;
-    }
+    
 
     .food-price{
         font-size:14px;
@@ -516,6 +513,14 @@ a{
         left:7px;
         top:7px;
     }
+
+    .food-description{
+    display:none;
+}
+
+.food-bottom{
+    margin-top:1px;
+}
 
 }
 
@@ -686,6 +691,7 @@ let favorites = [];
 let cart = [];
 
 
+
 /* =========================================================
    ESCAPE HTML
 ========================================================= */
@@ -713,56 +719,40 @@ function getProductPrice(item){
     }
 
     const fields = [
-
         "offer_price",
         "offerPrice",
-
         "selling_price",
         "sellingPrice",
-
         "sale_price",
         "salePrice",
-
         "discount_price",
         "discountPrice",
-
         "final_price",
         "finalPrice",
-
         "unit_price",
         "unitPrice",
-
-        "amount",
-
-        "price"
-
+        "price",
+        "amount"
     ];
 
     for(const field of fields){
 
-        const value =
-            Number(
-                String(
-                    item[field] ?? ""
-                )
-                .replace(/[₹,\s]/g,"")
-            );
+        const value = Number(
+            String(
+                item[field] ?? ""
+            ).replace(/[₹,\s]/g,"")
+        );
 
         if(
             Number.isFinite(value) &&
-            value >= 0
+            value > 0
         ){
-
             return value;
-
         }
-
     }
 
     return 0;
-
 }
-
 
 /* =========================================================
    IMAGE
@@ -892,67 +882,54 @@ function saveCart(){
 
 async function loadMenu(){
 
-    if(!restaurantId){
-
-        showEmpty(
-            "Restaurant ID is missing"
-        );
-
-        return;
-
-    }
-
     try{
 
-        const response =
-            await fetch(
-                `/partner/menu/${restaurantId}`,
-                {
-                    method:"GET",
-                    cache:"no-store"
+        /*
+         * If Favorites was opened with a restaurant ID,
+         * load that restaurant first.
+         */
+        if(restaurantId){
+
+            const response =
+                await fetch(
+                    `/partner/menu/${restaurantId}`,
+                    {
+                        method:"GET",
+                        cache:"no-store"
+                    }
+                );
+
+            if(response.ok){
+
+                const data =
+                    await response.json();
+
+                if(
+                    data &&
+                    Array.isArray(data.products)
+                ){
+
+                    menuData =
+                        data.products;
+
                 }
-            );
+                else if(
+                    Array.isArray(data)
+                ){
 
+                    menuData =
+                        data;
 
-        if(!response.ok){
+                }
 
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if(
-            data &&
-            Array.isArray(
-                data.products
-            )
-        ){
-
-            menuData =
-                data.products;
-
-        }
-        else if(
-            Array.isArray(data)
-        ){
-
-            menuData =
-                data;
-
-        }
-        else{
-
-            menuData = [];
+            }
 
         }
 
-
+        /*
+         * Show whatever favorite products belong
+         * to the loaded menu.
+         */
         displayFavorites();
 
     }
@@ -963,14 +940,11 @@ async function loadMenu(){
             error
         );
 
-        showEmpty(
-            "Unable to load favorites"
-        );
+        displayFavorites();
 
     }
 
 }
-
 
 /* =========================================================
    DISPLAY FAVORITES
@@ -990,14 +964,31 @@ function displayFavorites(){
 
 
     const favoriteProducts =
-        menuData.filter(
+    favorites.map(favorite => {
+
+        /*
+         * New object format
+         */
+        if(
+            favorite &&
+            typeof favorite === "object"
+        ){
+
+            return favorite;
+
+        }
+
+        /*
+         * Old ID-only format.
+         * Try to find it in the currently loaded menu.
+         */
+        return menuData.find(
             item =>
-                favorites.some(
-                    id =>
-                        String(id) ===
-                        String(item.id)
-                )
+                String(item.id) ===
+                String(favorite)
         );
+
+    }).filter(Boolean);
 
 
     document.getElementById(
@@ -1210,24 +1201,33 @@ function displayFavorites(){
 
 function removeFavorite(productId){
 
-    favorites =
-        favorites.filter(
-            id =>
-                String(id) !==
-                String(productId)
-        );
+    favorites = favorites.filter(
+        favorite => {
 
+            const id =
+                favorite &&
+                typeof favorite === "object"
+                    ? (
+                        favorite.id ??
+                        favorite.product_id
+                    )
+                    : favorite;
+
+            return String(id) !== String(productId);
+        }
+    );
 
     localStorage.setItem(
         "favorites",
         JSON.stringify(favorites)
     );
 
-
+    /*
+     * Refresh favorites immediately
+     */
     displayFavorites();
 
 }
-
 
 /* =========================================================
    ADD TO CART
@@ -1235,7 +1235,30 @@ function removeFavorite(productId){
 
 function addToCart(productId){
 
-    const product =
+    /*
+     * FIND PRODUCT FROM FAVORITES FIRST
+     */
+    const favorite =
+        favorites.find(item => {
+
+            const id =
+                typeof item === "object"
+                    ? (
+                        item.id ??
+                        item.product_id
+                    )
+                    : item;
+
+            return String(id) ===
+                   String(productId);
+
+        });
+
+
+    /*
+     * ALSO TRY LOADED MENU
+     */
+    const menuProduct =
         menuData.find(
             item =>
                 String(item.id) ===
@@ -1243,25 +1266,41 @@ function addToCart(productId){
         );
 
 
+    const product =
+        favorite &&
+        typeof favorite === "object"
+            ? favorite
+            : menuProduct;
+
+
     if(!product){
+
+        console.error(
+            "FAVORITE PRODUCT NOT FOUND:",
+            productId
+        );
+
         return;
+
     }
 
 
+    /*
+     * CHECK EXISTING CART ITEM
+     */
     const existing =
-        cart.find(
-            item =>
-                String(
-                    item.product_id
-                ) ===
-                String(productId) &&
-                !item.cart_id
+        cart.find(item =>
+            String(
+                item.product_id
+            ) ===
+            String(productId)
         );
 
 
     if(existing){
 
-        existing.quantity++;
+        existing.quantity =
+            Number(existing.quantity || 0) + 1;
 
     }
     else{
@@ -1269,13 +1308,15 @@ function addToCart(productId){
         cart.push({
 
             product_id:
-                product.id,
+                product.id ??
+                product.product_id,
 
             quantity:1,
 
             product_name:
                 product.product_name ||
-                product.name,
+                product.name ||
+                "Food Item",
 
             price:
                 getProductPrice(product),
@@ -1284,9 +1325,16 @@ function addToCart(productId){
                 getProductImage(product),
 
             partner_id:
-                restaurantId,
+                product.partner_id ||
+                product.restaurant_id ||
+                null,
+
+            restaurant_name:
+                product.restaurant_name ||
+                "Partner",
 
             item_type:
+                product.item_type ||
                 "food"
 
         });
@@ -1298,8 +1346,12 @@ function addToCart(productId){
 
     displayFavorites();
 
-}
+    console.log(
+        "FAVORITE ADDED TO CART:",
+        product
+    );
 
+}
 
 /* =========================================================
    INCREASE
