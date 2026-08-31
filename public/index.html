@@ -10,6 +10,11 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 <title>DARVOZ | One App. Every Need.</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
 rel="stylesheet">
 
@@ -204,27 +209,158 @@ body{
     max-width:230px;
 }
 
-.profile-btn{
+/* =========================================
+   HEADER ACTIONS
+========================================= */
 
-    width:38px;
-    height:38px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    color:var(--orange);
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    font-size:17px;
-
-    cursor:pointer;
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+
+/* =========================================
+   NOTIFICATION BELL
+========================================= */
+
+.darvoz-notification {
+
+    position: relative;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.16);
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    transition: transform .18s ease;
+}
+
+.darvoz-notification:active {
+    transform: scale(.93);
+}
+
+
+.darvoz-notification i {
+
+    font-size: 18px;
+
+    color: #ffffff;
+}
+
+
+/* =========================================
+   RED NOTIFICATION DOT
+========================================= */
+
+.notification-dot {
+
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #ff3b30;
+
+    border: 2px solid #ff6500;
+
+    top: 6px;
+    right: 5px;
+}
+
+/* =========================================
+   DARVOZ COIN PILL
+========================================= */
+.darvoz-coin-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    height: 36px;
+    min-width: 80px;
+
+    padding: 4px 7px 4px 12px;
+
+    background: rgba(255, 255, 255, 0.18);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    border-radius: 18px;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    cursor: pointer;
+}
+
+
+/* 500 */
+
+.darvoz-coin-balance {
+    color: #fff;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+
+/* SIMPLE D COIN */
+
+.darvoz-mini-coin {
+    width: 25px;
+    height: 25px;
+
+    min-width: 25px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f6b000;
+
+    border: 1.5px solid #ffd34d;
+}
+
+
+/* D */
+
+.darvoz-mini-coin span {
+    color: #fff;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    line-height: 1;
+}
 
 /* =====================================================
    WELCOME
@@ -2075,15 +2211,31 @@ body{
 
         <!-- PROFILE -->
 
-        <div
-            class="profile-btn"
-            onclick="window.location.href='profile.html'"
-        >
+        
+    <div class="darvoz-coin-pill"
+     onclick="window.location.href='coins.html'">
 
-            <i class="fa-solid fa-user"></i>
+    <span class="darvoz-coin-balance" id="headerCoins">
+        500
+    </span>
 
-        </div>
+    <div class="darvoz-mini-coin">
+        <span>D</span>
+    </div>
 
+</div>
+        
+
+<!-- NOTIFICATION -->
+
+<div class="darvoz-notification"
+     onclick="window.location.href='notifications.html'">
+
+    <i class="fa-regular fa-bell"></i>
+
+    <span class="notification-dot"></span>
+
+</div>
 
     </div>
 
@@ -2750,6 +2902,56 @@ const API = window.location.origin;
 const customerId =
 localStorage.getItem("customerId");
 
+
+/* =========================================
+   DARVOZ COINS
+========================================= */
+
+function loadHeaderCoins() {
+
+    const coinsElement =
+        document.getElementById("headerCoins");
+
+    if (!coinsElement) {
+        return;
+    }
+
+
+    /*
+       First use locally saved balance.
+    */
+
+    const savedCoins =
+        localStorage.getItem("darvozCoins");
+
+
+    if (savedCoins !== null) {
+
+        const coins =
+            parseInt(savedCoins, 10);
+
+        coinsElement.textContent =
+            Number.isFinite(coins)
+                ? coins
+                : 0;
+
+        return;
+    }
+
+
+    /*
+       New registered customer starts
+       with 500 coins.
+    */
+
+    coinsElement.textContent = "500";
+
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadHeaderCoins
+);
 
 /* =====================================================
    CUSTOMER OFFERS

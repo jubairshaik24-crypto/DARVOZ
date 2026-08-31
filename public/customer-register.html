@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -10,11 +11,13 @@
     <title>DARVOZ | Create Account</title>
 
     <!-- GOOGLE FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- FONT AWESOME -->
-    <link rel="stylesheet"
+    <link
+        rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
@@ -27,280 +30,669 @@
         }
 
         html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
 
-body {
-    background: #fff7f2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        body {
+            background: #fff7f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.page {
-    width: 100%;
-    max-width: 430px;
-    height: 100dvh;
-    background: #ffffff;
-    position: relative;
-    overflow: hidden;
-}
-        /* TOP ORANGE AREA */
+        .page {
+            width: 100%;
+            max-width: 430px;
+            height: 100dvh;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* =========================================
+           TOP ORANGE AREA
+        ========================================= */
 
         .top-section {
-            height: 240px;
+
+            height: 205px;
+
             background: linear-gradient(
                 135deg,
                 #ff7a00,
                 #ff5500
             );
 
-            padding: 25px 25px;
+            padding: 22px 25px;
+
             color: white;
+
             position: relative;
+
             overflow: hidden;
         }
 
+
         .top-section::before {
+
             content: "";
+
             position: absolute;
+
             width: 220px;
             height: 220px;
+
             border-radius: 50%;
-            background: rgba(255,255,255,0.10);
+
+            background: rgba(
+                255,
+                255,
+                255,
+                0.10
+            );
+
             right: -90px;
-            top: -70px;
+            top: -80px;
         }
+
 
         .top-section::after {
+
             content: "";
+
             position: absolute;
+
             width: 170px;
             height: 170px;
+
             border-radius: 50%;
-            border: 25px solid rgba(255,255,255,0.07);
+
+            border: 25px solid rgba(
+                255,
+                255,
+                255,
+                0.07
+            );
+
             left: -80px;
-            bottom: -100px;
+            bottom: -110px;
         }
+
+
+        /* =========================================
+           BACK BUTTON
+        ========================================= */
 
         .back-btn {
+
             width: 42px;
             height: 42px;
+
             border-radius: 12px;
-            background: rgba(255,255,255,0.18);
+
+            background: rgba(
+                255,
+                255,
+                255,
+                0.18
+            );
+
             border: none;
+
             color: white;
+
             font-size: 18px;
+
             cursor: pointer;
+
             position: relative;
+
             z-index: 2;
         }
+
+
+        /* =========================================
+           BRAND
+        ========================================= */
 
         .brand {
-            margin-top: 30px;
+
+            margin-top: 22px;
+
             position: relative;
+
             z-index: 2;
         }
 
+
         .brand h1 {
+
             font-size: 30px;
-            font-weight: 700;
+
+            font-weight: 800;
+
             letter-spacing: 1px;
         }
 
+
         .brand p {
-            font-size: 14px;
-            margin-top: 6px;
+
+            font-size: 13px;
+
+            margin-top: 4px;
+
             opacity: 0.92;
         }
 
 
-        /* REGISTER CARD */
+        /* =========================================
+           REGISTER CARD
+        ========================================= */
 
         .register-card {
+
             background: white;
+
             border-radius: 30px 30px 0 0;
-            margin-top: -35px;
-            min-height: calc(100vh - 205px);
-            padding: 35px 25px 30px;
+
+            margin-top: -30px;
+
+            height: calc(
+                100dvh - 175px
+            );
+
+            padding: 27px 24px 24px;
+
             position: relative;
+
             z-index: 5;
+
+            overflow-y: auto;
         }
+
 
         .register-card h2 {
-            font-size: 24px;
+
+            font-size: 23px;
+
             color: #222;
-            margin-bottom: 6px;
+
+            margin-bottom: 4px;
         }
+
 
         .subtitle {
+
             color: #888;
-            font-size: 13px;
-            margin-bottom: 28px;
+
+            font-size: 12px;
+
+            margin-bottom: 21px;
         }
 
 
-        /* INPUT */
+        /* =========================================
+           INPUT GROUP
+        ========================================= */
 
         .input-group {
-            margin-bottom: 18px;
+
+            margin-bottom: 15px;
         }
+
 
         .input-group label {
+
             display: block;
-            font-size: 13px;
+
+            font-size: 12px;
+
             font-weight: 600;
+
             color: #555;
-            margin-bottom: 8px;
+
+            margin-bottom: 7px;
         }
+
+
+        /* =========================================
+           INPUT BOX
+        ========================================= */
 
         .input-box {
-            height: 56px;
-            border: 1px solid #e8e8e8;
+
+            height: 52px;
+
+            border: 1px solid #e5e5e5;
+
             border-radius: 14px;
+
             display: flex;
+
             align-items: center;
-            padding: 0 16px;
+
+            padding: 0 15px;
+
             transition: 0.2s;
+
+            background: #ffffff;
         }
+
 
         .input-box:focus-within {
+
             border-color: #ff6b00;
-            box-shadow: 0 0 0 3px rgba(255,107,0,0.08);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255,107,0,0.07);
         }
+
 
         .input-box i {
+
             color: #ff6b00;
-            font-size: 18px;
-            width: 30px;
+
+            font-size: 17px;
+
+            width: 29px;
         }
 
+
         .input-box input {
+
             border: none;
+
             outline: none;
+
             width: 100%;
+
             font-size: 14px;
+
             color: #333;
+
             background: transparent;
         }
 
+
         .input-box input::placeholder {
+
             color: #aaa;
         }
 
 
-        /* MOBILE */
+        /* =========================================
+           GENDER
+        ========================================= */
 
-        .mobile-box {
-            background: #fffaf7;
-        }
+        .gender-label {
 
-        .country-code {
-            font-size: 14px;
+            display: block;
+
+            font-size: 12px;
+
             font-weight: 600;
+
             color: #555;
-            padding-right: 10px;
-            border-right: 1px solid #ddd;
-            margin-right: 12px;
-        }
 
-        #mobile {
-            color: #777;
-            font-weight: 500;
+            margin-bottom: 7px;
         }
 
 
-        /* TERMS */
+        .gender-options {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            gap: 8px;
+        }
+
+
+        .gender-btn {
+
+            height: 48px;
+
+            border: 1px solid #e5e5e5;
+
+            border-radius: 13px;
+
+            background: #ffffff;
+
+            color: #444;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .gender-btn.active {
+
+            border-color: #ff6b00;
+
+            background: #fff6ef;
+
+            color: #ff6b00;
+        }
+
+
+        .gender-btn i {
+
+            margin-right: 4px;
+        }
+
+
+        /* =========================================
+           REFERRAL
+        ========================================= */
+
+        .referral-title {
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #555;
+
+            margin-bottom: 7px;
+        }
+
+
+        .optional {
+
+            color: #999;
+
+            font-weight: 400;
+        }
+
+
+        /* =========================================
+           SINGLE COIN PROGRESS
+        ========================================= */
+
+        .coin-progress {
+
+            margin-top: 18px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .coin-line-wrap {
+
+            position: relative;
+
+            height: 28px;
+
+            padding: 0 2px;
+        }
+
+
+        .coin-line {
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            top: 12px;
+
+            height: 5px;
+
+            background: #eeeeee;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .coin-fill {
+
+            height: 100%;
+
+            width: 0%;
+
+            background: linear-gradient(
+                90deg,
+                #ff7a00,
+                #ff5500
+            );
+
+            border-radius: 10px;
+
+            transition:
+                width 0.35s ease;
+        }
+
+
+        .coin-dots {
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            top: 9px;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            pointer-events: none;
+        }
+
+
+        .coin-dot {
+
+            width: 11px;
+
+            height: 11px;
+
+            border-radius: 50%;
+
+            background: #dddddd;
+
+            border: 2px solid white;
+
+            box-shadow:
+                0 0 0 1px #dddddd;
+
+            transition: 0.25s;
+        }
+
+
+        .coin-dot.active {
+
+            background: #ff6b00;
+
+            box-shadow:
+                0 0 0 1px #ff6b00;
+        }
+
+
+        .coin-message {
+
+            text-align: center;
+
+            margin-top: 7px;
+
+            color: #333;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .coin-message strong {
+
+            color: #ff6b00;
+        }
+
+
+        .coin-status {
+
+            text-align: center;
+
+            color: #888;
+
+            font-size: 10px;
+
+            margin-top: 2px;
+        }
+
+
+        /* =========================================
+           TERMS
+        ========================================= */
 
         .terms {
+
             display: flex;
+
             align-items: flex-start;
-            gap: 10px;
-            margin-top: 5px;
-            margin-bottom: 24px;
+
+            gap: 9px;
+
+            margin-top: 2px;
+
+            margin-bottom: 18px;
         }
 
+
         .terms input {
-            margin-top: 4px;
+
+            margin-top: 3px;
+
             accent-color: #ff6b00;
-            width: 16px;
-            height: 16px;
+
+            width: 15px;
+
+            height: 15px;
+
             cursor: pointer;
         }
 
+
         .terms label {
-            font-size: 12px;
+
+            font-size: 11px;
+
             color: #777;
-            line-height: 1.6;
+
+            line-height: 1.5;
         }
 
+
         .terms a {
+
             color: #ff6b00;
+
             font-weight: 600;
+
             text-decoration: none;
         }
 
 
-        /* BUTTON */
+        /* =========================================
+           REGISTER BUTTON
+        ========================================= */
 
         .register-btn {
+
             width: 100%;
-            height: 56px;
+
+            height: 53px;
+
             border: none;
+
             border-radius: 14px;
+
             background: #ff6b00;
+
             color: white;
-            font-size: 16px;
-            font-weight: 600;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255,107,0,0.25);
+
+            box-shadow:
+                0 8px 20px
+                rgba(255,107,0,0.22);
+
             transition: 0.2s;
         }
 
-        .register-btn:hover {
-            background: #e95f00;
-        }
 
         .register-btn:disabled {
+
             opacity: 0.7;
+
             cursor: not-allowed;
         }
 
 
-        /* BOTTOM */
+        /* =========================================
+           LOGIN
+        ========================================= */
 
         .bottom {
+
             text-align: center;
-            margin-top: 24px;
-            font-size: 13px;
+
+            margin-top: 17px;
+
+            font-size: 12px;
+
             color: #777;
         }
 
+
         .bottom a {
+
             color: #ff6b00;
+
             text-decoration: none;
+
             font-weight: 700;
-            margin-left: 4px;
+
+            margin-left: 3px;
         }
 
-
-        /* MOBILE RESPONSIVE */
 
         @media (min-width: 500px) {
 
             body {
+
                 padding: 20px;
             }
 
             .page {
-                min-height: 780px;
-                border-radius: 25px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-            }
 
+                min-height: 780px;
+
+                border-radius: 25px;
+
+                box-shadow:
+                    0 10px 40px
+                    rgba(0,0,0,0.12);
+            }
         }
 
     </style>
@@ -310,599 +702,1393 @@ body {
 
 <body>
 
-    <div class="page">
+
+<div class="page">
 
 
-        <!-- TOP -->
+    <!-- =========================================
+         TOP
+    ========================================== -->
 
-        <div class="top-section">
-
-            <button class="back-btn"
-                onclick="goBack()">
-
-                <i class="fa-solid fa-arrow-left"></i>
-
-            </button>
+    <div class="top-section">
 
 
-            <div class="brand">
+        <button
+            class="back-btn"
+            onclick="goBack()">
 
-                <h1>DARVOZ</h1>
+            <i class="fa-solid fa-arrow-left"></i>
 
-                <p>One App. Every Need.</p>
-
-            </div>
-
-        </div>
+        </button>
 
 
+        <div class="brand">
 
-        <!-- REGISTER FORM -->
+            <h1>DARVOZ</h1>
 
-        <div class="register-card">
-
-            <h2>Create your account 👋</h2>
-
-            <p class="subtitle">
-                Just a few details and you're ready to go!
+            <p>
+                One App. Every Need.
             </p>
 
-
-            <!-- NAME -->
-
-            <div class="input-group">
-
-                <label>Full Name</label>
-
-                <div class="input-box">
-
-                    <i class="fa-regular fa-user"></i>
-
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Enter your full name"
-                        autocomplete="name">
-
-                </div>
-
-            </div>
-
-
-
-            <!-- MOBILE -->
-
-            <div class="input-group">
-
-                <label>Mobile Number</label>
-
-                <div class="input-box mobile-box">
-
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-
-                    <span class="country-code">
-                        +91
-                    </span>
-
-                    <input
-                        type="text"
-                        id="mobile"
-                        placeholder="Mobile number"
-                        readonly>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- EMAIL -->
-
-            <div class="input-group">
-
-                <label>Email Address</label>
-
-                <div class="input-box">
-
-                    <i class="fa-regular fa-envelope"></i>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email address"
-                        autocomplete="email">
-
-                </div>
-
-            </div>
-
-
-
-            <!-- TERMS -->
-
-            <div class="terms">
-
-                <input
-                    type="checkbox"
-                    id="terms">
-
-                <label for="terms">
-
-                    I agree to the
-
-                    <a href="terms.html">
-                        Terms & Conditions
-                    </a>
-
-                    and
-
-                    <a href="privacy-policy.html">
-                        Privacy Policy
-                    </a>
-
-                </label>
-
-            </div>
-
-
-
-            <!-- REGISTER BUTTON -->
-
-            <button
-                class="register-btn"
-                onclick="register()">
-
-                Create Account
-
-                <i class="fa-solid fa-arrow-right"
-                    style="margin-left:8px;">
-                </i>
-
-            </button>
-
-
-
-            <!-- LOGIN -->
-
-            <div class="bottom">
-
-                Already have an account?
-
-                <a href="customer-login.html">
-                    Login
-                </a>
-
-            </div>
-
-
         </div>
+
 
     </div>
 
 
 
-    <script>
+    <!-- =========================================
+         REGISTRATION
+    ========================================== -->
 
-        const API = window.location.origin;
+    <div class="register-card">
 
 
-        // ==========================================
-        // GET VERIFIED MOBILE FROM OTP PAGE
-        // ==========================================
+        <h2>
+            Create your account 🎁
+        </h2>
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
 
-                const verifiedMobile =
-                    localStorage.getItem(
-                        "registerMobile"
-                    );
+        <p class="subtitle">
+            Complete your profile and earn
+            500 DARVOZ Coins!
+        </p>
 
-                if (verifiedMobile) {
 
-                    // Remove +91 if backend/frontend
-                    // stored it with country code
 
-                    let mobile =
-                        verifiedMobile.replace(/\D/g, "");
+        <!-- =====================================
+             NAME
+             200 COINS
+        ====================================== -->
 
-                    if (
-                        mobile.startsWith("91") &&
-                        mobile.length === 12
-                    ) {
-                        mobile = mobile.substring(2);
-                    }
+        <div class="input-group">
 
-                    document.getElementById(
-                        "mobile"
-                    ).value = mobile;
 
-                } else {
+            <label>
+                Full Name
+                <span style="color:red">*</span>
+            </label>
 
-                    // User should not directly open
-                    // registration without OTP verification
 
-                    alert(
-                        "Please verify your mobile number first."
-                    );
+            <div class="input-box">
 
-                    window.location.href =
-                        "customer-login.html";
 
-                }
+                <i class="fa-regular fa-user"></i>
+
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your full name"
+                    autocomplete="name">
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             EMAIL
+             200 COINS
+        ====================================== -->
+
+        <div class="input-group">
+
+
+            <label>
+
+                Email Address
+
+                <span style="color:red">*</span>
+
+            </label>
+
+
+            <div class="input-box">
+
+
+                <i class="fa-regular fa-envelope"></i>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email address"
+                    autocomplete="email">
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             GENDER
+             100 COINS
+        ====================================== -->
+
+        <div class="input-group">
+
+
+            <span class="gender-label">
+
+                Gender
+
+                <span style="color:red">*</span>
+
+            </span>
+
+
+            <div class="gender-options">
+
+
+                <button
+                    type="button"
+                    class="gender-btn"
+                    data-gender="Male"
+                    onclick="selectGender(this)">
+
+                    <i class="fa-solid fa-person"></i>
+
+                    Male
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="gender-btn"
+                    data-gender="Female"
+                    onclick="selectGender(this)">
+
+                    <i class="fa-solid fa-person-dress"></i>
+
+                    Female
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="gender-btn"
+                    data-gender="Other"
+                    onclick="selectGender(this)">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Other
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             REFERRAL CODE
+        ====================================== -->
+
+        <div class="input-group">
+
+
+            <div class="referral-title">
+
+                Referral Code
+
+                <span class="optional">
+                    (Optional)
+                </span>
+
+            </div>
+
+
+            <div class="input-box">
+
+
+                <i class="fa-solid fa-gift"></i>
+
+
+                <input
+                    type="text"
+                    id="referralCode"
+                    placeholder="Enter referral code"
+                    autocomplete="off">
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             SINGLE PROGRESS LINE
+        ====================================== -->
+
+        <div class="coin-progress">
+
+
+            <div class="coin-line-wrap">
+
+
+                <div class="coin-line">
+
+
+                    <div
+                        class="coin-fill"
+                        id="coinFill">
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="coin-dots">
+
+
+                    <span
+                        class="coin-dot"
+                        id="dot1">
+                    </span>
+
+
+                    <span
+                        class="coin-dot"
+                        id="dot2">
+                    </span>
+
+
+                    <span
+                        class="coin-dot"
+                        id="dot3">
+                    </span>
+
+
+                    <span
+                        class="coin-dot"
+                        id="dot4">
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                class="coin-message"
+                id="coinMessage">
+
+                Complete your profile to earn
+                <strong>500 Coins</strong> 🎁
+
+            </div>
+
+
+
+            <div
+                class="coin-status"
+                id="coinStatus">
+
+                0 / 500 Coins unlocked
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             TERMS
+        ====================================== -->
+
+        <div class="terms">
+
+
+            <input
+                type="checkbox"
+                id="terms">
+
+
+            <label for="terms">
+
+                I agree to the
+
+                <a href="terms.html">
+                    Terms &amp; Conditions
+                </a>
+
+                and
+
+                <a href="privacy.html">
+                    Privacy Policy
+                </a>
+
+            </label>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             CREATE ACCOUNT
+        ====================================== -->
+
+        <button
+            class="register-btn"
+            onclick="register()"
+            id="registerBtn">
+
+            Create Account
+
+            <i
+                class="fa-solid fa-arrow-right"
+                style="margin-left:7px">
+            </i>
+
+        </button>
+
+
+
+        <!-- LOGIN -->
+
+        <div class="bottom">
+
+            Already have an account?
+
+            <a href="customer-login.html">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+const API =
+    window.location.origin;
+
+
+
+/* =========================================
+   GLOBAL VARIABLES
+========================================= */
+
+let selectedGender = "";
+
+let verifiedMobile = "";
+
+
+
+/* =========================================
+   GET REFERRAL CODE
+========================================= */
+
+function getReferralCode() {
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const urlCode =
+
+        params.get("ref") ||
+
+        params.get("referral") ||
+
+        params.get("referralCode");
+
+
+
+    if (
+        urlCode &&
+        urlCode.trim()
+    ) {
+
+        return urlCode
+            .trim()
+            .toUpperCase();
+
+    }
+
+
+
+    const savedCode =
+
+        localStorage.getItem(
+            "referralCode"
+        ) ||
+
+        localStorage.getItem(
+            "pendingReferralCode"
+        );
+
+
+
+    if (
+        savedCode &&
+        savedCode.trim()
+    ) {
+
+        return savedCode
+            .trim()
+            .toUpperCase();
+
+    }
+
+
+
+    return "";
+
+}
+
+
+
+/* =========================================
+   PAGE LOAD
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /*
+          Mobile was already verified
+          on the OTP/login page.
+        */
+
+        verifiedMobile =
+
+            localStorage.getItem(
+                "registerMobile"
+            ) ||
+
+            localStorage.getItem(
+                "otpMobile"
+            ) ||
+
+            "";
+
+
+
+        if (!verifiedMobile) {
+
+
+            alert(
+                "Please verify your mobile number first."
+            );
+
+
+            window.location.href =
+                "customer-login.html";
+
+
+            return;
+
+        }
+
+
+
+        /*
+          Automatically detect referral.
+        */
+
+        const referral =
+            getReferralCode();
+
+
+
+        if (referral) {
+
+
+            const input =
+                document.getElementById(
+                    "referralCode"
+                );
+
+
+            input.value =
+                referral;
+
+
+            /*
+              Automatically detected referral
+              should not be manually changed.
+            */
+
+            input.readOnly = true;
+
+        }
+
+
+
+        updateCoinProgress();
+
+    }
+);
+
+
+
+/* =========================================
+   GENDER
+========================================= */
+
+function selectGender(button) {
+
+
+    document
+        .querySelectorAll(
+            ".gender-btn"
+        )
+        .forEach(
+            function (btn) {
+
+                btn.classList.remove(
+                    "active"
+                );
 
             }
         );
 
 
 
-        // ==========================================
-        // REGISTER CUSTOMER
-        // ==========================================
+    button.classList.add(
+        "active"
+    );
 
-        async function register() {
 
-            const button =
-                document.querySelector(
-                    ".register-btn"
-                );
+    selectedGender =
+        button.dataset.gender;
 
 
-            const name =
-                document.getElementById(
-                    "name"
-                ).value.trim();
 
+    /*
+      Gender completion happens
+      immediately after selection.
+    */
 
-            const mobile =
-                document.getElementById(
-                    "mobile"
-                ).value.trim();
+    updateCoinProgress();
 
+}
 
-            const email =
-                document.getElementById(
-                    "email"
-                ).value.trim();
 
 
-            const terms =
-                document.getElementById(
-                    "terms"
-                ).checked;
+/* =========================================
+   EMAIL VALIDATION
+========================================= */
 
+function isValidEmail(email) {
 
 
-            // ==========================================
-            // VALIDATION
-            // ==========================================
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
 
-            if (!name) {
+}
 
-                alert(
-                    "Please enter your full name."
-                );
 
-                return;
 
-            }
+/* =========================================
+   COIN PROGRESS
+=========================================
 
+NAME
+200 Coins
 
-            if (name.length < 2) {
+EMAIL
+200 Coins
 
-                alert(
-                    "Please enter a valid name."
-                );
+GENDER
+100 Coins
 
-                return;
+TOTAL
+500 Coins
 
-            }
+IMPORTANT:
+Progress updates on BLUR,
+not on every keystroke.
 
+========================================= */
 
-            if (!mobile) {
+function getCompletedCoins() {
 
-                alert(
-                    "Mobile number not found. Please verify OTP again."
-                );
 
-                return;
+    const name =
+        document
+            .getElementById("name")
+            .value
+            .trim();
 
-            }
 
 
-            if (!/^[0-9]{10}$/.test(mobile)) {
+    const email =
+        document
+            .getElementById("email")
+            .value
+            .trim();
 
-                alert(
-                    "Please enter a valid 10-digit mobile number."
-                );
 
-                return;
 
-            }
+    let coins = 0;
 
 
-            if (!email) {
 
-                alert(
-                    "Please enter your email address."
-                );
+    /*
+      NAME
+      +200
+    */
 
-                return;
+    if (
+        name.length >= 2
+    ) {
 
-            }
+        coins += 200;
 
+    }
 
-            const emailPattern =
-                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
-            if (!emailPattern.test(email)) {
+    /*
+      EMAIL
+      +200
+    */
 
-                alert(
-                    "Please enter a valid email address."
-                );
+    if (
+        isValidEmail(email)
+    ) {
 
-                return;
+        coins += 200;
 
-            }
+    }
 
 
-            if (!terms) {
 
-                alert(
-                    "Please accept the Terms & Conditions."
-                );
+    /*
+      GENDER
+      +100
+    */
 
-                return;
+    if (
+        selectedGender
+    ) {
 
-            }
+        coins += 100;
 
+    }
 
 
-            // ==========================================
-            // BUTTON LOADING
-            // ==========================================
 
-            const originalText =
-                button.innerHTML;
+    return Math.min(
+        coins,
+        500
+    );
 
+}
 
-            button.disabled = true;
 
 
-            button.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Creating Account...
-            `;
+/* =========================================
+   UPDATE COIN UI
+========================================= */
 
+function updateCoinProgress() {
 
 
-            try {
+    const coins =
+        getCompletedCoins();
 
 
-                console.log(
-                    "REGISTER REQUEST:",
-                    {
-                        name,
-                        mobile,
-                        email
-                    }
-                );
 
+    const percentage =
+        (coins / 500) * 100;
 
 
-                // ==========================================
-                // SEND REGISTER REQUEST
-                // ==========================================
 
-                const response =
-                    await fetch(
+    document
+        .getElementById("coinFill")
+        .style.width =
+        percentage + "%";
 
-                        `${API}/customer/register`,
 
-                        {
 
-                            method: "POST",
+    /*
+      DOT 1
+      Name
+    */
 
-                            headers: {
+    document
+        .getElementById("dot1")
+        .classList.toggle(
+            "active",
+            coins >= 200
+        );
 
-                                "Content-Type":
-                                    "application/json"
 
-                            },
 
-                            body: JSON.stringify({
+    /*
+      DOT 2
+      Email
+    */
 
-                                name: name,
+    document
+        .getElementById("dot2")
+        .classList.toggle(
+            "active",
+            coins >= 400
+        );
 
-                                mobile: mobile,
 
-                                email: email
 
-                            })
+    /*
+      DOT 3
+      Gender
+    */
 
-                        }
+    document
+        .getElementById("dot3")
+        .classList.toggle(
+            "active",
+            coins >= 500
+        );
 
-                    );
 
 
+    /*
+      DOT 4
+      Final
+    */
 
-                const data =
-                    await response.json();
+    document
+        .getElementById("dot4")
+        .classList.toggle(
+            "active",
+            coins >= 500
+        );
 
 
-                console.log(
-                    "REGISTER RESPONSE:",
-                    data
-                );
 
+    /*
+      MESSAGE
+    */
 
+    const message =
+        document.getElementById(
+            "coinMessage"
+        );
 
-                // ==========================================
-                // FAILED
-                // ==========================================
 
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
 
-                    alert(
-                        data.message ||
-                        "Registration failed. Please try again."
-                    );
+    if (coins === 0) {
 
-                    return;
 
-                }
+        message.innerHTML =
+            'Complete your profile to earn <strong>500 Coins</strong> 🎁';
 
 
+    }
+    else if (coins === 200) {
 
-                // ==========================================
-                // SUCCESS
-                // ==========================================
 
-                alert(
-                    "Welcome to DARVOZ 🎉 Account created successfully!"
-                );
+        message.innerHTML =
+            'Name completed! <strong>200 Coins</strong> unlocked 🎉';
 
 
+    }
+    else if (coins === 400) {
 
-                // Save customer data
 
-                if (data.customer) {
+        message.innerHTML =
+            'Email completed! <strong>400 Coins</strong> unlocked 🔥';
 
 
-                    if (data.customer.id) {
+    }
+    else if (coins === 500) {
 
-                        localStorage.setItem(
-                            "customerId",
-                            String(data.customer.id)
-                        );
 
-                    }
+        message.innerHTML =
+            'Profile complete! <strong>500 Coins</strong> unlocked 🎉';
 
+    }
 
-                    localStorage.setItem(
-                        "customerName",
-                        data.customer.name || name
-                    );
 
 
-                    localStorage.setItem(
-                        "mobile",
-                        data.customer.mobile || mobile
-                    );
+    document
+        .getElementById(
+            "coinStatus"
+        )
+        .textContent =
 
+        coins +
+        " / 500 Coins unlocked";
 
-                    localStorage.setItem(
-                        "customerEmail",
-                        data.customer.email || email
-                    );
+}
 
-                } else {
 
 
-                    localStorage.setItem(
-                        "customerName",
-                        name
-                    );
+/* =========================================
+   NAME BLUR
+=========================================
 
+When customer finishes typing name
+and clicks email, blur fires.
 
-                    localStorage.setItem(
-                        "mobile",
-                        mobile
-                    );
+Then +200 appears.
 
+========================================= */
 
-                    localStorage.setItem(
-                        "customerEmail",
-                        email
-                    );
+document
+    .getElementById("name")
+    .addEventListener(
+        "blur",
+        function () {
 
-                }
-
-
-
-                localStorage.setItem(
-                    "customerLoggedIn",
-                    "true"
-                );
-
-
-                localStorage.setItem(
-                    "customerLoginTime",
-                    Date.now().toString()
-                );
-
-
-
-                // Remove temporary OTP number
-
-                localStorage.removeItem(
-                    "registerMobile"
-                );
-
-
-                localStorage.removeItem(
-                    "otpMobile"
-                );
-
-
-
-                // GO TO HOME PAGE
-
-                window.location.href =
-                    "index.html";
-
-
-
-            } catch (error) {
-
-
-                console.error(
-                    "CUSTOMER REGISTER ERROR:",
-                    error
-                );
-
-
-                alert(
-                    "Unable to connect to server. Please try again."
-                );
-
-
-            } finally {
-
-
-                button.disabled = false;
-
-
-                button.innerHTML =
-                    originalText;
-
-            }
+            updateCoinProgress();
 
         }
+    );
 
 
 
-        // ==========================================
-        // BACK
-        // ==========================================
+/* =========================================
+   EMAIL BLUR
+=========================================
 
-        function goBack() {
+When customer finishes email
+and clicks gender, blur fires.
 
-            localStorage.removeItem(
-                "registerMobile"
+Then +200 more appears.
+
+========================================= */
+
+document
+    .getElementById("email")
+    .addEventListener(
+        "blur",
+        function () {
+
+            updateCoinProgress();
+
+        }
+    );
+
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+async function register() {
+
+
+    const button =
+        document.querySelector(
+            ".register-btn"
+        );
+
+
+
+    const name =
+        document
+            .getElementById("name")
+            .value
+            .trim();
+
+
+
+    const email =
+        document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+
+    const referralCode =
+        document
+            .getElementById("referralCode")
+            .value
+            .trim()
+            .toUpperCase();
+
+
+
+    /* =====================================
+       VALIDATION
+    ===================================== */
+
+
+    if (!name) {
+
+        alert(
+            "Please enter your full name."
+        );
+
+        return;
+
+    }
+
+
+
+    if (
+        name.length < 2
+    ) {
+
+        alert(
+            "Please enter a valid name."
+        );
+
+        return;
+
+    }
+
+
+
+    if (!verifiedMobile) {
+
+        alert(
+            "Mobile verification is missing. Please verify again."
+        );
+
+        return;
+
+    }
+
+
+
+    let mobile =
+        verifiedMobile
+            .replace(/\D/g, "");
+
+
+
+    if (
+        mobile.startsWith("91") &&
+        mobile.length === 12
+    ) {
+
+        mobile =
+            mobile.substring(2);
+
+    }
+
+
+
+    if (
+        !/^[0-9]{10}$/.test(
+            mobile
+        )
+    ) {
+
+        alert(
+            "Please verify your mobile number again."
+        );
+
+        return;
+
+    }
+
+
+
+    if (!email) {
+
+        alert(
+            "Please enter your email address."
+        );
+
+        return;
+
+    }
+
+
+
+    if (
+        !isValidEmail(email)
+    ) {
+
+        alert(
+            "Please enter a valid email address."
+        );
+
+        return;
+
+    }
+
+
+
+    if (!selectedGender) {
+
+        alert(
+            "Please select your gender."
+        );
+
+        return;
+
+    }
+
+
+
+    if (
+        !document
+            .getElementById("terms")
+            .checked
+    ) {
+
+        alert(
+            "Please accept the Terms & Conditions and Privacy Policy."
+        );
+
+        return;
+
+    }
+
+
+
+    /* =====================================
+       LOADING
+    ====================================== */
+
+    const originalText =
+        button.innerHTML;
+
+
+
+    button.disabled = true;
+
+
+
+    button.innerHTML = `
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        Creating Account...
+
+    `;
+
+
+
+    try {
+
+
+        console.log(
+            "REGISTER REQUEST:",
+            {
+                name,
+                mobile,
+                email,
+                gender:
+                    selectedGender,
+                referralCode
+            }
+        );
+
+
+
+        /* =================================
+           SEND TO BACKEND
+        ================================= */
+
+
+        const response =
+
+            await fetch(
+                `${API}/customer/register`,
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            name:
+                                name,
+
+                            mobile:
+                                mobile,
+
+                            email:
+                                email,
+
+                            gender:
+                                selectedGender,
+
+                            referralCode:
+                                referralCode ||
+                                null
+
+                        })
+
+                }
             );
 
-            window.location.href =
-                "customer-login.html";
+
+
+        const data =
+            await response.json();
+
+
+
+        console.log(
+            "REGISTER RESPONSE:",
+            data
+        );
+
+
+
+        /* =================================
+           FAILED
+        ================================= */
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+
+            alert(
+                data.message ||
+                "Registration failed. Please try again."
+            );
+
+
+            return;
 
         }
 
-    </script>
+
+
+        /* =================================
+           SAVE CUSTOMER
+        ================================= */
+
+
+        if (data.customer) {
+
+
+            if (
+                data.customer.id
+            ) {
+
+                localStorage.setItem(
+                    "customerId",
+                    String(
+                        data.customer.id
+                    )
+                );
+
+            }
+
+
+
+            localStorage.setItem(
+                "customerName",
+                data.customer.name ||
+                name
+            );
+
+
+
+            localStorage.setItem(
+                "mobile",
+                data.customer.mobile ||
+                mobile
+            );
+
+
+
+            localStorage.setItem(
+                "customerEmail",
+                data.customer.email ||
+                email
+            );
+
+
+
+            if (
+                data.customer.gender
+            ) {
+
+                localStorage.setItem(
+                    "customerGender",
+                    data.customer.gender
+                );
+
+            }
+
+
+
+            /*
+              Backend should return a unique
+              referral code for this customer.
+            */
+
+            if (
+                data.customer.referralCode
+            ) {
+
+                localStorage.setItem(
+                    "myReferralCode",
+                    data.customer.referralCode
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================
+           LOGIN STATE
+        ================================= */
+
+
+        localStorage.setItem(
+            "customerLoggedIn",
+            "true"
+        );
+
+
+        localStorage.setItem(
+            "customerLoginTime",
+            Date.now().toString()
+        );
+
+
+
+        /* =================================
+           REMOVE TEMP DATA
+        ================================= */
+
+
+        localStorage.removeItem(
+            "registerMobile"
+        );
+
+
+        localStorage.removeItem(
+            "otpMobile"
+        );
+
+
+        localStorage.removeItem(
+            "referralCode"
+        );
+
+
+        localStorage.removeItem(
+            "pendingReferralCode"
+        );
+
+
+
+        /* =================================
+           SUCCESS
+        ================================= */
+
+
+        alert(
+            "Welcome to DARVOZ 🎉\n\n500 DARVOZ Coins added to your account!"
+        );
+
+
+
+        window.location.href =
+            "index.html";
+
+
+
+    }
+    catch (error) {
+
+
+        console.error(
+            "CUSTOMER REGISTER ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect to server. Please try again."
+        );
+
+
+
+    }
+    finally {
+
+
+        button.disabled =
+            false;
+
+
+        button.innerHTML =
+            originalText;
+
+    }
+
+}
+
+
+
+/* =========================================
+   BACK
+========================================= */
+
+function goBack() {
+
+
+    localStorage.removeItem(
+        "registerMobile"
+    );
+
+
+    localStorage.removeItem(
+        "otpMobile"
+    );
+
+
+    window.location.href =
+        "customer-login.html";
+
+}
+
+</script>
+
 
 </body>
 
