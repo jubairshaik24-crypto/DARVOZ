@@ -216,12 +216,12 @@ body{
     display:flex;
     align-items:center;
 
-    gap:8px;
+    gap:12px;
 
     flex:0 0 auto;
     flex-shrink:0;
 
-    margin-left:10px;
+    margin-left:14px;
 }
 
 /* =========================================
@@ -1717,48 +1717,44 @@ body{
 
 @media(max-width:600px){
 
-    .restaurant-image-wrap{
-
-        height:180px;
+    .location{
+        flex:1;
+        min-width:0;
+        max-width:none;
     }
 
-    .restaurant-info{
-
-        padding:14px;
+    .location-text{
+        flex:1;
+        min-width:0;
+        max-width:none;
+        overflow:hidden;
     }
 
+    .location-text strong{
+        max-width:100%;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
 
-.location{
-    flex:1;
-    min-width:0;
-}
+    /* LOCATION DOWN ARROW */
+    .location > .fa-chevron-down{
+        flex-shrink:0;
 
-.location-text{
-    flex:1;
-    min-width:0;
-    max-width:none;
-}
+        font-size:11px;
 
-.location-text strong{
-    max-width:100%;
-}
+        margin-left:8px;
+        margin-right:4px;
+    }
 
-.location > .fa-chevron-down{
-    flex-shrink:0;
-    font-size:11px;
-}
+    /* COIN + NOTIFICATION */
+    .header-actions{
+        flex:0 0 auto;
+        flex-shrink:0;
 
-.header-actions{
-    flex:0 0 auto;
-    flex-shrink:0;
-    margin-left:10px;
-}   
-
-.location > .fa-chevron-down{
-    flex-shrink:0;
-    font-size:11px;
-}
-
+        gap:12px;
+        margin-left:14px;
+    }
 
 }
 /* =====================================================
