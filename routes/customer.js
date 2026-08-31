@@ -1,10 +1,82 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const crypto = require("crypto");
+const multer = require("multer");
+const path = require("path");
 
-/* ==========================================
-   CUSTOMER REGISTER
-========================================== */
+// ==========================================
+// GENERATE REFERRAL CODE
+// ==========================================
+
+function generateReferralCode() {
+    return crypto
+        .randomBytes(4)
+        .toString("hex")
+        .toUpperCase();
+}
+
+// ==========================================
+// GENERATE UNIQUE REFERRAL CODE
+// ==========================================
+
+function createUniqueReferralCode(callback) {
+
+    const code = generateReferralCode();
+
+    db.query(
+        `SELECT id
+         FROM customers
+         WHERE referral_code=?
+         LIMIT 1`,
+        [code],
+        (err, result) => {
+
+            if (err) {
+                console.log(
+                    "REFERRAL CODE CHECK ERROR:",
+                    err
+                );
+
+                return callback(err);
+            }
+
+            if (result.length > 0) {
+
+                // Collision → generate another code
+                return createUniqueReferralCode(callback);
+
+            }
+
+            callback(null, code);
+
+        }
+    );
+}
+
+// ==========================================
+// CLEAN MOBILE NUMBER
+// ==========================================
+
+function cleanMobileNumber(mobile) {
+
+    let cleanMobile = String(mobile || "")
+        .replace(/\D/g, "");
+
+    if (
+        cleanMobile.startsWith("91") &&
+        cleanMobile.length === 12
+    ) {
+        cleanMobile =
+            cleanMobile.substring(2);
+    }
+
+    return cleanMobile;
+}
+
+// ==========================================
+// CUSTOMER REGISTER
+// ==========================================
 
 router.post("/register", (req, res) => {
 
@@ -12,65 +84,624 @@ router.post("/register", (req, res) => {
         name,
         mobile,
         email,
-        password
+        gender,
+        referralCode
     } = req.body;
 
-    // Check if mobile already exists
+    // ------------------------------------------
+    // BASIC VALIDATION
+    // ------------------------------------------
+
+    if (!name || !mobile || !email || !gender) {
+
+        return res.json({
+            success: false,
+            message:
+                "Please complete all required fields."
+        });
+
+    }
+
+    const cleanName =
+        String(name).trim();
+
+    const cleanEmail =
+        String(email).trim().toLowerCase();
+
+    const cleanMobile =
+        cleanMobileNumber(mobile);
+
+    const cleanGender =
+        String(gender).trim();
+
+    const cleanReferralCode =
+        referralCode
+            ? String(referralCode)
+                .trim()
+                .toUpperCase()
+            : "";
+
+    // ------------------------------------------
+    // VALIDATE NAME
+    // ------------------------------------------
+
+    if (cleanName.length < 2) {
+
+        return res.json({
+            success: false,
+            message:
+                "Please enter a valid name."
+        });
+
+    }
+
+    // ------------------------------------------
+    // VALIDATE MOBILE
+    // ------------------------------------------
+
+    if (!/^[0-9]{10}$/.test(cleanMobile)) {
+
+        return res.json({
+            success: false,
+            message:
+                "Please enter a valid mobile number."
+        });
+
+    }
+
+    // ------------------------------------------
+    // VALIDATE EMAIL
+    // ------------------------------------------
+
+    if (
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(cleanEmail)
+    ) {
+
+        return res.json({
+            success: false,
+            message:
+                "Please enter a valid email address."
+        });
+
+    }
+
+    // ------------------------------------------
+    // VALIDATE GENDER
+    // ------------------------------------------
+
+    const allowedGenders = [
+        "Male",
+        "Female",
+        "Other"
+    ];
+
+    if (
+        !allowedGenders.includes(
+            cleanGender
+        )
+    ) {
+
+        return res.json({
+            success: false,
+            message:
+                "Please select a valid gender."
+        });
+
+    }
+
+    // ------------------------------------------
+    // CHECK MOBILE
+    // ------------------------------------------
+
     db.query(
 
-        "SELECT id FROM customers WHERE mobile=?",
+        `SELECT id
+         FROM customers
+         WHERE mobile=?
+         LIMIT 1`,
 
-        [mobile],
+        [cleanMobile],
 
         (err, result) => {
 
             if (err) {
-                console.log("LOGIN ERROR:", err);
-                return res.json({
+
+                console.log(
+                    "REGISTER MOBILE CHECK ERROR:",
+                    err
+                );
+
+                return res.status(500).json({
+
                     success: false,
-                    message: "Database Error"
+
+                    message:
+                        "Database Error"
+
                 });
+
             }
+
+            // ------------------------------------------
+            // MOBILE ALREADY EXISTS
+            // ------------------------------------------
 
             if (result.length > 0) {
 
                 return res.json({
+
                     success: false,
-                    message: "Mobile number already registered."
+
+                    message:
+                        "Mobile number already registered."
+
                 });
 
             }
 
-            // Insert customer
-            db.query(
+            // ------------------------------------------
+            // FIND REFERRER
+            // ------------------------------------------
 
-                `INSERT INTO customers
-                (name,mobile,email,password,is_verified)
-                VALUES (?,?,?,?,1)`,
+            const findReferrer =
+                (callback) => {
 
-                [
-                    name,
-                    mobile,
-                    email,
-                    password
-                ],
+                    // No referral
+                    if (!cleanReferralCode) {
 
-                (err) => {
+                        return callback(
+                            null,
+                            null
+                        );
 
-                    if (err) {
-                        console.log(err);
+                    }
 
-                        return res.json({
+                    db.query(
+
+                        `SELECT id
+                         FROM customers
+                         WHERE referral_code=?
+                         LIMIT 1`,
+
+                        [cleanReferralCode],
+
+                        (err, result) => {
+
+                            if (err) {
+
+                                console.log(
+                                    "REFERRER CHECK ERROR:",
+                                    err
+                                );
+
+                                return callback(
+                                    err
+                                );
+
+                            }
+
+                            // Invalid referral
+                            // Registration still continues
+                            if (
+                                result.length === 0
+                            ) {
+
+                                return callback(
+                                    null,
+                                    null
+                                );
+
+                            }
+
+                            callback(
+                                null,
+                                result[0].id
+                            );
+
+                        }
+
+                    );
+
+                };
+
+            // ------------------------------------------
+            // FIND REFERRER
+            // ------------------------------------------
+
+            findReferrer(
+
+                (referrerError, referrerId) => {
+
+                    if (referrerError) {
+
+                        return res.status(500).json({
+
                             success: false,
-                            message: "Registration Failed"
+
+                            message:
+                                "Referral verification failed."
+
                         });
 
                     }
 
-                    res.json({
-                        success: true,
-                        message: "Registration Successful"
-                    });
+                    // ------------------------------------------
+                    // GENERATE UNIQUE REFERRAL CODE
+                    // ------------------------------------------
+
+                    createUniqueReferralCode(
+
+                        (codeError, newReferralCode) => {
+
+                            if (codeError) {
+
+                                return res.status(500).json({
+
+                                    success: false,
+
+                                    message:
+                                        "Unable to generate referral code."
+
+                                });
+
+                            }
+
+                            // ------------------------------------------
+                            // INSERT CUSTOMER
+                            // ------------------------------------------
+                            //
+                            // NEW CUSTOMER ALWAYS GETS
+                            // 500 DARVOZ COINS
+                            //
+                            // ------------------------------------------
+
+                            db.query(
+
+                                `INSERT INTO customers
+                                (
+                                    name,
+                                    mobile,
+                                    email,
+                                    gender,
+                                    password,
+                                    is_verified,
+                                    coins,
+                                    referral_code,
+                                    referred_by
+                                )
+                                VALUES
+                                (
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    NULL,
+                                    1,
+                                    500,
+                                    ?,
+                                    ?
+                                )`,
+
+                                [
+                                    cleanName,
+                                    cleanMobile,
+                                    cleanEmail,
+                                    cleanGender,
+                                    newReferralCode,
+                                    referrerId || null
+                                ],
+
+                                (err, insertResult) => {
+
+                                    if (err) {
+
+                                        console.log(
+                                            "CUSTOMER INSERT ERROR:",
+                                            err
+                                        );
+
+                                        return res.status(500).json({
+
+                                            success: false,
+
+                                            message:
+                                                "Registration Failed"
+
+                                        });
+
+                                    }
+
+                                    const newCustomerId =
+                                        insertResult.insertId;
+
+                                    // ------------------------------------------
+                                    // NO VALID REFERRAL
+                                    // ------------------------------------------
+
+                                    if (!referrerId) {
+
+                                        return res.json({
+
+                                            success: true,
+
+                                            message:
+                                                "Registration Successful",
+
+                                            customer: {
+
+                                                id:
+                                                    newCustomerId,
+
+                                                name:
+                                                    cleanName,
+
+                                                mobile:
+                                                    cleanMobile,
+
+                                                email:
+                                                    cleanEmail,
+
+                                                gender:
+                                                    cleanGender,
+
+                                                coins:
+                                                    500,
+
+                                                referralCode:
+                                                    newReferralCode
+
+                                            },
+
+                                            referral: {
+
+                                                applied:
+                                                    false
+
+                                            }
+
+                                        });
+
+                                    }
+
+                                    // ------------------------------------------
+                                    // VALID REFERRAL
+                                    // ------------------------------------------
+                                    //
+                                    // REFERRER → +1000
+                                    // NEW CUSTOMER → 500
+                                    //
+                                    // ------------------------------------------
+
+                                    db.query(
+
+                                        `UPDATE customers
+                                         SET coins = coins + 1000
+                                         WHERE id=?`,
+
+                                        [referrerId],
+
+                                        (err) => {
+
+                                            if (err) {
+
+                                                console.log(
+                                                    "REFERRER COIN UPDATE ERROR:",
+                                                    err
+                                                );
+
+                                                // Customer was already
+                                                // created with 500 coins.
+                                                // We report registration success,
+                                                // but referral reward failed.
+
+                                                return res.json({
+
+                                                    success: true,
+
+                                                    message:
+                                                        "Registration Successful",
+
+                                                    customer: {
+
+                                                        id:
+                                                            newCustomerId,
+
+                                                        name:
+                                                            cleanName,
+
+                                                        mobile:
+                                                            cleanMobile,
+
+                                                        email:
+                                                            cleanEmail,
+
+                                                        gender:
+                                                            cleanGender,
+
+                                                        coins:
+                                                            500,
+
+                                                        referralCode:
+                                                            newReferralCode
+
+                                                    },
+
+                                                    referral: {
+
+                                                        applied:
+                                                            false
+
+                                                    }
+
+                                                });
+
+                                            }
+
+                                            // ------------------------------------------
+                                            // RECORD REFERRAL
+                                            // ------------------------------------------
+
+                                            db.query(
+
+                                                `INSERT INTO referral_rewards
+                                                (
+                                                    referrer_id,
+                                                    referred_customer_id,
+                                                    referrer_coins,
+                                                    referred_coins
+                                                )
+                                                VALUES
+                                                (
+                                                    ?,
+                                                    ?,
+                                                    1000,
+                                                    500
+                                                )`,
+
+                                                [
+                                                    referrerId,
+                                                    newCustomerId
+                                                ],
+
+                                                (rewardErr) => {
+
+                                                    if (rewardErr) {
+
+                                                        console.log(
+                                                            "REFERRAL HISTORY ERROR:",
+                                                            rewardErr
+                                                        );
+
+                                                        // IMPORTANT:
+                                                        // The referrer already received
+                                                        // 1000 coins.
+                                                        //
+                                                        // We do NOT add another 1000.
+                                                        //
+                                                        // Registration remains successful.
+
+                                                        return res.json({
+
+                                                            success: true,
+
+                                                            message:
+                                                                "Registration Successful",
+
+                                                            customer: {
+
+                                                                id:
+                                                                    newCustomerId,
+
+                                                                name:
+                                                                    cleanName,
+
+                                                                mobile:
+                                                                    cleanMobile,
+
+                                                                email:
+                                                                    cleanEmail,
+
+                                                                gender:
+                                                                    cleanGender,
+
+                                                                coins:
+                                                                    500,
+
+                                                                referralCode:
+                                                                    newReferralCode
+
+                                                            },
+
+                                                            referral: {
+
+                                                                applied:
+                                                                    true,
+
+                                                                referrerReward:
+                                                                    1000,
+
+                                                                customerReward:
+                                                                    500,
+
+                                                                historyRecorded:
+                                                                    false
+
+                                                            }
+
+                                                        });
+
+                                                    }
+
+                                                    // ------------------------------------------
+                                                    // COMPLETE SUCCESS
+                                                    // ------------------------------------------
+
+                                                    return res.json({
+
+                                                        success: true,
+
+                                                        message:
+                                                            "Registration Successful",
+
+                                                        customer: {
+
+                                                            id:
+                                                                newCustomerId,
+
+                                                            name:
+                                                                cleanName,
+
+                                                            mobile:
+                                                                cleanMobile,
+
+                                                            email:
+                                                                cleanEmail,
+
+                                                            gender:
+                                                                cleanGender,
+
+                                                            coins:
+                                                                500,
+
+                                                            referralCode:
+                                                                newReferralCode
+
+                                                        },
+
+                                                        referral: {
+
+                                                            applied:
+                                                                true,
+
+                                                            referrerReward:
+                                                                1000,
+
+                                                            customerReward:
+                                                                500,
+
+                                                            historyRecorded:
+                                                                true
+
+                                                        }
+
+                                                    });
+
+                                                }
+
+                                            );
+
+                                        }
+
+                                    );
+
+                                }
+
+                            );
+
+                        }
+
+                    );
 
                 }
 
@@ -82,214 +713,291 @@ router.post("/register", (req, res) => {
 
 });
 
+// ==========================================
+// CUSTOMER LOGIN
+// ==========================================
 
-/* ==========================================
-   CUSTOMER LOGIN
-========================================== */
+// ==========================================
+// CUSTOMER LOGIN / CHECK MOBILE
+// ==========================================
 
 router.post("/login", (req, res) => {
 
-    const { mobile, password } = req.body;
+    const { mobile } = req.body;
+
+    if (!mobile) {
+        return res.status(400).json({
+            success: false,
+            message: "Mobile number is required"
+        });
+    }
+
+    const cleanMobile = cleanMobileNumber(mobile);
+
+    if (!/^[0-9]{10}$/.test(cleanMobile)) {
+        return res.status(400).json({
+            success: false,
+            message: "Please enter a valid mobile number"
+        });
+    }
 
     db.query(
-
-        `SELECT id,name,mobile,email
-         FROM customers
-         WHERE mobile=? AND password=?`,
-
-        [mobile, password],
-
-        (err, result) => {
-
-            if (err) {
-
-                console.log(err);
-
-                return res.json({
-                    success: false,
-                    message: "Database Error"
-                });
-
-            }
-
-            if (result.length === 0) {
-
-                return res.json({
-                    success: false,
-                    message: "Invalid Mobile Number or Password"
-                });
-
-            }
-
-            res.json({
-                success: true,
-                customer: result[0]
-            });
-
-        }
-
-    );
-
-});
-
-router.post("/update-location", (req, res) => {
-
-    const {
-        customerId,
-        latitude,
-        longitude,
-        city,
-        state
-    } = req.body;
-
-
-    db.query(
-
-        `UPDATE customers
-         SET
-            latitude=?,
-            longitude=?,
-            city=COALESCE(?, city),
-            state=COALESCE(?, state)
-         WHERE id=?`,
-
-        [
-            latitude,
-            longitude,
-            city || null,
-            state || null,
-            customerId
-        ],
-
-        (err) => {
-
-            if(err){
-
-                console.log(
-                    "UPDATE LOCATION ERROR:",
-                    err
-                );
-
-                return res.json({
-
-                    success:false,
-
-                    message:"Location update failed"
-
-                });
-
-            }
-
-
-            res.json({
-
-                success:true,
-
-                message:"Location updated successfully"
-
-            });
-
-        }
-
-    );
-
-});
-
-router.get("/profile/:id", (req, res) => {
-
-    db.query(
-
         `SELECT
             id,
             name,
             mobile,
             email,
-            house,
-            street,
-            area,
-            city,
-            state,
-            pincode,
-            latitude,
-            longitude,
-            profile_image
+            gender,
+            coins,
+            referral_code,
+            referred_by
          FROM customers
-         WHERE id=?`,
-
-        [req.params.id],
-
+         WHERE mobile=?
+         LIMIT 1`,
+        [cleanMobile],
         (err, result) => {
 
-            if(err){
+            if (err) {
 
                 console.log(
-                    "PROFILE ERROR:",
+                    "CUSTOMER LOGIN ERROR:",
                     err
                 );
 
-                return res.json({
-                    success:false,
-                    message:"Database Error"
+                return res.status(500).json({
+                    success: false,
+                    message: "Database Error"
                 });
-
             }
 
+            // ==========================================
+            // EXISTING CUSTOMER
+            // ==========================================
 
-            if(result.length === 0){
+            if (result.length > 0) {
 
                 return res.json({
-                    success:false,
-                    message:"Customer not found"
+                    success: true,
+                    exists: true,
+                    customer: result[0]
                 });
-
             }
 
+            // ==========================================
+            // NEW CUSTOMER
+            // ==========================================
 
-            res.json({
-
-                success:true,
-
-                customer:result[0]
-
+            return res.json({
+                success: true,
+                exists: false,
+                customer: null,
+                mobile: cleanMobile
             });
 
         }
-
     );
-
 });
 
-const multer = require("multer");
-const path = require("path");
+// ==========================================
+// UPDATE LOCATION
+// ==========================================
 
-// Upload Folder
-const storage = multer.diskStorage({
+router.post(
+    "/update-location",
+    (req, res) => {
 
-destination:(req,file,cb)=>{
+        const {
+            customerId,
+            latitude,
+            longitude,
+            city,
+            state
+        } = req.body;
 
-cb(null,"uploads/");
+        db.query(
 
-},
+            `UPDATE customers
+             SET
+                latitude=?,
+                longitude=?,
+                city=COALESCE(?, city),
+                state=COALESCE(?, state)
+             WHERE id=?`,
 
-filename:(req,file,cb)=>{
+            [
+                latitude,
+                longitude,
+                city || null,
+                state || null,
+                customerId
+            ],
 
-cb(
+            (err) => {
 
-null,
+                if (err) {
 
-Date.now()+path.extname(file.originalname)
+                    console.log(
+                        "UPDATE LOCATION ERROR:",
+                        err
+                    );
 
+                    return res.json({
+
+                        success: false,
+
+                        message:
+                            "Location update failed"
+
+                    });
+
+                }
+
+                res.json({
+
+                    success: true,
+
+                    message:
+                        "Location updated successfully"
+
+                });
+
+            }
+
+        );
+
+    }
 );
 
-}
+// ==========================================
+// CUSTOMER PROFILE
+// ==========================================
 
-});
+router.get(
+    "/profile/:id",
+    (req, res) => {
 
-const upload=multer({storage});
+        db.query(
 
-// ===============================
+            `SELECT
+                id,
+                name,
+                mobile,
+                email,
+                gender,
+                house,
+                street,
+                area,
+                city,
+                state,
+                pincode,
+                latitude,
+                longitude,
+                profile_image,
+                coins,
+                referral_code,
+                referred_by
+             FROM customers
+             WHERE id=?`,
+
+            [
+                req.params.id
+            ],
+
+            (err, result) => {
+
+                if (err) {
+
+                    console.log(
+                        "PROFILE ERROR:",
+                        err
+                    );
+
+                    return res.json({
+
+                        success: false,
+
+                        message:
+                            "Database Error"
+
+                    });
+
+                }
+
+                if (
+                    result.length === 0
+                ) {
+
+                    return res.json({
+
+                        success: false,
+
+                        message:
+                            "Customer not found"
+
+                    });
+
+                }
+
+                res.json({
+
+                    success: true,
+
+                    customer:
+                        result[0]
+
+                });
+
+            }
+
+        );
+
+    }
+);
+
+// ==========================================
+// MULTER PROFILE IMAGE
+// ==========================================
+
+const storage =
+    multer.diskStorage({
+
+        destination:
+            (req, file, cb) => {
+
+                cb(
+                    null,
+                    "uploads/"
+                );
+
+            },
+
+        filename:
+            (req, file, cb) => {
+
+                cb(
+
+                    null,
+
+                    Date.now() +
+                    path.extname(
+                        file.originalname
+                    )
+
+                );
+
+            }
+
+    });
+
+const upload =
+    multer({
+        storage
+    });
+
+// ==========================================
 // UPDATE PROFILE
-// ===============================
+// ==========================================
+
 router.post(
     "/update-profile",
     upload.single("profileImage"),
@@ -310,11 +1018,16 @@ router.post(
         let image = "";
 
         if (req.file) {
-            image = req.file.filename;
+
+            image =
+                req.file.filename;
+
         }
 
         const sql = `
+
             UPDATE customers
+
             SET
                 name = ?,
                 email = ?,
@@ -324,16 +1037,21 @@ router.post(
                 city = ?,
                 state = ?,
                 pincode = ?,
+
                 profile_image = IF(
                     ? = '',
                     profile_image,
                     ?
                 )
+
             WHERE id = ?
+
         `;
 
         db.query(
+
             sql,
+
             [
                 name,
                 email,
@@ -347,184 +1065,328 @@ router.post(
                 image,
                 customerId
             ],
+
             (err) => {
 
                 if (err) {
+
                     console.log(
                         "UPDATE PROFILE ERROR:",
                         err
                     );
 
                     return res.status(500).json({
+
                         success: false,
-                        message: "Profile update failed"
+
+                        message:
+                            "Profile update failed"
+
                     });
+
                 }
 
                 return res.json({
+
                     success: true,
-                    message: "Profile Updated Successfully"
+
+                    message:
+                        "Profile Updated Successfully"
+
                 });
+
             }
+
         );
+
     }
 );
- 
-router.post("/favorite", (req, res) => {
 
-    const { customerId, productId } = req.body;
+// ==========================================
+// FAVORITE PRODUCT
+// ==========================================
 
-    if (!customerId || !productId) {
-        return res.json({
-            success: false,
-            message: "Customer ID and Product ID required"
-        });
-    }
+router.post(
+    "/favorite",
+    (req, res) => {
 
-    db.query(
-        `SELECT id
-         FROM customer_favorites
-         WHERE customer_id=? AND product_id=?`,
-        [customerId, productId],
-        (err, result) => {
+        const {
+            customerId,
+            productId
+        } = req.body;
 
-            if (err) {
-                console.error(err);
+        if (
+            !customerId ||
+            !productId
+        ) {
 
-                return res.json({
-                    success: false,
-                    message: "Database error"
-                });
-            }
+            return res.json({
 
-            // Already favorite → remove
-            if (result.length > 0) {
+                success: false,
 
-                db.query(
-                    `DELETE FROM customer_favorites
-                     WHERE customer_id=? AND product_id=?`,
-                    [customerId, productId],
-                    (err) => {
+                message:
+                    "Customer ID and Product ID required"
 
-                        if (err) {
-                            return res.json({
-                                success: false,
-                                message: "Unable to remove favorite"
-                            });
-                        }
-
-                        res.json({
-                            success: true,
-                            favorite: false
-                        });
-
-                    }
-                );
-
-            }
-
-            // Not favorite → add
-            else {
-
-                db.query(
-                    `INSERT INTO customer_favorites
-                     (customer_id, product_id)
-                     VALUES (?,?)`,
-                    [customerId, productId],
-                    (err) => {
-
-                        if (err) {
-                            console.error(err);
-
-                            return res.json({
-                                success: false,
-                                message: "Unable to save favorite"
-                            });
-                        }
-
-                        res.json({
-                            success: true,
-                            favorite: true
-                        });
-
-                    }
-                );
-
-            }
+            });
 
         }
-    );
 
-});
+        db.query(
+
+            `SELECT id
+             FROM customer_favorites
+             WHERE customer_id=?
+             AND product_id=?`,
+
+            [
+                customerId,
+                productId
+            ],
+
+            (err, result) => {
+
+                if (err) {
+
+                    console.error(err);
+
+                    return res.json({
+
+                        success: false,
+
+                        message:
+                            "Database error"
+
+                    });
+
+                }
+
+                // ------------------------------------------
+                // ALREADY FAVORITE → REMOVE
+                // ------------------------------------------
+
+                if (
+                    result.length > 0
+                ) {
+
+                    db.query(
+
+                        `DELETE FROM customer_favorites
+                         WHERE customer_id=?
+                         AND product_id=?`,
+
+                        [
+                            customerId,
+                            productId
+                        ],
+
+                        (err) => {
+
+                            if (err) {
+
+                                return res.json({
+
+                                    success: false,
+
+                                    message:
+                                        "Unable to remove favorite"
+
+                                });
+
+                            }
+
+                            res.json({
+
+                                success: true,
+
+                                favorite:
+                                    false
+
+                            });
+
+                        }
+
+                    );
+
+                }
+
+                // ------------------------------------------
+                // NOT FAVORITE → ADD
+                // ------------------------------------------
+
+                else {
+
+                    db.query(
+
+                        `INSERT INTO customer_favorites
+                         (
+                            customer_id,
+                            product_id
+                         )
+                         VALUES (?,?)`,
+
+                        [
+                            customerId,
+                            productId
+                        ],
+
+                        (err) => {
+
+                            if (err) {
+
+                                console.error(err);
+
+                                return res.json({
+
+                                    success: false,
+
+                                    message:
+                                        "Unable to save favorite"
+
+                                });
+
+                            }
+
+                            res.json({
+
+                                success: true,
+
+                                favorite:
+                                    true
+
+                            });
+
+                        }
+
+                    );
+
+                }
+
+            }
+
+        );
+
+    }
+);
+
 // ==========================================
 // CHECK CUSTOMER PHONE
 // ==========================================
-router.post("/check-phone", (req, res) => {
 
-    const { mobile } = req.body;
+router.post(
+    "/check-phone",
+    (req, res) => {
 
-    if (!mobile) {
-        return res.status(400).json({
-            success: false,
-            message: "Mobile number is required"
-        });
-    }
+        const {
+            mobile
+        } = req.body;
 
-    // Remove +91 if present
-    let cleanMobile = String(mobile)
-        .replace(/\D/g, "");
+        if (!mobile) {
 
-    if (
-        cleanMobile.startsWith("91") &&
-        cleanMobile.length === 12
-    ) {
-        cleanMobile = cleanMobile.substring(2);
-    }
+            return res.status(400).json({
 
-    console.log(
-        "CHECKING CUSTOMER MOBILE:",
-        cleanMobile
-    );
+                success: false,
 
-    db.query(
-        `SELECT id, name, mobile, email
-         FROM customers
-         WHERE mobile=?
-         LIMIT 1`,
-        [cleanMobile],
-        (err, result) => {
+                message:
+                    "Mobile number is required"
 
-            if (err) {
-                console.log(
-                    "CHECK PHONE ERROR:",
-                    err
-                );
+            });
 
-                return res.status(500).json({
-                    success: false,
-                    message: "Database Error"
-                });
-            }
+        }
 
-            // Existing customer
-            if (result.length > 0) {
+        const cleanMobile =
+            cleanMobileNumber(
+                mobile
+            );
+
+        console.log(
+            "CHECKING CUSTOMER MOBILE:",
+            cleanMobile
+        );
+
+        db.query(
+
+            `SELECT
+                id,
+                name,
+                mobile,
+                email,
+                gender,
+                coins,
+                referral_code,
+                referred_by
+             FROM customers
+             WHERE mobile=?
+             LIMIT 1`,
+
+            [
+                cleanMobile
+            ],
+
+            (err, result) => {
+
+                if (err) {
+
+                    console.log(
+                        "CHECK PHONE ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+
+                        success: false,
+
+                        message:
+                            "Database Error"
+
+                    });
+
+                }
+
+                // ------------------------------------------
+                // EXISTING CUSTOMER
+                // ------------------------------------------
+
+                if (
+                    result.length > 0
+                ) {
+
+                    return res.json({
+
+                        success: true,
+
+                        exists: true,
+
+                        customer:
+                            result[0]
+
+                    });
+
+                }
+
+                // ------------------------------------------
+                // NEW CUSTOMER
+                // ------------------------------------------
 
                 return res.json({
+
                     success: true,
-                    exists: true,
-                    customer: result[0]
+
+                    exists: false,
+
+                    customer:
+                        null
+
                 });
+
             }
 
-            // New customer
-            return res.json({
-                success: true,
-                exists: false,
-                customer: null
-            });
-        }
-    );
-});
+        );
 
+    }
+);
+
+// ==========================================
+// EXPORT
+// ==========================================
 
 module.exports = router;

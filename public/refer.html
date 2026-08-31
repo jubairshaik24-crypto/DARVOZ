@@ -1,0 +1,2428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>Refer & Earn - DARVOZ</title>
+
+<style>
+
+:root{
+    --orange:#F4530A;
+    --orange-dark:#E04600;
+    --green:#25B440;
+    --gold:#F5B830;
+    --gold-dark:#E29A0E;
+    --text-dark:#1A1A1A;
+    --gray:#6B6B6B;
+    --bg:#F7F7F8;
+    --card-border:#E9E9E9;
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    background:#F7F7F8;
+
+    color:var(--text-dark);
+
+    display:flex;
+    justify-content:center;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================
+   PHONE
+========================================= */
+
+.phone{
+    width:390px;
+    max-width:100%;
+    min-height:100vh;
+
+    background:#fff;
+
+    padding-bottom:25px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header{
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:14px 20px 10px;
+
+    position:relative;
+}
+
+
+.back-btn{
+    width:44px;
+    height:44px;
+
+    border-radius:12px;
+
+    background:#F3F3F4;
+
+    border:1px solid #E4E4E4;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#222;
+
+    cursor:pointer;
+
+    font-size:25px;
+
+    line-height:1;
+}
+
+
+.header h1{
+    position:absolute;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:20px;
+
+    font-weight:800;
+
+    color:#151515;
+
+    white-space:nowrap;
+}
+
+
+.tnc-link{
+    color:var(--orange);
+
+    font-weight:800;
+
+    font-size:16px;
+
+    text-decoration:none;
+
+    cursor:pointer;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero{
+    margin:12px 16px 0;
+
+    border-radius:20px;
+
+    padding:27px 22px 24px;
+
+    background:
+        linear-gradient(
+            150deg,
+            #FA6A16 0%,
+            #F14B06 55%,
+            #E23F00 100%
+        );
+
+    position:relative;
+
+    overflow:hidden;
+
+    color:#fff;
+
+    min-height:390px;
+}
+
+
+.hero-content{
+    position:relative;
+
+    z-index:4;
+}
+
+
+.brand{
+    font-size:31px;
+
+    font-weight:900;
+
+    letter-spacing:.4px;
+
+    line-height:1;
+}
+
+
+.brand-sub{
+    font-size:13.5px;
+
+    font-weight:600;
+
+    opacity:.94;
+
+    margin-top:5px;
+}
+
+
+.refer-title{
+    font-size:32px;
+
+    font-weight:900;
+
+    margin-top:22px;
+
+    line-height:1.05;
+}
+
+
+.refer-desc{
+    font-size:14px;
+
+    font-weight:500;
+
+    line-height:1.4;
+
+    margin-top:9px;
+
+    max-width:205px;
+
+    opacity:.96;
+}
+
+
+/* =========================================
+   EARN PILL
+========================================= */
+
+.earn-pill{
+    position:absolute;
+
+    left:22px;
+
+    bottom:18px;
+
+    z-index:5;
+
+    background:#fff;
+
+    color:#222;
+
+    border-radius:14px;
+
+    padding:12px 16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    width:265px;
+
+    min-height:64px;
+}
+
+
+.coin-icon{
+    width:40px;
+    height:40px;
+
+    min-width:40px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #FFDE7A,
+            var(--gold) 55%,
+            var(--gold-dark) 100%
+        );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#B4700B;
+
+    font-weight:900;
+
+    font-size:20px;
+
+    box-shadow:
+        inset 0 -2px 3px rgba(0,0,0,.15);
+}
+
+
+.earn-pill-text{
+    min-width:0;
+}
+
+
+.earn-amount{
+    color:var(--orange);
+
+    font-weight:900;
+
+    font-size:15px;
+
+    line-height:1.2;
+
+    white-space:nowrap;
+}
+
+
+.earn-label{
+    color:#3A3A3A;
+
+    font-size:12.5px;
+
+    font-weight:600;
+
+    margin-top:3px;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================
+   GIFT
+========================================= */
+
+.gift-graphic{
+    position:absolute;
+
+    right:2px;
+
+    top:42px;
+
+    width:180px;
+
+    z-index:2;
+
+    pointer-events:none;
+}
+
+
+.sparkle{
+    position:absolute;
+
+    background:rgba(255,255,255,.55);
+
+    transform:rotate(45deg);
+
+    border-radius:3px;
+
+    z-index:3;
+
+    pointer-events:none;
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.section{
+    margin:20px 16px 0;
+
+    background:#fff;
+
+    border:1px solid var(--card-border);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:
+        0 1px 4px rgba(0,0,0,.03);
+}
+
+
+.section-title{
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#151515;
+
+    margin-bottom:14px;
+}
+
+
+/* =========================================
+   REFERRAL CODE
+========================================= */
+
+.code-box{
+    width:100%;
+
+    min-height:64px;
+
+    border:
+        1.5px dashed
+        var(--orange);
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    background:#FFF8F5;
+
+    overflow:hidden;
+}
+
+
+.code-text{
+    flex:1;
+
+    min-width:0;
+
+    text-align:center;
+
+    font-size:21px;
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    color:var(--orange);
+
+    padding:0 8px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+}
+
+
+.copy-btn{
+    height:100%;
+
+    min-height:62px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    color:var(--orange);
+
+    font-weight:800;
+
+    font-size:14px;
+
+    background:none;
+
+    border:none;
+
+    border-left:1px solid #F4CDBA;
+
+    padding:0 14px;
+
+    white-space:nowrap;
+
+    cursor:pointer;
+}
+
+
+.copy-btn:active{
+    transform:scale(.97);
+}
+
+
+/* =========================================
+   SHARE LINK
+========================================= */
+
+.share-label{
+    font-size:16px;
+
+    font-weight:800;
+
+    color:#151515;
+
+    margin:20px 0 10px;
+}
+
+
+.link-box{
+    width:100%;
+
+    min-height:62px;
+
+    border:1px solid #E8E8E8;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    background:#fff;
+}
+
+
+.link-text{
+    flex:1;
+
+    min-width:0;
+
+    padding:0 13px;
+
+    font-size:12px;
+
+    color:#444;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+}
+
+
+.link-copy{
+    min-width:82px;
+
+    padding:0 10px;
+
+    border-left:1px solid #E8E8E8;
+}
+
+
+/* =========================================
+   SHARE BUTTONS
+========================================= */
+
+.btn-row{
+    display:flex;
+
+    gap:12px;
+
+    margin-top:16px;
+}
+
+
+.btn{
+    flex:1;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:0 8px;
+
+    font-size:15px;
+
+    font-weight:800;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    cursor:pointer;
+}
+
+
+.btn:active{
+    transform:scale(.98);
+}
+
+
+.btn-whatsapp{
+    background:var(--green);
+}
+
+
+.btn-more{
+    background:var(--orange);
+}
+
+
+/* =========================================
+   REWARD SECTION
+========================================= */
+
+.reward-banner{
+    width:100%;
+
+    min-height:72px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #F4530A,
+            #E23F00
+        );
+
+    border-radius:14px;
+
+    padding:10px 12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    color:#fff;
+
+    font-size:14px;
+
+    font-weight:800;
+
+    line-height:1.15;
+
+    text-align:center;
+}
+
+
+.reward-banner .pct-icon{
+    width:31px;
+    height:31px;
+
+    min-width:31px;
+
+    background:#fff;
+
+    border-radius:9px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--orange);
+
+    font-size:16px;
+
+    font-weight:900;
+}
+
+
+.reward-banner .amt{
+    color:#FFD84D;
+
+    font-weight:900;
+
+    font-size:18px;
+}
+
+
+.reward-banner .sep{
+    width:2px;
+
+    height:35px;
+
+    background:rgba(255,255,255,.75);
+
+    flex:none;
+
+    margin:0 3px;
+}
+
+
+/* =========================================
+   STEPS
+========================================= */
+
+.steps{
+    margin-top:27px;
+
+    position:relative;
+
+    /*
+       Space for icons.
+    */
+    padding-left:58px;
+}
+
+
+/*
+   IMPORTANT:
+   Line goes exactly through
+   center of both circles.
+*/
+.step-line{
+    position:absolute;
+    left:-38px;
+    top:20px;
+    bottom:20px;
+    width:3px;
+    background:var(--orange);
+    border-radius:10px;
+    z-index:1;
+}
+
+
+.step{
+    position:relative;
+
+    min-height:30px;
+
+    margin-bottom:30px;
+}
+
+
+.step:last-child{
+    min-height:78px;
+
+    margin-bottom:0;
+}
+
+
+/*
+   Circle center:
+   left 0 + 17px? 
+
+   Circle width 40.
+   Center = 20.
+   Line center = 18.5.
+
+   Slight overlap is intentional
+   so the line disappears behind
+   the circle.
+*/
+.step-icon{
+    position:absolute;
+
+    left:-58px;
+
+    top:0;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:var(--orange);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    z-index:5;
+}
+
+
+.step-icon svg{
+    width:20px;
+
+    height:20px;
+}
+
+
+.step-text{
+    font-size:15px;
+
+    color:#222;
+
+    line-height:1.5;
+
+    padding-top:4px;
+
+    text-align:left;
+}
+
+
+.step-text b{
+    color:var(--orange);
+
+    font-weight:900;
+}
+
+
+.step-text a{
+    color:var(--orange);
+
+    font-weight:800;
+
+    text-decoration:underline;
+
+    cursor:pointer;
+}
+
+
+/* =========================================
+   SHARE NOW
+========================================= */
+
+.share-now{
+    margin:22px 16px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #F4530A,
+            #E94706
+        );
+
+    border:none;
+
+    border-radius:14px;
+
+    width:calc(100% - 32px);
+
+    min-height:62px;
+
+    padding:0 17px;
+
+    color:#fff;
+
+    font-size:17px;
+
+    font-weight:800;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 5px 15px rgba(244,83,10,.15);
+}
+
+
+.share-now:active{
+    transform:scale(.98);
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.toast{
+    position:fixed;
+
+    left:50%;
+
+    bottom:30px;
+
+    transform:
+        translateX(-50%)
+        translateY(20px);
+
+    background:#222;
+
+    color:#fff;
+
+    padding:11px 19px;
+
+    border-radius:20px;
+
+    font-size:13.5px;
+
+    font-weight:600;
+
+    opacity:0;
+
+    transition:.25s ease;
+
+    pointer-events:none;
+
+    z-index:9999;
+
+    white-space:nowrap;
+}
+
+
+.toast.show{
+    opacity:1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:500px){
+
+    body{
+        background:#fff;
+
+        padding:0;
+    }
+
+
+    .phone{
+        width:100%;
+
+        max-width:390px;
+
+        min-height:100vh;
+    }
+}
+
+
+@media(max-width:360px){
+
+    .header{
+        padding-left:14px;
+
+        padding-right:14px;
+    }
+
+
+    .hero{
+        margin-left:12px;
+
+        margin-right:12px;
+
+        padding-left:18px;
+
+        min-height:300px;
+    }
+
+
+    .brand{
+        font-size:28px;
+    }
+
+
+    .refer-title{
+        font-size:29px;
+    }
+
+
+    .refer-desc{
+        font-size:13px;
+
+        max-width:185px;
+    }
+
+
+    .gift-graphic{
+        width:160px;
+
+        right:-2px;
+    }
+
+
+    .earn-pill{
+        left:18px;
+
+        width:245px;
+    }
+
+
+    .section{
+        margin-left:12px;
+
+        margin-right:12px;
+
+        padding:17px;
+    }
+
+
+    .code-text{
+        font-size:18px;
+
+        letter-spacing:2px;
+    }
+
+
+    .copy-btn{
+        min-width:72px;
+
+        padding:0 9px;
+
+        font-size:13px;
+    }
+
+
+    .reward-banner{
+        font-size:12px;
+
+        gap:4px;
+
+        padding-left:7px;
+
+        padding-right:7px;
+    }
+
+
+    .reward-banner .amt{
+        font-size:16px;
+    }
+
+
+    .steps{
+        padding-left:54px;
+    }
+
+
+    .step-line{
+        left:16px;
+    }
+
+
+    .step-icon{
+        left:-54px;
+
+        width:38px;
+
+        height:38px;
+    }
+
+
+    .step-text{
+        font-size:14px;
+    }
+
+
+    .btn{
+        font-size:14px;
+    }
+}
+.whatsapp-svg{
+    flex:none;
+    display:block;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="phone">
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<div class="header">
+
+    <button
+        class="back-btn"
+        aria-label="Go back"
+        onclick="goBack()">
+
+        &#8592;
+
+    </button>
+
+
+    <h1>
+        Refer &amp; Earn
+    </h1>
+
+
+    <a
+        href="#"
+        class="tnc-link"
+        onclick="showTerms(event)">
+
+        T&amp;C
+
+    </a>
+
+</div>
+
+
+
+<!-- =========================================
+     HERO
+========================================= -->
+
+<div class="hero">
+
+
+    <svg
+        class="gift-graphic"
+        viewBox="0 0 200 220"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <rect
+            x="30"
+            y="90"
+            width="120"
+            height="100"
+            rx="8"
+            fill="#FA7A1E"/>
+
+        <rect
+            x="30"
+            y="90"
+            width="120"
+            height="26"
+            fill="#E85E0A"/>
+
+        <rect
+            x="78"
+            y="90"
+            width="24"
+            height="100"
+            fill="#FFD98A"/>
+
+        <rect
+            x="30"
+            y="103"
+            width="120"
+            height="13"
+            fill="#FFD98A"/>
+
+        <path
+            d="M90 90
+               C60 60,40 70,50 90
+               C60 100,80 95,90 90Z"
+            fill="#FFE7B3"/>
+
+        <path
+            d="M90 90
+               C120 60,140 70,130 90
+               C120 100,100 95,90 90Z"
+            fill="#FFE7B3"/>
+
+        <circle
+            cx="150"
+            cy="175"
+            r="42"
+            fill="#F7C13B"/>
+
+        <circle
+            cx="150"
+            cy="175"
+            r="34"
+            fill="none"
+            stroke="#E29A0E"
+            stroke-width="2.5"/>
+
+        <text
+            x="150"
+            y="187"
+            font-size="34"
+            font-weight="900"
+            fill="#E29A0E"
+            text-anchor="middle"
+            font-family="Arial">
+
+            D
+
+        </text>
+
+    </svg>
+
+
+
+    <div
+        class="sparkle"
+        style="
+            width:10px;
+            height:10px;
+            top:38px;
+            left:100px;
+        ">
+    </div>
+
+
+    <div
+        class="sparkle"
+        style="
+            width:14px;
+            height:14px;
+            top:22px;
+            left:150px;
+        ">
+    </div>
+
+
+    <div
+        class="sparkle"
+        style="
+            width:8px;
+            height:8px;
+            top:70px;
+            left:35px;
+        ">
+    </div>
+
+
+    <div
+        class="sparkle"
+        style="
+            width:12px;
+            height:12px;
+            top:95px;
+            left:160px;
+        ">
+    </div>
+
+
+
+    <div class="hero-content">
+
+        <div class="brand">
+            DARVOZ
+        </div>
+
+        <div class="brand-sub">
+            One App. Every Need.
+        </div>
+
+        <div class="refer-title">
+            Refer &amp; Earn
+        </div>
+
+        <div class="refer-desc">
+            Invite your friends and
+            earn exciting rewards!
+        </div>
+
+    </div>
+
+
+
+    <div class="earn-pill">
+
+        <div class="coin-icon">
+            D
+        </div>
+
+        <div class="earn-pill-text">
+
+            <div class="earn-amount">
+                EARN 1000 COINS
+            </div>
+
+            <div class="earn-label">
+                for each successful referral
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     REFERRAL SECTION
+========================================= -->
+
+<div class="section">
+
+    <div class="section-title">
+        Your Unique Referral Code
+    </div>
+
+
+    <div class="code-box">
+
+        <span
+            class="code-text"
+            id="referralCode">
+
+            Loading...
+
+        </span>
+
+
+        <button
+            class="copy-btn"
+            onclick="copyReferralCode(event)">
+
+            <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <rect
+                    x="9"
+                    y="9"
+                    width="13"
+                    height="13"
+                    rx="2"/>
+
+                <path
+                    d="
+                        M5 15H4
+                        a2 2 0 0 1-2-2V4
+                        a2 2 0 0 1 2-2h9
+                        a2 2 0 0 1 2 2v1
+                    "/>
+
+            </svg>
+
+            Copy
+
+        </button>
+
+    </div>
+
+
+
+    <div class="share-label">
+        Share your link
+    </div>
+
+
+    <div class="link-box">
+
+        <span
+            class="link-text"
+            id="referralLink">
+
+            Loading...
+
+        </span>
+
+
+        <button
+            class="copy-btn link-copy"
+            onclick="copyReferralLink(event)">
+
+            <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <rect
+                    x="9"
+                    y="9"
+                    width="13"
+                    height="13"
+                    rx="2"/>
+
+                <path
+                    d="
+                        M5 15H4
+                        a2 2 0 0 1-2-2V4
+                        a2 2 0 0 1 2-2h9
+                        a2 2 0 0 1 2 2v1
+                    "/>
+
+            </svg>
+
+            Copy
+
+        </button>
+
+    </div>
+
+
+
+    <!-- SHARE BUTTONS -->
+
+    <div class="btn-row">
+
+
+        <!-- WHATSAPP -->
+
+        <button
+    class="btn btn-whatsapp"
+    onclick="shareWhatsApp()">
+
+    <svg
+        class="whatsapp-svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <path
+            d="M20.52 11.75
+               C20.52 16.58 16.58 20.5 11.75 20.5
+               C10.2 20.5 8.75 20.1 7.5 19.4
+               L3.5 20.5
+               L4.7 16.65
+               C3.85 15.28 3.35 13.65 3.35 11.9
+               C3.35 7.05 7.28 3.12 12.13 3.12
+               C16.88 3.12 20.52 6.95 20.52 11.75Z"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <path
+            d="M8.2 8.3
+               C8.4 7.9 8.7 7.8 9 7.8
+               H9.65
+               C9.9 7.8 10.05 7.95 10.15 8.2
+               L10.9 10
+               C11 10.2 10.95 10.4 10.8 10.55
+               L10.25 11.2
+               C10.12 11.35 10.12 11.5 10.2 11.65
+               C10.65 12.55 11.4 13.3 12.3 13.75
+               C12.48 13.85 12.6 13.82 12.72 13.68
+               L13.3 13.05
+               C13.45 12.9 13.63 12.88 13.83 12.96
+               L15.65 13.78
+               C15.87 13.88 15.95 14.02 15.9 14.25
+               C15.78 14.82 15.2 15.4 14.65 15.58
+               C14.22 15.72 13.62 15.68 12.95 15.43
+               C10.2 14.35 8.15 12.1 7.65 9.85
+               C7.52 9.2 7.72 8.65 8.2 8.3Z"
+            fill="white"/>
+
+    </svg>
+
+    WhatsApp
+
+</button>
+
+
+        <!-- MORE OPTIONS -->
+
+        <button
+            class="btn btn-more"
+            onclick="shareMore()">
+
+            <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                stroke-width="2">
+
+                <circle
+                    cx="18"
+                    cy="5"
+                    r="3"/>
+
+                <circle
+                    cx="6"
+                    cy="12"
+                    r="3"/>
+
+                <circle
+                    cx="18"
+                    cy="19"
+                    r="3"/>
+
+                <line
+                    x1="8.6"
+                    y1="13.5"
+                    x2="15.4"
+                    y2="17.5"/>
+
+                <line
+                    x1="15.4"
+                    y1="6.5"
+                    x2="8.6"
+                    y2="10.5"/>
+
+            </svg>
+
+            More Options
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     REWARD SECTION
+========================================= -->
+
+<div class="section">
+
+
+    <div class="reward-banner">
+
+        <div class="pct-icon">
+            %
+        </div>
+
+
+        <span>
+            You get
+            <span class="amt">
+                1000
+            </span>
+        </span>
+
+
+        <div class="sep"></div>
+
+
+        <span>
+            Your friend get
+            <span class="amt">
+                500
+            </span>
+            coins
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================
+         STEPS
+    ====================================== -->
+
+    <div class="steps">
+
+
+        <div class="step-line"></div>
+
+
+
+        <!-- STEP 1 -->
+
+        <div class="step">
+
+            <div class="step-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M12 3v12"/>
+
+                    <path d="M7 10l5 5 5-5"/>
+
+                    <path d="M4 21h16"/>
+
+                </svg>
+
+            </div>
+
+
+            <div class="step-text">
+
+                Your friend downloads the
+                <b>DARVOZ</b>
+                app
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STEP 2 -->
+
+        <div class="step">
+
+            <div class="step-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <polyline
+                        points="
+                            20 6
+                            9 17
+                            4 12
+                        "/>
+
+                </svg>
+
+            </div>
+
+
+            <div class="step-text">
+
+                On completing account,
+
+                <br>
+
+                your friend gets
+                <b>500</b>
+                coins.
+
+                <a
+                    href="#"
+                    onclick="showTerms(event)">
+
+                    T&amp;C
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     SHARE NOW
+========================================= -->
+
+<button
+    class="share-now"
+    onclick="shareMore()">
+
+
+    <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="white"
+        stroke-width="2">
+
+        <circle
+            cx="18"
+            cy="5"
+            r="3"/>
+
+        <circle
+            cx="6"
+            cy="12"
+            r="3"/>
+
+        <circle
+            cx="18"
+            cy="19"
+            r="3"/>
+
+        <line
+            x1="8.6"
+            y1="13.5"
+            x2="15.4"
+            y2="17.5"/>
+
+        <line
+            x1="15.4"
+            y1="6.5"
+            x2="8.6"
+            y2="10.5"/>
+
+    </svg>
+
+
+    Share Now
+
+</button>
+
+
+</div>
+
+
+
+<!-- =========================================
+     TOAST
+========================================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+    Copied
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   DARVOZ API
+========================================= */
+
+const API_BASE =
+    window.location.origin;
+
+
+/*
+   Example:
+
+   localhost:
+   http://localhost:5000
+
+   Production:
+   https://yourdomain.com
+
+   Because refer.html is served by the
+   same Express server, this is safer than
+   hardcoding localhost.
+*/
+
+
+/* =========================================
+   GET CUSTOMER ID
+========================================= */
+
+function getCustomerId(){
+
+    /* First option */
+
+    const id =
+        localStorage.getItem("customerId");
+
+    if(id){
+        return id;
+    }
+
+
+    /* Second option */
+
+    try{
+
+        const customer =
+            JSON.parse(
+                localStorage.getItem("customer")
+            );
+
+
+        if(
+            customer &&
+            customer.id
+        ){
+
+            return customer.id;
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "Customer localStorage error:",
+            error
+        );
+
+    }
+
+
+    return null;
+}
+
+
+/* =========================================
+   LOAD REFERRAL DATA
+========================================= */
+
+async function loadReferral(){
+
+    const codeElement =
+        document.getElementById(
+            "referralCode"
+        );
+
+
+    const linkElement =
+        document.getElementById(
+            "referralLink"
+        );
+
+
+    const customerId =
+        getCustomerId();
+
+
+    /* =====================================
+       NO LOGIN
+    ===================================== */
+
+    if(!customerId){
+
+        codeElement.textContent =
+            "LOGIN";
+
+        linkElement.textContent =
+            "Please login first";
+
+        console.log(
+            "No customerId found"
+        );
+
+        return;
+    }
+
+
+    try{
+
+        console.log(
+            "Loading customer:",
+            customerId
+        );
+
+
+        /* =================================
+           YOUR EXISTING API
+        ================================= */
+
+        const response =
+            await fetch(
+                API_BASE +
+                "/customer/profile/" +
+                encodeURIComponent(
+                    customerId
+                )
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "PROFILE RESPONSE:",
+            data
+        );
+
+
+        if(
+            !data.success ||
+            !data.customer
+        ){
+
+            throw new Error(
+                data.message ||
+                "Customer not found"
+            );
+
+        }
+
+
+        const customer =
+            data.customer;
+
+
+        /* =================================
+           GET REFERRAL CODE
+        ================================= */
+
+        const code =
+            customer.referral_code;
+
+
+        if(!code){
+
+            codeElement.textContent =
+                "NO CODE";
+
+            linkElement.textContent =
+                "Referral code unavailable";
+
+            return;
+
+        }
+
+
+        /* =================================
+           SAVE CUSTOMER DATA
+        ================================= */
+
+        localStorage.setItem(
+            "customer",
+            JSON.stringify(customer)
+        );
+
+
+        localStorage.setItem(
+            "customerId",
+            String(customer.id)
+        );
+
+
+        localStorage.setItem(
+            "referralCode",
+            code
+        );
+
+
+        /* =================================
+           SHOW CODE
+        ================================= */
+
+        codeElement.textContent =
+            code;
+
+
+        /* =================================
+           CREATE REAL REFERRAL LINK
+        ================================= */
+
+        const referralLink =
+            window.location.origin +
+            "/customer-register.html?ref=" +
+            encodeURIComponent(code);
+
+
+        linkElement.textContent =
+            referralLink;
+
+
+        localStorage.setItem(
+            "referralLink",
+            referralLink
+        );
+
+
+        console.log(
+            "Referral code:",
+            code
+        );
+
+
+        console.log(
+            "Referral link:",
+            referralLink
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "REFERRAL LOAD ERROR:",
+            error
+        );
+
+
+        codeElement.textContent =
+            "ERROR";
+
+
+        linkElement.textContent =
+            "Unable to load referral";
+
+    }
+
+}
+
+
+/* =========================================
+   GET CURRENT CODE
+========================================= */
+
+function getReferralCode(){
+
+    const element =
+        document.getElementById(
+            "referralCode"
+        );
+
+
+    const code =
+        element.textContent.trim();
+
+
+    if(
+        !code ||
+        code === "Loading..." ||
+        code === "LOGIN" ||
+        code === "ERROR" ||
+        code === "NO CODE"
+    ){
+
+        return null;
+
+    }
+
+
+    return code;
+}
+
+
+/* =========================================
+   GET CURRENT LINK
+========================================= */
+
+function getReferralLink(){
+
+    const element =
+        document.getElementById(
+            "referralLink"
+        );
+
+
+    const link =
+        element.textContent.trim();
+
+
+    if(
+        !link ||
+        link === "Loading..." ||
+        link === "Please login first" ||
+        link === "Unable to load referral"
+    ){
+
+        return null;
+
+    }
+
+
+    return link;
+}
+
+
+/* =========================================
+   COPY FUNCTION
+========================================= */
+
+async function copyText(text){
+
+    try{
+
+        if(
+            navigator.clipboard &&
+            window.isSecureContext
+        ){
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+        }else{
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+
+            textarea.value =
+                text;
+
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.left =
+                "-9999px";
+
+
+            document.body.appendChild(
+                textarea
+            );
+
+
+            textarea.focus();
+
+            textarea.select();
+
+
+            document.execCommand(
+                "copy"
+            );
+
+
+            textarea.remove();
+
+        }
+
+
+        showToast(
+            "Copied successfully"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "COPY ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Copy failed"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   COPY REFERRAL CODE
+========================================= */
+
+async function copyReferralCode(event){
+
+    if(event){
+        event.stopPropagation();
+    }
+
+
+    const code =
+        getReferralCode();
+
+
+    if(!code){
+
+        showToast(
+            "Referral code not ready"
+        );
+
+        return;
+
+    }
+
+
+    await copyText(code);
+
+}
+
+
+/* =========================================
+   COPY REFERRAL LINK
+========================================= */
+
+async function copyReferralLink(event){
+
+    if(event){
+        event.stopPropagation();
+    }
+
+
+    const link =
+        getReferralLink();
+
+
+    if(!link){
+
+        showToast(
+            "Referral link not ready"
+        );
+
+        return;
+
+    }
+
+
+    await copyText(link);
+
+}
+
+
+/* =========================================
+   WHATSAPP
+========================================= */
+
+function shareWhatsApp(){
+
+    const code = getReferralCode();
+    const link = getReferralLink();
+
+    if(!code || !link){
+        showToast("Referral link not ready");
+        return;
+    }
+
+    const message =
+        " Hey! An awesome offer from DARVOZ is waiting for you!\n\n" +
+        "Get exciting rewards when you join DARVOZ — One App. Every Need. \n\n" +
+        "Complete your DARVOZ account and get 500 DARVOZ Coins!\n\n" +
+        "Use my Referral Code: " + code + "\n\n" +
+        "Click here to join DARVOZ:\n" +
+        link + "\n\n" +
+        "Don't miss out! Join now! ";
+
+    const whatsappUrl =
+        "https://wa.me/?text=" +
+        encodeURIComponent(message);
+
+    window.open(whatsappUrl, "_blank");
+}
+
+/* =========================================
+   MORE OPTIONS
+========================================= */
+
+async function shareMore(){
+
+    const code =
+        getReferralCode();
+
+
+    const link =
+        getReferralLink();
+
+
+    if(!code || !link){
+
+        showToast(
+            "Referral link not ready"
+        );
+
+        return;
+
+    }
+
+
+    const shareData = {
+
+        title:
+            "DARVOZ Refer & Earn",
+
+        text:
+            "Join DARVOZ 🚀\n\n" +
+            "Use my referral code: " +
+            code +
+            "\n\n" +
+            "Get 500 DARVOZ Coins after completing your account.",
+
+        url:
+            link
+
+    };
+
+
+    /* =================================
+       NATIVE MOBILE SHARE
+    ================================= */
+
+    if(
+        navigator.share
+    ){
+
+        try{
+
+            await navigator.share(
+                shareData
+            );
+
+        }catch(error){
+
+            /*
+               User cancelled share.
+               Do nothing.
+            */
+
+            console.log(
+                "Share cancelled"
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /* =================================
+       DESKTOP FALLBACK
+    ================================= */
+
+    await copyText(link);
+
+}
+
+
+/* =========================================
+   TERMS & CONDITIONS
+========================================= */
+
+function showTerms(event){
+
+    if(event){
+
+        event.preventDefault();
+
+    }
+
+
+    alert(
+        "DARVOZ Referral Terms\n\n" +
+
+        "• You get 1000 DARVOZ Coins for each successful referral.\n\n" +
+
+        "• Your friend gets 500 DARVOZ Coins after completing their account.\n\n" +
+
+        "• Referral rewards are subject to DARVOZ terms and conditions."
+    );
+
+}
+
+
+/* =========================================
+   BACK
+========================================= */
+
+function goBack(){
+
+    if(
+        window.history.length > 1
+    ){
+
+        window.history.back();
+
+    }else{
+
+        window.location.href =
+            "home.html";
+
+    }
+
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+
+    window.toastTimer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadReferral();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

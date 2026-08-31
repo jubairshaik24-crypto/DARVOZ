@@ -5,20 +5,24 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
     <title>DARVOZ | Create Account</title>
 
     <!-- GOOGLE FONT -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <!-- FONT AWESOME -->
     <link
         rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
     <style>
 
@@ -32,8 +36,7 @@
         html,
         body {
             width: 100%;
-            height: 100%;
-            overflow: hidden;
+            min-height: 100%;
         }
 
         body {
@@ -43,37 +46,42 @@
             align-items: center;
         }
 
+        /* =========================================
+           PAGE
+        ========================================= */
+
         .page {
             width: 100%;
             max-width: 430px;
-            height: 100dvh;
+            min-height: 100dvh;
             background: #ffffff;
-            position: relative;
             overflow: hidden;
+            position: relative;
         }
 
 
         /* =========================================
-           TOP ORANGE AREA
+           ORANGE HEADER
         ========================================= */
 
         .top-section {
 
-            height: 205px;
+            height: 235px;
 
-            background: linear-gradient(
-                135deg,
-                #ff7a00,
-                #ff5500
-            );
-
-            padding: 22px 25px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff7900,
+                    #ff5700
+                );
 
             color: white;
 
             position: relative;
 
             overflow: hidden;
+
+            padding: 20px 22px;
         }
 
 
@@ -83,20 +91,16 @@
 
             position: absolute;
 
-            width: 220px;
-            height: 220px;
+            width: 260px;
+            height: 260px;
 
             border-radius: 50%;
 
-            background: rgba(
-                255,
-                255,
-                255,
-                0.10
-            );
+            background:
+                rgba(255,255,255,0.09);
 
-            right: -90px;
-            top: -80px;
+            right: -100px;
+            top: -120px;
         }
 
 
@@ -106,20 +110,17 @@
 
             position: absolute;
 
-            width: 170px;
-            height: 170px;
+            width: 180px;
+            height: 180px;
 
             border-radius: 50%;
 
-            border: 25px solid rgba(
-                255,
-                255,
-                255,
-                0.07
-            );
+            border:
+                24px solid
+                rgba(255,255,255,0.07);
 
-            left: -80px;
-            bottom: -110px;
+            left: -100px;
+            bottom: -120px;
         }
 
 
@@ -132,16 +133,12 @@
             width: 42px;
             height: 42px;
 
+            border: none;
+
             border-radius: 12px;
 
-            background: rgba(
-                255,
-                255,
-                255,
-                0.18
-            );
-
-            border: none;
+            background:
+                rgba(255,255,255,0.18);
 
             color: white;
 
@@ -151,41 +148,48 @@
 
             position: relative;
 
-            z-index: 2;
+            z-index: 3;
         }
 
 
         /* =========================================
-           BRAND
+           CENTER BRAND
         ========================================= */
 
         .brand {
 
-            margin-top: 22px;
+            position: absolute;
 
-            position: relative;
+            left: 0;
+            right: 0;
 
-            z-index: 2;
+            top: 90px;
+
+            text-align: center;
+
+            z-index: 3;
         }
 
 
         .brand h1 {
 
-            font-size: 30px;
+            font-size: 32px;
 
-            font-weight: 800;
+            font-weight: 700;
 
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
 
         .brand p {
 
-            font-size: 13px;
-
             margin-top: 4px;
 
+            font-size: 13px;
+
             opacity: 0.92;
+
+            letter-spacing: 0.2px;
         }
 
 
@@ -197,29 +201,30 @@
 
             background: white;
 
-            border-radius: 30px 30px 0 0;
+            border-radius:
+                30px 30px 0 0;
 
-            margin-top: -30px;
+            margin-top: -28px;
 
-            height: calc(
-                100dvh - 175px
-            );
+            min-height:
+                calc(100dvh - 207px);
 
-            padding: 27px 24px 24px;
+            padding:
+                28px 22px 30px;
 
             position: relative;
 
             z-index: 5;
-
-            overflow-y: auto;
         }
 
 
         .register-card h2 {
 
-            font-size: 23px;
+            font-size: 22px;
 
-            color: #222;
+            font-weight: 600;
+
+            color: #202020;
 
             margin-bottom: 4px;
         }
@@ -229,9 +234,9 @@
 
             color: #888;
 
-            font-size: 12px;
+            font-size: 11px;
 
-            margin-bottom: 21px;
+            margin-bottom: 20px;
         }
 
 
@@ -245,11 +250,13 @@
         }
 
 
-        .input-group label {
+        .input-group label,
+        .gender-label,
+        .referral-title {
 
             display: block;
 
-            font-size: 12px;
+            font-size: 11px;
 
             font-weight: 600;
 
@@ -259,27 +266,42 @@
         }
 
 
+        .required {
+
+            color: #ff3b30;
+        }
+
+
+        .optional {
+
+            color: #999;
+
+            font-weight: 400;
+        }
+
+
         /* =========================================
            INPUT BOX
         ========================================= */
 
         .input-box {
 
-            height: 52px;
+            height: 51px;
 
-            border: 1px solid #e5e5e5;
+            border:
+                1px solid #e4e4e4;
 
-            border-radius: 14px;
+            border-radius: 13px;
 
             display: flex;
 
             align-items: center;
 
-            padding: 0 15px;
+            padding: 0 14px;
+
+            background: white;
 
             transition: 0.2s;
-
-            background: #ffffff;
         }
 
 
@@ -295,27 +317,27 @@
 
         .input-box i {
 
+            width: 29px;
+
             color: #ff6b00;
 
-            font-size: 17px;
-
-            width: 29px;
+            font-size: 16px;
         }
 
 
         .input-box input {
 
+            width: 100%;
+
             border: none;
 
             outline: none;
 
-            width: 100%;
+            background: transparent;
 
-            font-size: 14px;
+            font-size: 13px;
 
             color: #333;
-
-            background: transparent;
         }
 
 
@@ -326,22 +348,60 @@
 
 
         /* =========================================
-           GENDER
+           VERIFIED MOBILE
         ========================================= */
 
-        .gender-label {
+        .verified-mobile {
 
-            display: block;
+            background:
+                #fff9f5;
 
-            font-size: 12px;
+            border:
+                1px solid #ffd9c0;
+
+            position: relative;
+        }
+
+
+        .verified-mobile input {
+
+            color: #333;
+
+            font-weight: 500;
+        }
+
+
+        .verified-badge {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+            color: #20a45a;
+
+            font-size: 10px;
 
             font-weight: 600;
 
-            color: #555;
-
-            margin-bottom: 7px;
+            white-space: nowrap;
         }
 
+
+        .verified-badge i {
+
+            color: #20a45a;
+
+            width: auto;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================
+           GENDER
+        ========================================= */
 
         .gender-options {
 
@@ -358,15 +418,16 @@
 
             height: 48px;
 
-            border: 1px solid #e5e5e5;
+            border:
+                1px solid #e4e4e4;
 
             border-radius: 13px;
 
-            background: #ffffff;
+            background: white;
 
             color: #444;
 
-            font-size: 12px;
+            font-size: 11px;
 
             font-weight: 600;
 
@@ -376,19 +437,22 @@
         }
 
 
-        .gender-btn.active {
-
-            border-color: #ff6b00;
-
-            background: #fff6ef;
-
-            color: #ff6b00;
-        }
-
-
         .gender-btn i {
 
             margin-right: 4px;
+        }
+
+
+        .gender-btn.active {
+
+            border-color:
+                #ff6b00;
+
+            background:
+                #fff5ee;
+
+            color:
+                #ff6b00;
         }
 
 
@@ -396,93 +460,112 @@
            REFERRAL
         ========================================= */
 
-        .referral-title {
+        .referral-input {
 
-            font-size: 12px;
-
-            font-weight: 600;
-
-            color: #555;
-
-            margin-bottom: 7px;
+            background: #fafafa;
         }
 
 
-        .optional {
+        .referral-input.readonly {
 
-            color: #999;
+            background:
+                #fff8f3;
 
-            font-weight: 400;
+            border-color:
+                #ffd9c0;
         }
 
 
         /* =========================================
-           SINGLE COIN PROGRESS
+           COIN PROGRESS
         ========================================= */
 
         .coin-progress {
 
-            margin-top: 18px;
+            margin-top: 20px;
 
             margin-bottom: 18px;
+
+            padding:
+                15px 10px 13px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #fffaf7,
+                    #fff6f0
+                );
         }
 
 
-        .coin-line-wrap {
+        /* =========================================
+           PROGRESS LINE
+        ========================================= */
+
+        .progress-wrap {
 
             position: relative;
 
-            height: 28px;
+            height: 34px;
 
-            padding: 0 2px;
+            margin:
+                0 10px;
         }
 
 
-        .coin-line {
+        .progress-track {
 
             position: absolute;
 
             left: 0;
-
             right: 0;
 
-            top: 12px;
+            top: 14px;
 
-            height: 5px;
-
-            background: #eeeeee;
+            height: 4px;
 
             border-radius: 10px;
+
+            background:
+                #dedede;
 
             overflow: hidden;
         }
 
 
-        .coin-fill {
-
-            height: 100%;
-
-            width: 0%;
-
-            background: linear-gradient(
-                90deg,
-                #ff7a00,
-                #ff5500
-            );
-
-            border-radius: 10px;
-
-            transition:
-                width 0.35s ease;
-        }
-
-
-        .coin-dots {
+        .progress-fill {
 
             position: absolute;
 
             left: 0;
 
+            top: 0;
+
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff8a00,
+                    #ff5500
+                );
+
+            transition:
+                width 0.45s ease;
+        }
+
+
+        .progress-points {
+
+            position: absolute;
+
+            left: 0;
             right: 0;
 
             top: 9px;
@@ -491,68 +574,115 @@
 
             justify-content:
                 space-between;
-
-            pointer-events: none;
         }
 
 
-        .coin-dot {
+        .progress-point {
 
-            width: 11px;
-
-            height: 11px;
+            width: 13px;
+            height: 13px;
 
             border-radius: 50%;
 
-            background: #dddddd;
+            background: white;
 
-            border: 2px solid white;
+            border:
+                2px solid #cfcfcf;
 
-            box-shadow:
-                0 0 0 1px #dddddd;
+            transition: 0.3s;
 
-            transition: 0.25s;
+            position: relative;
         }
 
 
-        .coin-dot.active {
+        .progress-point.active {
 
-            background: #ff6b00;
+            background:
+                #ff6b00;
+
+            border-color:
+                #ff6b00;
 
             box-shadow:
-                0 0 0 1px #ff6b00;
+                0 0 0 3px
+                rgba(255,107,0,0.12);
         }
 
 
-        .coin-message {
+        /* =========================================
+           COIN MILESTONES
+        ========================================= */
+
+        .coin-milestones {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
 
             text-align: center;
 
-            margin-top: 7px;
+            margin-top: 3px;
+        }
 
-            color: #333;
 
-            font-size: 13px;
+        .milestone strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            color:
+                #ff6b00;
 
             font-weight: 600;
         }
 
 
-        .coin-message strong {
+        .milestone span {
 
-            color: #ff6b00;
+            display: block;
+
+            margin-top: 2px;
+
+            font-size: 9px;
+
+            color: #888;
         }
 
 
-        .coin-status {
+        .coin-total {
 
             text-align: center;
 
+            margin-top: 10px;
+
+            padding-top: 9px;
+
+            border-top:
+                1px solid #ffe3d2;
+        }
+
+
+        .coin-total strong {
+
+            font-size: 15px;
+
+            color: #222;
+
+            font-weight: 600;
+        }
+
+
+        .coin-total span {
+
+            display: block;
+
+            font-size: 9px;
+
             color: #888;
 
-            font-size: 10px;
-
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
 
@@ -566,9 +696,7 @@
 
             align-items: flex-start;
 
-            gap: 9px;
-
-            margin-top: 2px;
+            gap: 8px;
 
             margin-bottom: 18px;
         }
@@ -576,35 +704,36 @@
 
         .terms input {
 
-            margin-top: 3px;
-
-            accent-color: #ff6b00;
-
             width: 15px;
-
             height: 15px;
 
-            cursor: pointer;
+            margin-top: 2px;
+
+            accent-color:
+                #ff6b00;
+
+            flex-shrink: 0;
         }
 
 
         .terms label {
 
-            font-size: 11px;
-
-            color: #777;
+            font-size: 10px;
 
             line-height: 1.5;
+
+            color: #777;
         }
 
 
         .terms a {
 
-            color: #ff6b00;
-
-            font-weight: 600;
+            color:
+                #ff6b00;
 
             text-decoration: none;
+
+            font-weight: 600;
         }
 
 
@@ -616,19 +745,24 @@
 
             width: 100%;
 
-            height: 53px;
+            height: 52px;
 
             border: none;
 
             border-radius: 14px;
 
-            background: #ff6b00;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff7900,
+                    #ff5700
+                );
 
             color: white;
 
-            font-size: 15px;
+            font-size: 14px;
 
-            font-weight: 700;
+            font-weight: 600;
 
             cursor: pointer;
 
@@ -640,11 +774,19 @@
         }
 
 
+        .register-btn:active {
+
+            transform:
+                scale(0.98);
+        }
+
+
         .register-btn:disabled {
 
             opacity: 0.7;
 
-            cursor: not-allowed;
+            cursor:
+                not-allowed;
         }
 
 
@@ -656,30 +798,34 @@
 
             text-align: center;
 
-            margin-top: 17px;
+            margin-top: 16px;
 
-            font-size: 12px;
+            font-size: 10px;
 
-            color: #777;
+            color: #888;
         }
 
 
         .bottom a {
 
-            color: #ff6b00;
+            color:
+                #ff6b00;
 
             text-decoration: none;
 
-            font-weight: 700;
+            font-weight: 600;
 
             margin-left: 3px;
         }
 
 
+        /* =========================================
+           DESKTOP
+        ========================================= */
+
         @media (min-width: 500px) {
 
             body {
-
                 padding: 20px;
             }
 
@@ -692,6 +838,8 @@
                 box-shadow:
                     0 10px 40px
                     rgba(0,0,0,0.12);
+
+                overflow-y: auto;
             }
         }
 
@@ -707,7 +855,7 @@
 
 
     <!-- =========================================
-         TOP
+         HEADER
     ========================================== -->
 
     <div class="top-section">
@@ -715,20 +863,21 @@
 
         <button
             class="back-btn"
-            onclick="goBack()">
+            onclick="goBack()"
+        >
 
             <i class="fa-solid fa-arrow-left"></i>
 
         </button>
 
 
+        <!-- CENTER BRAND -->
+
         <div class="brand">
 
             <h1>DARVOZ</h1>
 
-            <p>
-                One App. Every Need.
-            </p>
+            <p>One App. Every Need.</p>
 
         </div>
 
@@ -750,28 +899,66 @@
 
 
         <p class="subtitle">
-            Complete your profile and earn
-            500 DARVOZ Coins!
+            Complete your profile and unlock 500 DARVOZ Coins
         </p>
 
 
 
         <!-- =====================================
-             NAME
-             200 COINS
+             MOBILE - ALREADY VERIFIED
         ====================================== -->
 
         <div class="input-group">
 
+            <label>
+                Mobile Number
+                <span class="required">*</span>
+            </label>
+
+
+            <div class="input-box verified-mobile">
+
+                <i class="fa-solid fa-mobile-screen-button"></i>
+
+
+                <input
+                    type="tel"
+                    id="mobile"
+                    readonly
+                    placeholder="Verified mobile number"
+                >
+
+
+                <div class="verified-badge">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Verified
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================
+             NAME - 200
+        ====================================== -->
+
+        <div class="input-group">
 
             <label>
+
                 Full Name
-                <span style="color:red">*</span>
+
+                <span class="required">*</span>
+
             </label>
 
 
             <div class="input-box">
-
 
                 <i class="fa-regular fa-user"></i>
 
@@ -780,35 +967,31 @@
                     type="text"
                     id="name"
                     placeholder="Enter your full name"
-                    autocomplete="name">
-
+                    autocomplete="name"
+                >
 
             </div>
-
 
         </div>
 
 
 
         <!-- =====================================
-             EMAIL
-             200 COINS
+             EMAIL - 200
         ====================================== -->
 
         <div class="input-group">
-
 
             <label>
 
                 Email Address
 
-                <span style="color:red">*</span>
+                <span class="required">*</span>
 
             </label>
 
 
             <div class="input-box">
-
 
                 <i class="fa-regular fa-envelope"></i>
 
@@ -817,29 +1000,26 @@
                     type="email"
                     id="email"
                     placeholder="Enter your email address"
-                    autocomplete="email">
-
+                    autocomplete="email"
+                >
 
             </div>
-
 
         </div>
 
 
 
         <!-- =====================================
-             GENDER
-             100 COINS
+             GENDER - 100
         ====================================== -->
 
         <div class="input-group">
-
 
             <span class="gender-label">
 
                 Gender
 
-                <span style="color:red">*</span>
+                <span class="required">*</span>
 
             </span>
 
@@ -851,7 +1031,8 @@
                     type="button"
                     class="gender-btn"
                     data-gender="Male"
-                    onclick="selectGender(this)">
+                    onclick="selectGender(this)"
+                >
 
                     <i class="fa-solid fa-person"></i>
 
@@ -860,12 +1041,12 @@
                 </button>
 
 
-
                 <button
                     type="button"
                     class="gender-btn"
                     data-gender="Female"
-                    onclick="selectGender(this)">
+                    onclick="selectGender(this)"
+                >
 
                     <i class="fa-solid fa-person-dress"></i>
 
@@ -874,12 +1055,12 @@
                 </button>
 
 
-
                 <button
                     type="button"
                     class="gender-btn"
                     data-gender="Other"
-                    onclick="selectGender(this)">
+                    onclick="selectGender(this)"
+                >
 
                     <i class="fa-solid fa-user"></i>
 
@@ -890,17 +1071,15 @@
 
             </div>
 
-
         </div>
 
 
 
         <!-- =====================================
-             REFERRAL CODE
+             REFERRAL
         ====================================== -->
 
         <div class="input-group">
-
 
             <div class="referral-title">
 
@@ -913,8 +1092,10 @@
             </div>
 
 
-            <div class="input-box">
-
+            <div
+                class="input-box referral-input"
+                id="referralBox"
+            >
 
                 <i class="fa-solid fa-gift"></i>
 
@@ -923,65 +1104,100 @@
                     type="text"
                     id="referralCode"
                     placeholder="Enter referral code"
-                    autocomplete="off">
-
+                    autocomplete="off"
+                >
 
             </div>
-
 
         </div>
 
 
 
         <!-- =====================================
-             SINGLE PROGRESS LINE
+             COIN PROGRESS
         ====================================== -->
 
         <div class="coin-progress">
 
 
-            <div class="coin-line-wrap">
+            <div class="progress-wrap">
 
 
-                <div class="coin-line">
-
+                <div class="progress-track">
 
                     <div
-                        class="coin-fill"
-                        id="coinFill">
-                    </div>
-
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
 
                 </div>
 
 
-
-                <div class="coin-dots">
-
-
-                    <span
-                        class="coin-dot"
-                        id="dot1">
-                    </span>
+                <div class="progress-points">
 
 
                     <span
-                        class="coin-dot"
-                        id="dot2">
-                    </span>
+                        class="progress-point active"
+                        id="point1"
+                    ></span>
 
 
                     <span
-                        class="coin-dot"
-                        id="dot3">
-                    </span>
+                        class="progress-point"
+                        id="point2"
+                    ></span>
 
 
                     <span
-                        class="coin-dot"
-                        id="dot4">
+                        class="progress-point"
+                        id="point3"
+                    ></span>
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="coin-milestones">
+
+
+                <div class="milestone">
+
+                    <strong>
+                        100 Coins
+                    </strong>
+
+                    <span>
+                        Mobile Verified
                     </span>
 
+                </div>
+
+
+                <div class="milestone">
+
+                    <strong>
+                        200 Coins
+                    </strong>
+
+                    <span>
+                        Profile Details
+                    </span>
+
+                </div>
+
+
+                <div class="milestone">
+
+                    <strong>
+                        200 Coins
+                    </strong>
+
+                    <span>
+                        Email & Gender
+                    </span>
 
                 </div>
 
@@ -990,22 +1206,15 @@
 
 
 
-            <div
-                class="coin-message"
-                id="coinMessage">
+            <div class="coin-total">
 
-                Complete your profile to earn
-                <strong>500 Coins</strong> 🎁
+                <strong id="coinTotal">
+                    100 / 500 Coins
+                </strong>
 
-            </div>
-
-
-
-            <div
-                class="coin-status"
-                id="coinStatus">
-
-                0 / 500 Coins unlocked
+                <span id="coinMessage">
+                    Mobile verified ✓
+                </span>
 
             </div>
 
@@ -1023,7 +1232,8 @@
 
             <input
                 type="checkbox"
-                id="terms">
+                id="terms"
+            >
 
 
             <label for="terms">
@@ -1031,7 +1241,7 @@
                 I agree to the
 
                 <a href="terms.html">
-                    Terms &amp; Conditions
+                    Terms & Conditions
                 </a>
 
                 and
@@ -1053,21 +1263,20 @@
 
         <button
             class="register-btn"
+            id="registerBtn"
             onclick="register()"
-            id="registerBtn">
+        >
 
             Create Account
 
             <i
                 class="fa-solid fa-arrow-right"
-                style="margin-left:7px">
-            </i>
+                style="margin-left:7px"
+            ></i>
 
         </button>
 
 
-
-        <!-- LOGIN -->
 
         <div class="bottom">
 
@@ -1090,13 +1299,16 @@
 <script>
 
 
+/* =========================================
+   API
+========================================= */
+
 const API =
     window.location.origin;
 
 
-
 /* =========================================
-   GLOBAL VARIABLES
+   GLOBAL
 ========================================= */
 
 let selectedGender = "";
@@ -1104,9 +1316,54 @@ let selectedGender = "";
 let verifiedMobile = "";
 
 
+/* =========================================
+   GET VERIFIED MOBILE
+========================================= */
+
+function getVerifiedMobile() {
+
+    return (
+
+        localStorage.getItem("registerMobile") ||
+
+        localStorage.getItem("otpMobile") ||
+
+        ""
+
+    ).trim();
+
+}
+
 
 /* =========================================
-   GET REFERRAL CODE
+   CLEAN MOBILE
+========================================= */
+
+function cleanMobileNumber(value) {
+
+    let mobile =
+        String(value || "")
+            .replace(/\D/g, "");
+
+
+    if (
+        mobile.startsWith("91") &&
+        mobile.length === 12
+    ) {
+
+        mobile =
+            mobile.substring(2);
+
+    }
+
+
+    return mobile;
+
+}
+
+
+/* =========================================
+   GET REFERRAL
 ========================================= */
 
 function getReferralCode() {
@@ -1127,21 +1384,33 @@ function getReferralCode() {
         params.get("referralCode");
 
 
-
     if (
         urlCode &&
         urlCode.trim()
     ) {
 
-        return urlCode
-            .trim()
-            .toUpperCase();
+        const code =
+            urlCode
+                .trim()
+                .toUpperCase();
+
+
+        localStorage.setItem(
+            "darvozReferralCode",
+            code
+        );
+
+
+        return code;
 
     }
 
 
-
     const savedCode =
+
+        localStorage.getItem(
+            "darvozReferralCode"
+        ) ||
 
         localStorage.getItem(
             "referralCode"
@@ -1150,7 +1419,6 @@ function getReferralCode() {
         localStorage.getItem(
             "pendingReferralCode"
         );
-
 
 
     if (
@@ -1165,11 +1433,9 @@ function getReferralCode() {
     }
 
 
-
     return "";
 
 }
-
 
 
 /* =========================================
@@ -1181,27 +1447,13 @@ document.addEventListener(
     function () {
 
 
-        /*
-          Mobile was already verified
-          on the OTP/login page.
-        */
+        /* MOBILE */
 
         verifiedMobile =
-
-            localStorage.getItem(
-                "registerMobile"
-            ) ||
-
-            localStorage.getItem(
-                "otpMobile"
-            ) ||
-
-            "";
-
+            getVerifiedMobile();
 
 
         if (!verifiedMobile) {
-
 
             alert(
                 "Please verify your mobile number first."
@@ -1217,18 +1469,25 @@ document.addEventListener(
         }
 
 
+        const mobile =
+            cleanMobileNumber(
+                verifiedMobile
+            );
 
-        /*
-          Automatically detect referral.
-        */
+
+        document
+            .getElementById("mobile")
+            .value =
+            "+91 " + mobile;
+
+
+        /* REFERRAL */
 
         const referral =
             getReferralCode();
 
 
-
         if (referral) {
-
 
             const input =
                 document.getElementById(
@@ -1240,22 +1499,24 @@ document.addEventListener(
                 referral;
 
 
-            /*
-              Automatically detected referral
-              should not be manually changed.
-            */
-
             input.readOnly = true;
 
-        }
 
+            document
+                .getElementById(
+                    "referralBox"
+                )
+                .classList.add(
+                    "readonly"
+                );
+
+        }
 
 
         updateCoinProgress();
 
     }
 );
-
 
 
 /* =========================================
@@ -1280,7 +1541,6 @@ function selectGender(button) {
         );
 
 
-
     button.classList.add(
         "active"
     );
@@ -1290,16 +1550,9 @@ function selectGender(button) {
         button.dataset.gender;
 
 
-
-    /*
-      Gender completion happens
-      immediately after selection.
-    */
-
     updateCoinProgress();
 
 }
-
 
 
 /* =========================================
@@ -1308,34 +1561,26 @@ function selectGender(button) {
 
 function isValidEmail(email) {
 
-
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         .test(email);
 
 }
 
 
-
 /* =========================================
-   COIN PROGRESS
-=========================================
+   COINS
 
-NAME
-200 Coins
+   MOBILE
+   100
 
-EMAIL
-200 Coins
+   NAME + GENDER
+   200
 
-GENDER
-100 Coins
+   EMAIL
+   200
 
-TOTAL
-500 Coins
-
-IMPORTANT:
-Progress updates on BLUR,
-not on every keystroke.
-
+   TOTAL
+   500
 ========================================= */
 
 function getCompletedCoins() {
@@ -1348,7 +1593,6 @@ function getCompletedCoins() {
             .trim();
 
 
-
     const email =
         document
             .getElementById("email")
@@ -1356,18 +1600,23 @@ function getCompletedCoins() {
             .trim();
 
 
-
     let coins = 0;
 
 
+    /* MOBILE VERIFIED */
 
-    /*
-      NAME
-      +200
-    */
+    if (verifiedMobile) {
+
+        coins += 100;
+
+    }
+
+
+    /* PROFILE DETAILS */
 
     if (
-        name.length >= 2
+        name.length >= 2 &&
+        selectedGender
     ) {
 
         coins += 200;
@@ -1375,11 +1624,7 @@ function getCompletedCoins() {
     }
 
 
-
-    /*
-      EMAIL
-      +200
-    */
+    /* EMAIL */
 
     if (
         isValidEmail(email)
@@ -1390,22 +1635,6 @@ function getCompletedCoins() {
     }
 
 
-
-    /*
-      GENDER
-      +100
-    */
-
-    if (
-        selectedGender
-    ) {
-
-        coins += 100;
-
-    }
-
-
-
     return Math.min(
         coins,
         500
@@ -1414,9 +1643,8 @@ function getCompletedCoins() {
 }
 
 
-
 /* =========================================
-   UPDATE COIN UI
+   UPDATE PROGRESS
 ========================================= */
 
 function updateCoinProgress() {
@@ -1426,78 +1654,58 @@ function updateCoinProgress() {
         getCompletedCoins();
 
 
-
     const percentage =
         (coins / 500) * 100;
 
 
-
     document
-        .getElementById("coinFill")
+        .getElementById(
+            "progressFill"
+        )
         .style.width =
         percentage + "%";
 
 
-
-    /*
-      DOT 1
-      Name
-    */
+    /* POINT 1 */
 
     document
-        .getElementById("dot1")
+        .getElementById("point1")
         .classList.toggle(
             "active",
-            coins >= 200
+            coins >= 100
         );
 
 
-
-    /*
-      DOT 2
-      Email
-    */
+    /* POINT 2 */
 
     document
-        .getElementById("dot2")
+        .getElementById("point2")
         .classList.toggle(
             "active",
-            coins >= 400
+            coins >= 300
         );
 
 
-
-    /*
-      DOT 3
-      Gender
-    */
+    /* POINT 3 */
 
     document
-        .getElementById("dot3")
+        .getElementById("point3")
         .classList.toggle(
             "active",
             coins >= 500
         );
 
 
-
-    /*
-      DOT 4
-      Final
-    */
+    /* TOTAL */
 
     document
-        .getElementById("dot4")
-        .classList.toggle(
-            "active",
-            coins >= 500
-        );
+        .getElementById(
+            "coinTotal"
+        )
+        .textContent =
+        coins +
+        " / 500 Coins";
 
-
-
-    /*
-      MESSAGE
-    */
 
     const message =
         document.getElementById(
@@ -1505,100 +1713,46 @@ function updateCoinProgress() {
         );
 
 
+    if (coins === 100) {
 
-    if (coins === 0) {
-
-
-        message.innerHTML =
-            'Complete your profile to earn <strong>500 Coins</strong> 🎁';
-
+        message.textContent =
+            "Mobile verified ✓";
 
     }
-    else if (coins === 200) {
+    else if (coins === 300) {
 
-
-        message.innerHTML =
-            'Name completed! <strong>200 Coins</strong> unlocked 🎉';
-
-
-    }
-    else if (coins === 400) {
-
-
-        message.innerHTML =
-            'Email completed! <strong>400 Coins</strong> unlocked 🔥';
-
+        message.textContent =
+            "Profile details completed 🎉";
 
     }
     else if (coins === 500) {
 
-
-        message.innerHTML =
-            'Profile complete! <strong>500 Coins</strong> unlocked 🎉';
+        message.textContent =
+            "Profile complete! 🎉";
 
     }
-
-
-
-    document
-        .getElementById(
-            "coinStatus"
-        )
-        .textContent =
-
-        coins +
-        " / 500 Coins unlocked";
 
 }
 
 
-
 /* =========================================
-   NAME BLUR
-=========================================
-
-When customer finishes typing name
-and clicks email, blur fires.
-
-Then +200 appears.
-
+   BLUR EVENTS
 ========================================= */
 
 document
     .getElementById("name")
     .addEventListener(
         "blur",
-        function () {
-
-            updateCoinProgress();
-
-        }
+        updateCoinProgress
     );
 
-
-
-/* =========================================
-   EMAIL BLUR
-=========================================
-
-When customer finishes email
-and clicks gender, blur fires.
-
-Then +200 more appears.
-
-========================================= */
 
 document
     .getElementById("email")
     .addEventListener(
         "blur",
-        function () {
-
-            updateCoinProgress();
-
-        }
+        updateCoinProgress
     );
-
 
 
 /* =========================================
@@ -1609,10 +1763,9 @@ async function register() {
 
 
     const button =
-        document.querySelector(
-            ".register-btn"
+        document.getElementById(
+            "registerBtn"
         );
-
 
 
     const name =
@@ -1622,7 +1775,6 @@ async function register() {
             .trim();
 
 
-
     const email =
         document
             .getElementById("email")
@@ -1630,45 +1782,19 @@ async function register() {
             .trim();
 
 
-
     const referralCode =
         document
-            .getElementById("referralCode")
+            .getElementById(
+                "referralCode"
+            )
             .value
             .trim()
             .toUpperCase();
 
 
-
     /* =====================================
        VALIDATION
     ===================================== */
-
-
-    if (!name) {
-
-        alert(
-            "Please enter your full name."
-        );
-
-        return;
-
-    }
-
-
-
-    if (
-        name.length < 2
-    ) {
-
-        alert(
-            "Please enter a valid name."
-        );
-
-        return;
-
-    }
-
 
 
     if (!verifiedMobile) {
@@ -1682,23 +1808,10 @@ async function register() {
     }
 
 
-
-    let mobile =
-        verifiedMobile
-            .replace(/\D/g, "");
-
-
-
-    if (
-        mobile.startsWith("91") &&
-        mobile.length === 12
-    ) {
-
-        mobile =
-            mobile.substring(2);
-
-    }
-
+    const mobile =
+        cleanMobileNumber(
+            verifiedMobile
+        );
 
 
     if (
@@ -1716,6 +1829,29 @@ async function register() {
     }
 
 
+    if (!name) {
+
+        alert(
+            "Please enter your full name."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        name.length < 2
+    ) {
+
+        alert(
+            "Please enter a valid name."
+        );
+
+        return;
+
+    }
+
 
     if (!email) {
 
@@ -1726,7 +1862,6 @@ async function register() {
         return;
 
     }
-
 
 
     if (
@@ -1742,7 +1877,6 @@ async function register() {
     }
 
 
-
     if (!selectedGender) {
 
         alert(
@@ -1752,7 +1886,6 @@ async function register() {
         return;
 
     }
-
 
 
     if (
@@ -1770,28 +1903,22 @@ async function register() {
     }
 
 
-
     /* =====================================
        LOADING
-    ====================================== */
+    ===================================== */
 
     const originalText =
         button.innerHTML;
 
 
-
-    button.disabled = true;
-
+    button.disabled =
+        true;
 
 
     button.innerHTML = `
-
         <i class="fa-solid fa-spinner fa-spin"></i>
-
         Creating Account...
-
     `;
-
 
 
     try {
@@ -1810,14 +1937,11 @@ async function register() {
         );
 
 
-
         /* =================================
-           SEND TO BACKEND
+           BACKEND
         ================================= */
 
-
         const response =
-
             await fetch(
                 `${API}/customer/register`,
                 {
@@ -1856,10 +1980,8 @@ async function register() {
             );
 
 
-
         const data =
             await response.json();
-
 
 
         console.log(
@@ -1868,41 +1990,33 @@ async function register() {
         );
 
 
-
         /* =================================
            FAILED
         ================================= */
-
 
         if (
             !response.ok ||
             !data.success
         ) {
 
-
             alert(
                 data.message ||
                 "Registration failed. Please try again."
             );
-
 
             return;
 
         }
 
 
-
         /* =================================
            SAVE CUSTOMER
         ================================= */
 
-
         if (data.customer) {
 
 
-            if (
-                data.customer.id
-            ) {
+            if (data.customer.id) {
 
                 localStorage.setItem(
                     "customerId",
@@ -1914,13 +2028,11 @@ async function register() {
             }
 
 
-
             localStorage.setItem(
                 "customerName",
                 data.customer.name ||
                 name
             );
-
 
 
             localStorage.setItem(
@@ -1930,13 +2042,11 @@ async function register() {
             );
 
 
-
             localStorage.setItem(
                 "customerEmail",
                 data.customer.email ||
                 email
             );
-
 
 
             if (
@@ -1951,11 +2061,20 @@ async function register() {
             }
 
 
+            if (
+                data.customer.coins !==
+                undefined
+            ) {
 
-            /*
-              Backend should return a unique
-              referral code for this customer.
-            */
+                localStorage.setItem(
+                    "customerCoins",
+                    String(
+                        data.customer.coins
+                    )
+                );
+
+            }
+
 
             if (
                 data.customer.referralCode
@@ -1971,11 +2090,9 @@ async function register() {
         }
 
 
-
         /* =================================
            LOGIN STATE
         ================================= */
-
 
         localStorage.setItem(
             "customerLoggedIn",
@@ -1989,11 +2106,9 @@ async function register() {
         );
 
 
-
         /* =================================
            REMOVE TEMP DATA
         ================================= */
-
 
         localStorage.removeItem(
             "registerMobile"
@@ -2015,21 +2130,22 @@ async function register() {
         );
 
 
+        localStorage.removeItem(
+            "darvozReferralCode"
+        );
+
 
         /* =================================
            SUCCESS
         ================================= */
-
 
         alert(
             "Welcome to DARVOZ 🎉\n\n500 DARVOZ Coins added to your account!"
         );
 
 
-
         window.location.href =
             "index.html";
-
 
 
     }
@@ -2047,7 +2163,6 @@ async function register() {
         );
 
 
-
     }
     finally {
 
@@ -2062,7 +2177,6 @@ async function register() {
     }
 
 }
-
 
 
 /* =========================================
