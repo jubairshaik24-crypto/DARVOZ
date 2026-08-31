@@ -77,7 +77,6 @@ body{
 ===================================================== */
 
 .top-header{
-
     position:relative;
 
     background:
@@ -101,7 +100,6 @@ body{
 }
 
 .top-header::before{
-
     content:"";
 
     position:absolute;
@@ -118,7 +116,6 @@ body{
 }
 
 .top-header::after{
-
     content:"";
 
     position:absolute;
@@ -142,16 +139,24 @@ body{
 .header-top{
     position:relative;
     z-index:2;
+
     display:flex;
     align-items:center;
+
     width:100%;
     min-width:0;
 }
 
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
 .location{
     display:flex;
     align-items:center;
-    gap:9px;
+
+    gap:8px;
 
     flex:1;
     min-width:0;
@@ -160,230 +165,265 @@ body{
 }
 
 .location-icon{
-
     width:38px;
     height:38px;
 
-    background:#fff;
+    min-width:38px;
+    flex:0 0 38px;
 
+    background:#fff;
     color:var(--orange);
 
     border-radius:50%;
 
     display:flex;
-
     justify-content:center;
-
     align-items:center;
 
     font-size:18px;
 }
 
+
+/* =====================================================
+   LOCATION TEXT
+===================================================== */
+
 .location-text{
     display:flex;
     flex-direction:column;
 
-    flex:1;
+    flex:0 1 auto;
     min-width:0;
 
-    max-width:none;
+    width:max-content;
+    max-width:calc(100% - 46px);
+
     overflow:hidden;
 }
 
 .location-text small{
     font-size:9px;
     opacity:.9;
+
     white-space:nowrap;
 }
 
-
 .location-text strong{
+    display:block;
+
+    width:max-content;
+    max-width:100%;
+
     font-size:12px;
     font-weight:600;
 
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-
-    display:block;
-    max-width:100%;
 }
-/* =========================================
+
+
+/* =====================================================
+   LOCATION DOWN ARROW
+   ARROW FOLLOWS ADDRESS
+===================================================== */
+
+.location > .fa-chevron-down{
+    flex:0 0 auto;
+
+    font-size:11px;
+
+    margin:0;
+    padding:0;
+
+    line-height:1;
+}
+
+
+/* =====================================================
    HEADER ACTIONS
-========================================= */
+   COIN + NOTIFICATION
+===================================================== */
 
 .header-actions{
     display:flex;
     align-items:center;
 
-    gap:12px;
+    /* SMALL GAP BETWEEN COIN AND BELL */
+    gap:8px;
 
     flex:0 0 auto;
     flex-shrink:0;
 
-    margin-left:14px;
+    /* GAP BETWEEN ADDRESS AREA AND COIN */
+    margin-left:13px;
 }
 
-/* =========================================
+
+/* =====================================================
    NOTIFICATION BELL
-========================================= */
+===================================================== */
 
-.darvoz-notification {
+.darvoz-notification{
+    position:relative;
 
-    position: relative;
+    width:38px;
+    height:38px;
 
-    width: 38px;
-    height: 38px;
+    min-width:38px;
+    flex:0 0 38px;
 
-    border-radius: 50%;
+    border-radius:50%;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    background: rgba(255, 255, 255, 0.16);
+    background:rgba(255,255,255,0.16);
 
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border:1px solid rgba(255,255,255,0.22);
 
-    color: #ffffff;
+    color:#ffffff;
 
-    cursor: pointer;
+    cursor:pointer;
 
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
 
-    transition: transform .18s ease;
+    transition:transform .18s ease;
 }
 
-.darvoz-notification:active {
-    transform: scale(.93);
+.darvoz-notification:active{
+    transform:scale(.93);
+}
+
+.darvoz-notification i{
+    font-size:18px;
+    color:#ffffff;
 }
 
 
-.darvoz-notification i {
-
-    font-size: 18px;
-
-    color: #ffffff;
-}
-
-
-/* =========================================
+/* =====================================================
    RED NOTIFICATION DOT
-========================================= */
+===================================================== */
 
-.notification-dot {
+.notification-dot{
+    position:absolute;
 
-    position: absolute;
+    width:8px;
+    height:8px;
 
-    width: 8px;
-    height: 8px;
+    border-radius:50%;
 
-    border-radius: 50%;
+    background:#ff3b30;
 
-    background: #ff3b30;
+    border:2px solid #ff6500;
 
-    border: 2px solid #ff6500;
-
-    top: 6px;
-    right: 5px;
+    top:6px;
+    right:5px;
 }
 
-/* =========================================
+
+/* =====================================================
    DARVOZ COIN PILL
-========================================= */
-.darvoz-coin-pill {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+===================================================== */
 
-    gap: 4px;
+.darvoz-coin-pill{
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    height: 36px;
-    min-width: 80px;
+    gap:4px;
 
-    padding: 4px 7px 4px 12px;
+    height:36px;
+    min-width:80px;
 
-    background: rgba(255, 255, 255, 0.18);
+    flex:0 0 auto;
 
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding:4px 7px 4px 12px;
 
-    border-radius: 18px;
+    background:rgba(255,255,255,0.18);
 
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    border:1px solid rgba(255,255,255,0.25);
 
-    cursor: pointer;
+    border-radius:18px;
+
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+
+    cursor:pointer;
 }
 
 
-/* 500 */
+/* =====================================================
+   COIN BALANCE
+===================================================== */
 
-.darvoz-coin-balance {
-    color: #fff;
+.darvoz-coin-balance{
+    color:#fff;
 
-    font-family: "Plus Jakarta Sans", sans-serif;
+    font-family:"Plus Jakarta Sans",sans-serif;
 
-    font-size: 12px;
+    font-size:12px;
 
-    font-weight: 600;
+    font-weight:600;
 
-    line-height: 1;
+    line-height:1;
 }
 
 
-/* SIMPLE D COIN */
+/* =====================================================
+   DARVOZ MINI COIN
+===================================================== */
 
-.darvoz-mini-coin {
-    width: 25px;
-    height: 25px;
+.darvoz-mini-coin{
+    width:25px;
+    height:25px;
 
-    min-width: 25px;
+    min-width:25px;
+    flex:0 0 25px;
 
-    border-radius: 50%;
+    border-radius:50%;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    background: #f6b000;
+    background:#f6b000;
 
-    border: 1.5px solid #ffd34d;
+    border:1.5px solid #ffd34d;
 }
 
+.darvoz-mini-coin span{
+    color:#fff;
 
-/* D */
+    font-family:"Plus Jakarta Sans",sans-serif;
 
-.darvoz-mini-coin span {
-    color: #fff;
+    font-size:13px;
 
-    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight:600;
 
-    font-size: 13px;
-
-    font-weight: 600;
-
-    line-height: 1;
+    line-height:1;
 }
+
 
 /* =====================================================
    WELCOME
 ===================================================== */
+
 .welcome{
     position:relative;
     z-index:2;
+
     margin-top:20px;
 }
 
 .welcome h2{
-
     font-size:18px;
-
     font-weight:700;
 }
 
 .welcome p{
-
     font-size:10px;
 
     margin-top:3px;
@@ -397,9 +437,7 @@ body{
 ===================================================== */
 
 .search-box{
-
     position:relative;
-
     z-index:5;
 
     margin-top:15px;
@@ -411,7 +449,6 @@ body{
     border-radius:13px;
 
     display:flex;
-
     align-items:center;
 
     box-shadow:
@@ -421,7 +458,6 @@ body{
 }
 
 .search-box i{
-
     color:#999;
 
     margin-left:15px;
@@ -430,11 +466,9 @@ body{
 }
 
 .search-box input{
-
     flex:1;
 
     border:0;
-
     outline:0;
 
     padding:0 12px;
@@ -445,9 +479,7 @@ body{
 }
 
 .filter-btn{
-
     width:48px;
-
     height:100%;
 
     border:0;
@@ -465,9 +497,7 @@ body{
 ===================================================== */
 
 .content{
-
     padding:20px 15px 30px;
-
 }
 
 
@@ -476,25 +506,20 @@ body{
 ===================================================== */
 
 .section-header{
-
     display:flex;
 
     justify-content:space-between;
-
     align-items:center;
 
     margin-bottom:13px;
 }
 
 .section-header h2{
-
     font-size:17px;
-
     font-weight:800;
 }
 
 .section-header a{
-
     color:var(--orange);
 
     font-size:11px;
@@ -510,9 +535,7 @@ body{
 ===================================================== */
 
 .category-wrapper{
-
     overflow-x:auto;
-
     overflow-y:hidden;
 
     scrollbar-width:none;
@@ -527,7 +550,6 @@ body{
 }
 
 .category-grid{
-
     display:grid;
 
     grid-template-rows:105px 105px;
@@ -542,7 +564,6 @@ body{
 }
 
 .category{
-
     width:72px;
 
     text-align:center;
@@ -551,7 +572,6 @@ body{
 }
 
 .category-image{
-
     width:65px;
     height:65px;
 
@@ -562,9 +582,7 @@ body{
     background:#f8f8f8;
 
     display:flex;
-
     justify-content:center;
-
     align-items:center;
 
     overflow:hidden;
@@ -573,7 +591,6 @@ body{
 }
 
 .category-image img{
-
     width:100%;
     height:100%;
 
@@ -581,7 +598,6 @@ body{
 }
 
 .category-name{
-
     margin-top:6px;
 
     font-size:9px;
@@ -599,7 +615,6 @@ body{
 ===================================================== */
 
 .promo{
-
     margin-top:15px;
 
     width:100%;
@@ -623,7 +638,6 @@ body{
 }
 
 .promo-content{
-
     position:absolute;
 
     left:15px;
@@ -633,7 +647,6 @@ body{
 }
 
 .promo h2{
-
     font-size:18px;
 
     line-height:22px;
@@ -644,14 +657,12 @@ body{
 }
 
 .promo p{
-
     font-size:9px;
 
     margin-top:8px;
 }
 
 .promo button{
-
     margin-top:9px;
 
     background:#fff;
@@ -674,7 +685,6 @@ body{
 }
 
 .promo-image{
-
     position:absolute;
 
     right:-10px;
@@ -691,13 +701,9 @@ body{
 
 /* =====================================================
    RESTAURANTS
-   ONE RESTAURANT PER ROW
-   IMAGE ON TOP
-   INFORMATION BELOW
 ===================================================== */
 
 .restaurant-scroll{
-
     display:flex;
 
     flex-direction:column;
@@ -713,7 +719,6 @@ body{
 ===================================================== */
 
 .restaurant-card{
-
     width:100%;
 
     background:#fff;
@@ -733,12 +738,10 @@ body{
 }
 
 .restaurant-card:active{
-
     transform:scale(.99);
 }
 
 .restaurant-card:hover{
-
     box-shadow:
         0 8px 25px rgba(0,0,0,.12);
 }
@@ -749,7 +752,6 @@ body{
 ===================================================== */
 
 .restaurant-image-wrap{
-
     width:100%;
 
     height:180px;
@@ -762,9 +764,7 @@ body{
 }
 
 .restaurant-img{
-
     width:100%;
-
     height:100%;
 
     object-fit:cover;
@@ -778,11 +778,9 @@ body{
 ===================================================== */
 
 .time-badge{
-
     position:absolute;
 
     right:10px;
-
     top:10px;
 
     background:#fff;
@@ -805,12 +803,10 @@ body{
 ===================================================== */
 
 .restaurant-info{
-
     padding:14px;
 }
 
 .restaurant-info h3{
-
     font-size:16px;
 
     font-weight:700;
@@ -823,7 +819,6 @@ body{
 }
 
 .restaurant-type{
-
     color:#777;
 
     font-size:11px;
@@ -838,7 +833,6 @@ body{
 }
 
 .restaurant-details{
-
     display:flex;
 
     align-items:center;
@@ -849,7 +843,6 @@ body{
 }
 
 .restaurant-rating{
-
     color:#159447;
 
     font-size:11px;
@@ -858,7 +851,6 @@ body{
 }
 
 .restaurant-distance{
-
     color:#666;
 
     font-size:10px;
@@ -867,7 +859,6 @@ body{
 }
 
 .restaurant-price{
-
     color:var(--orange);
 
     font-size:12px;
@@ -878,7 +869,6 @@ body{
 }
 
 .restaurant-status{
-
     margin-top:8px;
 
     font-size:10px;
@@ -887,65 +877,77 @@ body{
 }
 
 .status-open{
-
     color:#16a34a;
 }
 
 .status-closed{
-
     color:#ef4444;
 }
 
 
- /* =========================================
+/* =====================================================
    CLOSED RESTAURANT CARD
-========================================= */
+===================================================== */
 
 .restaurant-card.closed-card{
     background:#fff;
+
     border-color:#eee;
-    box-shadow:0 5px 20px rgba(0,0,0,.12);
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.12);
 }
 
 .restaurant-card.closed-card .restaurant-image-wrap{
     position:relative;
+
     background:#000;
 }
 
-/* Keep restaurant image visible */
 .restaurant-card.closed-card .restaurant-img{
     filter:brightness(.55) grayscale(.10);
 }
 
-/* Semi-transparent black overlay */
 .restaurant-card.closed-card .restaurant-image-wrap::after{
     content:"";
+
     position:absolute;
+
     inset:0;
+
     background:rgba(0,0,0,.38);
+
     z-index:1;
+
     pointer-events:none;
 }
 
-/* Closed text sits above image */
 .restaurant-card.closed-card .closed-overlay{
     position:absolute;
+
     left:14px;
     bottom:14px;
+
     z-index:3;
+
     color:#fff;
 }
 
 .restaurant-card.closed-card .closed-title{
     font-size:17px;
+
     font-weight:800;
+
     line-height:1.2;
 }
 
 .restaurant-card.closed-card .closed-next{
     margin-top:4px;
+
     font-size:12px;
+
     font-weight:600;
+
     color:#fff;
 }
 
@@ -953,7 +955,6 @@ body{
     display:none;
 }
 
-/* Information below image stays WHITE */
 .restaurant-card.closed-card .restaurant-info{
     background:#fff;
 }
@@ -988,7 +989,6 @@ body{
 ===================================================== */
 
 .benefits{
-
     margin-top:20px;
 
     background:#fff;
@@ -1010,12 +1010,10 @@ body{
 }
 
 .benefit{
-
     text-align:center;
 }
 
 .benefit i{
-
     font-size:18px;
 
     color:var(--orange);
@@ -1024,14 +1022,12 @@ body{
 }
 
 .benefit strong{
-
     display:block;
 
     font-size:7px;
 }
 
 .benefit span{
-
     display:block;
 
     color:#777;
@@ -1049,7 +1045,6 @@ body{
 ===================================================== */
 
 .bottom-nav{
-
     position:fixed;
 
     left:50%;
@@ -1081,7 +1076,6 @@ body{
 }
 
 .bottom-nav a{
-
     text-decoration:none;
 
     color:#777;
@@ -1102,45 +1096,55 @@ body{
 }
 
 .bottom-nav i{
-
     font-size:19px;
 }
 
 .bottom-nav a.active{
-
     color:var(--orange);
 }
 
-/* =========================================
+
+/* =====================================================
    SPECIAL GROCERY BOTTOM NAV BUTTON
-========================================= */
+===================================================== */
 
-.bottom-nav .grocery-nav {
-    position: relative;
-    transform: translateY(-8px);
+.bottom-nav .grocery-nav{
+    position:relative;
+
+    transform:translateY(-8px);
 }
 
-.bottom-nav .grocery-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 2px;
-    box-shadow: 0 4px 12px rgba(32, 182, 75, 0.35);
-    border: 3px solid #fff;
+.bottom-nav .grocery-icon{
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    margin:0 auto 2px;
+
+    box-shadow:
+        0 4px 12px rgba(32,182,75,0.35);
+
+    border:3px solid #fff;
 }
 
-.bottom-nav .grocery-icon i {
-    font-size: 20px;
-    color: #fff;
+.bottom-nav .grocery-icon i{
+    font-size:20px;
+
+    color:#fff;
 }
 
-.bottom-nav .grocery-nav span {
-    font-size: 10px;
-    font-weight: 700;
+.bottom-nav .grocery-nav span{
+    font-size:10px;
+
+    font-weight:700;
 }
 
 
@@ -1149,7 +1153,6 @@ body{
 ===================================================== */
 
 .active-order-popup{
-
     position:fixed;
 
     left:50%;
@@ -1179,7 +1182,6 @@ body{
 }
 
 .active-order-content{
-
     display:flex;
 
     align-items:center;
@@ -1188,7 +1190,6 @@ body{
 }
 
 .active-order-icon{
-
     width:48px;
     height:48px;
 
@@ -1203,20 +1204,19 @@ body{
     display:flex;
 
     justify-content:center;
+
     align-items:center;
 
     font-size:21px;
 }
 
 .active-order-text{
-
     flex:1;
 
     min-width:0;
 }
 
 .active-order-text h3{
-
     font-size:13px;
 
     font-weight:700;
@@ -1225,7 +1225,6 @@ body{
 }
 
 .active-order-text p{
-
     margin-top:3px;
 
     font-size:9px;
@@ -1234,12 +1233,10 @@ body{
 }
 
 .active-order-text strong{
-
     color:var(--orange);
 }
 
 .track-order-btn{
-
     border:none;
 
     background:var(--orange);
@@ -1263,20 +1260,331 @@ body{
 
 
 /* =====================================================
+   DARVOZ PICKS
+===================================================== */
+
+.picks-section{
+    margin-top:24px;
+}
+
+.picks-scroll{
+    display:flex;
+
+    gap:12px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+    margin-right:-15px;
+
+    padding-right:15px;
+
+    padding-bottom:5px;
+}
+
+.picks-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.pick-card{
+    width:150px;
+
+    min-width:150px;
+
+    background:#fff;
+
+    border:1px solid #eee;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.07);
+}
+
+.pick-image-wrap{
+    position:relative;
+
+    width:100%;
+
+    height:125px;
+
+    background:#f5f5f5;
+}
+
+.pick-image{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.pick-add-btn{
+    position:absolute;
+
+    right:8px;
+    bottom:8px;
+
+    width:34px;
+    height:34px;
+
+    border:none;
+
+    border-radius:9px;
+
+    background:#fff;
+
+    color:var(--orange);
+
+    font-size:18px;
+
+    font-weight:700;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.18);
+
+    cursor:pointer;
+}
+
+.pick-info{
+    padding:9px;
+}
+
+.pick-name{
+    font-size:12px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.pick-price{
+    margin-top:4px;
+
+    color:#222;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+.pick-restaurant{
+    margin-top:3px;
+
+    color:#777;
+
+    font-size:8px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/* =====================================================
+   DESKTOP NAV LINKS
+===================================================== */
+
+.desktop-nav{
+    display:none;
+}
+
+
+/* =====================================================
+   CUSTOMER OFFERS
+===================================================== */
+
+.offers-section{
+    margin-top:20px;
+}
+
+.offers-scroll{
+    display:flex;
+
+    flex-direction:row;
+
+    width:100%;
+
+    gap:0;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scrollbar-width:none;
+
+    margin-right:0;
+
+    padding-right:0;
+
+    scroll-snap-type:x mandatory;
+
+    scroll-behavior:smooth;
+}
+
+.offers-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =====================================================
+   OFFER SWIPE DOTS
+===================================================== */
+
+.offer-dots{
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:6px;
+
+    margin-top:9px;
+}
+
+.offer-dot{
+    width:7px;
+
+    height:7px;
+
+    border-radius:50%;
+
+    background:#d5d5d5;
+
+    transition:all .25s ease;
+}
+
+.offer-dot.active{
+    width:20px;
+
+    border-radius:10px;
+
+    background:var(--orange);
+}
+
+
+/* =====================================================
+   OFFER CARD
+===================================================== */
+
+.offer-card{
+    flex:0 0 100%;
+
+    width:100%;
+
+    min-width:100%;
+
+    aspect-ratio:350 / 170;
+
+    height:auto;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:#f2f2f2;
+
+    cursor:pointer;
+
+    scroll-snap-align:start;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.08);
+}
+
+.offer-card img{
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+
+/* =====================================================
+   OFFER LOADING
+===================================================== */
+
+.offers-loading{
+    width:100%;
+
+    padding:30px 20px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:11px;
+}
+
+.offers-loading i{
+    color:var(--orange);
+
+    font-size:22px;
+
+    margin-bottom:7px;
+}
+
+
+/* =====================================================
+   OFFER EMPTY
+===================================================== */
+
+.offers-empty{
+    width:100%;
+
+    padding:25px 20px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   GLOBAL OFFER SCROLL
+===================================================== */
+
+html,
+body{
+    overflow-x:hidden;
+}
+
+.offers-scroll{
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+
+
+/* =====================================================
    DESKTOP
 ===================================================== */
 
 @media(min-width:901px){
 
     body{
-
         background:#f5f5f5;
 
         padding-bottom:0;
     }
 
     .app{
-
         max-width:1500px;
 
         min-height:100vh;
@@ -1285,7 +1593,6 @@ body{
     }
 
     .top-header{
-
         padding:
             22px
             55px
@@ -1296,45 +1603,55 @@ body{
     }
 
     .header-top{
-
         max-width:1400px;
 
         margin:auto;
     }
 
     .location-icon{
-
         width:42px;
         height:42px;
+
+        min-width:42px;
+        flex-basis:42px;
     }
 
     .location-text small{
-
         font-size:11px;
     }
 
     .location-text strong{
-
         font-size:14px;
     }
 
+    .header-actions{
+        gap:8px;
+        margin-left:20px;
+    }
+
+    .darvoz-notification{
+        width:42px;
+        height:42px;
+
+        min-width:42px;
+        flex-basis:42px;
+    }
+
     .welcome{
-    max-width:1400px;
-    margin:28px auto 0;
-}
+        max-width:1400px;
+
+        margin:28px auto 0;
+    }
 
     .welcome h2{
-
         font-size:28px;
     }
 
     .welcome p{
-
         font-size:14px;
     }
 
     .search-box{
-
         max-width:900px;
 
         margin:22px auto 0;
@@ -1345,12 +1662,10 @@ body{
     }
 
     .search-box input{
-
         font-size:15px;
     }
 
     .content{
-
         max-width:1400px;
 
         margin:auto;
@@ -1359,27 +1674,23 @@ body{
     }
 
     .section-header{
-
         margin-bottom:20px;
     }
 
     .section-header h2{
-
         font-size:27px;
     }
 
     .section-header a{
-
         font-size:14px;
     }
 
 
     /* =================================================
-       CATEGORIES
+       DESKTOP CATEGORIES
     ================================================= */
 
     .category-wrapper{
-
         overflow:visible;
 
         margin:0;
@@ -1388,7 +1699,6 @@ body{
     }
 
     .category-grid{
-
         width:100%;
 
         display:grid;
@@ -1404,12 +1714,10 @@ body{
     }
 
     .category{
-
         width:100%;
     }
 
     .category-image{
-
         width:90px;
         height:90px;
 
@@ -1419,7 +1727,6 @@ body{
     }
 
     .category:hover .category-image{
-
         transform:translateY(-6px);
 
         box-shadow:
@@ -1427,7 +1734,6 @@ body{
     }
 
     .category-name{
-
         margin-top:10px;
 
         font-size:13px;
@@ -1437,11 +1743,10 @@ body{
 
 
     /* =================================================
-       PROMO
+       DESKTOP PROMO
     ================================================= */
 
     .promo{
-
         height:230px;
 
         margin-top:45px;
@@ -1450,14 +1755,12 @@ body{
     }
 
     .promo-content{
-
         left:40px;
 
         top:35px;
     }
 
     .promo h2{
-
         font-size:32px;
 
         line-height:40px;
@@ -1466,21 +1769,18 @@ body{
     }
 
     .promo p{
-
         font-size:14px;
 
         margin-top:12px;
     }
 
     .promo button{
-
         padding:11px 20px;
 
         font-size:12px;
     }
 
     .promo-image{
-
         width:430px;
 
         height:260px;
@@ -1492,12 +1792,10 @@ body{
 
 
     /* =================================================
-       RESTAURANTS
-       ONE PER ROW
+       DESKTOP RESTAURANTS
     ================================================= */
 
     .restaurant-scroll{
-
         display:flex;
 
         flex-direction:column;
@@ -1508,61 +1806,51 @@ body{
     }
 
     .restaurant-card{
-
         width:100%;
 
         border-radius:20px;
     }
 
     .restaurant-image-wrap{
-
         width:100%;
 
         height:300px;
     }
 
     .restaurant-info{
-
         padding:20px;
     }
 
     .restaurant-info h3{
-
         font-size:21px;
     }
 
     .restaurant-type{
-
         font-size:13px;
     }
 
     .restaurant-rating{
-
         font-size:13px;
     }
 
     .restaurant-distance{
-
         font-size:12px;
     }
 
     .restaurant-price{
-
         font-size:14px;
     }
 
     .restaurant-status{
-
         font-size:12px;
     }
 
 
     /* =================================================
-       BENEFITS
+       DESKTOP BENEFITS
     ================================================= */
 
     .benefits{
-
         margin-top:45px;
 
         padding:25px 20px;
@@ -1574,19 +1862,16 @@ body{
     }
 
     .benefit i{
-
         font-size:25px;
 
         margin-bottom:8px;
     }
 
     .benefit strong{
-
         font-size:12px;
     }
 
     .benefit span{
-
         font-size:10px;
 
         line-height:14px;
@@ -1598,7 +1883,6 @@ body{
     ================================================= */
 
     .bottom-nav{
-
         position:fixed;
 
         left:50%;
@@ -1624,240 +1908,37 @@ body{
     }
 
     .bottom-nav a{
-
         font-size:11px;
     }
 
     .bottom-nav i{
-
         font-size:20px;
     }
 
     .active-order-popup{
-
         bottom:100px;
 
         max-width:600px;
     }
 
     .active-order-text h3{
-
         font-size:15px;
     }
 
     .active-order-text p{
-
         font-size:11px;
     }
 
     .track-order-btn{
-
         font-size:12px;
 
         padding:11px 17px;
     }
 
-}
 
-
-/* =====================================================
-   LARGE DESKTOP
-===================================================== */
-
-@media(min-width:1200px){
-
-    .category-grid{
-
-        grid-template-columns:
-            repeat(12,1fr);
-
-        gap:25px;
-    }
-
-    .category-image{
-
-        width:100px;
-        height:100px;
-    }
-
-}
-
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media(min-width:601px) and (max-width:900px){
-
-    .app{
-
-        max-width:900px;
-    }
-
-    .category-grid{
-
-        grid-template-rows:
-            105px 105px;
-
-        grid-auto-columns:85px;
-    }
-
-    .category-image{
-
-        width:75px;
-        height:75px;
-    }
-
-}
-
-
-/* =====================================================
-   MOBILE RESTAURANT IMAGE
-===================================================== */
-
-@media(max-width:600px){
-
-    .location{
-        flex:1;
-        min-width:0;
-        max-width:none;
-    }
-
-    .location-text{
-        flex:1;
-        min-width:0;
-        max-width:none;
-        overflow:hidden;
-    }
-
-    .location-text strong{
-        max-width:100%;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    }
-
-    /* LOCATION DOWN ARROW */
-    .location > .fa-chevron-down{
-        flex-shrink:0;
-
-        font-size:11px;
-
-        margin-left:8px;
-        margin-right:4px;
-    }
-
-    /* COIN + NOTIFICATION */
-    .header-actions{
-        flex:0 0 auto;
-        flex-shrink:0;
-
-        gap:12px;
-        margin-left:14px;
-    }
-
-}
-/* =====================================================
-   DARVOZ PICKS
-===================================================== */
-
-.picks-section{
-    margin-top:24px;
-}
-
-.picks-scroll{
-    display:flex;
-    gap:12px;
-    overflow-x:auto;
-    scrollbar-width:none;
-    margin-right:-15px;
-    padding-right:15px;
-    padding-bottom:5px;
-}
-
-.picks-scroll::-webkit-scrollbar{
-    display:none;
-}
-
-.pick-card{
-    width:150px;
-    min-width:150px;
-    background:#fff;
-    border:1px solid #eee;
-    border-radius:14px;
-    overflow:hidden;
-    box-shadow:0 4px 14px rgba(0,0,0,.07);
-}
-
-.pick-image-wrap{
-    position:relative;
-    width:100%;
-    height:125px;
-    background:#f5f5f5;
-}
-
-.pick-image{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-.pick-add-btn{
-    position:absolute;
-    right:8px;
-    bottom:8px;
-
-    width:34px;
-    height:34px;
-
-    border:none;
-    border-radius:9px;
-
-    background:#fff;
-    color:var(--orange);
-
-    font-size:18px;
-    font-weight:700;
-
-    box-shadow:0 3px 10px rgba(0,0,0,.18);
-
-    cursor:pointer;
-}
-
-.pick-info{
-    padding:9px;
-}
-
-.pick-name{
-    font-size:12px;
-    font-weight:700;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.pick-price{
-    margin-top:4px;
-
-    color:#222;
-    font-size:11px;
-    font-weight:700;
-}
-
-.pick-restaurant{
-    margin-top:3px;
-
-    color:#777;
-    font-size:8px;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-@media(min-width:901px){
+    /* =================================================
+       DESKTOP PICKS
+    ================================================= */
 
     .picks-section{
         margin-top:35px;
@@ -1865,13 +1946,17 @@ body{
 
     .picks-scroll{
         gap:18px;
+
         margin:0;
+
         padding:0;
     }
 
     .pick-card{
         width:190px;
+
         min-width:190px;
+
         border-radius:17px;
     }
 
@@ -1895,224 +1980,38 @@ body{
         font-size:10px;
     }
 
-}
 
-/* =====================================================
-   DESKTOP NAV LINKS
-===================================================== */
-
-.desktop-nav{
-
-    display:none;
-}
-/* =====================================================
-   CUSTOMER OFFERS
-===================================================== */
-
-.offers-section{
-
-    margin-top:20px;
-
-}
-
-.offers-scroll{
-    display:flex;
-    flex-direction:row;
-
-    width:100%;
-
-    gap:0;
-
-    overflow-x:auto;
-    overflow-y:hidden;
-
-    scrollbar-width:none;
-
-    margin-right:0;
-    padding-right:0;
-
-    scroll-snap-type:x mandatory;
-    scroll-behavior:smooth;
-}
-
-.offers-scroll::-webkit-scrollbar{
-    display:none;
-}
-
-
-
-/* =====================================================
-   OFFER SWIPE DOTS
-===================================================== */
-
-.offer-dots{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:6px;
-
-    margin-top:9px;
-
-}
-
-.offer-dot{
-
-    width:7px;
-
-    height:7px;
-
-    border-radius:50%;
-
-    background:#d5d5d5;
-
-    transition:all .25s ease;
-
-}
-
-.offer-dot.active{
-
-    width:20px;
-
-    border-radius:10px;
-
-    background:var(--orange);
-
-}
-
-
-/* =====================================================
-   OFFER CARD
-===================================================== */
-
-.offer-card{
-    flex:0 0 100%;
-    width:100%;
-    min-width:100%;
-
-    aspect-ratio:350/ 170;
-    height:auto;
-
-    border-radius:15px;
-    overflow:hidden;
-    position:relative;
-
-    background:#f2f2f2;
-
-    cursor:pointer;
-    scroll-snap-align:start;
-
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-    position:relative;
-
-    background:#f2f2f2;
-
-    cursor:pointer;
-
-    scroll-snap-align:start;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,.08);
-
-}
-
-.offer-card img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    display:block;
-
-}
-
-
-/* =====================================================
-   OFFER LOADING
-===================================================== */
-
-.offers-loading{
-
-    width:100%;
-
-    padding:30px 20px;
-
-    text-align:center;
-
-    color:#777;
-
-    font-size:11px;
-
-}
-
-.offers-loading i{
-
-    color:var(--orange);
-
-    font-size:22px;
-
-    margin-bottom:7px;
-
-}
-
-
-/* =====================================================
-   OFFER EMPTY
-===================================================== */
-
-.offers-empty{
-
-    width:100%;
-
-    padding:25px 20px;
-
-    text-align:center;
-
-    color:#777;
-
-    font-size:11px;
-
-}
-
-
-/* =====================================================
-   DESKTOP OFFERS
-===================================================== */
-
-@media (min-width:901px){
+    /* =================================================
+       DESKTOP OFFERS
+    ================================================= */
 
     .offers-section{
         margin-top:35px;
+
         width:100%;
     }
 
     .offers-scroll{
         display:flex;
+
         flex-direction:row;
 
         width:100%;
+
         gap:0;
 
         margin:0;
+
         padding:0;
 
         overflow-x:auto;
+
         overflow-y:hidden;
 
         scrollbar-width:none;
 
         scroll-snap-type:x mandatory;
+
         scroll-behavior:smooth;
     }
 
@@ -2120,34 +2019,42 @@ body{
         display:none;
     }
 
-   .offer-card{
-    flex:0 0 100%;
-    width:100%;
-    min-width:100%;
-    max-width:100%;
+    .offer-card{
+        flex:0 0 100%;
 
-    aspect-ratio:280 / 170;
-    height:auto;
+        width:100%;
 
-    border-radius:15px;
-    overflow:hidden;
-    position:relative;
+        min-width:100%;
 
-    background:#f2f2f2;
+        max-width:100%;
 
-    cursor:pointer;
-    scroll-snap-align:start;
-    scroll-snap-stop:always;
+        aspect-ratio:280 / 170;
 
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
+        height:auto;
 
+        border-radius:15px;
 
+        overflow:hidden;
+
+        position:relative;
+
+        background:#f2f2f2;
+
+        cursor:pointer;
+
+        scroll-snap-align:start;
+
+        scroll-snap-stop:always;
+
+        box-shadow:
+            0 4px 15px rgba(0,0,0,.08);
+    }
 
     .offer-card img{
         display:block;
 
         width:100%;
+
         height:100%;
 
         max-width:100%;
@@ -2158,18 +2065,166 @@ body{
     .offer-dots{
         margin-top:12px;
     }
-
 }
 
-html,
-body{
-    overflow-x:hidden;
+
+/* =====================================================
+   LARGE DESKTOP
+===================================================== */
+
+@media(min-width:1200px){
+
+    .category-grid{
+        grid-template-columns:
+            repeat(12,1fr);
+
+        gap:25px;
+    }
+
+    .category-image{
+        width:100px;
+        height:100px;
+    }
 }
 
-.offers-scroll{
-    overflow-x:auto;
-    overflow-y:hidden;
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(min-width:601px) and (max-width:900px){
+
+    .app{
+        max-width:900px;
+    }
+
+    .category-grid{
+        grid-template-rows:
+            105px 105px;
+
+        grid-auto-columns:85px;
+    }
+
+    .category-image{
+        width:75px;
+        height:75px;
+    }
 }
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    /* =========================================
+       MOBILE LOCATION
+    ========================================= */
+
+    .location{
+        flex:1;
+
+        min-width:0;
+
+        max-width:none;
+
+        display:flex;
+
+        align-items:center;
+
+        gap:8px;
+    }
+
+    .location-icon{
+        flex:0 0 38px;
+
+        width:38px;
+
+        min-width:38px;
+    }
+
+    .location-text{
+        flex:0 1 auto;
+
+        min-width:0;
+
+        width:max-content;
+
+        max-width:calc(100% - 46px);
+
+        overflow:hidden;
+    }
+
+    .location-text small{
+        white-space:nowrap;
+    }
+
+    .location-text strong{
+        display:block;
+
+        width:max-content;
+
+        max-width:100%;
+
+        white-space:nowrap;
+
+        overflow:hidden;
+
+        text-overflow:ellipsis;
+    }
+
+    /* ARROW FOLLOWS ADDRESS */
+
+    .location > .fa-chevron-down{
+        flex:0 0 auto;
+
+        font-size:11px;
+
+        margin:0;
+
+        padding:0;
+
+        line-height:1;
+    }
+
+
+    /* =========================================
+       COIN + NOTIFICATION
+    ========================================= */
+
+    .header-actions{
+        flex:0 0 auto;
+
+        flex-shrink:0;
+
+        display:flex;
+
+        align-items:center;
+
+        /* THIS IS THE GAP BETWEEN COIN + BELL */
+        gap:6px;
+
+        /* GAP FROM LOCATION TO COIN */
+        margin-left:12px;
+    }
+
+    .darvoz-coin-pill{
+        flex:0 0 auto;
+    }
+
+    .darvoz-notification{
+        flex:0 0 38px;
+
+        width:38px;
+
+        min-width:38px;
+
+        height:38px;
+    }
+}
+
+
 </style>
 
 </head>
@@ -2184,24 +2239,18 @@ body{
 <!-- =====================================================
      ORANGE HEADER
 ===================================================== -->
-
 <header class="top-header">
-
 
     <div class="header-top">
 
-
         <!-- LOCATION -->
-
         <div
             class="location"
             onclick="window.location.href='address.html'"
         >
 
             <div class="location-icon">
-
                 <i class="fa-solid fa-location-dot"></i>
-
             </div>
 
             <div class="location-text">
@@ -2209,11 +2258,11 @@ body{
                 <small>
                     Deliver to
                 </small>
-  
-                
-            <strong id="currentLocation">
-    Detecting location...
-</strong>  
+
+                <strong id="currentLocation">
+                    Detecting location...
+                </strong>
+
             </div>
 
             <i class="fa-solid fa-chevron-down"></i>
@@ -2221,35 +2270,47 @@ body{
         </div>
 
 
-        <!-- PROFILE -->
+        <!-- COIN + NOTIFICATION -->
+        <div class="header-actions">
 
-        
-    <div class="darvoz-coin-pill"
-     onclick="window.location.href='coins.html'">
+            <!-- COINS -->
+            <div
+                class="darvoz-coin-pill"
+                onclick="window.location.href='coins.html'"
+            >
 
-    <span class="darvoz-coin-balance" id="headerCoins">
-        500
-    </span>
+                <span
+                    class="darvoz-coin-balance"
+                    id="headerCoins"
+                >
+                    500
+                </span>
 
-    <div class="darvoz-mini-coin">
-        <span>D</span>
+                <div class="darvoz-mini-coin">
+                    <span>D</span>
+                </div>
+
+            </div>
+
+
+            <!-- NOTIFICATION -->
+            <div
+                class="darvoz-notification"
+                onclick="window.location.href='notifications.html'"
+            >
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span class="notification-dot"></span>
+
+            </div>
+
+        </div>
+
     </div>
 
-</div>
-        
 
-<!-- NOTIFICATION -->
 
-<div class="darvoz-notification"
-     onclick="window.location.href='notifications.html'">
-
-    <i class="fa-regular fa-bell"></i>
-
-    <span class="notification-dot"></span>
-
-</div>
-
-    </div>
 
 
     <!-- WELCOME -->
