@@ -1386,6 +1386,90 @@ router.post(
 );
 
 // ==========================================
+// REFERRAL HISTORY
+// ==========================================
+
+router.get(
+    "/referral-history/:customerId",
+    (req, res) => {
+
+        const customerId =
+            req.params.customerId;
+
+        if (!customerId) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Customer ID is required"
+
+            });
+
+        }
+
+        const sql = `
+
+            SELECT
+                rr.referrer_id,
+                rr.referred_customer_id,
+                rr.referrer_coins,
+                rr.referred_coins,
+
+                c.name AS referred_name,
+                c.mobile AS referred_mobile,
+                c.email AS referred_email
+
+            FROM referral_rewards rr
+
+            INNER JOIN customers c
+                ON c.id = rr.referred_customer_id
+
+            WHERE rr.referrer_id = ?
+
+            ORDER BY rr.referred_customer_id DESC
+
+        `;
+
+        db.query(
+            sql,
+            [customerId],
+            (err, result) => {
+
+                if (err) {
+
+                    console.log(
+                        "REFERRAL HISTORY ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+
+                        success: false,
+
+                        message:
+                            "Unable to load referral history"
+
+                    });
+
+                }
+
+                return res.json({
+
+                    success: true,
+
+                    referrals: result
+
+                });
+
+            }
+        );
+
+    }
+);
+
+// ==========================================
 // EXPORT
 // ==========================================
 

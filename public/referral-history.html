@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             maximum-scale=1.0,
+             user-scalable=no">
+
+<title>Referral History - DARVOZ</title>
+
+<style>
+
+:root{
+    --orange:#F4530A;
+    --orange-dark:#E04600;
+    --green:#25B440;
+    --gold:#F5B830;
+    --text:#1A1A1A;
+    --gray:#707070;
+    --border:#E8E8E8;
+    --bg:#F7F7F8;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    background:var(--bg);
+    color:var(--text);
+
+    display:flex;
+    justify-content:center;
+}
+
+.phone{
+    width:390px;
+    max-width:100%;
+    min-height:100vh;
+    background:#fff;
+    padding-bottom:30px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header{
+
+    height:72px;
+
+    display:flex;
+    align-items:center;
+
+    padding:14px 16px 10px;
+
+    position:relative;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.back-btn{
+
+    width:44px;
+    height:44px;
+
+    border-radius:12px;
+
+    border:1px solid #E4E4E4;
+
+    background:#F3F3F4;
+
+    color:#222;
+
+    font-size:25px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.header h1{
+
+    position:absolute;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:20px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.summary{
+
+    margin:18px 16px 0;
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.summary-card{
+
+    flex:1;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:15px 10px;
+
+    text-align:center;
+
+    background:#fff;
+
+}
+
+.summary-number{
+
+    font-size:22px;
+
+    font-weight:900;
+
+    color:var(--orange);
+
+}
+
+.summary-label{
+
+    margin-top:4px;
+
+    font-size:12px;
+
+    color:var(--gray);
+
+    font-weight:600;
+
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.history-title{
+
+    margin:25px 16px 12px;
+
+    font-size:19px;
+
+    font-weight:800;
+
+}
+
+
+/* =========================================
+   HISTORY CARD
+========================================= */
+
+.history-card{
+
+    margin:0 16px 12px;
+
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:16px;
+
+    background:#fff;
+
+}
+
+.history-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.person-icon{
+
+    width:44px;
+
+    height:44px;
+
+    min-width:44px;
+
+    border-radius:50%;
+
+    background:#FFF1EA;
+
+    color:var(--orange);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:20px;
+
+    font-weight:900;
+
+}
+
+.person-info{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+.person-name{
+
+    font-size:16px;
+
+    font-weight:800;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+
+.person-mobile{
+
+    margin-top:3px;
+
+    font-size:12px;
+
+    color:var(--gray);
+
+}
+
+.success{
+
+    font-size:12px;
+
+    font-weight:800;
+
+    color:var(--green);
+
+    background:#EAF9ED;
+
+    padding:5px 8px;
+
+    border-radius:20px;
+
+}
+
+.history-bottom{
+
+    margin-top:15px;
+
+    padding-top:13px;
+
+    border-top:1px solid #eee;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.reward-label{
+
+    font-size:13px;
+
+    color:var(--gray);
+
+}
+
+.reward{
+
+    color:var(--orange);
+
+    font-size:17px;
+
+    font-weight:900;
+
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty{
+
+    margin:30px 20px;
+
+    text-align:center;
+
+    color:var(--gray);
+
+}
+
+.empty-icon{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+.empty-title{
+
+    color:#222;
+
+    font-size:17px;
+
+    font-weight:800;
+
+    margin-bottom:5px;
+
+}
+
+.empty-text{
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading{
+
+    text-align:center;
+
+    padding:40px 20px;
+
+    color:var(--gray);
+
+    font-size:14px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="phone">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <button
+            class="back-btn"
+            onclick="goBack()">
+
+            ←
+
+        </button>
+
+        <h1>
+            Referral History
+        </h1>
+
+    </div>
+
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+
+            <div
+                class="summary-number"
+                id="totalReferrals">
+
+                0
+
+            </div>
+
+            <div class="summary-label">
+                Total Referrals
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div
+                class="summary-number"
+                id="totalCoins">
+
+                0
+
+            </div>
+
+            <div class="summary-label">
+                Coins Earned
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="history-title">
+        Referral History
+    </div>
+
+
+
+    <div id="historyContainer">
+
+        <div class="loading">
+            Loading referral history...
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   API
+========================================= */
+
+const API_BASE =
+    window.location.origin;
+
+
+/* =========================================
+   CUSTOMER ID
+========================================= */
+
+function getCustomerId(){
+
+    const id =
+        localStorage.getItem(
+            "customerId"
+        );
+
+    if(id){
+
+        return id;
+
+    }
+
+
+    try{
+
+        const customer =
+            JSON.parse(
+                localStorage.getItem(
+                    "customer"
+                )
+            );
+
+        if(
+            customer &&
+            customer.id
+        ){
+
+            return customer.id;
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "CUSTOMER STORAGE ERROR:",
+            error
+        );
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================
+   LOAD HISTORY
+========================================= */
+
+async function loadReferralHistory(){
+
+    const container =
+        document.getElementById(
+            "historyContainer"
+        );
+
+
+    const customerId =
+        getCustomerId();
+
+
+    if(!customerId){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🔒
+                </div>
+
+                <div class="empty-title">
+                    Please login first
+                </div>
+
+                <div class="empty-text">
+                    Login to see your referral history.
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+
+                API_BASE +
+                "/customer/referral-history/" +
+                encodeURIComponent(
+                    customerId
+                )
+
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "REFERRAL HISTORY:",
+            data
+        );
+
+
+        if(
+            !data.success
+        ){
+
+            throw new Error(
+                data.message ||
+                "Unable to load history"
+            );
+
+        }
+
+
+        const referrals =
+            data.referrals || [];
+
+
+        /* =================================
+           SUMMARY
+        ================================= */
+
+        document.getElementById(
+            "totalReferrals"
+        ).textContent =
+            referrals.length;
+
+
+        let totalCoins = 0;
+
+
+        referrals.forEach(
+            referral => {
+
+                totalCoins +=
+                    Number(
+                        referral.referrer_coins ||
+                        0
+                    );
+
+            }
+        );
+
+
+        document.getElementById(
+            "totalCoins"
+        ).textContent =
+            totalCoins;
+
+
+        /* =================================
+           EMPTY
+        ================================= */
+
+        if(
+            referrals.length === 0
+        ){
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        🎁
+                    </div>
+
+                    <div class="empty-title">
+                        No referrals yet
+                    </div>
+
+                    <div class="empty-text">
+                        Share your referral code
+                        with friends and start
+                        earning DARVOZ Coins.
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* =================================
+           BUILD HISTORY
+        ================================= */
+
+        container.innerHTML =
+            referrals.map(
+                referral => {
+
+                    const name =
+                        referral.referred_name ||
+                        "DARVOZ Customer";
+
+
+                    const mobile =
+                        referral.referred_mobile ||
+                        "";
+
+
+                    const coins =
+                        Number(
+                            referral.referrer_coins ||
+                            0
+                        );
+
+
+                    const firstLetter =
+                        name
+                            .charAt(0)
+                            .toUpperCase();
+
+
+                    return `
+
+                        <div class="history-card">
+
+                            <div class="history-top">
+
+                                <div class="person-icon">
+
+                                    ${firstLetter}
+
+                                </div>
+
+
+                                <div class="person-info">
+
+                                    <div class="person-name">
+
+                                        ${escapeHtml(name)}
+
+                                    </div>
+
+
+                                    <div class="person-mobile">
+
+                                        ${escapeHtml(mobile)}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="success">
+
+                                    Successful
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="history-bottom">
+
+                                <div class="reward-label">
+
+                                    Referral reward
+
+                                </div>
+
+
+                                <div class="reward">
+
+                                    +${coins} Coins
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+
+    }catch(error){
+
+        console.error(
+            "REFERRAL HISTORY ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ⚠️
+                </div>
+
+                <div class="empty-title">
+                    Unable to load history
+                </div>
+
+                <div class="empty-text">
+                    Please try again later.
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value){
+
+    return String(value || "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   BACK
+========================================= */
+
+function goBack(){
+
+    if(
+        window.history.length > 1
+    ){
+
+        window.history.back();
+
+    }else{
+
+        window.location.href =
+            "refer.html";
+
+    }
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadReferralHistory
+);
+
+</script>
+
+</body>
+
+</html>

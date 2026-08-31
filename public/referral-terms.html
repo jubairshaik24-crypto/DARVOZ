@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>Referral Terms & Conditions - DARVOZ</title>
+
+<style>
+
+:root{
+    --orange:#F4530A;
+    --orange-dark:#E04600;
+    --text-dark:#1A1A1A;
+    --gray:#666;
+    --light:#F7F7F8;
+    --border:#E8E8E8;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    background:#F7F7F8;
+    color:var(--text-dark);
+
+    display:flex;
+    justify-content:center;
+
+    overflow-x:hidden;
+}
+
+.phone{
+    width:390px;
+    max-width:100%;
+    min-height:100vh;
+
+    background:#fff;
+
+    padding-bottom:30px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:12px 16px;
+
+    position:relative;
+
+    border-bottom:1px solid #F0F0F0;
+}
+
+.header h1{
+    font-size:19px;
+    font-weight:800;
+    color:#151515;
+
+    text-align:center;
+
+    white-space:nowrap;
+}
+
+.back-btn{
+    position:absolute;
+
+    left:16px;
+    top:14px;
+
+    width:44px;
+    height:44px;
+
+    border-radius:12px;
+
+    background:#F3F3F4;
+
+    border:1px solid #E4E4E4;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#222;
+
+    cursor:pointer;
+
+    font-size:25px;
+
+    line-height:1;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    margin:18px 16px 0;
+
+    padding:24px 20px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FA6A16 0%,
+            #F4530A 55%,
+            #E04600 100%
+        );
+
+    color:#fff;
+
+    box-shadow:
+        0 5px 18px rgba(244,83,10,.12);
+}
+
+.hero-title{
+    font-size:25px;
+    font-weight:900;
+
+    line-height:1.15;
+}
+
+.hero-text{
+    margin-top:8px;
+
+    font-size:14px;
+    line-height:1.5;
+
+    opacity:.96;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    margin:18px 16px 0;
+}
+
+.card{
+    background:#fff;
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    margin-bottom:14px;
+
+    box-shadow:
+        0 1px 5px rgba(0,0,0,.03);
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    font-size:17px;
+    font-weight:850;
+
+    color:#171717;
+
+    margin-bottom:10px;
+}
+
+.number{
+    width:30px;
+    height:30px;
+
+    min-width:30px;
+
+    border-radius:50%;
+
+    background:var(--orange);
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:14px;
+    font-weight:900;
+}
+
+.card p{
+    font-size:14px;
+
+    color:#444;
+
+    line-height:1.6;
+
+    margin-top:7px;
+}
+
+.card ul{
+    padding-left:20px;
+
+    margin-top:8px;
+}
+
+.card li{
+    font-size:14px;
+
+    color:#444;
+
+    line-height:1.6;
+
+    margin-bottom:7px;
+}
+
+.highlight{
+    color:var(--orange);
+
+    font-weight:900;
+}
+
+
+/* =========================
+   REWARD CARD
+========================= */
+
+.reward-card{
+    background:
+        linear-gradient(
+            135deg,
+            #FFF7F2,
+            #FFF
+        );
+
+    border:1px solid #F5D5C5;
+
+    border-radius:16px;
+
+    padding:16px;
+
+    margin-top:12px;
+}
+
+.reward-row{
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:12px;
+}
+
+.reward-row:last-child{
+    margin-bottom:0;
+}
+
+.coin{
+    width:42px;
+    height:42px;
+
+    min-width:42px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #FFDE7A,
+            #F5B830 55%,
+            #E29A0E 100%
+        );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#A96D08;
+
+    font-size:19px;
+
+    font-weight:900;
+}
+
+.reward-text{
+    font-size:14px;
+
+    line-height:1.35;
+
+    color:#333;
+}
+
+.reward-text strong{
+    color:var(--orange);
+
+    font-size:16px;
+
+    font-weight:900;
+}
+
+
+/* =========================
+   IMPORTANT BOX
+========================= */
+
+.notice{
+    margin:18px 16px 0;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    background:#FFF5EF;
+
+    border:1px solid #FFD8C5;
+
+    color:#4A4A4A;
+
+    font-size:13px;
+
+    line-height:1.55;
+}
+
+.notice strong{
+    color:var(--orange);
+
+    font-weight:900;
+}
+
+
+/* =========================
+   LAST UPDATED
+========================= */
+
+.updated{
+    text-align:center;
+
+    color:#888;
+
+    font-size:12px;
+
+    margin:22px 16px 0;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.bottom-btn{
+    width:calc(100% - 32px);
+
+    margin:20px 16px 0;
+
+    min-height:58px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #F4530A,
+            #E94706
+        );
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 5px 15px rgba(244,83,10,.14);
+}
+
+.bottom-btn:active{
+    transform:scale(.98);
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media(min-width:501px){
+
+    body{
+        padding:20px 0;
+    }
+
+    .phone{
+        border-radius:20px;
+
+        min-height:calc(100vh - 40px);
+
+        box-shadow:
+            0 5px 30px rgba(0,0,0,.08);
+    }
+
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media(max-width:360px){
+
+    .header h1{
+        font-size:17px;
+    }
+
+    .hero{
+        margin-left:12px;
+        margin-right:12px;
+
+        padding:21px 17px;
+    }
+
+    .hero-title{
+        font-size:23px;
+    }
+
+    .content{
+        margin-left:12px;
+        margin-right:12px;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .notice{
+        margin-left:12px;
+        margin-right:12px;
+    }
+
+    .bottom-btn{
+        width:calc(100% - 24px);
+
+        margin-left:12px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="phone">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <button
+            class="back-btn"
+            aria-label="Go back"
+            onclick="goBack()">
+
+            ←
+
+        </button>
+
+        <h1>
+            Referral Terms & Conditions
+        </h1>
+
+    </div>
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <div class="hero-title">
+            DARVOZ Referral Program
+        </div>
+
+        <div class="hero-text">
+            Refer your friends to DARVOZ and earn
+            DARVOZ Coins when they successfully
+            complete their account.
+        </div>
+
+    </div>
+
+
+    <div class="content">
+
+
+        <!-- 1 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    1
+                </div>
+
+                Eligibility
+
+            </div>
+
+            <p>
+                The DARVOZ Referral Program is available
+                to eligible DARVOZ customers with a valid
+                referral code.
+            </p>
+
+            <p>
+                Each customer may use their own unique
+                referral code to invite new customers to
+                DARVOZ.
+            </p>
+
+        </div>
+
+
+        <!-- 2 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    2
+                </div>
+
+                Referral Rewards
+
+            </div>
+
+            <div class="reward-card">
+
+
+                <div class="reward-row">
+
+                    <div class="coin">
+                        D
+                    </div>
+
+                    <div class="reward-text">
+
+                        Referrer earns
+
+                        <br>
+
+                        <strong>
+                            1000 DARVOZ Coins
+                        </strong>
+
+                        for each successful referral.
+
+                    </div>
+
+                </div>
+
+
+                <div class="reward-row">
+
+                    <div class="coin">
+                        D
+                    </div>
+
+                    <div class="reward-text">
+
+                        Referred friend earns
+
+                        <br>
+
+                        <strong>
+                            500 DARVOZ Coins
+                        </strong>
+
+                        after completing their account.
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- 3 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    3
+                </div>
+
+                How Referrals Work
+
+            </div>
+
+            <ul>
+
+                <li>
+                    Share your unique DARVOZ referral
+                    code or referral link with your friend.
+                </li>
+
+                <li>
+                    Your friend joins DARVOZ using your
+                    referral link or referral code.
+                </li>
+
+                <li>
+                    Your friend completes their DARVOZ
+                    account.
+                </li>
+
+                <li>
+                    Once the referral requirements are
+                    successfully completed, the applicable
+                    referral reward will be credited.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- 4 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    4
+                </div>
+
+                Referral Code
+
+            </div>
+
+            <p>
+                Every eligible customer has a unique
+                referral code associated with their
+                DARVOZ account.
+            </p>
+
+            <p>
+                Your referral code should not be shared
+                as someone else's code or modified in
+                an attempt to claim another customer's
+                reward.
+            </p>
+
+        </div>
+
+
+        <!-- 5 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    5
+                </div>
+
+                Successful Referral
+
+            </div>
+
+            <p>
+                A referral is considered successful only
+                when the referred customer completes
+                the required account setup according to
+                the DARVOZ referral program rules.
+            </p>
+
+            <p>
+                Simply opening the referral link or
+                downloading the app may not qualify as
+                a successful referral.
+            </p>
+
+        </div>
+
+
+        <!-- 6 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    6
+                </div>
+
+                Misuse & Fraud
+
+            </div>
+
+            <p>
+                Referral rewards must not be obtained
+                through fraudulent, abusive, automated,
+                misleading, or otherwise unauthorized
+                activity.
+            </p>
+
+            <p>
+                DARVOZ may review referral activity and
+                may withhold or reverse rewards associated
+                with invalid or suspicious referrals.
+            </p>
+
+        </div>
+
+
+        <!-- 7 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    7
+                </div>
+
+                Reward Conditions
+
+            </div>
+
+            <p>
+                Referral rewards are subject to the
+                applicable DARVOZ referral program rules
+                and eligibility requirements.
+            </p>
+
+            <p>
+                Rewards may not be transferred,
+                exchanged for cash, or otherwise redeemed
+                except where supported by DARVOZ.
+            </p>
+
+        </div>
+
+
+        <!-- 8 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    8
+                </div>
+
+                Changes to the Program
+
+            </div>
+
+            <p>
+                DARVOZ may modify, suspend, or discontinue
+                the referral program or its rewards when
+                necessary.
+            </p>
+
+            <p>
+                Any applicable changes may be reflected
+                in the DARVOZ app or related program
+                information.
+            </p>
+
+        </div>
+
+
+        <!-- 9 -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <div class="number">
+                    9
+                </div>
+
+                Acceptance
+
+            </div>
+
+            <p>
+                By participating in the DARVOZ Referral
+                Program, you acknowledge that you have
+                read and agree to these Referral Terms &
+                Conditions.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- NOTICE -->
+
+    <div class="notice">
+
+        <strong>Important:</strong>
+
+        Referral rewards are subject to successful
+        completion of the applicable referral
+        requirements. DARVOZ may review referrals
+        before rewards are credited.
+
+    </div>
+
+
+    <!-- UPDATED -->
+
+    <div class="updated">
+
+        DARVOZ Referral Terms & Conditions
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <button
+        class="bottom-btn"
+        onclick="goBack()">
+
+        ←
+        Back to Refer & Earn
+
+    </button>
+
+
+</div>
+
+
+<script>
+
+function goBack(){
+
+    if(
+        window.history.length > 1
+    ){
+
+        window.history.back();
+
+    }else{
+
+        window.location.href =
+            "refer.html";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

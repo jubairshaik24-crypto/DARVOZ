@@ -140,26 +140,21 @@ body{
 ===================================================== */
 
 .header-top{
-
     position:relative;
-
     z-index:2;
-
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
+    width:100%;
+    min-width:0;
 }
 
 .location{
-
     display:flex;
-
     align-items:center;
-
     gap:9px;
+
+    flex:1;
+    min-width:0;
 
     cursor:pointer;
 }
@@ -187,8 +182,12 @@ body{
 .location-text{
     display:flex;
     flex-direction:column;
+
+    flex:1;
     min-width:0;
-    max-width:230px;
+
+    max-width:none;
+    overflow:hidden;
 }
 
 .location-text small{
@@ -196,6 +195,7 @@ body{
     opacity:.9;
     white-space:nowrap;
 }
+
 
 .location-text strong{
     font-size:12px;
@@ -206,19 +206,23 @@ body{
     text-overflow:ellipsis;
 
     display:block;
-    max-width:230px;
+    max-width:100%;
 }
-
 /* =========================================
    HEADER ACTIONS
 ========================================= */
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+.header-actions{
+    display:flex;
+    align-items:center;
 
+    gap:8px;
+
+    flex:0 0 auto;
+    flex-shrink:0;
+
+    margin-left:10px;
+}
 
 /* =========================================
    NOTIFICATION BELL
@@ -1725,18 +1729,30 @@ body{
 
 
 .location{
-    max-width:calc(100% - 50px);
+    flex:1;
     min-width:0;
 }
 
 .location-text{
-    max-width:190px;
+    flex:1;
     min-width:0;
+    max-width:none;
 }
 
 .location-text strong{
-    max-width:190px;
+    max-width:100%;
 }
+
+.location > .fa-chevron-down{
+    flex-shrink:0;
+    font-size:11px;
+}
+
+.header-actions{
+    flex:0 0 auto;
+    flex-shrink:0;
+    margin-left:10px;
+}   
 
 .location > .fa-chevron-down{
     flex-shrink:0;

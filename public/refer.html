@@ -150,6 +150,32 @@ body{
     cursor:pointer;
 }
 
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.history-btn{
+    width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#222;
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
+
+.history-btn:active{
+    transform:scale(.94);
+}
 
 /* =========================================
    HERO
@@ -717,14 +743,14 @@ body{
    center of both circles.
 */
 .step-line{
-    position:absolute;
-    left:-38px;
-    top:20px;
-    bottom:20px;
-    width:3px;
-    background:var(--orange);
-    border-radius:10px;
-    z-index:1;
+   position:absolute;
+   left:-38px;
+   top:20px;
+   bottom:58px;
+   width:3px;
+   background:var(--orange);
+   border-radius:10px;
+   z-index:1;
 }
 
 
@@ -1040,8 +1066,9 @@ body{
 
 
     .step-line{
-        left:16px;
-    }
+    left:16px;
+    bottom:59px;
+}
 
 
     .step-icon{
@@ -1097,14 +1124,41 @@ body{
     </h1>
 
 
+   <div class="header-actions">
+
     <a
-        href="#"
-        class="tnc-link"
-        onclick="showTerms(event)">
+        href="referral-history.html"
+        class="history-btn"
+        aria-label="Referral History"
+        title="Referral History">
+
+        <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path d="M3 12a9 9 0 1 0 3-6.7"/>
+            <polyline points="3 4 3 10 9 10"/>
+            <polyline points="12 7 12 12 15 14"/>
+
+        </svg>
+
+    </a>
+
+    <a
+        href="referral-terms.html"
+        class="tnc-link">
 
         T&amp;C
 
     </a>
+
+</div>
 
 </div>
 
@@ -1529,8 +1583,9 @@ body{
         <span>
             You get
             <span class="amt">
-                1000
+                1000 
             </span>
+            coins
         </span>
 
 
@@ -1625,7 +1680,10 @@ body{
 
             <div class="step-text">
 
-                On completing account,
+                On completing account,<br>
+
+
+                you Get <b>1000</b> coins,
 
                 <br>
 
@@ -2329,25 +2387,13 @@ async function shareMore(){
 
 function showTerms(event){
 
-    if(event){
+   if(event){
+       event.preventDefault();
+   }
 
-        event.preventDefault();
-
-    }
-
-
-    alert(
-        "DARVOZ Referral Terms\n\n" +
-
-        "• You get 1000 DARVOZ Coins for each successful referral.\n\n" +
-
-        "• Your friend gets 500 DARVOZ Coins after completing their account.\n\n" +
-
-        "• Referral rewards are subject to DARVOZ terms and conditions."
-    );
+   window.location.href = "referral-terms.html";
 
 }
-
 
 /* =========================================
    BACK
