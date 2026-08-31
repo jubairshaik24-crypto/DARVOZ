@@ -923,7 +923,7 @@ body{
    MOBILE
 ========================================= */
 
-@media(max-width:500px){
+@media(max-width:600px){
 
     body{
         background:#fff;
@@ -942,7 +942,7 @@ body{
 }
 
 
-@media(max-width:360px){
+@media(max-width:600px){
 
     .header{
         padding-left:14px;
@@ -1902,8 +1902,11 @@ async function loadReferral(){
            GET REFERRAL CODE
         ================================= */
 
-        const code =
-            customer.referral_code;
+       const code =
+    customer.referral_code ||
+    customer.referralCode ||
+    customer.referral_code_id ||
+    customer.referralCodeId;
 
 
         if(!code){
