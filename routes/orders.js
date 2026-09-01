@@ -530,42 +530,60 @@ router.post("/place", async (req, res) => {
     }
 );
 
-        /*=========================================
-            SEND ORDER TO RESTAURANT
-        =========================================*/
+  // ==========================================
+// SEND NEW ORDER TO PARTNER IN REAL TIME
+// ==========================================
 
-        if (io) {
+if (io) {
 
-            io.to(
-                `partner_${partner_id}`
-            ).emit(
-                "newOrder",
-                {
+    const room = `partner_${Number(partner_id)}`;
 
-                    id: orderId,
+    console.log("=================================");
+    console.log("📡 NEW ORDER SOCKET");
+    console.log("Order ID:", orderId);
+    console.log("Partner ID:", partner_id);
+    console.log("Room:", room);
 
-                    customer_name,
+    const members =
+        io.sockets.adapter.rooms.get(room);
 
-                    mobile,
+    console.log(
+        "Room Members:",
+        members
+            ? Array.from(members)
+            : []
+    );
 
-                    food_total,
+    console.log("=================================");
 
-                    delivery_fee,
+    io.to(room).emit("newOrder", {
 
-                    platform_fee,
+        id: orderId,
 
-                    grand_total,
+        customer_name,
+        mobile,
 
-                    commission_percent,
+        food_total,
+        delivery_fee,
+        platform_fee,
+        grand_total,
 
-                    payment,
+        commission_percent,
 
-                    status: "Pending"
+        payment,
 
-                }
-            );
+        status: "Pending"
 
-        }
+    });
+
+} else {
+
+    console.error(
+        "❌ SOCKET.IO INSTANCE NOT FOUND"
+    );
+
+}
+        
 
         /*=========================================
             SUCCESS

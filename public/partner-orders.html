@@ -365,6 +365,36 @@ socket.on("connect", () => {
 
 });
 
+// =====================================================
+// NEW ORDER NOTIFICATION
+// =====================================================
+
+socket.on("newOrder", (data) => {
+
+    console.log("🔔 NEW ORDER RECEIVED:", data);
+
+    if (!data || !data.id) {
+        console.warn("⚠️ Invalid newOrder data:", data);
+        return;
+    }
+
+    // Reload orders so the new order appears immediately
+    loadOrders();
+
+});
+
+// =====================================================
+// TEST NEW ORDER NOTIFICATION
+// =====================================================
+
+socket.onAny((eventName, data) => {
+
+    console.log("🔔 SOCKET EVENT RECEIVED");
+    console.log("Event:", eventName);
+    console.log("Data:", data);
+
+});
+
 socket.on(
     "riderReachedRestaurant",
     (data) => {
