@@ -1,51 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
-
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const cloudinary = require("../config/cloudinary");
 
 // =====================================================
-// OFFER IMAGE UPLOAD SETUP
+// OFFER IMAGE UPLOAD - CLOUDINARY
 // =====================================================
-
-const offerUploadDir = path.join(
-    __dirname,
-    "../public/uploads/offers"
-);
-
-if (!fs.existsSync(offerUploadDir)) {
-    fs.mkdirSync(offerUploadDir, {
-        recursive: true
-    });
-}
-
-const offerStorage = multer.diskStorage({
-
-    destination: function (req, file, cb) {
-        cb(null, offerUploadDir);
-    },
-
-    filename: function (req, file, cb) {
-
-        const ext = path.extname(file.originalname);
-
-        const filename =
-            "offer-" +
-            Date.now() +
-            "-" +
-            Math.round(Math.random() * 1e9) +
-            ext;
-
-        cb(null, filename);
-    }
-
-});
 
 const offerUpload = multer({
-
-    storage: offerStorage,
+    storage: multer.memoryStorage(),
 
     limits: {
         fileSize: 5 * 1024 * 1024
@@ -57,13 +21,17 @@ const offerUpload = multer({
             file.mimetype &&
             file.mimetype.startsWith("image/")
         ) {
+
             cb(null, true);
+
         } else {
+
             cb(
                 new Error(
                     "Only image files are allowed."
                 )
             );
+
         }
 
     }
@@ -71,10 +39,41 @@ const offerUpload = multer({
 });
 
 // =====================================================
-// HELPER: DELETE LOCAL OFFER IMAGE
+// CLOUDINARY BUFFER UPLOAD HELPER
 // =====================================================
 
-function deleteOfferImage(imageUrl) {
+function uploadOfferToCloudinary(buffer) {
+
+    return new Promise((resolve, reject) => {
+
+        const uploadStream =
+            cloudinary.uploader.upload_stream(
+                {
+                    folder: "darvoz/offers",
+                    resource_type: "image"
+                },
+                (error, result) => {
+
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    resolve(result);
+
+                }
+            );
+
+        uploadStream.end(buffer);
+
+    });
+
+}
+
+// =====================================================
+// DELETE CLOUDINARY OFFER IMAGE
+// =====================================================
+
+async function deleteOfferImage(imageUrl) {
 
     try {
 
@@ -82,25 +81,77 @@ function deleteOfferImage(imageUrl) {
             return;
         }
 
-        const relativePath = imageUrl.replace(
-            /^\/+/,
-            ""
-        );
-
-        const imagePath = path.join(
-            __dirname,
-            "../public",
-            relativePath
-        );
-
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        // Ignore old local images
+        if (
+            imageUrl.startsWith("/uploads/") ||
+            imageUrl.startsWith("uploads/")
+        ) {
+            return;
         }
+
+        if (
+            !imageUrl.includes("res.cloudinary.com")
+        ) {
+            return;
+        }
+
+        const parsedUrl =
+            new URL(imageUrl);
+
+        let publicId =
+            parsedUrl.pathname;
+
+        // Remove beginning slash
+        publicId =
+            publicId.replace(/^\/+/, "");
+
+        // Find /upload/
+        const uploadIndex =
+            publicId.indexOf("/upload/");
+
+        if (uploadIndex !== -1) {
+
+            publicId =
+                publicId.substring(
+                    uploadIndex + 8
+                );
+
+        }
+
+        // Remove version, e.g. v1234567890/
+        publicId =
+            publicId.replace(
+                /^v\d+\//,
+                ""
+            );
+
+        // Remove extension
+        publicId =
+            publicId.replace(
+                /\.[^/.]+$/,
+                ""
+            );
+
+        if (!publicId) {
+            return;
+        }
+
+        await cloudinary.uploader.destroy(
+            publicId,
+            {
+                resource_type: "image"
+            }
+        );
+
+        console.log(
+            "CLOUDINARY OFFER IMAGE DELETED:",
+            publicId
+        );
 
     } catch (err) {
 
         console.error(
-            "DELETE OFFER IMAGE ERROR:",
+            "DELETE CLOUDINARY OFFER IMAGE ERROR:",
             err
         );
 
@@ -351,10 +402,12 @@ router.put(
                 !Number.isInteger(restaurantId) ||
                 restaurantId <= 0
             ) {
+
                 return res.status(400).json({
                     success: false,
                     message: "Invalid restaurant ID"
                 });
+
             }
 
             if (
@@ -364,11 +417,13 @@ router.put(
                 commissionPercent < 0 ||
                 commissionPercent > 100
             ) {
+
                 return res.status(400).json({
                     success: false,
                     message:
                         "Commission must be between 0% and 100%"
                 });
+
             }
 
             const [result] =
@@ -525,7 +580,6 @@ router.put(
         try {
 
             const {
-
                 restaurant_name,
                 owner_name,
                 mobile,
@@ -537,7 +591,6 @@ router.put(
                 delivery_time,
                 rating,
                 commission_percent
-
             } = req.body;
 
             const commissionPercent =
@@ -793,55 +846,58 @@ router.get("/orders", async (req, res) => {
 // SINGLE ORDER + ITEMS
 // =====================================================
 
-router.get("/order/:id", async (req, res) => {
+router.get(
+    "/order/:id",
+    async (req, res) => {
 
-    try {
+        try {
 
-        const id = req.params.id;
+            const id = req.params.id;
 
-        const [orders] =
-            await db.promise().query(
-                "SELECT * FROM orders WHERE id=?",
-                [id]
+            const [orders] =
+                await db.promise().query(
+                    "SELECT * FROM orders WHERE id=?",
+                    [id]
+                );
+
+            if (orders.length === 0) {
+
+                return res.status(404).json({
+                    success: false,
+                    message:
+                        "Order Not Found"
+                });
+
+            }
+
+            const [items] =
+                await db.promise().query(
+                    "SELECT * FROM order_items WHERE order_id=?",
+                    [id]
+                );
+
+            const order = orders[0];
+
+            order.items = items;
+
+            res.json(order);
+
+        } catch (err) {
+
+            console.error(
+                "ORDER DETAILS ERROR:",
+                err
             );
 
-        if (orders.length === 0) {
-
-            return res.status(404).json({
+            res.status(500).json({
                 success: false,
-                message:
-                    "Order Not Found"
+                message: "Server Error"
             });
 
         }
 
-        const [items] =
-            await db.promise().query(
-                "SELECT * FROM order_items WHERE order_id=?",
-                [id]
-            );
-
-        const order = orders[0];
-
-        order.items = items;
-
-        res.json(order);
-
-    } catch (err) {
-
-        console.error(
-            "ORDER DETAILS ERROR:",
-            err
-        );
-
-        res.status(500).json({
-            success: false,
-            message: "Server Error"
-        });
-
     }
-
-});
+);
 
 // =====================================================
 // UPDATE ORDER STATUS + WALLET CREDIT / CANCELLATION
@@ -1319,10 +1375,6 @@ router.put(
 
                 }
 
-                // ========================================
-                // LOCK PARTNER WALLET
-                // ========================================
-
                 const [partnerWallets] =
                     await connection.query(`
                         SELECT id
@@ -1347,10 +1399,6 @@ router.put(
                     });
 
                 }
-
-                // ========================================
-                // CREDIT PARTNER
-                // ========================================
 
                 if (partnerAmount > 0) {
 
@@ -1390,10 +1438,6 @@ router.put(
 
                 }
 
-                // ========================================
-                // LOCK ADMIN WALLET
-                // ========================================
-
                 const [adminWallets] =
                     await connection.query(`
                         SELECT id
@@ -1416,10 +1460,6 @@ router.put(
                     });
 
                 }
-
-                // ========================================
-                // CREDIT ADMIN COMMISSION
-                // ========================================
 
                 if (commissionAmount > 0) {
 
@@ -1457,10 +1497,6 @@ router.put(
                     ]);
 
                 }
-
-                // ========================================
-                // MARK PICKUP CREDITED
-                // ========================================
 
                 await connection.query(`
                     UPDATE orders
@@ -2171,7 +2207,6 @@ router.get("/reports", async (req, res) => {
 
 // =====================================================
 // GET ALL WITHDRAWAL REQUESTS
-// FIXED: USES wallets FOR PARTNER + DELIVERY
 // =====================================================
 
 router.get(
@@ -2199,7 +2234,6 @@ router.get(
 
                         w.processed_at,
 
-
                         CASE
 
                             WHEN w.user_type='partner'
@@ -2211,7 +2245,6 @@ router.get(
                             ELSE 'Unknown'
 
                         END AS name,
-
 
                         CASE
 
@@ -2225,7 +2258,6 @@ router.get(
 
                         END AS owner_name,
 
-
                         CASE
 
                             WHEN w.user_type='partner'
@@ -2238,36 +2270,24 @@ router.get(
 
                         END AS mobile,
 
-
                         COALESCE(
                             wallet.balance,
                             0
                         ) AS wallet_balance
 
-
                     FROM withdrawal_requests w
 
-
                     LEFT JOIN restaurants r
-
                         ON w.user_type='partner'
-
                         AND w.user_id=r.id
 
-
                     LEFT JOIN delivery_partners d
-
                         ON w.user_type='delivery'
-
                         AND w.user_id=d.id
 
-
                     LEFT JOIN wallets wallet
-
                         ON wallet.user_type=w.user_type
-
                         AND wallet.user_id=w.user_id
-
 
                     ORDER BY w.id DESC
 
@@ -2303,7 +2323,6 @@ router.get(
 
 // =====================================================
 // APPROVE / REJECT WITHDRAWAL
-// transaction_type FIXED
 // =====================================================
 
 router.put(
@@ -2439,10 +2458,6 @@ router.put(
 
             }
 
-            // ============================================
-            // LOCK WALLET
-            // ============================================
-
             const [walletRows] =
                 await connection.query(`
                     SELECT
@@ -2476,7 +2491,6 @@ router.put(
 
             // ============================================
             // REJECT WITHDRAWAL
-            // REFUND MONEY
             // ============================================
 
             if (
@@ -2542,8 +2556,6 @@ router.put(
 
             // ============================================
             // APPROVE WITHDRAWAL
-            // IMPORTANT:
-            // This assumes money is STILL in wallet.
             // ============================================
 
             const balance =
@@ -2709,6 +2721,7 @@ router.get(
 
 // =====================================================
 // CREATE OFFER
+// CLOUDINARY
 // =====================================================
 
 router.post(
@@ -2720,6 +2733,7 @@ router.post(
 
             const {
                 title,
+                notification_message,
                 display_order
             } = req.body;
 
@@ -2746,9 +2760,17 @@ router.post(
 
             }
 
+            // =========================================
+            // UPLOAD IMAGE TO CLOUDINARY
+            // =========================================
+
+            const cloudinaryResult =
+                await uploadOfferToCloudinary(
+                    req.file.buffer
+                );
+
             const imageUrl =
-                "/uploads/offers/" +
-                req.file.filename;
+                cloudinaryResult.secure_url;
 
             await db.promise().query(`
                 INSERT INTO offers
@@ -2775,20 +2797,64 @@ router.post(
 
             ]);
 
+            // =========================================
+            // CREATE CUSTOMER NOTIFICATIONS
+            // =========================================
+
+            const [customers] =
+                await db.promise().query(`
+                    SELECT id
+                    FROM customers
+                `);
+
+            if (customers.length > 0) {
+
+                const notificationValues =
+                    customers.map(customer => [
+
+                        customer.id,
+
+                        "offer",
+
+                        String(title).trim(),
+
+                        String(
+                            notification_message || ""
+                        ).trim(),
+
+                        0
+
+                    ]);
+
+                await db.promise().query(`
+                    INSERT INTO customer_notifications
+                    (
+                        customer_id,
+                        type,
+                        title,
+                        message,
+                        is_read
+                    )
+                    VALUES ?
+                `, [
+                    notificationValues
+                ]);
+
+            }
+
             res.json({
+
                 success: true,
+
                 message:
-                    "Offer added successfully."
+                    "Offer added successfully.",
+
+                image_url:
+                    imageUrl
+
             });
 
         } catch (err) {
-
-            if (req.file) {
-                deleteOfferImage(
-                    "/uploads/offers/" +
-                    req.file.filename
-                );
-            }
 
             console.error(
                 "CREATE OFFER ERROR:",
@@ -2808,12 +2874,15 @@ router.post(
 
 // =====================================================
 // UPDATE OFFER
+// CLOUDINARY
 // =====================================================
 
 router.put(
     "/offers/:id",
     offerUpload.single("image"),
     async (req, res) => {
+
+        let newCloudinaryUrl = null;
 
         try {
 
@@ -2848,13 +2917,6 @@ router.put(
                 rows.length === 0
             ) {
 
-                if (req.file) {
-                    deleteOfferImage(
-                        "/uploads/offers/" +
-                        req.file.filename
-                    );
-                }
-
                 return res.status(404).json({
                     success: false,
                     message:
@@ -2882,11 +2944,22 @@ router.put(
             let imageUrl =
                 oldImageUrl;
 
+            // =========================================
+            // NEW IMAGE PROVIDED
+            // =========================================
+
             if (req.file) {
 
+                const cloudinaryResult =
+                    await uploadOfferToCloudinary(
+                        req.file.buffer
+                    );
+
+                newCloudinaryUrl =
+                    cloudinaryResult.secure_url;
+
                 imageUrl =
-                    "/uploads/offers/" +
-                    req.file.filename;
+                    newCloudinaryUrl;
 
             }
 
@@ -2900,39 +2973,59 @@ router.put(
             `, [
 
                 finalTitle,
+
                 imageUrl,
+
                 finalDisplayOrder,
+
                 id
 
             ]);
 
-            // Delete old image only after
-            // database update succeeds
+            // =========================================
+            // DELETE OLD CLOUDINARY IMAGE
+            // ONLY AFTER DB UPDATE
+            // =========================================
+
             if (
                 req.file &&
                 oldImageUrl &&
                 oldImageUrl !== imageUrl
             ) {
 
-                deleteOfferImage(
+                await deleteOfferImage(
                     oldImageUrl
                 );
 
             }
 
             res.json({
+
                 success: true,
+
                 message:
-                    "Offer updated successfully."
+                    "Offer updated successfully.",
+
+                image_url:
+                    imageUrl
+
             });
 
         } catch (err) {
 
-            if (req.file) {
-                deleteOfferImage(
-                    "/uploads/offers/" +
-                    req.file.filename
+            // =========================================
+            // IF DB UPDATE FAILED AFTER NEW IMAGE
+            // DELETE NEW CLOUDINARY IMAGE
+            // =========================================
+
+            if (
+                newCloudinaryUrl
+            ) {
+
+                await deleteOfferImage(
+                    newCloudinaryUrl
                 );
+
             }
 
             console.error(
@@ -3012,6 +3105,7 @@ router.put(
 
 // =====================================================
 // DELETE OFFER
+// CLOUDINARY
 // =====================================================
 
 router.delete(
@@ -3042,20 +3136,33 @@ router.delete(
 
             }
 
+            const imageUrl =
+                rows[0].image_url;
+
+            // =========================================
+            // DELETE DATABASE RECORD
+            // =========================================
+
             await db.promise().query(
                 "DELETE FROM offers WHERE id=?",
                 [req.params.id]
             );
 
-            // Delete image after database deletion
-            deleteOfferImage(
-                rows[0].image_url
+            // =========================================
+            // DELETE CLOUDINARY IMAGE
+            // =========================================
+
+            await deleteOfferImage(
+                imageUrl
             );
 
             res.json({
+
                 success: true,
+
                 message:
                     "Offer deleted successfully."
+
             });
 
         } catch (err) {
@@ -3164,7 +3271,19 @@ router.use(
 
         }
 
-        next(err);
+        console.error(
+            "ADMIN ROUTE ERROR:",
+            err
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Internal server error."
+
+        });
 
     }
 );

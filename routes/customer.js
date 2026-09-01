@@ -33,6 +33,7 @@ function createUniqueReferralCode(callback) {
         (err, result) => {
 
             if (err) {
+
                 console.log(
                     "REFERRAL CODE CHECK ERROR:",
                     err
@@ -43,13 +44,15 @@ function createUniqueReferralCode(callback) {
 
             if (result.length > 0) {
 
-                // Collision → generate another code
-                return createUniqueReferralCode(callback);
-
+                return createUniqueReferralCode(
+                    callback
+                );
             }
 
-            callback(null, code);
-
+            callback(
+                null,
+                code
+            );
         }
     );
 }
@@ -60,13 +63,15 @@ function createUniqueReferralCode(callback) {
 
 function cleanMobileNumber(mobile) {
 
-    let cleanMobile = String(mobile || "")
-        .replace(/\D/g, "");
+    let cleanMobile =
+        String(mobile || "")
+            .replace(/\D/g, "");
 
     if (
         cleanMobile.startsWith("91") &&
         cleanMobile.length === 12
     ) {
+
         cleanMobile =
             cleanMobile.substring(2);
     }
@@ -78,564 +83,400 @@ function cleanMobileNumber(mobile) {
 // CUSTOMER REGISTER
 // ==========================================
 
-router.post("/register", (req, res) => {
+router.post(
+    "/register",
+    (req, res) => {
 
-    const {
-        name,
-        mobile,
-        email,
-        gender,
-        referralCode
-    } = req.body;
+        const {
+            name,
+            mobile,
+            email,
+            gender,
+            referralCode
+        } = req.body;
 
-    // ------------------------------------------
-    // BASIC VALIDATION
-    // ------------------------------------------
+        // ==========================================
+        // BASIC VALIDATION
+        // ==========================================
 
-    if (!name || !mobile || !email || !gender) {
+        if (
+            !name ||
+            !mobile ||
+            !email ||
+            !gender
+        ) {
 
-        return res.json({
-            success: false,
-            message:
-                "Please complete all required fields."
-        });
+            return res.json({
+                success: false,
+                message:
+                    "Please complete all required fields."
+            });
+        }
 
-    }
+        const cleanName =
+            String(name).trim();
 
-    const cleanName =
-        String(name).trim();
-
-    const cleanEmail =
-        String(email).trim().toLowerCase();
-
-    const cleanMobile =
-        cleanMobileNumber(mobile);
-
-    const cleanGender =
-        String(gender).trim();
-
-    const cleanReferralCode =
-        referralCode
-            ? String(referralCode)
+        const cleanEmail =
+            String(email)
                 .trim()
-                .toUpperCase()
-            : "";
+                .toLowerCase();
 
-    // ------------------------------------------
-    // VALIDATE NAME
-    // ------------------------------------------
+        const cleanMobile =
+            cleanMobileNumber(mobile);
 
-    if (cleanName.length < 2) {
+        const cleanGender =
+            String(gender).trim();
 
-        return res.json({
-            success: false,
-            message:
-                "Please enter a valid name."
-        });
+        const cleanReferralCode =
+            referralCode
+                ? String(referralCode)
+                    .trim()
+                    .toUpperCase()
+                : "";
 
-    }
+        // ==========================================
+        // VALIDATE NAME
+        // ==========================================
 
-    // ------------------------------------------
-    // VALIDATE MOBILE
-    // ------------------------------------------
+        if (cleanName.length < 2) {
 
-    if (!/^[0-9]{10}$/.test(cleanMobile)) {
+            return res.json({
+                success: false,
+                message:
+                    "Please enter a valid name."
+            });
+        }
 
-        return res.json({
-            success: false,
-            message:
-                "Please enter a valid mobile number."
-        });
+        // ==========================================
+        // VALIDATE MOBILE
+        // ==========================================
 
-    }
+        if (
+            !/^[0-9]{10}$/.test(
+                cleanMobile
+            )
+        ) {
 
-    // ------------------------------------------
-    // VALIDATE EMAIL
-    // ------------------------------------------
+            return res.json({
+                success: false,
+                message:
+                    "Please enter a valid mobile number."
+            });
+        }
 
-    if (
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            .test(cleanEmail)
-    ) {
+        // ==========================================
+        // VALIDATE EMAIL
+        // ==========================================
 
-        return res.json({
-            success: false,
-            message:
-                "Please enter a valid email address."
-        });
+        if (
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                .test(cleanEmail)
+        ) {
 
-    }
+            return res.json({
+                success: false,
+                message:
+                    "Please enter a valid email address."
+            });
+        }
 
-    // ------------------------------------------
-    // VALIDATE GENDER
-    // ------------------------------------------
+        // ==========================================
+        // VALIDATE GENDER
+        // ==========================================
 
-    const allowedGenders = [
-        "Male",
-        "Female",
-        "Other"
-    ];
+        const allowedGenders = [
+            "Male",
+            "Female",
+            "Other"
+        ];
 
-    if (
-        !allowedGenders.includes(
-            cleanGender
-        )
-    ) {
+        if (
+            !allowedGenders.includes(
+                cleanGender
+            )
+        ) {
 
-        return res.json({
-            success: false,
-            message:
-                "Please select a valid gender."
-        });
+            return res.json({
+                success: false,
+                message:
+                    "Please select a valid gender."
+            });
+        }
 
-    }
+        // ==========================================
+        // CHECK MOBILE
+        // ==========================================
 
-    // ------------------------------------------
-    // CHECK MOBILE
-    // ------------------------------------------
+        db.query(
 
-    db.query(
+            `SELECT id
+             FROM customers
+             WHERE mobile=?
+             LIMIT 1`,
 
-        `SELECT id
-         FROM customers
-         WHERE mobile=?
-         LIMIT 1`,
+            [cleanMobile],
 
-        [cleanMobile],
+            (err, result) => {
 
-        (err, result) => {
+                if (err) {
 
-            if (err) {
-
-                console.log(
-                    "REGISTER MOBILE CHECK ERROR:",
-                    err
-                );
-
-                return res.status(500).json({
-
-                    success: false,
-
-                    message:
-                        "Database Error"
-
-                });
-
-            }
-
-            // ------------------------------------------
-            // MOBILE ALREADY EXISTS
-            // ------------------------------------------
-
-            if (result.length > 0) {
-
-                return res.json({
-
-                    success: false,
-
-                    message:
-                        "Mobile number already registered."
-
-                });
-
-            }
-
-            // ------------------------------------------
-            // FIND REFERRER
-            // ------------------------------------------
-
-            const findReferrer =
-                (callback) => {
-
-                    // No referral
-                    if (!cleanReferralCode) {
-
-                        return callback(
-                            null,
-                            null
-                        );
-
-                    }
-
-                    db.query(
-
-                        `SELECT id
-                         FROM customers
-                         WHERE referral_code=?
-                         LIMIT 1`,
-
-                        [cleanReferralCode],
-
-                        (err, result) => {
-
-                            if (err) {
-
-                                console.log(
-                                    "REFERRER CHECK ERROR:",
-                                    err
-                                );
-
-                                return callback(
-                                    err
-                                );
-
-                            }
-
-                            // Invalid referral
-                            // Registration still continues
-                            if (
-                                result.length === 0
-                            ) {
-
-                                return callback(
-                                    null,
-                                    null
-                                );
-
-                            }
-
-                            callback(
-                                null,
-                                result[0].id
-                            );
-
-                        }
-
+                    console.log(
+                        "REGISTER MOBILE CHECK ERROR:",
+                        err
                     );
 
-                };
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Database Error"
+                    });
+                }
 
-            // ------------------------------------------
-            // FIND REFERRER
-            // ------------------------------------------
+                // ==========================================
+                // MOBILE ALREADY EXISTS
+                // ==========================================
 
-            findReferrer(
+                if (result.length > 0) {
 
-                (referrerError, referrerId) => {
+                    return res.json({
+                        success: false,
+                        message:
+                            "Mobile number already registered."
+                    });
+                }
 
-                    if (referrerError) {
+                // ==========================================
+                // FIND REFERRER
+                // ==========================================
 
-                        return res.status(500).json({
+                const findReferrer =
+                    (callback) => {
 
-                            success: false,
+                        // No referral
+                        if (!cleanReferralCode) {
 
-                            message:
-                                "Referral verification failed."
+                            return callback(
+                                null,
+                                null
+                            );
+                        }
 
-                        });
+                        db.query(
 
-                    }
+                            `SELECT id
+                             FROM customers
+                             WHERE referral_code=?
+                             LIMIT 1`,
 
-                    // ------------------------------------------
-                    // GENERATE UNIQUE REFERRAL CODE
-                    // ------------------------------------------
+                            [cleanReferralCode],
 
-                    createUniqueReferralCode(
+                            (err, result) => {
 
-                        (codeError, newReferralCode) => {
+                                if (err) {
 
-                            if (codeError) {
+                                    console.log(
+                                        "REFERRER CHECK ERROR:",
+                                        err
+                                    );
 
-                                return res.status(500).json({
+                                    return callback(
+                                        err
+                                    );
+                                }
 
-                                    success: false,
+                                // Invalid referral
+                                // Registration continues
+                                if (
+                                    result.length === 0
+                                ) {
 
-                                    message:
-                                        "Unable to generate referral code."
+                                    return callback(
+                                        null,
+                                        null
+                                    );
+                                }
 
-                                });
-
+                                callback(
+                                    null,
+                                    result[0].id
+                                );
                             }
+                        );
+                    };
+
+                // ==========================================
+                // FIND REFERRER
+                // ==========================================
+
+                findReferrer(
+
+                    (
+                        referrerError,
+                        referrerId
+                    ) => {
+
+                        if (referrerError) {
+
+                            return res.status(500).json({
+                                success: false,
+                                message:
+                                    "Referral verification failed."
+                            });
+                        }
+
+                        // ==========================================
+                        // GENERATE NEW REFERRAL CODE
+                        // ==========================================
+
+                        createUniqueReferralCode(
+
+                            (
+                                codeError,
+                                newReferralCode
+                            ) => {
+
+                                if (codeError) {
+
+                                    return res.status(500).json({
+                                        success: false,
+                                        message:
+                                            "Unable to generate referral code."
+                                    });
+                                }
+
+                                // ==========================================
+                                // INSERT CUSTOMER
+                                // NEW CUSTOMER = 500 COINS
+                                // ==========================================
+
+                                db.query(
+
+                                    `INSERT INTO customers
+                                    (
+                                        name,
+                                        mobile,
+                                        email,
+                                        gender,
+                                        password,
+                                        is_verified,
+                                        coins,
+                                        referral_code,
+                                        referred_by
+                                    )
+                                    VALUES
+                                    (
+                                        ?,
+                                        ?,
+                                        ?,
+                                        ?,
+                                        NULL,
+                                        1,
+                                        500,
+                                        ?,
+                                        ?
+                                    )`,
+
+                                    [
+                                        cleanName,
+                                        cleanMobile,
+                                        cleanEmail,
+                                        cleanGender,
+                                        newReferralCode,
+                                        referrerId || null
+                                    ],
+
+                                    (
+                                        err,
+                                        insertResult
+                                    ) => {
+
+                                        if (err) {
+
+                                            console.log(
+                                                "CUSTOMER INSERT ERROR:",
+                                                err
+                                            );
+
+                                            return res.status(500).json({
+                                                success: false,
+                                                message:
+                                                    "Registration Failed"
+                                            });
+                                        }
 
-                            // ------------------------------------------
-                            // INSERT CUSTOMER
-                            // ------------------------------------------
-                            //
-                            // NEW CUSTOMER ALWAYS GETS
-                            // 500 DARVOZ COINS
-                            //
-                            // ------------------------------------------
+                                        const newCustomerId =
+                                            insertResult.insertId;
 
-                            db.query(
+                                        // ==========================================
+                                        // NO REFERRAL
+                                        // ==========================================
 
-                                `INSERT INTO customers
-                                (
-                                    name,
-                                    mobile,
-                                    email,
-                                    gender,
-                                    password,
-                                    is_verified,
-                                    coins,
-                                    referral_code,
-                                    referred_by
-                                )
-                                VALUES
-                                (
-                                    ?,
-                                    ?,
-                                    ?,
-                                    ?,
-                                    NULL,
-                                    1,
-                                    500,
-                                    ?,
-                                    ?
-                                )`,
+                                        if (!referrerId) {
 
-                                [
-                                    cleanName,
-                                    cleanMobile,
-                                    cleanEmail,
-                                    cleanGender,
-                                    newReferralCode,
-                                    referrerId || null
-                                ],
+                                            return res.json({
 
-                                (err, insertResult) => {
+                                                success: true,
 
-                                    if (err) {
+                                                message:
+                                                    "Registration Successful",
 
-                                        console.log(
-                                            "CUSTOMER INSERT ERROR:",
-                                            err
-                                        );
+                                                customer: {
 
-                                        return res.status(500).json({
+                                                    id:
+                                                        newCustomerId,
 
-                                            success: false,
+                                                    name:
+                                                        cleanName,
 
-                                            message:
-                                                "Registration Failed"
+                                                    mobile:
+                                                        cleanMobile,
 
-                                        });
+                                                    email:
+                                                        cleanEmail,
 
-                                    }
+                                                    gender:
+                                                        cleanGender,
 
-                                    const newCustomerId =
-                                        insertResult.insertId;
+                                                    coins:
+                                                        500,
 
-                                    // ------------------------------------------
-                                    // NO VALID REFERRAL
-                                    // ------------------------------------------
+                                                    referralCode:
+                                                        newReferralCode
+                                                },
 
-                                    if (!referrerId) {
+                                                referral: {
 
-                                        return res.json({
+                                                    applied:
+                                                        false
+                                                }
+                                            });
+                                        }
 
-                                            success: true,
+                                        // ==========================================
+                                        // VALID REFERRAL
+                                        // REFERRER +1000
+                                        // NEW CUSTOMER 500
+                                        // ==========================================
 
-                                            message:
-                                                "Registration Successful",
+                                        db.query(
 
-                                            customer: {
+                                            `UPDATE customers
+                                             SET coins = coins + 1000
+                                             WHERE id=?`,
 
-                                                id:
-                                                    newCustomerId,
+                                            [referrerId],
 
-                                                name:
-                                                    cleanName,
+                                            (err) => {
 
-                                                mobile:
-                                                    cleanMobile,
+                                                if (err) {
 
-                                                email:
-                                                    cleanEmail,
+                                                    console.log(
+                                                        "REFERRER COIN UPDATE ERROR:",
+                                                        err
+                                                    );
 
-                                                gender:
-                                                    cleanGender,
-
-                                                coins:
-                                                    500,
-
-                                                referralCode:
-                                                    newReferralCode
-
-                                            },
-
-                                            referral: {
-
-                                                applied:
-                                                    false
-
-                                            }
-
-                                        });
-
-                                    }
-
-                                    // ------------------------------------------
-                                    // VALID REFERRAL
-                                    // ------------------------------------------
-                                    //
-                                    // REFERRER → +1000
-                                    // NEW CUSTOMER → 500
-                                    //
-                                    // ------------------------------------------
-
-                                    db.query(
-
-                                        `UPDATE customers
-                                         SET coins = coins + 1000
-                                         WHERE id=?`,
-
-                                        [referrerId],
-
-                                        (err) => {
-
-                                            if (err) {
-
-                                                console.log(
-                                                    "REFERRER COIN UPDATE ERROR:",
-                                                    err
-                                                );
-
-                                                // Customer was already
-                                                // created with 500 coins.
-                                                // We report registration success,
-                                                // but referral reward failed.
-
-                                                return res.json({
-
-                                                    success: true,
-
-                                                    message:
-                                                        "Registration Successful",
-
-                                                    customer: {
-
-                                                        id:
-                                                            newCustomerId,
-
-                                                        name:
-                                                            cleanName,
-
-                                                        mobile:
-                                                            cleanMobile,
-
-                                                        email:
-                                                            cleanEmail,
-
-                                                        gender:
-                                                            cleanGender,
-
-                                                        coins:
-                                                            500,
-
-                                                        referralCode:
-                                                            newReferralCode
-
-                                                    },
-
-                                                    referral: {
-
-                                                        applied:
-                                                            false
-
-                                                    }
-
-                                                });
-
-                                            }
-
-                                            // ------------------------------------------
-                                            // RECORD REFERRAL
-                                            // ------------------------------------------
-
-                                            db.query(
-
-                                                `INSERT INTO referral_rewards
-                                                (
-                                                    referrer_id,
-                                                    referred_customer_id,
-                                                    referrer_coins,
-                                                    referred_coins
-                                                )
-                                                VALUES
-                                                (
-                                                    ?,
-                                                    ?,
-                                                    1000,
-                                                    500
-                                                )`,
-
-                                                [
-                                                    referrerId,
-                                                    newCustomerId
-                                                ],
-
-                                                (rewardErr) => {
-
-                                                    if (rewardErr) {
-
-                                                        console.log(
-                                                            "REFERRAL HISTORY ERROR:",
-                                                            rewardErr
-                                                        );
-
-                                                        // IMPORTANT:
-                                                        // The referrer already received
-                                                        // 1000 coins.
-                                                        //
-                                                        // We do NOT add another 1000.
-                                                        //
-                                                        // Registration remains successful.
-
-                                                        return res.json({
-
-                                                            success: true,
-
-                                                            message:
-                                                                "Registration Successful",
-
-                                                            customer: {
-
-                                                                id:
-                                                                    newCustomerId,
-
-                                                                name:
-                                                                    cleanName,
-
-                                                                mobile:
-                                                                    cleanMobile,
-
-                                                                email:
-                                                                    cleanEmail,
-
-                                                                gender:
-                                                                    cleanGender,
-
-                                                                coins:
-                                                                    500,
-
-                                                                referralCode:
-                                                                    newReferralCode
-
-                                                            },
-
-                                                            referral: {
-
-                                                                applied:
-                                                                    true,
-
-                                                                referrerReward:
-                                                                    1000,
-
-                                                                customerReward:
-                                                                    500,
-
-                                                                historyRecorded:
-                                                                    false
-
-                                                            }
-
-                                                        });
-
-                                                    }
-
-                                                    // ------------------------------------------
-                                                    // COMPLETE SUCCESS
-                                                    // ------------------------------------------
+                                                    // Registration succeeded.
+                                                    // Customer already has 500 coins.
 
                                                     return res.json({
 
@@ -666,137 +507,365 @@ router.post("/register", (req, res) => {
 
                                                             referralCode:
                                                                 newReferralCode
-
                                                         },
 
                                                         referral: {
 
                                                             applied:
-                                                                true,
-
-                                                            referrerReward:
-                                                                1000,
-
-                                                            customerReward:
-                                                                500,
-
-                                                            historyRecorded:
-                                                                true
-
+                                                                false
                                                         }
-
                                                     });
-
                                                 }
 
-                                            );
+                                                // ==========================================
+                                                // RECORD REFERRAL HISTORY
+                                                // ==========================================
 
-                                        }
+                                                db.query(
 
-                                    );
+                                                    `INSERT INTO referral_rewards
+                                                    (
+                                                        referrer_id,
+                                                        referred_customer_id,
+                                                        referrer_coins,
+                                                        referred_coins
+                                                    )
+                                                    VALUES
+                                                    (
+                                                        ?,
+                                                        ?,
+                                                        1000,
+                                                        500
+                                                    )`,
 
-                                }
+                                                    [
+                                                        referrerId,
+                                                        newCustomerId
+                                                    ],
 
-                            );
+                                                    (rewardErr) => {
 
-                        }
+                                                        if (rewardErr) {
 
-                    );
+                                                            console.log(
+                                                                "REFERRAL HISTORY ERROR:",
+                                                                rewardErr
+                                                            );
 
-                }
+                                                            // Referrer already received
+                                                            // 1000 coins.
+                                                            // Do not give another reward.
 
-            );
+                                                            return res.json({
 
-        }
+                                                                success: true,
 
-    );
+                                                                message:
+                                                                    "Registration Successful",
 
-});
+                                                                customer: {
 
-// ==========================================
-// CUSTOMER LOGIN
-// ==========================================
+                                                                    id:
+                                                                        newCustomerId,
+
+                                                                    name:
+                                                                        cleanName,
+
+                                                                    mobile:
+                                                                        cleanMobile,
+
+                                                                    email:
+                                                                        cleanEmail,
+
+                                                                    gender:
+                                                                        cleanGender,
+
+                                                                    coins:
+                                                                        500,
+
+                                                                    referralCode:
+                                                                        newReferralCode
+                                                                },
+
+                                                                referral: {
+
+                                                                    applied:
+                                                                        true,
+
+                                                                    referrerReward:
+                                                                        1000,
+
+                                                                    customerReward:
+                                                                        500,
+
+                                                                    historyRecorded:
+                                                                        false
+                                                                }
+                                                            });
+                                                        }
+
+                                                        // ==========================================
+                                                        // SEND REFERRER NOTIFICATION
+                                                        // ==========================================
+
+                                                        db.query(
+
+                                                            `INSERT INTO customer_notifications
+                                                            (
+                                                                customer_id,
+                                                                type,
+                                                                title,
+                                                                message,
+                                                                is_read
+                                                            )
+                                                            VALUES
+                                                            (
+                                                                ?,
+                                                                ?,
+                                                                ?,
+                                                                ?,
+                                                                0
+                                                            )`,
+
+                                                            [
+                                                                referrerId,
+
+                                                                "referral",
+
+                                                                "🎉 Referral Reward Earned!",
+
+                                                                "Your friend joined DARVOZ using your referral code. You earned 1000 DARVOZ Coins!"
+                                                            ],
+
+                                                            (
+                                                                referrerNotificationErr
+                                                            ) => {
+
+                                                                if (
+                                                                    referrerNotificationErr
+                                                                ) {
+
+                                                                    console.log(
+                                                                        "REFERRER NOTIFICATION ERROR:",
+                                                                        referrerNotificationErr
+                                                                    );
+                                                                }
+
+                                                                // ==========================================
+                                                                // SEND NEW CUSTOMER NOTIFICATION
+                                                                // ==========================================
+
+                                                                db.query(
+
+                                                                    `INSERT INTO customer_notifications
+                                                                    (
+                                                                        customer_id,
+                                                                        type,
+                                                                        title,
+                                                                        message,
+                                                                        is_read
+                                                                    )
+                                                                    VALUES
+                                                                    (
+                                                                        ?,
+                                                                        ?,
+                                                                        ?,
+                                                                        ?,
+                                                                        0
+                                                                    )`,
+
+                                                                    [
+                                                                        newCustomerId,
+
+                                                                        "referral",
+
+                                                                        "🎁 Welcome Referral Bonus!",
+
+                                                                        "Welcome to DARVOZ! You received 500 DARVOZ Coins for joining with a referral."
+                                                                    ],
+
+                                                                    (
+                                                                        customerNotificationErr
+                                                                    ) => {
+
+                                                                        if (
+                                                                            customerNotificationErr
+                                                                        ) {
+
+                                                                            console.log(
+                                                                                "NEW CUSTOMER NOTIFICATION ERROR:",
+                                                                                customerNotificationErr
+                                                                            );
+                                                                        }
+
+                                                                        // ==========================================
+                                                                        // COMPLETE SUCCESS
+                                                                        // ==========================================
+
+                                                                        return res.json({
+
+                                                                            success: true,
+
+                                                                            message:
+                                                                                "Registration Successful",
+
+                                                                            customer: {
+
+                                                                                id:
+                                                                                    newCustomerId,
+
+                                                                                name:
+                                                                                    cleanName,
+
+                                                                                mobile:
+                                                                                    cleanMobile,
+
+                                                                                email:
+                                                                                    cleanEmail,
+
+                                                                                gender:
+                                                                                    cleanGender,
+
+                                                                                coins:
+                                                                                    500,
+
+                                                                                referralCode:
+                                                                                    newReferralCode
+                                                                            },
+
+                                                                            referral: {
+
+                                                                                applied:
+                                                                                    true,
+
+                                                                                referrerReward:
+                                                                                    1000,
+
+                                                                                customerReward:
+                                                                                    500,
+
+                                                                                historyRecorded:
+                                                                                    true
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                );
+                                                            }
+                                                        );
+                                                    }
+                                                );
+                                            }
+                                        );
+                                    }
+                                );
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    }
+);
 
 // ==========================================
 // CUSTOMER LOGIN / CHECK MOBILE
 // ==========================================
 
-router.post("/login", (req, res) => {
+router.post(
+    "/login",
+    (req, res) => {
 
-    const { mobile } = req.body;
+        const {
+            mobile
+        } = req.body;
 
-    if (!mobile) {
-        return res.status(400).json({
-            success: false,
-            message: "Mobile number is required"
-        });
-    }
+        if (!mobile) {
 
-    const cleanMobile = cleanMobileNumber(mobile);
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Mobile number is required"
+            });
+        }
 
-    if (!/^[0-9]{10}$/.test(cleanMobile)) {
-        return res.status(400).json({
-            success: false,
-            message: "Please enter a valid mobile number"
-        });
-    }
+        const cleanMobile =
+            cleanMobileNumber(mobile);
 
-    db.query(
-        `SELECT
-            id,
-            name,
-            mobile,
-            email,
-            gender,
-            coins,
-            referral_code,
-            referred_by
-         FROM customers
-         WHERE mobile=?
-         LIMIT 1`,
-        [cleanMobile],
-        (err, result) => {
+        if (
+            !/^[0-9]{10}$/.test(
+                cleanMobile
+            )
+        ) {
 
-            if (err) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Please enter a valid mobile number"
+            });
+        }
 
-                console.log(
-                    "CUSTOMER LOGIN ERROR:",
-                    err
-                );
+        db.query(
 
-                return res.status(500).json({
-                    success: false,
-                    message: "Database Error"
-                });
-            }
+            `SELECT
+                id,
+                name,
+                mobile,
+                email,
+                gender,
+                coins,
+                referral_code,
+                referred_by
+             FROM customers
+             WHERE mobile=?
+             LIMIT 1`,
 
-            // ==========================================
-            // EXISTING CUSTOMER
-            // ==========================================
+            [cleanMobile],
 
-            if (result.length > 0) {
+            (err, result) => {
+
+                if (err) {
+
+                    console.log(
+                        "CUSTOMER LOGIN ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Database Error"
+                    });
+                }
+
+                // ==========================================
+                // EXISTING CUSTOMER
+                // ==========================================
+
+                if (result.length > 0) {
+
+                    return res.json({
+                        success: true,
+                        exists: true,
+                        customer:
+                            result[0]
+                    });
+                }
+
+                // ==========================================
+                // NEW CUSTOMER
+                // ==========================================
 
                 return res.json({
                     success: true,
-                    exists: true,
-                    customer: result[0]
+                    exists: false,
+                    customer: null,
+                    mobile:
+                        cleanMobile
                 });
             }
-
-            // ==========================================
-            // NEW CUSTOMER
-            // ==========================================
-
-            return res.json({
-                success: true,
-                exists: false,
-                customer: null,
-                mobile: cleanMobile
-            });
-
-        }
-    );
-});
+        );
+    }
+);
 
 // ==========================================
 // UPDATE LOCATION
@@ -842,29 +911,19 @@ router.post(
                     );
 
                     return res.json({
-
                         success: false,
-
                         message:
                             "Location update failed"
-
                     });
-
                 }
 
                 res.json({
-
                     success: true,
-
                     message:
                         "Location updated successfully"
-
                 });
-
             }
-
         );
-
     }
 );
 
@@ -913,14 +972,10 @@ router.get(
                     );
 
                     return res.json({
-
                         success: false,
-
                         message:
                             "Database Error"
-
                     });
-
                 }
 
                 if (
@@ -928,29 +983,19 @@ router.get(
                 ) {
 
                     return res.json({
-
                         success: false,
-
                         message:
                             "Customer not found"
-
                     });
-
                 }
 
                 res.json({
-
                     success: true,
-
                     customer:
                         result[0]
-
                 });
-
             }
-
         );
-
     }
 );
 
@@ -968,25 +1013,19 @@ const storage =
                     null,
                     "uploads/"
                 );
-
             },
 
         filename:
             (req, file, cb) => {
 
                 cb(
-
                     null,
-
                     Date.now() +
                     path.extname(
                         file.originalname
                     )
-
                 );
-
             }
-
     });
 
 const upload =
@@ -1021,7 +1060,6 @@ router.post(
 
             image =
                 req.file.filename;
-
         }
 
         const sql = `
@@ -1076,29 +1114,19 @@ router.post(
                     );
 
                     return res.status(500).json({
-
                         success: false,
-
                         message:
                             "Profile update failed"
-
                     });
-
                 }
 
                 return res.json({
-
                     success: true,
-
                     message:
                         "Profile Updated Successfully"
-
                 });
-
             }
-
         );
-
     }
 );
 
@@ -1121,14 +1149,10 @@ router.post(
         ) {
 
             return res.json({
-
                 success: false,
-
                 message:
                     "Customer ID and Product ID required"
-
             });
-
         }
 
         db.query(
@@ -1150,19 +1174,15 @@ router.post(
                     console.error(err);
 
                     return res.json({
-
                         success: false,
-
                         message:
                             "Database error"
-
                     });
-
                 }
 
-                // ------------------------------------------
+                // ==========================================
                 // ALREADY FAVORITE → REMOVE
-                // ------------------------------------------
+                // ==========================================
 
                 if (
                     result.length > 0
@@ -1184,34 +1204,24 @@ router.post(
                             if (err) {
 
                                 return res.json({
-
                                     success: false,
-
                                     message:
                                         "Unable to remove favorite"
-
                                 });
-
                             }
 
                             res.json({
-
                                 success: true,
-
                                 favorite:
                                     false
-
                             });
-
                         }
-
                     );
-
                 }
 
-                // ------------------------------------------
+                // ==========================================
                 // NOT FAVORITE → ADD
-                // ------------------------------------------
+                // ==========================================
 
                 else {
 
@@ -1236,35 +1246,22 @@ router.post(
                                 console.error(err);
 
                                 return res.json({
-
                                     success: false,
-
                                     message:
                                         "Unable to save favorite"
-
                                 });
-
                             }
 
                             res.json({
-
                                 success: true,
-
                                 favorite:
                                     true
-
                             });
-
                         }
-
                     );
-
                 }
-
             }
-
         );
-
     }
 );
 
@@ -1283,14 +1280,10 @@ router.post(
         if (!mobile) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Mobile number is required"
-
             });
-
         }
 
         const cleanMobile =
@@ -1332,56 +1325,39 @@ router.post(
                     );
 
                     return res.status(500).json({
-
                         success: false,
-
                         message:
                             "Database Error"
-
                     });
-
                 }
 
-                // ------------------------------------------
+                // ==========================================
                 // EXISTING CUSTOMER
-                // ------------------------------------------
+                // ==========================================
 
                 if (
                     result.length > 0
                 ) {
 
                     return res.json({
-
                         success: true,
-
                         exists: true,
-
                         customer:
                             result[0]
-
                     });
-
                 }
 
-                // ------------------------------------------
+                // ==========================================
                 // NEW CUSTOMER
-                // ------------------------------------------
+                // ==========================================
 
                 return res.json({
-
                     success: true,
-
                     exists: false,
-
-                    customer:
-                        null
-
+                    customer: null
                 });
-
             }
-
         );
-
     }
 );
 
@@ -1399,42 +1375,51 @@ router.get(
         if (!customerId) {
 
             return res.status(400).json({
-
                 success: false,
-
                 message:
                     "Customer ID is required"
-
             });
-
         }
 
         const sql = `
 
             SELECT
+
                 rr.referrer_id,
+
                 rr.referred_customer_id,
+
                 rr.referrer_coins,
+
                 rr.referred_coins,
 
                 c.name AS referred_name,
+
                 c.mobile AS referred_mobile,
+
                 c.email AS referred_email
 
             FROM referral_rewards rr
 
             INNER JOIN customers c
-                ON c.id = rr.referred_customer_id
+                ON c.id =
+                   rr.referred_customer_id
 
             WHERE rr.referrer_id = ?
 
-            ORDER BY rr.referred_customer_id DESC
+            ORDER BY
+                rr.referred_customer_id DESC
 
         `;
 
         db.query(
+
             sql,
-            [customerId],
+
+            [
+                customerId
+            ],
+
             (err, result) => {
 
                 if (err) {
@@ -1445,27 +1430,95 @@ router.get(
                     );
 
                     return res.status(500).json({
-
                         success: false,
-
                         message:
                             "Unable to load referral history"
-
                     });
+                }
 
+                return res.json({
+                    success: true,
+                    referrals:
+                        result
+                });
+            }
+        );
+    }
+);
+
+// ==========================================
+// CUSTOMER NOTIFICATIONS
+// ==========================================
+
+router.get(
+    "/notifications",
+    (req, res) => {
+
+        const customerId =
+            req.query.customerId ||
+            req.headers["x-customer-id"];
+
+        if (!customerId) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Customer ID is required"
+            });
+        }
+
+        const sql = `
+
+            SELECT
+                id,
+                type,
+                title,
+                message,
+                is_read,
+                created_at
+
+            FROM customer_notifications
+
+            WHERE customer_id = ?
+
+            ORDER BY
+                created_at DESC
+
+        `;
+
+        db.query(
+
+            sql,
+
+            [
+                customerId
+            ],
+
+            (error, results) => {
+
+                if (error) {
+
+                    console.error(
+                        "CUSTOMER NOTIFICATIONS ERROR:",
+                        error
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message:
+                            "Database Error"
+                    });
                 }
 
                 return res.json({
 
                     success: true,
 
-                    referrals: result
-
+                    notifications:
+                        results || []
                 });
-
             }
         );
-
     }
 );
 

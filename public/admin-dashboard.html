@@ -1522,6 +1522,33 @@ type="audio/mpeg">
                 Display Order
             </label>
 
+            <label>
+    🔔 Push Notification Message
+</label>
+
+<textarea
+    id="offerNotificationMessage"
+    placeholder="Example: 🔥 Weekend Special is LIVE! Get amazing offers today!"
+    rows="3"
+    style="
+        width:100%;
+        padding:12px;
+        border:1px solid #ddd;
+        border-radius:8px;
+        resize:vertical;
+        font-family:inherit;
+        margin-bottom:15px;
+    "
+></textarea>
+
+<p style="
+    margin-top:-5px;
+    margin-bottom:15px;
+    color:#6b7280;
+    font-size:13px;
+">
+    Leave empty if you don't want to send a notification.
+</p>
             <input
                 type="number"
                 id="offerOrder"
@@ -4971,14 +4998,19 @@ async function saveOffer(){
     const id =
         document.getElementById("offerId").value;
 
-    const title =
-        document.getElementById("offerTitle")
-        .value
-        .trim();
+   const title =
+    document.getElementById("offerTitle")
+    .value
+    .trim();
 
-    const order =
-        document.getElementById("offerOrder")
-        .value || 0;
+const notificationMessage =
+    document.getElementById("offerNotificationMessage")
+    .value
+    .trim();
+
+const order =
+    document.getElementById("offerOrder")
+    .value || 0;
 
     const image =
         document.getElementById("offerImage")
@@ -5008,7 +5040,11 @@ async function saveOffer(){
     formData.append("title",title);
 
     formData.append("display_order",order);
-
+ 
+    formData.append(
+    "notification_message",
+    notificationMessage
+);
 
     if(image){
 

@@ -145,6 +145,7 @@ app.use("/admin", adminRoutes);
 app.use("/address", addressRoutes);
 
 app.use("/customer", customerRoutes);
+app.use("/api/customer", customerRoutes);
 
 app.use("/wallet", walletRoutes);
 
