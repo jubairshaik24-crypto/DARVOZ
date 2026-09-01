@@ -4,7 +4,7 @@
 
 require("dotenv").config();
 
-
+const admin = require("./config/firebaseAdmin");
 
 const express = require("express");
 const cors = require("cors");
@@ -127,7 +127,8 @@ const restaurantRoutes = require("./routes/restaurant");
 const cartRoutes = require("./routes/cart");
 const addressRoutes = require("./routes/address");
 const paymentRoutes = require("./routes/payment");
-
+const { sendPushNotification } =
+    require("./services/fcmService");
 
 // APIs
 
@@ -293,7 +294,97 @@ app.post("/webhook", (req, res) => {
     // Meta requires a quick 200 response
     res.sendStatus(200);
 });
+// ==============================
+// TEST FCM NOTIFICATION
+// ==============================
 
+app.post("/api/test-fcm", async (req, res) => {
+
+    try {
+
+        const customerId =
+            req.body.customerId;
+
+        if (!customerId) {
+            return res.status(400).json({
+                success: false,
+                message: "customerId is required"
+            });
+        }
+
+        // Get customer's FCM token
+        db.query(
+            `SELECT fcm_token
+             FROM customers
+             WHERE id = ?
+             LIMIT 1`,
+            [customerId],
+            async (error, results) => {
+
+                if (error) {
+
+                    console.error(
+                        "FCM TOKEN DB ERROR:",
+                        error
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message: "Database error"
+                    });
+                }
+
+                if (
+                    !results ||
+                    results.length === 0
+                ) {
+
+                    return res.status(404).json({
+                        success: false,
+                        message: "Customer not found"
+                    });
+                }
+
+                const fcmToken =
+                    results[0].fcm_token;
+
+                if (!fcmToken) {
+
+                    return res.status(404).json({
+                        success: false,
+                        message:
+                            "Customer has no FCM token"
+                    });
+                }
+
+                const result =
+                    await sendPushNotification(
+                        fcmToken,
+                        "🔥 DARVOZ TEST",
+                        "Push notifications are working!",
+                        {
+                            type: "test",
+                            customerId: customerId
+                        }
+                    );
+
+                return res.json(result);
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "TEST FCM ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
 // ==============================
 // 404
 // ==============================
