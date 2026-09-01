@@ -1521,7 +1521,75 @@ router.get(
         );
     }
 );
+// ==========================================
+// SAVE FCM TOKEN
+// ==========================================
 
+router.post(
+    "/fcm-token",
+    (req, res) => {
+
+        const {
+            customerId,
+            fcmToken
+        } = req.body;
+
+        if (!customerId || !fcmToken) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Customer ID and FCM token are required"
+            });
+        }
+
+        const sql = `
+            UPDATE customers
+            SET fcm_token = ?
+            WHERE id = ?
+        `;
+
+        db.query(
+            sql,
+            [
+                fcmToken,
+                customerId
+            ],
+            (err, result) => {
+
+                if (err) {
+
+                    console.error(
+                        "FCM TOKEN SAVE ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message: "Unable to save FCM token"
+                    });
+                }
+
+                if (result.affectedRows === 0) {
+
+                    return res.status(404).json({
+                        success: false,
+                        message: "Customer not found"
+                    });
+                }
+
+                console.log(
+                    "✅ FCM TOKEN SAVED FOR CUSTOMER:",
+                    customerId
+                );
+
+                return res.json({
+                    success: true,
+                    message: "FCM token saved successfully"
+                });
+            }
+        );
+    }
+);
 // ==========================================
 // EXPORT
 // ==========================================

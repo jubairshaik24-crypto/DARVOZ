@@ -5879,7 +5879,326 @@ setInterval(
 );
 
 </script>
+<script type="module">
 
+/* =====================================================
+   DARVOZ FIREBASE + FCM
+===================================================== */
+
+import {
+    initializeApp,
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+    getMessaging,
+    getToken,
+    onMessage
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-messaging.js";
+
+
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAQXMMUBjXHWkMlODTW6pn3V8ZCpvqCq1A",
+
+    authDomain: "darvoz-a6c5d.firebaseapp.com",
+
+    projectId: "darvoz-a6c5d",
+
+    storageBucket: "darvoz-a6c5d.firebasestorage.app",
+
+    messagingSenderId: "807478858598",
+
+    appId: "1:807478858598:web:459ccdaf999d7b3ab16ea7",
+
+    measurementId: "G-CDWZ9YXLEG"
+
+};
+
+
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
+
+const app = getApps().length
+    ? getApp()
+    : initializeApp(firebaseConfig);
+
+console.log("✅ DARVOZ FIREBASE READY");
+
+
+/* =====================================================
+   INITIALIZE FCM
+===================================================== */
+
+const messaging = getMessaging(app);
+
+console.log("✅ DARVOZ FCM READY");
+
+
+/* =====================================================
+   VAPID KEY
+===================================================== */
+
+const DARVOZ_VAPID_KEY =
+    "BOQxT9A7IE70H9hjhlAyAoZG48xVCV8yfiqaCTZ5aCHIp2piFhM6olpucgPpNq5sVQ6HMm4-c2CASw_wf0jVCz8";
+
+
+/* =====================================================
+   SERVICE WORKER
+===================================================== */
+
+let darvozServiceWorkerRegistration = null;
+
+
+async function registerDARVOZServiceWorker() {
+
+    try {
+
+        if (!("serviceWorker" in navigator)) {
+
+            console.error(
+                "❌ Service Worker is not supported"
+            );
+
+            return null;
+        }
+
+
+        darvozServiceWorkerRegistration =
+            await navigator.serviceWorker.register(
+                "/firebase-messaging-sw.js",
+                {
+                    scope: "/"
+                }
+            );
+
+
+        console.log(
+            "✅ DARVOZ SW REGISTERED:",
+            darvozServiceWorkerRegistration.scope
+        );
+
+
+        await navigator.serviceWorker.ready;
+
+
+        console.log(
+            "✅ DARVOZ SW ACTIVE:",
+            darvozServiceWorkerRegistration.active?.scriptURL
+        );
+
+
+        return darvozServiceWorkerRegistration;
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ DARVOZ SW REGISTRATION ERROR:",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+/* =====================================================
+   START SERVICE WORKER
+===================================================== */
+
+registerDARVOZServiceWorker();
+
+
+/* =====================================================
+   TEST FCM TOKEN
+===================================================== */
+
+window.testDARVOZFCM = async function () {
+
+    try {
+
+        console.log(
+            "🔥 DARVOZ FCM TOKEN TEST STARTING..."
+        );
+
+
+        /* Wait for Service Worker */
+
+        const registration =
+            darvozServiceWorkerRegistration ||
+            await navigator.serviceWorker.ready;
+
+
+        console.log(
+            "✅ Service Worker ready:",
+            registration.scope
+        );
+
+
+        /* Ask notification permission */
+
+        const permission =
+            await Notification.requestPermission();
+
+
+        console.log(
+            "🔔 DARVOZ Notification Permission:",
+            permission
+        );
+
+
+        if (permission !== "granted") {
+
+            console.error(
+                "❌ Notification permission not granted"
+            );
+
+            return null;
+        }
+
+
+        /* Get FCM token */
+
+        const token = await getToken(
+            messaging,
+            {
+                vapidKey: DARVOZ_VAPID_KEY,
+
+                serviceWorkerRegistration:
+                    registration
+            }
+        );
+
+
+        if (token) {
+
+            console.log(
+                "🔥🔥 DARVOZ FCM TOKEN:"
+            );
+
+            console.log(token);
+
+
+            /* Make token available to other code */
+
+            window.DARVOZ_FCM_TOKEN = token;
+        
+            const customerId =
+    localStorage.getItem("customerId");
+
+if (!customerId) {
+    console.error("❌ No customerId found");
+    return token;
+}
+
+const response = await fetch("/api/customer/fcm-token", {
+    method: "POST",
+
+    headers: {
+        "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+        customerId: customerId,
+        fcmToken: token
+    })
+});
+
+const result = await response.json();
+
+console.log(
+    "📲 DARVOZ FCM TOKEN SAVED:",
+    result
+);
+
+            return token;
+
+        }
+
+
+        console.error(
+            "❌ Firebase returned NO TOKEN"
+        );
+
+
+        return null;
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ DARVOZ FCM TOKEN ERROR:",
+            error
+        );
+
+        return null;
+    }
+};
+
+
+/* =====================================================
+   FOREGROUND NOTIFICATIONS
+===================================================== */
+
+onMessage(
+    messaging,
+    (payload) => {
+
+        console.log(
+            "🔔 DARVOZ FOREGROUND NOTIFICATION:",
+            payload
+        );
+
+
+        const title =
+            payload.notification?.title ||
+            payload.data?.title ||
+            "DARVOZ";
+
+
+        const body =
+            payload.notification?.body ||
+            payload.data?.body ||
+            "";
+
+
+        /* Show notification when possible */
+
+        if (
+            Notification.permission ===
+            "granted"
+        ) {
+
+            new Notification(
+                title,
+                {
+                    body: body,
+                    icon: "/favicon.ico"
+                }
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   DARVOZ READY
+===================================================== */
+
+console.log(
+    "🚀 DARVOZ NOTIFICATION SYSTEM READY"
+);
+
+</script>
 
 </body>
 
