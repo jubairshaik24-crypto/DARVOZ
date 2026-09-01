@@ -3787,9 +3787,10 @@ function(event){
 
 });
 
+
 /* =====================================================
-   LOAD SAVED DELIVERY ADDRESS
-   Priority: address.html saved address
+   DARVOZ LOCATION SYSTEM
+   MANUAL ADDRESS ALWAYS HAS PRIORITY
 ===================================================== */
 
 function loadSavedDeliveryAddress(){
@@ -3801,47 +3802,139 @@ function loadSavedDeliveryAddress(){
         return false;
     }
 
-
-    // =========================================
-    // PRIMARY LOCATION
-    // =========================================
+    const manualSelected =
+        localStorage.getItem("manualLocationSelected") === "true";
 
     const locationName =
         localStorage.getItem("locationName");
 
+    const selectedAddress =
+        localStorage.getItem("selectedAddress");
 
-    if(locationName && locationName.trim()){
+    const latitude =
+        localStorage.getItem("latitude");
+
+    const longitude =
+        localStorage.getItem("longitude");
+
+
+    /* =================================================
+       1. MANUAL ADDRESS
+       HIGHEST PRIORITY
+    ================================================= */
+
+    if(manualSelected){
+
+        const displayName =
+            locationName &&
+            locationName.trim()
+                ? locationName
+                : selectedAddress;
+
+        if(displayName){
+            locationElement.textContent =
+                displayName;
+        }
+
+        console.log(
+            "📍 DARVOZ MANUAL LOCATION ACTIVE"
+        );
+
+        console.log(
+            "Address:",
+            displayName
+        );
+
+        console.log(
+            "Latitude:",
+            latitude
+        );
+
+        console.log(
+            "Longitude:",
+            longitude
+        );
+
+
+        /*
+         * NEVER use browser GPS when a manual
+         * address has been selected.
+         */
+
+        if(
+            latitude !== null &&
+            latitude !== "" &&
+            longitude !== null &&
+            longitude !== ""
+        ){
+
+            return true;
+
+        }
+
+
+        /*
+         * Address exists but coordinates
+         * are missing.
+         */
+
+        console.warn(
+            "⚠️ Manual address has no coordinates"
+        );
+
+        return "MANUAL_NO_COORDS";
+    }
+
+
+    /* =================================================
+       2. NORMAL SAVED LOCATION
+    ================================================= */
+
+    if(
+        locationName &&
+        locationName.trim() &&
+        latitude !== null &&
+        latitude !== "" &&
+        longitude !== null &&
+        longitude !== ""
+    ){
 
         locationElement.textContent =
             locationName;
 
         console.log(
-            "SAVED LOCATION FOUND:",
+            "📍 USING SAVED LOCATION:",
             locationName
+        );
+
+        console.log(
+            "Coordinates:",
+            latitude,
+            longitude
         );
 
         return true;
     }
 
 
-    // =========================================
-    // FALLBACK
-    // =========================================
-
-    const selectedAddress =
-        localStorage.getItem("selectedAddress");
-
+    /* =================================================
+       3. SAVED ADDRESS WITH COORDINATES
+    ================================================= */
 
     if(
         selectedAddress &&
-        selectedAddress.trim()
+        selectedAddress.trim() &&
+        latitude !== null &&
+        latitude !== "" &&
+        longitude !== null &&
+        longitude !== ""
     ){
 
         locationElement.textContent =
             selectedAddress;
 
         console.log(
-            "SAVED ADDRESS FOUND:",
+            "📍 USING SAVED ADDRESS:",
             selectedAddress
         );
 
@@ -3852,8 +3945,10 @@ function loadSavedDeliveryAddress(){
     return false;
 }
 
+
 /* =====================================================
-   LOCATION
+   DEVICE GPS
+   ONLY USED WHEN THERE IS NO MANUAL LOCATION
 ===================================================== */
 
 function detectCustomerLocation(){
@@ -3868,97 +3963,73 @@ function detectCustomerLocation(){
             return;
         }
 
-        // =========================================
-        // CHECK SAVED LOCATION + COORDINATES
-        // =========================================
+        /* Manual location always has priority over device GPS. */
+        const manualSelected =
+            localStorage.getItem("manualLocationSelected") === "true";
 
-        const savedLocation =
-            localStorage.getItem("locationName");
+        if(manualSelected){
 
-        const savedLatitude =
-            localStorage.getItem("latitude");
+            const manualAddress =
+                localStorage.getItem("selectedAddress") ||
+                localStorage.getItem("locationName");
 
-        const savedLongitude =
-            localStorage.getItem("longitude");
+            const manualLatitude =
+                localStorage.getItem("latitude");
 
+            const manualLongitude =
+                localStorage.getItem("longitude");
 
-        // Only use saved location if coordinates
-        // are also available
-        if(
-            savedLocation &&
-            savedLatitude &&
-            savedLongitude
-        ){
+            if(manualAddress){
+                locationElement.textContent = manualAddress;
+            }
 
-            locationElement.textContent =
-                savedLocation;
+            console.log("🛑 MANUAL LOCATION ACTIVE");
+            console.log("Delivery Address:", manualAddress);
+            console.log("Delivery Latitude:", manualLatitude);
+            console.log("Delivery Longitude:", manualLongitude);
 
-            console.log(
-                "USING SAVED LOCATION:",
-                savedLocation,
-                savedLatitude,
-                savedLongitude
+            /* Never fall back to device GPS. */
+            resolve(
+                !!(
+                    manualAddress &&
+                    manualLatitude !== null &&
+                    manualLatitude !== "" &&
+                    manualLongitude !== null &&
+                    manualLongitude !== ""
+                )
             );
-
-            resolve(true);
             return;
         }
 
-
-        // =========================================
-        // DETECT CURRENT GPS LOCATION
-        // =========================================
-
-        locationElement.textContent =
-            "Detecting location...";
-
+        /* No manual location: device GPS is allowed. */
+        locationElement.textContent = "Detecting location...";
 
         if(!navigator.geolocation){
-
-            locationElement.textContent =
-                "Location unavailable";
-
+            locationElement.textContent = "Location unavailable";
             resolve(false);
             return;
         }
 
-
         navigator.geolocation.getCurrentPosition(
 
-            async function(position){
+            function(position){
 
-                const latitude =
-                    position.coords.latitude;
+                /* Manual selection may have happened while GPS was running. */
+                if(
+                    localStorage.getItem("manualLocationSelected") === "true"
+                ){
+                    console.log("🛑 GPS IGNORED — MANUAL LOCATION SELECTED");
+                    resolve(true);
+                    return;
+                }
 
-                const longitude =
-                    position.coords.longitude;
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
 
+                localStorage.setItem("latitude", String(latitude));
+                localStorage.setItem("longitude", String(longitude));
 
-                console.log(
-                    "CUSTOMER GPS:",
-                    latitude,
-                    longitude
-                );
-
-
-                // =====================================
-                // SAVE COORDINATES FIRST
-                // =====================================
-
-                localStorage.setItem(
-                    "latitude",
-                    latitude
-                );
-
-                localStorage.setItem(
-                    "longitude",
-                    longitude
-                );
-
-
-                // =====================================
-                // GET LOCATION NAME
-                // =====================================
+                console.log("📍 DEVICE GPS:", latitude, longitude);
 
                 try{
 
@@ -3966,131 +4037,87 @@ function detectCustomerLocation(){
                         typeof google === "undefined" ||
                         !google.maps
                     ){
-
-                        locationElement.textContent =
-                            "Current Location";
-
-                        localStorage.setItem(
-                            "locationName",
-                            "Current Location"
-                        );
-
+                        locationElement.textContent = "Current Location";
+                        localStorage.setItem("locationName", "Current Location");
                         resolve(true);
                         return;
                     }
 
-
-                    const geocoder =
-                        new google.maps.Geocoder();
-
+                    const geocoder = new google.maps.Geocoder();
 
                     geocoder.geocode(
-
                         {
                             location:{
-                                lat: latitude,
-                                lng: longitude
+                                lat:latitude,
+                                lng:longitude
                             }
                         },
+                        function(results,status){
 
-                        function(results, status){
+                            /* Manual selection wins if geocoding finishes later. */
+                            if(
+                                localStorage.getItem("manualLocationSelected") === "true"
+                            ){
+                                console.log("🛑 GPS ADDRESS IGNORED — MANUAL LOCATION ACTIVE");
+                                resolve(true);
+                                return;
+                            }
 
                             if(
                                 status === "OK" &&
                                 results &&
                                 results[0]
                             ){
-
                                 const displayLocation =
                                     results[0].formatted_address;
 
-
-                                locationElement.textContent =
-                                    displayLocation;
-
-
-                                localStorage.setItem(
-                                    "locationName",
-                                    displayLocation
-                                );
-
-
-                                localStorage.setItem(
-                                    "detectedAddress",
-                                    displayLocation
-                                );
-
-
-                                console.log(
-                                    "CURRENT LOCATION SAVED:",
-                                    displayLocation
-                                );
-
+                                locationElement.textContent = displayLocation;
+                                localStorage.setItem("locationName", displayLocation);
+                                localStorage.setItem("detectedAddress", displayLocation);
                             }
                             else{
-
-                                locationElement.textContent =
-                                    "Current Location";
-
-                                localStorage.setItem(
-                                    "locationName",
-                                    "Current Location"
-                                );
-
+                                locationElement.textContent = "Current Location";
+                                localStorage.setItem("locationName", "Current Location");
                             }
 
-
-                            // IMPORTANT:
-                            // Now GPS + address work is finished
                             resolve(true);
-
                         }
-
                     );
 
                 }
                 catch(error){
-
-                    console.error(
-                        "GEOCODING ERROR:",
-                        error
-                    );
-
-                    locationElement.textContent =
-                        "Current Location";
-
+                    console.error("GEOCODING ERROR:", error);
+                    locationElement.textContent = "Current Location";
                     resolve(true);
                 }
-
             },
-
 
             function(error){
 
-                console.error(
-                    "LOCATION ERROR:",
-                    error
-                );
+                if(
+                    localStorage.getItem("manualLocationSelected") === "true"
+                ){
+                    resolve(true);
+                    return;
+                }
 
-                locationElement.textContent =
-                    "Select Location";
-
+                console.error("LOCATION ERROR:", error);
+                locationElement.textContent = "Select Location";
                 resolve(false);
-
             },
 
-
             {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 300000
+                enableHighAccuracy:true,
+                timeout:10000,
+                maximumAge:300000
             }
-
         );
-
     });
-
 }
+
+/* =====================================================
+   LOCATION
+===================================================== */
 
 /* =====================================================
    DARVOZ PICKS
@@ -5734,108 +5761,168 @@ async function updateActiveOrderETA(
 
 }
 
-
 /* =====================================================
    INITIAL LOAD
 ===================================================== */
 
 async function startDarvoz(){
 
-    console.log(
-        "DARVOZ HOME STARTING..."
-    );
+    console.log("DARVOZ HOME STARTING...");
 
+    /* Manual/saved delivery location is checked BEFORE device GPS. */
+    let locationState = loadSavedDeliveryAddress();
 
-    // =========================================
-    // FIRST: LOAD SAVED ADDRESS
-    // =========================================
+    /* Manual address without coordinates: geocode the selected address itself. */
+    if(locationState === "MANUAL_NO_COORDS"){
 
-    const hasSavedAddress =
-        loadSavedDeliveryAddress();
-
-
-    // =========================================
-    // IF NO SAVED ADDRESS → DETECT GPS
-    // =========================================
-
-    if(!hasSavedAddress){
-
-        console.log(
-            "NO SAVED ADDRESS → DETECTING GPS"
+        console.warn(
+            "⚠️ Manual address selected but coordinates are missing."
         );
 
-        await detectCustomerLocation();
+        const selectedAddress =
+            localStorage.getItem("selectedAddress");
 
+        if(
+            selectedAddress &&
+            typeof google !== "undefined" &&
+            google.maps
+        ){
+
+            try{
+
+                const geocoder = new google.maps.Geocoder();
+
+                const result = await new Promise((resolve) => {
+
+                    geocoder.geocode(
+                        { address:selectedAddress },
+                        function(results,status){
+
+                            if(
+                                status === "OK" &&
+                                results &&
+                                results[0] &&
+                                results[0].geometry
+                            ){
+                                resolve(results[0]);
+                            }
+                            else{
+                                resolve(null);
+                            }
+                        }
+                    );
+                });
+
+                /* Manual selection must still be active after geocoding. */
+                if(
+                    localStorage.getItem("manualLocationSelected") !== "true"
+                ){
+                    console.error(
+                        "❌ Manual location state disappeared during geocoding."
+                    );
+                    return;
+                }
+
+                if(!result){
+                    console.error("❌ Could not geocode manual address");
+                    showOutOfServiceMessage();
+                    return;
+                }
+
+                const lat = result.geometry.location.lat();
+                const lng = result.geometry.location.lng();
+
+                localStorage.setItem("latitude", String(lat));
+                localStorage.setItem("longitude", String(lng));
+
+                console.log("✅ MANUAL ADDRESS GEOCODED");
+                console.log("Latitude:", lat);
+                console.log("Longitude:", lng);
+
+                locationState = true;
+
+            }
+            catch(error){
+
+                console.error(
+                    "MANUAL ADDRESS GEOCODING ERROR:",
+                    error
+                );
+
+                showOutOfServiceMessage();
+                return;
+            }
+
+        }
+        else{
+
+            console.error(
+                "Google Maps unavailable for manual address."
+            );
+
+            showOutOfServiceMessage();
+            return;
+        }
+    }
+
+    /* Only when there is NO saved/manual location may GPS run. */
+    if(!locationState){
+
+        console.log(
+            "NO SAVED LOCATION → DETECTING GPS"
+        );
+
+        const gpsResult = await detectCustomerLocation();
+
+        if(!gpsResult){
+            console.warn("⚠️ NO LOCATION AVAILABLE");
+            return;
+        }
     }
     else{
 
-        console.log(
-            "SAVED ADDRESS EXISTS"
-        );
-
+        console.log("✅ USING MANUAL/SAVED DELIVERY LOCATION");
+        console.log("GPS NOT USED");
     }
 
-
-    // =========================================
-    // CHECK LOCATION BEFORE LOADING ANYTHING
-    // =========================================
-
+    /* =========================================
+       CHECK LOCATION BEFORE LOADING
+    ========================================= */
     const serviceAvailable =
         await checkServiceAvailability();
-
 
     console.log(
         "SERVICE AVAILABLE:",
         serviceAvailable
     );
 
-
-    // =========================================
-    // OUTSIDE 10 KM
-    // =========================================
-
+    /* =========================================
+       OUTSIDE DARVOZ SERVICE AREA
+    ========================================= */
     if(!serviceAvailable){
 
-        console.log(
-            "OUTSIDE DARVOZ SERVICE AREA"
-        );
+        console.log("OUTSIDE DARVOZ SERVICE AREA");
 
-
-        // Hide Offers + DARVOZ Picks
         hideHomeContent();
-
-
-        // Show service unavailable message
         showOutOfServiceMessage();
-
-
-        // STOP HERE
         return;
-
     }
 
+    /* =========================================
+       SERVICE AVAILABLE
+    ========================================= */
+    console.log("DARVOZ SERVICE AVAILABLE");
 
-    // =========================================
-    // SERVICE AVAILABLE
-    // =========================================
-
-    console.log(
-        "DARVOZ SERVICE AVAILABLE"
-    );
-
-
-    // Show normal home content
     showHomeContent();
 
-
-    // Load everything only now
+    /* =========================================
+       LOAD HOME DATA
+    ========================================= */
     loadCustomerOffers();
-
     loadDarvozPicks();
-
     loadRestaurants();
-
 }
+
 
 /* =====================================================
    START DARVOZ
@@ -5859,24 +5946,7 @@ setInterval(
     loadActiveOrder,
     10000
 );
-/* =====================================================
-   ACTIVE ORDER FIRST CHECK
-===================================================== */
 
-loadActiveOrder();
-
-
-/* =====================================================
-   CHECK ACTIVE ORDER EVERY 10 SECONDS
-===================================================== */
-
-setInterval(
-
-    loadActiveOrder,
-
-    10000
-
-);
 
 </script>
 <script type="module">

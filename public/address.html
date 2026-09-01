@@ -1,1108 +1,2577 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Saved Addresses</title>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<style>
-    body{
-background:#f6f6f6;
-font-family:Poppins,sans-serif;
-}
-
-.header{
-
-height:65px;
-display:flex;
-align-items:center;
-padding:0 18px;
-background:#fff;
-font-weight:600;
-box-shadow:0 2px 10px rgba(0,0,0,.05);
-
-}
-
-.back{
-
-font-size:24px;
-cursor:pointer;
-margin-right:18px;
-
-}
-
-.title{
-
-font-size:24px;
-font-weight:700;
-
-}
-
-.container{
-
-padding:18px;
-
-}
-
-.search-box{
-
-display:flex;
-align-items:center;
-background:#fff;
-border-radius:16px;
-padding:14px 18px;
-margin-bottom:20px;
-box-shadow:0 3px 10px rgba(0,0,0,.05);
-
-}
-
-.search-box i{
-
-font-size:20px;
-color:#888;
-margin-right:12px;
-
-}
-
-.search-box input{
-
-border:none;
-outline:none;
-width:100%;
-font-size:16px;
-background:none;
-
-}
-
-.action-grid{
-
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:14px;
-margin-bottom:25px;
-
-}
-
-.action-card{
-
-background:#fff;
-border-radius:18px;
-padding:20px 15px;
-text-align:left;
-cursor:pointer;
-transition:.3s;
-box-shadow:0 3px 10px rgba(0,0,0,.05);
-
-}
-
-.action-card:hover{
-
-transform:translateY(-3px);
-
-}
-
-.action-card i{
-
-font-size:28px;
-color:#ff6200;
-margin-bottom:18px;
-
-}
-
-.action-card h4{
-
-font-size:17px;
-line-height:24px;
-
-}
-
-.saved-title{
-
-font-size:15px;
-font-weight:700;
-color:#888;
-margin-bottom:15px;
-letter-spacing:1px;
-
-}
-.saved-card{
-
-display:flex;
-align-items:flex-start;
-background:#fff;
-border-radius:22px;
-padding:18px;
-margin-bottom:16px;
-box-shadow:0 5px 18px rgba(0,0,0,.06);
-cursor:pointer;
-transition:.3s;
-
-}
-
-.saved-card:hover{
-
-transform:translateY(-2px);
-
-}
-
-.left-icon{
-
-width:70px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-margin-right:15px;
-
-}
-
-.left-icon i{
-
-font-size:22px;
-color:#222;
-margin-bottom:8px;
-
-}
-
-.left-icon span{
-
-font-size:13px;
-font-weight:600;
-
-}
-
-.address-info{
-
-flex:1;
-
-}
-
-.address-head{
-
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:8px;
-
-}
-
-.address-head h3{
-
-font-size:24px;
-font-weight:700;
-
-}
-
-.selected{
-
-background:#d9fff0;
-color:#17a567;
-padding:5px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:700;
-
-}
-
-.address-info p{
-
-font-size:18px;
-line-height:30px;
-color:#555;
-
-}
-
-.menu{
-
-font-size:22px;
-cursor:pointer;
-padding:6px;
-
-}
-.empty{
-text-align:center;
-padding:80px 20px;
-color:#888;
-font-size:18px;
-}
-
-/* ==========================
-ADD ADDRESS POPUP
-========================== */
-
-.modal{
-
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.5);
-
-display:none;
-
-justify-content:center;
-align-items:center;
-
-z-index:999;
-
-}
-
-.modal-content{
-
-background:#fff;
-width:95%;
-max-width:430px;
-
-padding:22px;
-
-border-radius:20px;
-
-max-height:90vh;
-overflow:auto;
-
-}
-
-.modal h2{
-
-margin-bottom:18px;
-font-size:22px;
-
-}
-
-.locationBtn{
-
-width:100%;
-
-padding:14px;
-
-background:#16a34a;
-color:#fff;
-
-border:none;
-
-border-radius:12px;
-
-font-size:16px;
-
-cursor:pointer;
-
-margin-bottom:15px;
-
-}
-
-.modal input,
-.modal select{
-
-width:100%;
-
-padding:14px;
-
-margin-bottom:14px;
-
-border:1px solid #ddd;
-
-border-radius:12px;
-
-font-size:15px;
-
-outline:none;
-
-}
-
-.saveBtn{
-
-width:100%;
-
-padding:15px;
-
-background:#ff6200;
-color:#fff;
-
-border:none;
-
-border-radius:12px;
-
-font-size:17px;
-
-cursor:pointer;
-
-}
-
-.menu-popup{
-
-position:fixed;
-
-right:20px;
-top:120px;
-
-background:#fff;
-
-border-radius:16px;
-
-box-shadow:0 8px 25px rgba(0,0,0,.15);
-
-display:none;
-
-overflow:hidden;
-
-z-index:9999;
-
-min-width:180px;
-
-}
-
-.menu-popup button{
-
-width:100%;
-
-border:none;
-
-background:#fff;
-
-padding:15px;
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-font-size:15px;
-
-cursor:pointer;
-
-}
-
-.menu-popup button:hover{
-
-background:#f6f6f6;
-
-}
-
-.menu-popup button i{
-
-color:#ff6200;
-
-width:20px;
-
-}
-
-.deliverBtn{
-
-margin-top:15px;
-
-background:#16a34a;
-
-color:#fff;
-
-border:none;
-
-padding:12px 20px;
-
-border-radius:12px;
-
-font-size:15px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-.deliverBtn:hover{
-
-background:#138a3c;
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Saved Addresses</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f6f6f6;
+            font-family: Poppins, Arial, sans-serif;
+            color: #222;
+        }
+
+        /* ==========================
+           HEADER
+        ========================== */
+
+        .header {
+            height: 65px;
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            background: #fff;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+        }
+
+        .back {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 18px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* ==========================
+           CONTAINER
+        ========================== */
+
+        .container {
+            padding: 18px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* ==========================
+           SEARCH
+        ========================== */
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .05);
+        }
+
+        .search-box i {
+            font-size: 20px;
+            color: #888;
+            margin-right: 12px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            background: none;
+        }
+
+        /* ==========================
+           ACTION GRID
+        ========================== */
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 25px;
+        }
+
+        .action-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 20px 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .05);
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .action-card i {
+            font-size: 28px;
+            color: #ff6200;
+            margin-bottom: 18px;
+        }
+
+        .action-card h4 {
+            margin: 0;
+            font-size: 17px;
+            line-height: 24px;
+        }
+
+        /* ==========================
+           SAVED TITLE
+        ========================== */
+
+        .saved-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #888;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================
+           SAVED CARD
+        ========================== */
+
+        .saved-card {
+            display: flex;
+            align-items: flex-start;
+            background: #fff;
+            border-radius: 22px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .06);
+            transition: .3s;
+        }
+
+        .saved-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ==========================
+           LEFT ICON
+        ========================== */
+
+        .left-icon {
+            width: 70px;
+            min-width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .left-icon i {
+            font-size: 22px;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .left-icon span {
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ==========================
+           ADDRESS INFO
+        ========================== */
+
+        .address-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .address-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .address-head h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .selected {
+            background: #d9fff0;
+            color: #17a567;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .address-info p {
+            margin: 0;
+            font-size: 18px;
+            line-height: 30px;
+            color: #555;
+        }
+
+        /* ==========================
+           MENU
+        ========================== */
+
+        .menu {
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px;
+            margin-left: 8px;
+        }
+
+        /* ==========================
+           DELIVER BUTTON
+        ========================== */
+
+        .deliverBtn {
+            margin-top: 15px;
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .deliverBtn:hover {
+            background: #138a3c;
+        }
+
+        /* ==========================
+           EMPTY
+        ========================== */
+
+        .empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: #888;
+            font-size: 18px;
+        }
+
+        /* ==========================
+           MODAL
+        ========================== */
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+
+            display: none;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 999;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 95%;
+            max-width: 430px;
+
+            padding: 22px;
+            border-radius: 20px;
+
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 22px;
+        }
+
+        .locationBtn {
+            width: 100%;
+            padding: 14px;
+
+            background: #16a34a;
+            color: #fff;
+
+            border: none;
+            border-radius: 12px;
+
+            font-size: 16px;
+            cursor: pointer;
+
+            margin-bottom: 15px;
+        }
+
+        .modal input,
+        .modal select {
+            width: 100%;
+
+            padding: 14px;
+            margin-bottom: 14px;
+
+            border: 1px solid #ddd;
+            border-radius: 12px;
+
+            font-size: 15px;
+            outline: none;
+        }
+
+        .modal input:focus,
+        .modal select:focus {
+            border-color: #ff6200;
+        }
+
+        .saveBtn {
+            width: 100%;
+
+            padding: 15px;
+
+            background: #ff6200;
+            color: #fff;
+
+            border: none;
+            border-radius: 12px;
+
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        /* ==========================
+           MENU POPUP
+        ========================== */
+
+        .menu-popup {
+            position: fixed;
+
+            background: #fff;
+            border-radius: 16px;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .15);
+
+            display: none;
+
+            overflow: hidden;
+            z-index: 9999;
+
+            min-width: 180px;
+        }
+
+        .menu-popup button {
+            width: 100%;
+
+            border: none;
+            background: #fff;
+
+            padding: 15px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .menu-popup button:hover {
+            background: #f6f6f6;
+        }
+
+        .menu-popup button i {
+            color: #ff6200;
+            width: 20px;
+        }
+
+        /* ==========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 600px) {
+
+            .title {
+                font-size: 20px;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .saved-card {
+                padding: 15px;
+            }
+
+            .left-icon {
+                width: 55px;
+                min-width: 55px;
+                margin-right: 10px;
+            }
+
+            .address-head h3 {
+                font-size: 20px;
+            }
+
+            .address-info p {
+                font-size: 15px;
+                line-height: 24px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<div class="header">
+    <!-- ==========================
+         HEADER
+    ========================== -->
 
-    <div class="back" onclick="history.back()">
-        <i class="fa fa-arrow-left"></i>
-    </div>
+    <div class="header">
 
-    <div class="title">
-        Select Your Location
-    </div>
+        <div class="back" onclick="history.back()">
 
-</div>
-
-<div class="container">
-
-    <!-- Search -->
-
-    <div class="search-box">
-
-        <i class="fa fa-search"></i>
-
-        <input
-type="text"
-id="searchAddress"
-placeholder="Search your address..."
-onkeyup="searchAddress()">
-    </div>
-
-    <!-- Top Actions -->
-
-    <div class="action-grid">
-
-        <div class="action-card"
-        onclick="currentLocation()">
-
-            <i class="fa-solid fa-location-crosshairs"></i>
-
-            <h4>Use Current Location</h4>
+            <i class="fa fa-arrow-left"></i>
 
         </div>
 
-        <div class="action-card"
-        onclick="openModal()">
-
-            <i class="fa-solid fa-plus"></i>
-
-            <h4>Add New Address</h4>
-
-        </div>
-
-
-    </div>
-
-    <h3 class="saved-title">
-
-        SAVED ADDRESSES
-
-    </h3>
-
-    <div id="addressList">
-
-        <div class="empty">
-
-            Loading Addresses...
-
+        <div class="title">
+            Select Your Location
         </div>
 
     </div>
 
-</div>
 
-<!-- Modal -->
+    <!-- ==========================
+         MAIN
+    ========================== -->
 
-<div
+    <div class="container">
 
-class="modal"
+        <!-- SEARCH -->
 
-id="modal">
+        <div class="search-box">
 
-<div class="modal-content">
+            <i class="fa fa-search"></i>
 
-<h2>
+            <input
+                type="text"
+                id="searchAddress"
+                placeholder="Search your address..."
+            >
 
-Add Address
+        </div>
 
-</h2>
 
-<button
+        <!-- ACTIONS -->
 
-class="locationBtn"
+        <div class="action-grid">
 
-onclick="currentLocation()">
+            <div
+                class="action-card"
+                onclick="currentLocation()"
+            >
 
-📍 Use Current Location
+                <i class="fa-solid fa-location-crosshairs"></i>
 
-</button>
+                <h4>
+                    Use Current Location
+                </h4>
 
-<select id="title">
+            </div>
 
-<option>Home</option>
 
-<option>Work</option>
+            <div
+                class="action-card"
+                onclick="openModal()"
+            >
 
-<option>Other</option>
+                <i class="fa-solid fa-plus"></i>
 
-</select>
+                <h4>
+                    Add New Address
+                </h4>
 
-<input
-id="house"
-placeholder="House / Flat No">
+            </div>
 
-<input
-id="street"
-placeholder="Street">
+        </div>
 
-<input
-id="area"
-placeholder="Area">
 
-<input
-id="city"
-placeholder="City">
+        <!-- SAVED ADDRESSES -->
 
-<input
-id="state"
-placeholder="State">
+        <h3 class="saved-title">
+            SAVED ADDRESSES
+        </h3>
 
-<input
-id="pincode"
-placeholder="Pincode">
 
-<button
+        <div id="addressList">
 
-class="saveBtn"
+            <div class="empty">
+                Loading Addresses...
+            </div>
 
-onclick="saveAddress()">
+        </div>
 
-Save Address
+    </div>
 
-</button>
 
-</div>
+    <!-- ==========================
+         ADD ADDRESS MODAL
+    ========================== -->
 
-</div>
-<div id="menuPopup" class="menu-popup">
+    <div
+        class="modal"
+        id="modal"
+    >
 
-<button onclick="editSelected()">
-<i class="fa fa-pen"></i>
-Edit
-</button>
+        <div class="modal-content">
 
-<button onclick="makeDefault()">
-<i class="fa fa-star"></i>
-Make Default
-</button>
+            <h2 id="modalTitle">
+                Add Address
+            </h2>
 
-<button onclick="deleteSelected()">
-<i class="fa fa-trash"></i>
-Delete
-</button>
 
-</div>
+            <button
+                class="locationBtn"
+                onclick="currentLocation()"
+            >
+                📍 Use Current Location
+            </button>
 
-<script
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ&libraries=places">
-</script>
-<script>
 
-const API = window.location.origin;
+            <select id="title">
 
-const customerId=localStorage.getItem("customerId");
+                <option value="Home">
+                    Home
+                </option>
 
-let editId=null;
-let latitude="";
-let longitude="";
+                <option value="Work">
+                    Work
+                </option>
 
-loadAddresses();
-function getDistance(lat2,lng2){
+                <option value="Other">
+                    Other
+                </option>
 
-const lat1=localStorage.getItem("latitude");
-const lng1=localStorage.getItem("longitude");
+            </select>
 
-if(!lat1 || !lng1) return "--";
 
-const R=6371;
+            <input
+                id="house"
+                placeholder="House / Flat No"
+            >
 
-const dLat=(lat2-lat1)*Math.PI/180;
-const dLon=(lng2-lng1)*Math.PI/180;
 
-const a=
-Math.sin(dLat/2)**2+
-Math.cos(lat1*Math.PI/180)*
-Math.cos(lat2*Math.PI/180)*
-Math.sin(dLon/2)**2;
+            <input
+                id="street"
+                placeholder="Street"
+            >
 
-const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 
-return (R*c).toFixed(1);
+            <input
+                id="area"
+                placeholder="Area"
+            >
+
+
+            <input
+                id="city"
+                placeholder="City"
+            >
+
+
+            <input
+                id="state"
+                placeholder="State"
+            >
+
+
+            <input
+                id="pincode"
+                placeholder="Pincode"
+            >
+
+
+            <button
+                class="saveBtn"
+                onclick="saveAddress()"
+            >
+                Save Address
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+         MENU POPUP
+    ========================== -->
+
+    <div
+        id="menuPopup"
+        class="menu-popup"
+    >
+
+        <button onclick="editSelected()">
+
+            <i class="fa fa-pen"></i>
+
+            Edit
+
+        </button>
+
+
+        <button onclick="makeDefault()">
+
+            <i class="fa fa-star"></i>
+
+            Make Default
+
+        </button>
+
+
+        <button onclick="deleteSelected()">
+
+            <i class="fa fa-trash"></i>
+
+            Delete
+
+        </button>
+
+    </div>
+
+
+    <!-- ==========================
+         GOOGLE MAPS
+    ========================== -->
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ&libraries=places"
+    ></script>
+
+
+    <script>
+
+        /* ==========================================
+           CONFIG
+        ========================================== */
+
+        const API = window.location.origin;
+
+        const customerId =
+            localStorage.getItem("customerId");
+
+        let editId = null;
+
+        let latitude = "";
+
+        let longitude = "";
+
+        let allAddresses = [];
+
+        let selectedAddress = {};
+
+        let autocomplete = null;
+
+
+        /* ==========================================
+           START
+        ========================================== */
+
+        if (!customerId) {
+
+            console.warn(
+                "⚠️ No customerId found in localStorage"
+            );
+
+        }
+
+        loadAddresses();
+
+
+        /* ==========================================
+           DISTANCE
+        ========================================== */
+
+        function getDistance(lat2, lng2) {
+
+            const lat1 =
+                localStorage.getItem("latitude");
+
+            const lng1 =
+                localStorage.getItem("longitude");
+
+
+            if (
+                !lat1 ||
+                !lng1 ||
+                lat2 === null ||
+                lng2 === null ||
+                lat2 === undefined ||
+                lng2 === undefined ||
+                lat2 === "" ||
+                lng2 === ""
+            ) {
+
+                return "--";
+
+            }
+
+
+            const R = 6371;
+
+
+            const dLat =
+                (Number(lat2) - Number(lat1))
+                * Math.PI / 180;
+
+
+            const dLon =
+                (Number(lng2) - Number(lng1))
+                * Math.PI / 180;
+
+
+            const a =
+                Math.sin(dLat / 2) ** 2 +
+
+                Math.cos(
+                    Number(lat1) * Math.PI / 180
+                ) *
+
+                Math.cos(
+                    Number(lat2) * Math.PI / 180
+                ) *
+
+                Math.sin(dLon / 2) ** 2;
+
+
+            const c =
+                2 *
+                Math.atan2(
+                    Math.sqrt(a),
+                    Math.sqrt(1 - a)
+                );
+
+
+            return (
+                R * c
+            ).toFixed(1);
+
+        }
+
+
+        /* ==========================================
+           LOAD ADDRESSES
+        ========================================== */
+
+        async function loadAddresses() {
+
+            const list =
+                document.getElementById("addressList");
+
+
+            if (!customerId) {
+
+                list.innerHTML = `
+                    <div class="empty">
+                        Please login again.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            try {
+
+                const res =
+                    await fetch(
+                        `${API}/address/${customerId}`
+                    );
+
+
+                if (!res.ok) {
+
+                    throw new Error(
+                        "Failed to load addresses"
+                    );
+
+                }
+
+
+                const addresses =
+                    await res.json();
+
+
+                allAddresses =
+                    Array.isArray(addresses)
+                        ? addresses
+                        : [];
+
+
+                if (allAddresses.length === 0) {
+
+                    list.innerHTML = `
+                        <div class="empty">
+                            No Saved Addresses
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                list.innerHTML = "";
+
+
+                allAddresses.forEach(a => {
+
+                    const distance =
+                        getDistance(
+                            a.latitude,
+                            a.longitude
+                        );
+
+
+                    const selected =
+                        Number(a.is_default) === 1
+                            ? `
+                                <span class="selected">
+                                    SELECTED
+                                </span>
+                              `
+                            : "";
+
+
+                    list.innerHTML += `
+
+                        <div class="saved-card">
+
+                            <div class="left-icon">
+
+                                <i class="fa-solid fa-location-arrow"></i>
+
+                                <span>
+                                    ${distance} km
+                                </span>
+
+                            </div>
+
+
+                            <div class="address-info">
+
+                                <div class="address-head">
+
+                                    <h3>
+                                        ${escapeHtml(a.title || "Address")}
+                                    </h3>
+
+                                    ${selected}
+
+                                </div>
+
+
+                                <p>
+                                    ${escapeHtml(a.house || "")},
+                                    ${escapeHtml(a.street || "")},
+                                    ${escapeHtml(a.area || "")},
+                                    ${escapeHtml(a.city || "")},
+                                    ${escapeHtml(a.state || "")},
+                                    ${escapeHtml(a.pincode || "")}
+                                </p>
+
+
+                                <button
+                                    class="deliverBtn"
+                                    onclick='deliverHere(
+                                        event,
+                                        ${JSON.stringify(a.house || "")},
+                                        ${JSON.stringify(a.street || "")},
+                                        ${JSON.stringify(a.area || "")},
+                                        ${JSON.stringify(a.city || "")},
+                                        ${JSON.stringify(a.state || "")},
+                                        ${JSON.stringify(a.pincode || "")},
+                                        ${JSON.stringify(a.latitude ?? "")},
+                                        ${JSON.stringify(a.longitude ?? "")}
+                                    )'
+                                >
+                                    Deliver Here
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                class="menu"
+                                onclick='showMenu(
+                                    event,
+                                    ${JSON.stringify(a.id)},
+                                    ${JSON.stringify(a.title || "")},
+                                    ${JSON.stringify(a.house || "")},
+                                    ${JSON.stringify(a.street || "")},
+                                    ${JSON.stringify(a.area || "")},
+                                    ${JSON.stringify(a.city || "")},
+                                    ${JSON.stringify(a.state || "")},
+                                    ${JSON.stringify(a.pincode || "")},
+                                    ${JSON.stringify(a.latitude ?? "")},
+                                    ${JSON.stringify(a.longitude ?? "")}
+                                )'
+                            >
+
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                });
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "LOAD ADDRESS ERROR:",
+                    error
+                );
+
+
+                list.innerHTML = `
+                    <div class="empty">
+                        Unable to load addresses.
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           SEARCH ADDRESS
+        ========================================== */
+
+        document
+            .getElementById("searchAddress")
+            .addEventListener(
+                "input",
+                searchAddress
+            );
+
+
+        function searchAddress() {
+
+            const keyword =
+                document
+                    .getElementById("searchAddress")
+                    .value
+                    .toLowerCase()
+                    .trim();
+
+
+            const cards =
+                document.querySelectorAll(
+                    ".saved-card"
+                );
+
+
+            cards.forEach(card => {
+
+                const text =
+                    card.innerText
+                        .toLowerCase();
+
+
+                if (
+                    text.includes(keyword)
+                ) {
+
+                    card.style.display =
+                        "flex";
+
+                }
+
+                else {
+
+                    card.style.display =
+                        "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* ==========================================
+           OPEN MODAL
+        ========================================== */
+
+        function openModal() {
+
+            editId = null;
+
+            clearForm();
+
+            document.getElementById(
+                "modalTitle"
+            ).textContent = "Add Address";
+
+            document
+                .getElementById("modal")
+                .style.display = "flex";
+
+        }
+
+
+        /* ==========================================
+           CLEAR FORM
+        ========================================== */
+
+        function clearForm() {
+
+            document.getElementById("house").value = "";
+
+            document.getElementById("street").value = "";
+
+            document.getElementById("area").value = "";
+
+            document.getElementById("city").value = "";
+
+            document.getElementById("state").value = "";
+
+            document.getElementById("pincode").value = "";
+
+            document.getElementById("title").value = "Home";
+
+            latitude = "";
+
+            longitude = "";
+
+        }
+
+
+        /* ==========================================
+           CLOSE MODAL
+        ========================================== */
+
+        window.addEventListener(
+            "click",
+            function (event) {
+
+                const modal =
+                    document.getElementById("modal");
+
+
+                if (
+                    event.target === modal
+                ) {
+
+                    modal.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           CURRENT LOCATION
+           
+           IMPORTANT:
+           Current GPS selection removes
+           manualLocationSelected.
+        ========================================== */
+
+        function currentLocation() {
+
+            if (
+                !navigator.geolocation
+            ) {
+
+                alert(
+                    "Location is not supported by this browser."
+                );
+
+                return;
+
+            }
+
+
+            navigator.geolocation.getCurrentPosition(
+
+                function (position) {
+
+                    latitude =
+                        position.coords.latitude;
+
+                    longitude =
+                        position.coords.longitude;
+
+
+                    console.log(
+                        "📍 CURRENT GPS LOCATION"
+                    );
+
+                    console.log(
+                        "Latitude:",
+                        latitude
+                    );
+
+                    console.log(
+                        "Longitude:",
+                        longitude
+                    );
+
+
+                    /*
+                     * IMPORTANT:
+                     *
+                     * User has intentionally chosen
+                     * their physical/current location.
+                     *
+                     * Therefore remove the old
+                     * manually selected location flag.
+                     */
+
+                    localStorage.removeItem(
+                        "manualLocationSelected"
+                    );
+
+
+                    if (
+                        typeof google === "undefined" ||
+                        !google.maps
+                    ) {
+
+                        alert(
+                            "Google Maps is not loaded."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const geocoder =
+                        new google.maps.Geocoder();
+
+
+                    const latlng = {
+
+                        lat: Number(latitude),
+
+                        lng: Number(longitude)
+
+                    };
+
+
+                    geocoder.geocode(
+
+                        {
+                            location: latlng
+                        },
+
+                        function (
+                            results,
+                            status
+                        ) {
+
+                            if (
+                                status !== "OK" ||
+                                !results ||
+                                !results[0]
+                            ) {
+
+                                alert(
+                                    "Unable to fetch address."
+                                );
+
+                                return;
+
+                            }
+
+
+                            fillAddressFromComponents(
+                                results[0]
+                                    .address_components || []
+                            );
+
+
+                            /*
+                             * Make sure the modal opens
+                             * with the GPS coordinates.
+                             */
+
+                            document
+                                .getElementById("modal")
+                                .style.display =
+                                "flex";
+
+
+                            document.getElementById(
+                                "modalTitle"
+                            ).textContent =
+                                "Add Current Location";
+
+                        }
+
+                    );
+
+                },
+
+                function (error) {
+
+                    console.error(
+                        "LOCATION ERROR:",
+                        error
+                    );
+
+
+                    alert(
+                        "Unable to get your current location. Please allow location access."
+                    );
+
+                },
+
+                {
+
+                    enableHighAccuracy: true,
+
+                    timeout: 15000,
+
+                    maximumAge: 0
+
+                }
+
+            );
+
+        }
+
+
+        /* ==========================================
+           GOOGLE ADDRESS COMPONENTS
+        ========================================== */
+
+        function fillAddressFromComponents(
+            components
+        ) {
+
+            let house = "";
+
+            let street = "";
+
+            let area = "";
+
+            let city = "";
+
+            let state = "";
+
+            let pincode = "";
+
+
+            components.forEach(c => {
+
+                if (
+                    c.types.includes(
+                        "street_number"
+                    )
+                ) {
+
+                    house =
+                        c.long_name;
+
+                }
+
+
+                if (
+                    c.types.includes(
+                        "route"
+                    )
+                ) {
+
+                    street =
+                        c.long_name;
+
+                }
+
+
+                if (
+                    c.types.includes(
+                        "sublocality"
+                    ) ||
+
+                    c.types.includes(
+                        "sublocality_level_1"
+                    ) ||
+
+                    c.types.includes(
+                        "sublocality_level_2"
+                    ) ||
+
+                    c.types.includes(
+                        "neighborhood"
+                    )
+                ) {
+
+                    area =
+                        c.long_name;
+
+                }
+
+
+                if (
+                    c.types.includes(
+                        "locality"
+                    )
+                ) {
+
+                    city =
+                        c.long_name;
+
+                }
+
+
+                if (
+                    c.types.includes(
+                        "administrative_area_level_1"
+                    )
+                ) {
+
+                    state =
+                        c.long_name;
+
+                }
+
+
+                if (
+                    c.types.includes(
+                        "postal_code"
+                    )
+                ) {
+
+                    pincode =
+                        c.long_name;
+
+                }
+
+            });
+
+
+            document.getElementById(
+                "house"
+            ).value = house;
+
+
+            document.getElementById(
+                "street"
+            ).value = street;
+
+
+            document.getElementById(
+                "area"
+            ).value = area;
+
+
+            document.getElementById(
+                "city"
+            ).value = city;
+
+
+            document.getElementById(
+                "state"
+            ).value = state;
+
+
+            document.getElementById(
+                "pincode"
+            ).value = pincode;
+
+        }
+       
+        /* ==========================================
+   GEOCODE ADDRESS
+   ========================================== */
+
+function geocodeAddress(
+    house,
+    street,
+    area,
+    city,
+    state,
+    pincode
+) {
+
+    return new Promise((resolve, reject) => {
+
+        if (
+            typeof google === "undefined" ||
+            !google.maps
+        ) {
+            reject(
+                new Error(
+                    "Google Maps is not loaded."
+                )
+            );
+
+            return;
+        }
+
+        const parts = [
+            house,
+            street,
+            area,
+            city,
+            state,
+            pincode,
+            "India"
+        ]
+            .map(v =>
+                String(v || "").trim()
+            )
+            .filter(Boolean);
+
+        const addressText =
+            parts.join(", ");
+
+        if (!addressText) {
+
+            reject(
+                new Error(
+                    "Address is empty."
+                )
+            );
+
+            return;
+        }
+
+        console.log(
+            "📍 GEOCODING ADDRESS:",
+            addressText
+        );
+
+        const geocoder =
+            new google.maps.Geocoder();
+
+        geocoder.geocode(
+            {
+                address: addressText,
+                region: "IN"
+            },
+
+            function (
+                results,
+                status
+            ) {
+
+                if (
+                    status !== "OK" ||
+                    !results ||
+                    !results[0] ||
+                    !results[0].geometry
+                ) {
+
+                    console.error(
+                        "GEOCODING FAILED:",
+                        status,
+                        addressText
+                    );
+
+                    reject(
+                        new Error(
+                            "Unable to find this address on the map."
+                        )
+                    );
+
+                    return;
+                }
+
+                const location =
+                    results[0].geometry.location;
+
+                const lat =
+                    location.lat();
+
+                const lng =
+                    location.lng();
+
+                console.log(
+                    "✅ GEOCODED COORDINATES"
+                );
+
+                console.log(
+                    "Latitude:",
+                    lat
+                );
+
+                console.log(
+                    "Longitude:",
+                    lng
+                );
+
+                resolve({
+                    latitude: lat,
+                    longitude: lng
+                });
+
+            }
+        );
+
+    });
 
 }
-//==========================
-// Load Addresses
-//==========================
 
-async function loadAddresses(){
+        /* ==========================================
+   SAVE ADDRESS
+   ========================================== */
 
-const res = await fetch(`${API}/address/${customerId}`);
+async function saveAddress() {
 
-const addresses = await res.json();
+    if (!customerId) {
 
-allAddresses = addresses;
+        alert(
+            "Customer login not found."
+        );
 
-const list = document.getElementById("addressList");
+        return;
 
-if(addresses.length==0){
+    }
 
-list.innerHTML=`
-<div class="empty">
-No Saved Addresses
-</div>
-`;
+    const house =
+        document.getElementById(
+            "house"
+        ).value.trim();
 
-return;
+    const street =
+        document.getElementById(
+            "street"
+        ).value.trim();
+
+    const area =
+        document.getElementById(
+            "area"
+        ).value.trim();
+
+    const city =
+        document.getElementById(
+            "city"
+        ).value.trim();
+
+    const state =
+        document.getElementById(
+            "state"
+        ).value.trim();
+
+    const pincode =
+        document.getElementById(
+            "pincode"
+        ).value.trim();
+
+
+    if (
+        !city ||
+        !state ||
+        !pincode
+    ) {
+
+        alert(
+            "Please enter the complete address."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Check whether we already have
+     * valid coordinates.
+     */
+
+    let finalLatitude =
+        Number(latitude);
+
+    let finalLongitude =
+        Number(longitude);
+
+
+    const coordinatesAreValid =
+        Number.isFinite(finalLatitude) &&
+        Number.isFinite(finalLongitude) &&
+        !(
+            finalLatitude === 0 &&
+            finalLongitude === 0
+        );
+
+
+    /*
+     * If coordinates are missing or 0,0,
+     * geocode the complete address.
+     */
+
+    if (!coordinatesAreValid) {
+
+        try {
+
+            console.log(
+                "⚠️ Coordinates missing."
+            );
+
+            console.log(
+                "📍 Finding address coordinates..."
+            );
+
+            const coordinates =
+                await geocodeAddress(
+                    house,
+                    street,
+                    area,
+                    city,
+                    state,
+                    pincode
+                );
+
+            finalLatitude =
+                coordinates.latitude;
+
+            finalLongitude =
+                coordinates.longitude;
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "ADDRESS GEOCODING ERROR:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Unable to find the location of this address."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+     * Keep local variables updated.
+     */
+
+    latitude =
+        finalLatitude;
+
+    longitude =
+        finalLongitude;
+
+
+    const body = {
+
+        customer_id:
+            customerId,
+
+        title:
+            document.getElementById(
+                "title"
+            ).value,
+
+        house,
+
+        street,
+
+        area,
+
+        city,
+
+        state,
+
+        pincode,
+
+        latitude:
+            finalLatitude,
+
+        longitude:
+            finalLongitude
+
+    };
+
+
+    console.log(
+        "=================================="
+    );
+
+    console.log(
+        "💾 SAVING ADDRESS"
+    );
+
+    console.log(
+        "Address:",
+        body
+    );
+
+    console.log(
+        "Latitude:",
+        finalLatitude
+    );
+
+    console.log(
+        "Longitude:",
+        finalLongitude
+    );
+
+    console.log(
+        "=================================="
+    );
+
+
+    let url =
+        `${API}/address/add`;
+
+    let method =
+        "POST";
+
+
+    if (editId) {
+
+        url =
+            `${API}/address/update/${editId}`;
+
+        method =
+            "PUT";
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                url,
+
+                {
+
+                    method,
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(body)
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Unable to save address"
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                "modal"
+            )
+            .style.display =
+            "none";
+
+
+        latitude = "";
+        longitude = "";
+
+
+        await loadAddresses();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "SAVE ADDRESS ERROR:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to save address."
+        );
+
+    }
 
 }
 
-list.innerHTML="";
+        /* ==========================================
+           EDIT ADDRESS
+        ========================================== */
 
-addresses.forEach(a=>{
+        function editAddress(
+            id,
+            t,
+            h,
+            s,
+            a,
+            c,
+            st,
+            p,
+            lat,
+            lng
+        ) {
 
-list.innerHTML += `
+            editId = id;
 
-<div class="saved-card">
-<div class="left-icon">
 
-<i class="fa-solid fa-location-arrow"></i>
+            document
+                .getElementById("modal")
+                .style.display =
+                "flex";
 
 
-<span>${getDistance(
-a.latitude,
-a.longitude
-)} km</span>
-</div>
+            document.getElementById(
+                "modalTitle"
+            ).textContent =
+                "Edit Address";
 
-<div class="address-info">
 
-<div class="address-head">
+            document.getElementById(
+                "title"
+            ).value = t || "Home";
 
-<h3>${a.title}</h3>
 
-${a.is_default==1
-?
-`<span class="selected">SELECTED</span>`
-:
-""
-}
+            document.getElementById(
+                "house"
+            ).value = h || "";
 
-</div>
 
-<p>
+            document.getElementById(
+                "street"
+            ).value = s || "";
 
-${a.house},
-${a.street},
-${a.area},
-${a.city},
-${a.state},
-${a.pincode}
 
-</p>
+            document.getElementById(
+                "area"
+            ).value = a || "";
 
-<button
-class="deliverBtn"
-onclick="deliverHere(event,
-'${a.house}',
-'${a.street}',
-'${a.area}',
-'${a.city}',
-'${a.state}',
-'${a.pincode}',
-'${a.latitude}',
-'${a.longitude}')">
 
-Deliver Here
+            document.getElementById(
+                "city"
+            ).value = c || "";
 
-</button>
 
-</div>
+            document.getElementById(
+                "state"
+            ).value = st || "";
 
-<div class="menu"
 
-onclick="showMenu(event,
-${a.id},
-'${a.title}',
-'${a.house}',
-'${a.street}',
-'${a.area}',
-'${a.city}',
-'${a.state}',
-'${a.pincode}',
-'${a.latitude}',
-'${a.longitude}'
-)">
+            document.getElementById(
+                "pincode"
+            ).value = p || "";
 
-<i class="fa-solid fa-ellipsis-vertical"></i>
 
-</div>
+            latitude =
+                lat ?? "";
 
-</div>
 
-`;
+            longitude =
+                lng ?? "";
 
-});
+        }
 
-}
 
-function searchAddress(){
+        /* ==========================================
+           DELETE ADDRESS
+        ========================================== */
 
-const keyword = document
-.getElementById("searchAddress")
-.value
-.toLowerCase();
+        async function deleteAddress(id) {
 
-const cards = document.querySelectorAll(".saved-card");
+            if (
+                !confirm(
+                    "Delete Address?"
+                )
+            ) {
 
-cards.forEach(card=>{
+                return;
 
-const text = card.innerText.toLowerCase();
+            }
 
-if(text.includes(keyword)){
 
-card.style.display="flex";
+            try {
 
-}else{
+                const response =
+                    await fetch(
 
-card.style.display="none";
+                        `${API}/address/${id}`,
 
-}
+                        {
+                            method: "DELETE"
+                        }
 
-});
+                    );
 
-}
-//==========================
-// Open Modal
-//==========================
 
-function openModal(){
+                const result =
+                    await response.json();
 
-editId=null;
 
-document.getElementById("modal").style.display="flex";
+                if (!response.ok) {
 
-clearForm();
+                    throw new Error(
+                        result.message ||
+                        "Unable to delete address"
+                    );
 
-}
+                }
 
-//==========================
-// Clear Form
-//==========================
 
-function clearForm(){
+                /*
+                 * If the deleted address was the
+                 * currently selected manual address,
+                 * remove the location data so the
+                 * next page does not use stale data.
+                 */
 
-house.value="";
-street.value="";
-area.value="";
-city.value="";
-state.value="";
-pincode.value="";
-title.value="Home";
+                const currentSelected =
+                    localStorage.getItem(
+                        "selectedAddress"
+                    );
 
-}
 
-//==========================
-// Close Modal
-//==========================
+                const deletedAddress =
+                    allAddresses.find(
+                        a => String(a.id) === String(id)
+                    );
 
-window.onclick=function(e){
 
-if(e.target.id=="modal"){
+                if (
+                    deletedAddress &&
+                    currentSelected
+                ) {
 
-modal.style.display="none";
+                    const deletedFullAddress =
+                        [
 
-}
+                            deletedAddress.house,
 
-}
+                            deletedAddress.street,
 
-//==========================
-// Current Location
-//==========================
-function currentLocation(){
+                            deletedAddress.area,
 
-navigator.geolocation.getCurrentPosition((position)=>{
+                            deletedAddress.city,
 
-latitude = position.coords.latitude;
-longitude = position.coords.longitude;
+                            deletedAddress.state
 
-const geocoder = new google.maps.Geocoder();
+                        ]
+                        .map(v =>
+                            String(v || "").trim()
+                        )
+                        .filter(Boolean)
+                        .join(", ");
 
-const latlng = {
-lat: latitude,
-lng: longitude
-};
 
-geocoder.geocode({location:latlng},(results,status)=>{
+                    if (
+                        currentSelected.includes(
+                            deletedFullAddress
+                        )
+                    ) {
 
-if(status!=="OK" || !results[0]){
-alert("Unable to fetch address");
-return;
-}
+                        localStorage.removeItem(
+                            "locationName"
+                        );
 
-openModal();
+                        localStorage.removeItem(
+                            "selectedAddress"
+                        );
 
-const components = results[0].address_components;
+                        localStorage.removeItem(
+                            "latitude"
+                        );
 
-let house="";
-let street="";
-let area="";
-let city="";
-let state="";
-let pincode="";
+                        localStorage.removeItem(
+                            "longitude"
+                        );
 
-components.forEach(c=>{
+                        localStorage.removeItem(
+                            "manualLocationSelected"
+                        );
 
-if(c.types.includes("street_number"))
-house=c.long_name;
+                    }
 
-if(c.types.includes("route"))
-street=c.long_name;
+                }
 
-if(
-c.types.includes("sublocality") ||
-c.types.includes("sublocality_level_1")
-)
-area=c.long_name;
 
-if(c.types.includes("locality"))
-city=c.long_name;
+                await loadAddresses();
 
-if(c.types.includes("administrative_area_level_1"))
-state=c.long_name;
+            }
 
-if(c.types.includes("postal_code"))
-pincode=c.long_name;
+            catch (error) {
 
-});
+                console.error(
+                    "DELETE ADDRESS ERROR:",
+                    error
+                );
 
-document.getElementById("house").value=house;
-document.getElementById("street").value=street;
-document.getElementById("area").value=area;
-document.getElementById("city").value=city;
-document.getElementById("state").value=state;
-document.getElementById("pincode").value=pincode;
 
-});
+                alert(
+                    error.message ||
+                    "Unable to delete address."
+                );
 
-});
+            }
 
-}
+        }
 
-//==========================
-// Save Address
-//==========================
 
-async function saveAddress(){
+        /* ==========================================
+           SET DEFAULT
+        ========================================== */
 
-const body={
+        async function setDefault(id) {
 
-customer_id:customerId,
+            try {
 
-title:title.value,
+                const response =
+                    await fetch(
 
-house:house.value,
+                        `${API}/address/default/${id}`,
 
-street:street.value,
+                        {
 
-area:area.value,
+                            method: "PUT",
 
-city:city.value,
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
 
-state:state.value,
+                            body:
+                                JSON.stringify({
 
-pincode:pincode.value,
+                                    customer_id:
+                                        customerId
 
-latitude,
+                                })
 
-longitude
+                        }
 
-};
+                    );
 
-let url=`${API}/address/add`;
 
-let method="POST";
+                const result =
+                    await response.json();
 
-if(editId){
 
-url=`${API}/address/update/${editId}`;
+                if (!response.ok) {
 
-method="PUT";
+                    throw new Error(
+                        result.message ||
+                        "Unable to set default address"
+                    );
 
-}
+                }
 
-await fetch(url,{
 
-method,
+                /*
+                 * Important:
+                 *
+                 * "Make Default" should also make
+                 * this address the active delivery
+                 * location.
+                 */
 
-headers:{
+                const address =
+                    allAddresses.find(
+                        a =>
+                            String(a.id) ===
+                            String(id)
+                    );
 
-"Content-Type":"application/json"
 
-},
+                if (address) {
 
-body:JSON.stringify(body)
+                    activateAddress(
+                        address
+                    );
 
-});
+                }
 
-modal.style.display="none";
 
-loadAddresses();
+                await loadAddresses();
 
-}
+            }
 
-//==========================
-// Edit
-//==========================
+            catch (error) {
 
-function editAddress(
+                console.error(
+                    "DEFAULT ADDRESS ERROR:",
+                    error
+                );
 
-id,
 
-t,
+                alert(
+                    error.message ||
+                    "Unable to set default address."
+                );
 
-h,
+            }
 
-s,
+        }
 
-a,
 
-c,
+        /* ==========================================
+           ACTIVATE SAVED ADDRESS
+           
+           THIS IS THE IMPORTANT FUNCTION.
+           
+           It makes the selected saved address
+           the real active delivery location,
+           regardless of the phone's physical GPS.
+        ========================================== */
 
-st,
+        function activateAddress(a) {
 
-p,
+            const house =
+                String(a.house || "").trim();
 
-lat,
+            const street =
+                String(a.street || "").trim();
 
-lng
+            const area =
+                String(a.area || "").trim();
 
-){
+            const city =
+                String(a.city || "").trim();
 
-editId=id;
+            const state =
+                String(a.state || "").trim();
 
-modal.style.display="flex";
+            const pincode =
+                String(a.pincode || "").trim();
 
-title.value=t;
 
-house.value=h;
+            /* ===============================
+               LOCATION NAME
+            =============================== */
 
-street.value=s;
+            let locationName = "";
 
-area.value=a;
 
-city.value=c;
+            if (
+                area &&
+                city
+            ) {
 
-state.value=st;
+                locationName =
+                    `${area}, ${city}`;
 
-pincode.value=p;
+            }
 
-latitude=lat;
+            else if (city) {
 
-longitude=lng;
+                locationName =
+                    city;
 
-}
+            }
 
-//==========================
-// Delete
-//==========================
+            else {
 
-async function deleteAddress(id){
+                locationName =
+                    area;
 
-if(!confirm("Delete Address?")) return;
+            }
 
-await fetch(`${API}/address/${id}`,{
 
-method:"DELETE"
+            /* ===============================
+               FULL ADDRESS
+            =============================== */
 
-});
+            const addressParts = [
 
-loadAddresses();
+                house,
 
-}
+                street,
 
-//==========================
-// Default
-//==========================
+                area,
 
-async function setDefault(id){
+                city,
 
-await fetch(`${API}/address/default/${id}`,{
+                state
 
-method:"PUT",
+            ]
+            .filter(Boolean);
 
-headers:{
 
-"Content-Type":"application/json"
+            let fullAddress =
+                addressParts.join(", ");
 
-},
 
-body:JSON.stringify({
+            if (pincode) {
 
-customer_id:customerId
+                fullAddress +=
+                    ` - ${pincode}`;
 
-})
+            }
 
-});
 
-loadAddresses();
+            /* ===============================
+               SAVE LOCATION NAME
+            =============================== */
 
-}
+            localStorage.setItem(
+                "locationName",
+                locationName
+            );
 
-function deliverHere(
+
+            /* ===============================
+               SAVE FULL ADDRESS
+            =============================== */
+
+            localStorage.setItem(
+                "selectedAddress",
+                fullAddress
+            );
+
+
+            /*
+             * THIS IS THE KEY.
+             *
+             * It tells index.html:
+             *
+             * "The customer intentionally selected
+             * a saved address. Do NOT replace it
+             * with the phone's physical GPS."
+             */
+
+            localStorage.setItem(
+                "manualLocationSelected",
+                "true"
+            );
+
+
+            /* ===============================
+               SAVE SELECTED ADDRESS ID
+            =============================== */
+
+            if (
+                a.id !== null &&
+                a.id !== undefined
+            ) {
+
+                localStorage.setItem(
+                    "selectedAddressId",
+                    String(a.id)
+                );
+
+            }
+
+
+            /* ===============================
+               SAVE GPS OF SAVED ADDRESS
+            =============================== */
+
+            if (
+                a.latitude !== "" &&
+                a.latitude !== null &&
+                a.latitude !== undefined
+            ) {
+
+                localStorage.setItem(
+                    "latitude",
+                    String(a.latitude)
+                );
+
+            }
+
+
+            if (
+                a.longitude !== "" &&
+                a.longitude !== null &&
+                a.longitude !== undefined
+            ) {
+
+                localStorage.setItem(
+                    "longitude",
+                    String(a.longitude)
+                );
+
+            }
+
+
+            console.log(
+                "=================================="
+            );
+
+            console.log(
+                "✅ SAVED ADDRESS ACTIVATED"
+            );
+
+            console.log(
+                "Location:",
+                locationName
+            );
+
+            console.log(
+                "Address:",
+                fullAddress
+            );
+
+            console.log(
+                "Latitude:",
+                a.latitude
+            );
+
+            console.log(
+                "Longitude:",
+                a.longitude
+            );
+
+            console.log(
+                "manualLocationSelected:",
+                localStorage.getItem(
+                    "manualLocationSelected"
+                )
+            );
+
+            console.log(
+                "=================================="
+            );
+
+        }
+
+
+        /* ==========================================
+           DELIVER HERE
+           
+           IMPORTANT:
+           This is the ONLY deliverHere()
+           function in this file.
+        ========================================== */
+        /* ==========================================
+   DELIVER HERE
+   ========================================== */
+
+async function deliverHere(
+
     event,
+
     house,
     street,
     area,
     city,
     state,
     pincode,
+
     lat,
     lng
-){
+
+) {
 
     event.stopPropagation();
 
 
-    /* ===============================
-       SAVE LOCATION NAME
-    =============================== */
+    /*
+     * Convert coordinates to numbers.
+     */
 
-    const locationName =
-        `${area}, ${city}`;
+    let finalLatitude =
+        Number(lat);
+
+    let finalLongitude =
+        Number(lng);
 
 
-    localStorage.setItem(
-        "locationName",
-        locationName
+    /*
+     * Check whether saved coordinates
+     * are actually valid.
+     *
+     * 0,0 is NOT a valid customer
+     * delivery location.
+     */
+
+    const coordinatesAreValid =
+        Number.isFinite(finalLatitude) &&
+        Number.isFinite(finalLongitude) &&
+        !(
+            finalLatitude === 0 &&
+            finalLongitude === 0
+        );
+
+
+    /*
+     * If old database address has 0,0,
+     * automatically find its coordinates.
+     */
+
+    if (!coordinatesAreValid) {
+
+        try {
+
+            console.log(
+                "⚠️ Saved address has invalid coordinates."
+            );
+
+            console.log(
+                "📍 Finding real coordinates..."
+            );
+
+            const coordinates =
+                await geocodeAddress(
+
+                    house,
+                    street,
+                    area,
+                    city,
+                    state,
+                    pincode
+
+                );
+
+
+            finalLatitude =
+                coordinates.latitude;
+
+            finalLongitude =
+                coordinates.longitude;
+
+
+            console.log(
+                "✅ REAL ADDRESS COORDINATES FOUND"
+            );
+
+            console.log(
+                "Latitude:",
+                finalLatitude
+            );
+
+            console.log(
+                "Longitude:",
+                finalLongitude
+            );
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "DELIVERY GEOCODING ERROR:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Unable to find the location of this address."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+     * Build address object.
+     */
+
+    const address = {
+
+        house,
+
+        street,
+
+        area,
+
+        city,
+
+        state,
+
+        pincode,
+
+        latitude:
+            finalLatitude,
+
+        longitude:
+            finalLongitude
+
+    };
+
+
+    /*
+     * Activate address.
+     */
+
+    activateAddress(
+        address
     );
 
 
-    /* ===============================
-       SAVE FULL ADDRESS
-    =============================== */
-
-    const fullAddress =
-        `${house}, ${street}, ${area}, ${city}, ${state} - ${pincode}`;
-
-
-    localStorage.setItem(
-        "selectedAddress",
-        fullAddress
-    );
-
-
-    /* ===============================
-       SAVE GPS LOCATION
-    =============================== */
+    /*
+     * IMPORTANT:
+     *
+     * Save the newly discovered coordinates
+     * into localStorage.
+     */
 
     localStorage.setItem(
         "latitude",
-        lat
+        String(finalLatitude)
     );
 
     localStorage.setItem(
         "longitude",
-        lng
+        String(finalLongitude)
     );
 
+
+    localStorage.setItem(
+        "manualLocationSelected",
+        "true"
+    );
+
+
+    console.log(
+        "=================================="
+    );
 
     console.log(
         "✅ DELIVERY ADDRESS SELECTED"
@@ -1110,18 +2579,47 @@ function deliverHere(
 
     console.log(
         "Location:",
-        locationName
+        localStorage.getItem(
+            "locationName"
+        )
     );
 
     console.log(
         "Address:",
-        fullAddress
+        localStorage.getItem(
+            "selectedAddress"
+        )
+    );
+
+    console.log(
+        "Latitude:",
+        localStorage.getItem(
+            "latitude"
+        )
+    );
+
+    console.log(
+        "Longitude:",
+        localStorage.getItem(
+            "longitude"
+        )
+    );
+
+    console.log(
+        "Manual:",
+        localStorage.getItem(
+            "manualLocationSelected"
+        )
+    );
+
+    console.log(
+        "=================================="
     );
 
 
-    /* ===============================
-       CHECK WHERE USER CAME FROM
-    =============================== */
+    /*
+     * Return page.
+     */
 
     const returnPage =
         localStorage.getItem(
@@ -1129,27 +2627,19 @@ function deliverHere(
         );
 
 
-    /* ===============================
-       CLEAR RETURN PAGE
-    =============================== */
-
     localStorage.removeItem(
         "addressReturnPage"
     );
 
 
-    /* ===============================
-       GO BACK TO CORRECT PAGE
-    =============================== */
-
-    if(returnPage){
+    if (returnPage) {
 
         window.location.href =
             returnPage;
 
     }
 
-    else{
+    else {
 
         window.location.href =
             "index.html";
@@ -1159,257 +2649,394 @@ function deliverHere(
 }
 
 
-let selectedAddress={};
+        /* ==========================================
+           SHOW MENU
+        ========================================== */
 
-function showMenu(
-event,
-id,
-title,
-house,
-street,
-area,
-city,
-state,
-pincode,
-lat,
-lng
-){
+        function showMenu(
 
-event.stopPropagation();
+            event,
 
-selectedAddress={
-id,
-title,
-house,
-street,
-area,
-city,
-state,
-pincode,
-lat,
-lng
-};
+            id,
 
-const popup=document.getElementById("menuPopup");
+            title,
 
-popup.style.display="block";
+            house,
 
-popup.style.left=event.pageX-160+"px";
+            street,
 
-popup.style.top=event.pageY+"px";
+            area,
 
-}
-function editSelected(){
+            city,
 
-document.getElementById("menuPopup").style.display="none";
+            state,
 
-editAddress(
+            pincode,
 
-selectedAddress.id,
+            lat,
 
-selectedAddress.title,
+            lng
 
-selectedAddress.house,
+        ) {
 
-selectedAddress.street,
-
-selectedAddress.area,
-
-selectedAddress.city,
-
-selectedAddress.state,
-
-selectedAddress.pincode,
-
-selectedAddress.lat,
-
-selectedAddress.lng
-
-);
-
-}
-
-function makeDefault(){
-
-document.getElementById("menuPopup").style.display="none";
-
-setDefault(selectedAddress.id);
-
-}
-
-function deleteSelected(){
-
-document.getElementById("menuPopup").style.display="none";
-
-deleteAddress(selectedAddress.id);
-
-}
-document.addEventListener("click",()=>{
-
-document.getElementById("menuPopup").style.display="none";
-
-});
-let allAddresses=[];
-
-function deliverHere(
-    event,
-    house,
-    street,
-    area,
-    city,
-    state,
-    pincode,
-    lat,
-    lng
-){
-
-    event.stopPropagation();
+            event.stopPropagation();
 
 
-    /* ==========================================
-       SAVE DISPLAY LOCATION
-    ========================================== */
+            selectedAddress = {
 
-    const locationName =
-        `${area}, ${city}`;
+                id,
 
+                title,
 
-    localStorage.setItem(
-        "locationName",
-        locationName
-    );
+                house,
 
+                street,
 
-    /* ==========================================
-       SAVE FULL ADDRESS
-    ========================================== */
+                area,
 
-    const fullAddress =
-        `${house}, ${street}, ${area}, ${city}, ${state} - ${pincode}`;
+                city,
 
+                state,
 
-    localStorage.setItem(
-        "selectedAddress",
-        fullAddress
-    );
+                pincode,
+
+                lat,
+
+                lng
+
+            };
 
 
-    /* ==========================================
-       SAVE GPS
-    ========================================== */
-
-    localStorage.setItem(
-        "latitude",
-        lat
-    );
-
-    localStorage.setItem(
-        "longitude",
-        lng
-    );
+            const popup =
+                document.getElementById(
+                    "menuPopup"
+                );
 
 
-    console.log(
-        "DELIVERY LOCATION SELECTED:",
-        locationName
-    );
-
-    console.log(
-        "FULL ADDRESS:",
-        fullAddress
-    );
+            popup.style.display =
+                "block";
 
 
-    /* ==========================================
-       GO HOME
-    ========================================== */
+            let left =
+                event.clientX - 160;
 
-    window.location.href =
-        "index.html";
 
-}
+            let top =
+                event.clientY;
 
-let autocomplete;
 
-window.onload = function () {
+            /* Keep popup inside screen */
 
-    const input = document.getElementById("searchAddress");
+            if (
+                left < 10
+            ) {
 
-    autocomplete = new google.maps.places.Autocomplete(input, {
-        componentRestrictions: { country: "in" },
-        fields: [
-            "formatted_address",
-            "geometry",
-            "address_components"
-        ]
-    });
+                left = 10;
 
-    autocomplete.addListener("place_changed", fillAddress);
+            }
 
-};
-function fillAddress(){
+
+            if (
+                left + 180 >
+                window.innerWidth
+            ) {
+
+                left =
+                    window.innerWidth - 190;
+
+            }
+
+
+            if (
+                top + 150 >
+                window.innerHeight
+            ) {
+
+                top =
+                    window.innerHeight - 160;
+
+            }
+
+
+            popup.style.left =
+                `${left}px`;
+
+
+            popup.style.top =
+                `${top}px`;
+
+        }
+
+
+        /* ==========================================
+           EDIT SELECTED
+        ========================================== */
+
+        function editSelected() {
+
+            document
+                .getElementById(
+                    "menuPopup"
+                )
+                .style.display =
+                "none";
+
+
+            editAddress(
+
+                selectedAddress.id,
+
+                selectedAddress.title,
+
+                selectedAddress.house,
+
+                selectedAddress.street,
+
+                selectedAddress.area,
+
+                selectedAddress.city,
+
+                selectedAddress.state,
+
+                selectedAddress.pincode,
+
+                selectedAddress.lat,
+
+                selectedAddress.lng
+
+            );
+
+        }
+
+
+        /* ==========================================
+           MAKE DEFAULT
+        ========================================== */
+
+        function makeDefault() {
+
+            document
+                .getElementById(
+                    "menuPopup"
+                )
+                .style.display =
+                "none";
+
+
+            setDefault(
+                selectedAddress.id
+            );
+
+        }
+
+
+        /* ==========================================
+           DELETE SELECTED
+        ========================================== */
+
+        function deleteSelected() {
+
+            document
+                .getElementById(
+                    "menuPopup"
+                )
+                .style.display =
+                "none";
+
+
+            deleteAddress(
+                selectedAddress.id
+            );
+
+        }
+
+
+        /* ==========================================
+           CLOSE MENU
+        ========================================== */
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                document
+                    .getElementById(
+                        "menuPopup"
+                    )
+                    .style.display =
+                    "none";
+
+            }
+        );
+
+
+        /* ==========================================
+           GOOGLE PLACES AUTOCOMPLETE
+        ========================================== */
+
+        window.addEventListener(
+            "load",
+            function () {
+
+                const input =
+                    document.getElementById(
+                        "searchAddress"
+                    );
+
+
+                if (
+                    typeof google === "undefined" ||
+                    !google.maps ||
+                    !google.maps.places
+                ) {
+
+                    console.warn(
+                        "Google Places API unavailable."
+                    );
+
+                    return;
+
+                }
+
+
+                autocomplete =
+                    new google.maps.places.Autocomplete(
+
+                        input,
+
+                        {
+
+                            componentRestrictions: {
+                                country: "in"
+                            },
+
+                            fields: [
+
+                                "formatted_address",
+
+                                "geometry",
+
+                                "address_components"
+
+                            ]
+
+                        }
+
+                    );
+
+
+                autocomplete.addListener(
+                    "place_changed",
+                    fillAddress
+                );
+
+            }
+        );
+
+
+        /* ==========================================
+           FILL ADDRESS FROM SEARCH
+        ========================================== */
+         
+    function fillAddress() {
 
     const place = autocomplete.getPlace();
 
-    if(!place.geometry) return;
+    if (!place || !place.geometry) {
+        return;
+    }
 
-    latitude = place.geometry.location.lat();
-    longitude = place.geometry.location.lng();
+    /*
+     * IMPORTANT:
+     *
+     * Google Places has already given us the
+     * exact coordinates of the selected address.
+     *
+     * Store them BEFORE filling/opening the form.
+     */
 
-    let house = "";
-    let street = "";
-    let area = "";
-    let city = "";
-    let state = "";
-    let pincode = "";
+    latitude =
+        place.geometry.location.lat();
 
-    place.address_components.forEach(component=>{
+    longitude =
+        place.geometry.location.lng();
 
-        const type = component.types[0];
+    console.log("📍 GOOGLE PLACE SELECTED");
+    console.log("Latitude:", latitude);
+    console.log("Longitude:", longitude);
 
-        if(type=="street_number"){
-            house = component.long_name;
-        }
+    /*
+     * Fill address fields.
+     */
 
-        if(type=="route"){
-            street = component.long_name;
-        }
+    fillAddressFromComponents(
+        place.address_components || []
+    );
 
-        if(
-            type=="sublocality" ||
-            type=="sublocality_level_1" ||
-            type=="neighborhood"
-        ){
-            area = component.long_name;
-        }
+    /*
+     * IMPORTANT:
+     *
+     * Do NOT call openModal() here because
+     * openModal() calls clearForm(), which would
+     * erase latitude and longitude.
+     */
 
-        if(type=="locality"){
-            city = component.long_name;
-        }
+    editId = null;
 
-        if(type=="administrative_area_level_1"){
-            state = component.long_name;
-        }
+    document.getElementById(
+        "modal"
+    ).style.display = "flex";
 
-        if(type=="postal_code"){
-            pincode = component.long_name;
-        }
+    document.getElementById(
+        "modalTitle"
+    ).textContent = "Add Address";
 
-    });
+    /*
+     * Clear only the search box.
+     */
 
-    openModal();
-    document.getElementById("searchAddress").value = "";
-
-    document.getElementById("house").value = house;
-    document.getElementById("street").value = street;
-    document.getElementById("area").value = area;
-    document.getElementById("city").value = city;
-    document.getElementById("state").value = state;
-    document.getElementById("pincode").value = pincode;
+    document.getElementById(
+        "searchAddress"
+    ).value = "";
 
 }
-</script>
 
+        /* ==========================================
+           ESCAPE HTML
+        ========================================== */
+
+        function escapeHtml(value) {
+
+            return String(value || "")
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+    </script>
 
 </body>
 

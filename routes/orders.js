@@ -1,7 +1,60 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const admin = require("../config/firebaseAdmin");
+async function sendCustomerNotification(customerId, title, body, data = {}) {
+    try {
+        const [rows] = await db.promise().query(
+            `SELECT fcm_token
+             FROM customers
+             WHERE id=?`,
+            [customerId]
+        );
 
+        if (!rows.length || !rows[0].fcm_token) {
+            console.log(
+                "FCM: Customer has no token:",
+                customerId
+            );
+            return;
+        }
+
+        const token = rows[0].fcm_token;
+
+        const message = {
+            token,
+
+            notification: {
+                title,
+                body
+            },
+
+            data: {
+                customerId: String(customerId),
+                ...Object.fromEntries(
+                    Object.entries(data).map(
+                        ([key, value]) => [key, String(value)]
+                    )
+                )
+            }
+        };
+
+        const messageId =
+            await admin.messaging().send(message);
+
+        console.log(
+            "📲 CUSTOMER FCM SENT:",
+            messageId
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ CUSTOMER FCM ERROR:",
+            error
+        );
+    }
+}
 /*=========================================
             PLACE ORDER
 =========================================*/
@@ -466,6 +519,16 @@ router.post("/place", async (req, res) => {
         =========================================*/
 
         await connection.commit();
+
+        await sendCustomerNotification(
+    customer_id,
+    "🎉 Order Placed",
+    `Your order #${orderId} has been placed successfully.`,
+    {
+        type: "order_placed",
+        orderId: orderId
+    }
+);
 
         /*=========================================
             SEND ORDER TO RESTAURANT
@@ -1397,6 +1460,72 @@ router.put(
                 });
 
             }
+
+           
+
+
+// ==========================================
+// CUSTOMER FCM NOTIFICATION
+// ==========================================
+
+let notificationTitle = "📦 Order Update";
+
+let notificationBody =
+    `Your order #${orderId} is now ${status}.`;
+
+
+if (status === "Accepted") {
+
+    notificationTitle = "✅ Order Accepted";
+
+    notificationBody =
+        `Restaurant accepted your order #${orderId}.`;
+
+}
+
+
+if (status === "Preparing") {
+
+    notificationTitle = "👨‍🍳 Order Preparing";
+
+    notificationBody =
+        `Your order #${orderId} is being prepared.`;
+
+}
+
+
+if (status === "Ready") {
+
+    notificationTitle = "🍽️ Order Ready";
+
+    notificationBody =
+        `Your order #${orderId} is ready.`;
+
+}
+
+
+if (status === "Rejected") {
+
+    notificationTitle = "❌ Order Rejected";
+
+    notificationBody =
+        `Unfortunately, your order #${orderId} was rejected.`;
+
+}
+
+
+await sendCustomerNotification(
+    order.customer_id,
+    notificationTitle,
+    notificationBody,
+    {
+        type: "order_status",
+        orderId: orderId,
+        status: status
+    }
+);
+
+
 
 
             /*=========================================
