@@ -1,3 +1,6 @@
+
+
+
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
@@ -12,43 +15,30 @@ router.get("/order/:id", (req, res) => {
     const id = req.params.id;
 
     db.query(
-
         "SELECT * FROM orders WHERE id = ?",
-
         [id],
-
         (err, result) => {
 
             if (err) {
-
                 console.log(err);
 
                 return res.status(500).json({
-
                     success: false
-
                 });
-
             }
 
             if (result.length === 0) {
-
                 return res.json({
-
                     success: false,
                     message: "Order Not Found"
-
                 });
-
             }
 
             res.json(result[0]);
-
         }
-
     );
-
 });
+
 
 // =====================================================
 // GET ALL ORDERS FOR PARTNER
@@ -93,25 +83,19 @@ router.get("/:partner_id", (req, res) => {
                 );
 
                 return res.status(500).json({
-
                     success: false,
                     message: "Database Error"
-
                 });
-
             }
 
             res.json(result);
-
         }
-
     );
-
 });
 
 
 // =====================================================
-// DARVOZ V1 - DISPATCH ORDER TO ONLINE RIDERS
+// DISPATCH ORDER TO APPROVED + ONLINE RIDERS
 // =====================================================
 
 function dispatchOrderToRiders(io, orderId) {
@@ -126,16 +110,13 @@ function dispatchOrderToRiders(io, orderId) {
         return;
     }
 
-    // -----------------------------------------
-    // FIND APPROVED + ONLINE RIDERS
-    // -----------------------------------------
-
     db.query(
 
         `SELECT id
          FROM delivery_partners
-         WHERE online_status='Online'
-         AND account_status='Approved'
+         WHERE
+            online_status='Online'
+            AND account_status='Approved'
          ORDER BY id ASC`,
 
         (err, riders) => {
@@ -165,9 +146,9 @@ function dispatchOrderToRiders(io, orderId) {
             );
 
 
-            // -----------------------------------------
+            // =========================================
             // GET COMPLETE ORDER
-            // -----------------------------------------
+            // =========================================
 
             db.query(
 
@@ -177,13 +158,13 @@ function dispatchOrderToRiders(io, orderId) {
 
                 [orderId],
 
-                (err, orders) => {
+                (orderErr, orders) => {
 
-                    if (err) {
+                    if (orderErr) {
 
                         console.log(
                             "❌ Order Query Error:",
-                            err
+                            orderErr
                         );
 
                         return;
@@ -198,19 +179,17 @@ function dispatchOrderToRiders(io, orderId) {
                         return;
                     }
 
-                    const order =
-                        orders[0];
+                    const order = orders[0];
 
 
-                    // -----------------------------------------
-                    // SEND TO ALL ELIGIBLE RIDERS
-                    // -----------------------------------------
+                    // =========================================
+                    // SEND TO EVERY ELIGIBLE RIDER
+                    // =========================================
 
                     riders.forEach(rider => {
 
                         console.log(
-                            `📦 Sending order ${order.id} ` +
-                            `to rider ${rider.id}`
+                            `📦 Sending order ${order.id} to rider ${rider.id}`
                         );
 
                         io.to(
@@ -221,9 +200,9 @@ function dispatchOrderToRiders(io, orderId) {
                         );
 
 
-                        // -----------------------------------------
+                        // =====================================
                         // SAVE DISPATCH LOG
-                        // -----------------------------------------
+                        // =====================================
 
                         db.query(
 
@@ -248,34 +227,281 @@ function dispatchOrderToRiders(io, orderId) {
                                         "❌ Dispatch Log Error:",
                                         logErr
                                     );
-
                                 }
-
                             }
-
                         );
 
                     });
 
 
                     console.log(
-                        `✅ Order ${order.id} dispatched to ` +
-                        `${riders.length} rider(s)`
+                        `✅ Order ${order.id} dispatched to ${riders.length} rider(s)`
                     );
 
                 }
-
             );
-
         }
-
     );
-
 }
+
+
 // =====================================================
-// RIDER ACCEPT ORDER
+// 🏪 PARTNER ACCEPT ORDER
+//
+// RESTAURANT ACCEPTS THE CUSTOMER ORDER.
+//
+// IMPORTANT:
+// DO NOT SET delivery_partner_id HERE.
+//
+// After restaurant accepts, the order is dispatched
+// to approved + online delivery riders.
+// =====================================================
+
+router.put("/partner-accept/:id", (req, res) => {
+
+    const orderId = req.params.id;
+    const { partnerId } = req.body;
+
+    console.log("=================================");
+    console.log("🏪 PARTNER ACCEPT ORDER");
+    console.log("Order ID:", orderId);
+    console.log("Partner ID:", partnerId);
+    console.log("=================================");
+
+
+    if (!partnerId) {
+
+        return res.status(400).json({
+            success: false,
+            message: "Partner ID required."
+        });
+    }
+
+
+    // =========================================
+    // VERIFY ORDER BELONGS TO THIS RESTAURANT
+    // =========================================
+
+    db.query(
+
+        `SELECT
+            id,
+            partner_id,
+            status,
+            delivery_partner_id
+         FROM orders
+         WHERE id=?`,
+
+        [orderId],
+
+        (err, orders) => {
+
+            if (err) {
+
+                console.log(
+                    "PARTNER ACCEPT ORDER QUERY ERROR:",
+                    err
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Database Error"
+                });
+            }
+
+
+            if (orders.length === 0) {
+
+                return res.status(404).json({
+                    success: false,
+                    message: "Order not found."
+                });
+            }
+
+
+            const order = orders[0];
+
+
+            // =========================================
+            // VERIFY RESTAURANT
+            // =========================================
+
+            if (
+                Number(order.partner_id) !==
+                Number(partnerId)
+            ) {
+
+                return res.status(403).json({
+                    success: false,
+                    message:
+                        "This order does not belong to this partner."
+                });
+            }
+
+
+            // =========================================
+            // ALREADY ACCEPTED BY RESTAURANT
+            // =========================================
+
+            if (
+                String(order.status)
+                    .trim()
+                    .toLowerCase() === "accepted"
+            ) {
+
+                return res.json({
+                    success: false,
+                    message:
+                        "You have already accepted this order."
+                });
+            }
+
+
+            // =========================================
+            // RESTAURANT ACCEPTS
+            //
+            // delivery_partner_id MUST remain NULL
+            // =========================================
+
+            db.query(
+
+                `UPDATE orders
+                 SET
+                    status='Accepted',
+                    delivery_partner_id=NULL,
+                    delivery_status='Waiting',
+                    dispatch_time=NOW()
+                 WHERE
+                    id=?
+                    AND partner_id=?`,
+
+                [
+                    orderId,
+                    partnerId
+                ],
+
+                (updateErr, result) => {
+
+                    if (updateErr) {
+
+                        console.log(
+                            "PARTNER ACCEPT UPDATE ERROR:",
+                            updateErr
+                        );
+
+                        return res.status(500).json({
+                            success: false,
+                            message: "Database Error"
+                        });
+                    }
+
+
+                    if (
+                        result.affectedRows === 0
+                    ) {
+
+                        return res.json({
+                            success: false,
+                            message:
+                                "Unable to accept order."
+                        });
+                    }
+
+
+                    console.log(
+                        `✅ PARTNER ${partnerId} ACCEPTED ORDER ${orderId}`
+                    );
+
+
+                    // =========================================
+                    // CUSTOMER UPDATE
+                    // =========================================
+
+                    db.query(
+
+                        `SELECT customer_id
+                         FROM orders
+                         WHERE id=?`,
+
+                        [orderId],
+
+                        (customerErr, rows) => {
+
+                            const io =
+                                req.app.get("io");
+
+
+                            if (
+                                io &&
+                                !customerErr &&
+                                rows.length > 0 &&
+                                rows[0].customer_id
+                            ) {
+
+                                io.to(
+                                    `customer_${rows[0].customer_id}`
+                                ).emit(
+
+                                    "orderStatusUpdated",
+
+                                    {
+                                        orderId:
+                                            orderId,
+
+                                        status:
+                                            "Accepted"
+                                    }
+                                );
+                            }
+
+
+                            // =========================================
+                            // DISPATCH TO RIDERS
+                            // =========================================
+
+                            dispatchOrderToRiders(
+                                io,
+                                orderId
+                            );
+
+
+                            // =========================================
+                            // SUCCESS
+                            // =========================================
+
+                            return res.json({
+
+                                success: true,
+
+                                message:
+                                    "Order accepted successfully. Finding delivery partner.",
+
+                                orderId:
+                                    orderId,
+
+                                partnerId:
+                                    partnerId,
+
+                                status:
+                                    "Accepted"
+
+                            });
+
+                        }
+                    );
+                }
+            );
+        }
+    );
+});
+
+
+// =====================================================
+// 🚴 RIDER ACCEPT ORDER
+//
 // FIRST RIDER TO ACCEPT WINS
-// DARVOZ V1
+//
+// partner_id HERE MEANS DELIVERY RIDER ID.
 // =====================================================
 
 router.put("/accept/:id", (req, res) => {
@@ -289,26 +515,32 @@ router.put("/accept/:id", (req, res) => {
     console.log("Rider ID:", partner_id);
     console.log("=================================");
 
+
     if (!partner_id) {
 
         return res.status(400).json({
-            success: false,
-            message: "Delivery Partner ID required."
-        });
 
+            success: false,
+
+            message:
+                "Delivery Partner ID required."
+
+        });
     }
 
-    // =================================================
-    // VERIFY RIDER IS APPROVED + ONLINE
-    // =================================================
+
+    // =========================================
+    // VERIFY RIDER
+    // =========================================
 
     db.query(
 
         `SELECT id
          FROM delivery_partners
-         WHERE id=?
-         AND account_status='Approved'
-         AND online_status='Online'`,
+         WHERE
+            id=?
+            AND account_status='Approved'
+            AND online_status='Online'`,
 
         [partner_id],
 
@@ -322,35 +554,40 @@ router.put("/accept/:id", (req, res) => {
                 );
 
                 return res.status(500).json({
-                    success: false,
-                    message: "Database Error"
-                });
 
+                    success: false,
+
+                    message:
+                        "Database Error"
+
+                });
             }
+
 
             if (riders.length === 0) {
 
                 return res.json({
+
                     success: false,
+
                     message:
                         "You are not approved or currently offline."
-                });
 
+                });
             }
 
-            // =================================================
+
+            // =========================================
             // FIRST RIDER WINS
-            // =================================================
+            // =========================================
 
             db.query(
 
                 `UPDATE orders
-
                  SET
                     delivery_partner_id=?,
                     status='Delivery Assigned',
                     delivery_status='Assigned'
-
                  WHERE
                     id=?
                     AND delivery_partner_id IS NULL
@@ -371,17 +608,23 @@ router.put("/accept/:id", (req, res) => {
                         );
 
                         return res.status(500).json({
-                            success: false,
-                            message: "Database Error"
-                        });
 
+                            success: false,
+
+                            message:
+                                "Database Error"
+
+                        });
                     }
 
-                    // =================================================
-                    // ANOTHER RIDER WON THE ORDER
-                    // =================================================
 
-                    if (result.affectedRows === 0) {
+                    // =========================================
+                    // ANOTHER RIDER WON
+                    // =========================================
+
+                    if (
+                        result.affectedRows === 0
+                    ) {
 
                         return res.json({
 
@@ -391,23 +634,22 @@ router.put("/accept/:id", (req, res) => {
                                 "This order has already been accepted by another delivery partner."
 
                         });
-
                     }
+
 
                     console.log(
                         `✅ RIDER ${partner_id} WON ORDER ${orderId}`
                     );
 
-                    // =================================================
-                    // MARK THIS RIDER'S DISPATCH LOG AS ACCEPTED
-                    // =================================================
+
+                    // =========================================
+                    // UPDATE WINNING RIDER LOG
+                    // =========================================
 
                     db.query(
 
                         `UPDATE order_dispatch_log
-
                          SET status='Accepted'
-
                          WHERE
                             order_id=?
                             AND delivery_partner_id=?`,
@@ -417,7 +659,7 @@ router.put("/accept/:id", (req, res) => {
                             partner_id
                         ],
 
-                        (logErr) => {
+                        logErr => {
 
                             if (logErr) {
 
@@ -425,23 +667,19 @@ router.put("/accept/:id", (req, res) => {
                                     "DISPATCH LOG UPDATE ERROR:",
                                     logErr
                                 );
-
                             }
-
                         }
-
                     );
 
-                    // =================================================
-                    // MARK OTHER RIDERS' REQUESTS AS REJECTED
-                    // =================================================
+
+                    // =========================================
+                    // REJECT OTHER RIDER REQUESTS
+                    // =========================================
 
                     db.query(
 
                         `UPDATE order_dispatch_log
-
                          SET status='Rejected'
-
                          WHERE
                             order_id=?
                             AND delivery_partner_id<>?
@@ -452,7 +690,7 @@ router.put("/accept/:id", (req, res) => {
                             partner_id
                         ],
 
-                        (logErr) => {
+                        logErr => {
 
                             if (logErr) {
 
@@ -460,16 +698,14 @@ router.put("/accept/:id", (req, res) => {
                                     "OTHER RIDERS LOG UPDATE ERROR:",
                                     logErr
                                 );
-
                             }
-
                         }
-
                     );
 
-                    // =================================================
-                    // GET ORDER DETAILS
-                    // =================================================
+
+                    // =========================================
+                    // GET CUSTOMER + PARTNER
+                    // =========================================
 
                     db.query(
 
@@ -483,107 +719,118 @@ router.put("/accept/:id", (req, res) => {
 
                         (orderErr, rows) => {
 
-                            if (orderErr) {
-
-                                console.log(
-                                    "ORDER DETAILS ERROR:",
-                                    orderErr
-                                );
-
-                            }
-
                             const io =
                                 req.app.get("io");
 
-                            // =================================================
-                            // CUSTOMER UPDATE
-                            // =================================================
+
+                            if (
+                                orderErr ||
+                                !rows ||
+                                rows.length === 0
+                            ) {
+
+                                return res.json({
+
+                                    success: true,
+
+                                    message:
+                                        "Order accepted successfully.",
+
+                                    orderId:
+                                        orderId,
+
+                                    deliveryId:
+                                        partner_id,
+
+                                    status:
+                                        "Delivery Assigned"
+
+                                });
+                            }
+
+
+                            const order =
+                                rows[0];
+
+
+                            // =====================================
+                            // CUSTOMER
+                            // =====================================
 
                             if (
                                 io &&
-                                rows &&
-                                rows.length > 0 &&
-                                rows[0].customer_id
+                                order.customer_id
                             ) {
 
                                 io.to(
-                                    `customer_${rows[0].customer_id}`
+                                    `customer_${order.customer_id}`
                                 ).emit(
 
                                     "orderStatusUpdated",
 
                                     {
-                                        orderId: orderId,
+                                        orderId:
+                                            orderId,
+
                                         status:
                                             "Delivery Assigned"
                                     }
-
                                 );
-
                             }
 
-                            // =================================================
-                            // PARTNER UPDATE
-                            // =================================================
+
+                            // =====================================
+                            // RESTAURANT
+                            // =====================================
 
                             if (
                                 io &&
-                                rows &&
-                                rows.length > 0 &&
-                                rows[0].partner_id
+                                order.partner_id
                             ) {
 
                                 io.to(
-                                    `partner_${rows[0].partner_id}`
+                                    `partner_${order.partner_id}`
                                 ).emit(
 
                                     "orderStatusUpdated",
 
                                     {
-                                        orderId: orderId,
+                                        orderId:
+                                            orderId,
+
                                         status:
                                             "Delivery Assigned"
                                     }
-
                                 );
-
                             }
+
+
+                            return res.json({
+
+                                success: true,
+
+                                message:
+                                    "Order accepted successfully.",
+
+                                orderId:
+                                    orderId,
+
+                                deliveryId:
+                                    partner_id,
+
+                                status:
+                                    "Delivery Assigned"
+
+                            });
 
                         }
-
                     );
-
-                    // =================================================
-                    // SUCCESS
-                    // =================================================
-
-                    return res.json({
-
-                        success: true,
-
-                        message:
-                            "Order accepted successfully.",
-
-                        orderId:
-                            orderId,
-
-                        deliveryId:
-                            partner_id,
-
-                        status:
-                            "Delivery Assigned"
-
-                    });
-
                 }
-
             );
-
         }
-
     );
-
 });
+
 
 // =====================================================
 // PARTNER REJECT ORDER
@@ -600,18 +847,21 @@ router.put("/reject/:id", (req, res) => {
             success: false,
             message: "Partner ID required."
         });
-
     }
 
+
     db.query(
+
         `SELECT *
          FROM orders
          WHERE id=?`,
+
         [orderId],
 
         (err, orders) => {
 
             if (err) {
+
                 console.log(err);
 
                 return res.status(500).json({
@@ -620,18 +870,19 @@ router.put("/reject/:id", (req, res) => {
                 });
             }
 
+
             if (orders.length === 0) {
 
                 return res.json({
                     success: false,
                     message: "Order not found."
                 });
-
             }
+
 
             const order = orders[0];
 
-            // Partner cannot reject after accepting
+
             if (
                 order.partner_id &&
                 Number(order.partner_id) ===
@@ -643,11 +894,11 @@ router.put("/reject/:id", (req, res) => {
                     message:
                         "You already accepted this order."
                 });
-
             }
 
-            // Save permanent rejection
+
             db.query(
+
                 `INSERT INTO order_partner_responses
                 (
                     order_id,
@@ -663,7 +914,7 @@ router.put("/reject/:id", (req, res) => {
                     partnerId
                 ],
 
-                (insertErr) => {
+                insertErr => {
 
                     if (insertErr) {
 
@@ -677,17 +928,19 @@ router.put("/reject/:id", (req, res) => {
                             message:
                                 "Unable to save rejection."
                         });
-
                     }
 
-                    // Notify ADMIN
+
                     const io =
                         req.app.get("io");
+
 
                     if (io) {
 
                         io.to("admin").emit(
+
                             "partnerRejectedOrder",
+
                             {
                                 orderId,
                                 partnerId,
@@ -695,33 +948,39 @@ router.put("/reject/:id", (req, res) => {
                                     "Partner rejected an order."
                             }
                         );
-
                     }
 
+
                     res.json({
+
                         success: true,
+
                         message:
                             "Order rejected successfully."
+
                     });
 
                 }
             );
-
         }
     );
-
 });
+
 
 // =====================================================
 // UPDATE ORDER STATUS
+// =====================================================
+//
+// IMPORTANT:
+// DO NOT DISPATCH RIDERS HERE.
+//
+// Partner Accept already dispatches riders.
 // =====================================================
 
 router.put("/status/:id", (req, res) => {
 
     const id = req.params.id;
-
     const { status } = req.body;
-
 
 
     db.query(
@@ -730,9 +989,12 @@ router.put("/status/:id", (req, res) => {
          SET status=?
          WHERE id=?`,
 
-        [status, id],
+        [
+            status,
+            id
+        ],
 
-        (err) => {
+        err => {
 
             if (err) {
 
@@ -741,19 +1003,17 @@ router.put("/status/:id", (req, res) => {
                 return res.status(500).json({
 
                     success: false,
-                    message: "Database Error"
+
+                    message:
+                        "Database Error"
 
                 });
-
             }
 
 
-            const io = req.app.get("io");
+            const io =
+                req.app.get("io");
 
-
-            // =================================================
-            // CUSTOMER + PARTNER LIVE STATUS UPDATE
-            // =================================================
 
             db.query(
 
@@ -765,296 +1025,85 @@ router.put("/status/:id", (req, res) => {
 
                 [id],
 
-                (err, rows) => {
+                (statusErr, rows) => {
 
-                    if (err || rows.length === 0) {
+                    if (
+                        statusErr ||
+                        rows.length === 0
+                    ) {
 
-                        return;
+                        return res.json({
 
+                            success: true,
+
+                            message:
+                                "Order Status Updated Successfully"
+
+                        });
                     }
 
 
-                    const order = rows[0];
+                    const order =
+                        rows[0];
 
 
-                    // CUSTOMER
+                    if (
+                        io &&
+                        order.customer_id
+                    ) {
 
-                    io.to(
+                        io.to(
+                            `customer_${order.customer_id}`
+                        ).emit(
 
-                        `customer_${order.customer_id}`
+                            "orderStatusUpdated",
 
-                    ).emit(
+                            {
+                                orderId:
+                                    id,
 
-                        "orderStatusUpdated",
-
-                        {
-
-                            orderId: id,
-                            status: status
-
-                        }
-
-                    );
+                                status:
+                                    status
+                            }
+                        );
+                    }
 
 
-                    // RESTAURANT / PARTNER
+                    if (
+                        io &&
+                        order.partner_id
+                    ) {
 
-                    io.to(
+                        io.to(
+                            `partner_${order.partner_id}`
+                        ).emit(
 
-                        `partner_${order.partner_id}`
+                            "orderStatusUpdated",
 
-                    ).emit(
+                            {
+                                orderId:
+                                    id,
 
-                        "orderStatusUpdated",
+                                status:
+                                    status
+                            }
+                        );
+                    }
 
-                        {
 
-                            orderId: id,
-                            status: status
+                    return res.json({
 
-                        }
+                        success: true,
 
-                    );
+                        message:
+                            "Order Status Updated Successfully"
+
+                    });
 
                 }
-
             );
-
-
-            // =================================================
-            // DARVOZ V1 DELIVERY DISPATCH
-            // =================================================
-
-            if (status === "Accepted") {
-
-
-                console.log(
-                    "================================="
-                );
-
-                console.log(
-                    "DARVOZ DELIVERY DISPATCH"
-                );
-
-                console.log(
-                    "Order ID:",
-                    id
-                );
-
-                console.log(
-                    "================================="
-                );
-
-
-                // =================================================
-                // FIND APPROVED + ONLINE RIDERS
-                // =================================================
-
-                db.query(
-
-                    `SELECT
-                        id
-                     FROM delivery_partners
-                     WHERE
-                        online_status='Online'
-                        AND account_status='Approved'
-                     ORDER BY id ASC`,
-
-                    (err, riders) => {
-
-                        if (err) {
-
-                            console.log(
-                                "Rider Query Error:",
-                                err
-                            );
-
-                            return;
-
-                        }
-
-
-                        // =================================================
-                        // NO RIDERS
-                        // =================================================
-
-                        if (riders.length === 0) {
-
-                            console.log(
-                                "No Approved + Online Riders"
-                            );
-
-                            return;
-
-                        }
-
-
-                        console.log(
-                            "Eligible Riders:",
-                            riders.map(rider => rider.id)
-                        );
-
-
-                        // =================================================
-                        // GET COMPLETE ORDER
-                        // =================================================
-
-                        db.query(
-
-                            `SELECT *
-                             FROM orders
-                             WHERE id=?`,
-
-                            [id],
-
-                            (err, orders) => {
-
-                                if (err) {
-
-                                    console.log(
-                                        "Order Query Error:",
-                                        err
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                if (orders.length === 0) {
-
-                                    console.log(
-                                        "Order Not Found"
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                const order = orders[0];
-
-
-                                // =================================================
-                                // SEND ORDER TO ALL ELIGIBLE RIDERS
-                                // =================================================
-
-                                riders.forEach(
-
-                                    (rider) => {
-
-
-                                        console.log(
-
-                                            `Sending Order ${order.id} `
-                                            + `to Rider ${rider.id}`
-
-                                        );
-
-
-                                        io.to(
-
-                                            `delivery_${rider.id}`
-
-                                        ).emit(
-
-                                            "newDeliveryOrder",
-
-                                            order
-
-                                        );
-
-                                    }
-
-                                );
-
-
-                                console.log(
-
-                                    `Order ${order.id} sent to `
-                                    + `${riders.length} rider(s).`
-
-                                );
-
-
-                                // =================================================
-                                // SAVE DISPATCH LOG
-                                // =================================================
-
-                                riders.forEach(
-
-                                    (rider) => {
-
-                                        db.query(
-
-                                            `INSERT INTO order_dispatch_log
-                                            (
-                                                order_id,
-                                                delivery_partner_id,
-                                                status
-                                            )
-                                            VALUES(?,?,?)`,
-
-                                            [
-
-                                                order.id,
-
-                                                rider.id,
-
-                                                "Pending"
-
-                                            ],
-
-                                            (err) => {
-
-                                                if (err) {
-
-                                                    console.log(
-
-                                                        "Dispatch Log Error:",
-
-                                                        err
-
-                                                    );
-
-                                                }
-
-                                            }
-
-                                        );
-
-                                    }
-
-                                );
-
-                            }
-
-                        );
-
-                    }
-
-                );
-
-            }
-
-
-            // =================================================
-            // RESPONSE
-            // =================================================
-
-            res.json({
-
-                success: true,
-
-                message:
-                    "Order Status Updated Successfully"
-
-            });
-
         }
-
     );
-
 });
 
 
@@ -1066,14 +1115,13 @@ router.delete("/:id", (req, res) => {
 
     const id = req.params.id;
 
-
     db.query(
 
         "DELETE FROM orders WHERE id=?",
 
         [id],
 
-        (err) => {
+        err => {
 
             if (err) {
 
@@ -1084,7 +1132,6 @@ router.delete("/:id", (req, res) => {
                     success: false
 
                 });
-
             }
 
 
@@ -1092,20 +1139,14 @@ router.delete("/:id", (req, res) => {
 
                 success: true,
 
-                message: "Order Deleted"
+                message:
+                    "Order Deleted"
 
             });
 
         }
-
     );
-
 });
-
-// =====================================================
-// CONFIRM PICKUP BY PARTNER
-// CREDIT PARTNER WALLET + ADMIN COMMISSION
-// =====================================================
 
 router.put(
     "/confirm-pickup/:id",
@@ -1992,6 +2033,8 @@ router.put(
     }
 
 );
+
+
 
 
 module.exports = router;

@@ -930,71 +930,40 @@ loadOrders();
 // =====================================================
 
 async function acceptOrder(orderId) {
+  const confirmAccept = confirm("Accept this order?");
+  if (!confirmAccept) return;
 
-    const confirmAccept = confirm(
-        "Accept this order?"
+  try {
+    const response = await fetch(
+      `${API}/partner-orders/partner-accept/${orderId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          partnerId: Number(partnerId)
+        })
+      }
     );
 
-    if (!confirmAccept) {
-        return;
+    const data = await response.json();
+
+    console.log("ACCEPT RESPONSE:", data);
+
+    if (!response.ok || !data.success) {
+      alert(data.message || "Unable to accept order.");
+      return;
     }
 
-    try {
+    alert("✅ Order Accepted");
+    await loadOrders();
 
-        const response = await fetch(
-            `${API}/partner-orders/accept/${orderId}`,
-            {
-                method: "PUT",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-    partner_id: partnerId
-})
-            }
-        );
-
-        const data = await response.json();
-
-        console.log(
-            "ACCEPT RESPONSE:",
-            data
-        );
-
-        if (!response.ok || !data.success) {
-
-            alert(
-                data.message ||
-                "Unable to accept order."
-            );
-
-            return;
-        }
-
-        alert(
-            "✅ Order Accepted"
-        );
-
-        await loadOrders();
-
-    }
-    catch(error) {
-
-        console.error(
-            "ACCEPT ERROR:",
-            error
-        );
-
-        alert(
-            "Server error while accepting order."
-        );
-
-    }
-
+  } catch (error) {
+    console.error("ACCEPT ERROR:", error);
+    alert("Server error while accepting order.");
+  }
 }
-
 
 // =====================================================
 // REJECT ORDER
