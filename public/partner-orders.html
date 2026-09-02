@@ -303,11 +303,17 @@ color:#777;
 
 <h2>🍽 Partner Orders</h2>
 
-<button onclick="window.location.href='partner-dashboard.html'">
+<div style="display:flex; gap:10px; align-items:center;">
 
-← Dashboard
-
+<button id="soundBtn" onclick="enableOrderSound()">
+🔊 Enable Sound
 </button>
+
+<button onclick="window.location.href='partner-dashboard.html'">
+← Dashboard
+</button>
+
+</div>
 
 </header>
 
@@ -372,32 +378,86 @@ const newOrderSound = new Audio("/sounds/notification.mp3");
 newOrderSound.preload = "auto";
 newOrderSound.volume = 1.0;
 
-// Unlock audio after partner interacts with the page
-function unlockOrderSound() {
-    newOrderSound.play()
-        .then(() => {
-            newOrderSound.pause();
-            newOrderSound.currentTime = 0;
-        })
-        .catch(() => {});
-}
+// =====================================================
+// ENABLE DARVOZ ORDER SOUND
+// =====================================================
 
-document.addEventListener("click", unlockOrderSound, { once: true });
-document.addEventListener("touchstart", unlockOrderSound, { once: true });
+let soundEnabled = false;
+
+async function enableOrderSound() {
+
+    try {
+
+        newOrderSound.currentTime = 0;
+
+        await newOrderSound.play();
+
+        newOrderSound.pause();
+
+        newOrderSound.currentTime = 0;
+
+        soundEnabled = true;
+
+        const soundBtn =
+            document.getElementById("soundBtn");
+
+        if (soundBtn) {
+
+            soundBtn.innerText =
+                "🔊 Sound ON";
+
+            soundBtn.style.background =
+                "#28a745";
+
+            soundBtn.style.color =
+                "white";
+        }
+
+        console.log(
+            "✅ DARVOZ ORDER SOUND ENABLED"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Unable to enable order sound:",
+            error
+        );
+
+    }
+}
 
 async function showNewOrderAlert(order) {
 
     // 🔊 Play ringing sound
+if (soundEnabled) {
+
     try {
+
         newOrderSound.currentTime = 0;
+
         await newOrderSound.play();
-        console.log("🔊 NEW ORDER RING PLAYING");
+
+        console.log(
+            "🔊 NEW ORDER RING PLAYING"
+        );
+
     } catch (error) {
+
         console.warn(
-            "⚠️ Sound blocked by browser:",
+            "⚠️ Sound playback failed:",
             error
         );
+
     }
+
+} else {
+
+    console.warn(
+        "⚠️ ORDER SOUND IS OFF"
+    );
+
+}
 
     // 🔔 Browser / mobile notification
     if ("Notification" in window) {
