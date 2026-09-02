@@ -530,59 +530,118 @@ router.post("/place", async (req, res) => {
     }
 );
 
-  // ==========================================
+// ==========================================
 // SEND NEW ORDER TO PARTNER IN REAL TIME
 // ==========================================
 
-if (io) {
+const socketIO = req.app.get("io");
 
-    const room = `partner_${Number(partner_id)}`;
+console.log("");
+console.log("==============================================");
+console.log("📡 DARVOZ NEW ORDER REAL-TIME DISPATCH");
+console.log("==============================================");
+console.log("🛒 Order ID       :", orderId);
+console.log("🏪 partner_id     :", partner_id);
+console.log("🏪 partner_id type:", typeof partner_id);
 
-    console.log("=================================");
-    console.log("📡 NEW ORDER SOCKET");
-    console.log("Order ID:", orderId);
-    console.log("Partner ID:", partner_id);
-    console.log("Room:", room);
+if (!socketIO) {
 
-    const members =
-        io.sockets.adapter.rooms.get(room);
-
-    console.log(
-        "Room Members:",
-        members
-            ? Array.from(members)
-            : []
-    );
-
-    console.log("=================================");
-
-    io.to(room).emit("newOrder", {
-
-        id: orderId,
-
-        customer_name,
-        mobile,
-
-        food_total,
-        delivery_fee,
-        platform_fee,
-        grand_total,
-
-        commission_percent,
-
-        payment,
-
-        status: "Pending"
-
-    });
+    console.error("❌ SOCKET.IO INSTANCE NOT FOUND");
 
 } else {
 
-    console.error(
-        "❌ SOCKET.IO INSTANCE NOT FOUND"
+    const numericPartnerId = Number(partner_id);
+
+    const room = `partner_${numericPartnerId}`;
+
+    console.log("🏠 Target Room    :", room);
+
+    const roomMembers =
+        socketIO.sockets.adapter.rooms.get(room);
+
+    console.log(
+        "👥 Room Members   :",
+        roomMembers
+            ? Array.from(roomMembers)
+            : []
     );
 
+    if (
+        !roomMembers ||
+        roomMembers.size === 0
+    ) {
+
+        console.warn(
+            "⚠️ NO PARTNER SOCKET IS CURRENTLY IN THIS ROOM!"
+        );
+
+        console.warn(
+            "⚠️ The order will still be saved in MySQL."
+        );
+
+    } else {
+
+        const orderPayload = {
+
+            id: orderId,
+
+            customer_name:
+                customer_name || "",
+
+            mobile:
+                mobile || "",
+
+            food_total:
+                food_total,
+
+            delivery_fee:
+                delivery_fee,
+
+            platform_fee:
+                platform_fee,
+
+            grand_total:
+                grand_total,
+
+            commission_percent:
+                commission_percent,
+
+            payment:
+                payment || "",
+
+            status:
+                "Pending"
+
+        };
+
+        console.log(
+            "📤 EMITTING EVENT: newOrder"
+        );
+
+        console.log(
+            "📦 Payload:",
+            orderPayload
+        );
+
+        socketIO
+            .to(room)
+            .emit(
+                "newOrder",
+                orderPayload
+            );
+
+        console.log(
+            "✅ NEW ORDER SENT TO:",
+            room
+        );
+
+    }
+
 }
+
+console.log("==============================================");
+console.log("");
+
         
 
         /*=========================================
