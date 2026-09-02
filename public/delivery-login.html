@@ -1133,12 +1133,7 @@ async function login(){
 
 
         const response =
-            await fetch(
-
-                `${API}/delivery/login`,
-
-                {
-
+    await fetch(`${API}/deliveryPartner/login`, {
                     method:"POST",
 
                     headers:{

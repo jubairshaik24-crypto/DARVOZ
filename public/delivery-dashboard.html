@@ -11,7 +11,7 @@
 <title>DARVOZ | Delivery Partner</title>
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
 
@@ -137,6 +137,7 @@ button{
     gap:15px;
 
 }
+
 .wallet-header-btn{
 
     height:42px;
@@ -176,6 +177,7 @@ button{
     transform:scale(.96);
 
 }
+
 .notification{
 
     position:relative;
@@ -1726,6 +1728,7 @@ button{
 
 }
 
+
 /* =====================================
    MOBILE
 ===================================== */
@@ -1830,36 +1833,36 @@ button{
     </div>
 
 
-   <div class="header-right">
+    <div class="header-right">
 
-    <div
-        class="notification"
-        onclick="openNotifications()">
+        <div
+            class="notification"
+            onclick="openNotifications()">
 
-        <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-bell"></i>
 
-        <span
-            class="notification-badge"
-            id="badge">
+            <span
+                class="notification-badge"
+                id="badge">
 
-            0
+                0
 
-        </span>
+            </span>
+
+        </div>
+
+
+        <button
+            class="wallet-header-btn"
+            onclick="openWallet()">
+
+            <i class="fa-solid fa-wallet"></i>
+
+            <span>Wallet</span>
+
+        </button>
 
     </div>
-
-
-    <button
-        class="wallet-header-btn"
-        onclick="openWallet()">
-
-        <i class="fa-solid fa-wallet"></i>
-
-        <span>Wallet</span>
-
-    </button>
-
-</div>
 
 </header>
 
@@ -1879,8 +1882,8 @@ button{
         <div class="online-title">
 
             <span
-            id="onlineDot"
-            class="online-dot offline">
+                id="onlineDot"
+                class="online-dot offline">
 
             </span>
 
@@ -1895,8 +1898,8 @@ button{
 
 
         <div
-        id="onlineSubtitle"
-        class="online-subtitle">
+            id="onlineSubtitle"
+            class="online-subtitle">
 
             Go online to receive orders
 
@@ -1908,8 +1911,8 @@ button{
     <label class="switch">
 
         <input
-        type="checkbox"
-        id="onlineToggle">
+            type="checkbox"
+            id="onlineToggle">
 
         <span class="slider"></span>
 
@@ -1938,8 +1941,8 @@ button{
 
 
         <div
-        class="stat-value"
-        id="earnings">
+            class="stat-value"
+            id="earnings">
 
             ₹0.00
 
@@ -1967,8 +1970,8 @@ button{
 
 
         <div
-        class="stat-value"
-        id="deliveries">
+            class="stat-value"
+            id="deliveries">
 
             0
 
@@ -1996,8 +1999,8 @@ button{
 
 
         <div
-        class="stat-value"
-        id="onlineTime">
+            class="stat-value"
+            id="onlineTime">
 
             0h 00m
 
@@ -2025,8 +2028,8 @@ button{
 
 
         <div
-        class="stat-value"
-        id="distance">
+            class="stat-value"
+            id="distance">
 
             0 km
 
@@ -2050,8 +2053,8 @@ button{
 ===================================== -->
 
 <div
-class="searching-card"
-id="searchingCard">
+    class="searching-card"
+    id="searchingCard">
 
 
     <div class="search-icon">
@@ -2075,9 +2078,7 @@ id="searchingCard">
     </p>
 
 
-    <div class="spinner">
-
-    </div>
+    <div class="spinner"></div>
 
 </div>
 
@@ -2088,8 +2089,8 @@ id="searchingCard">
 ===================================== -->
 
 <div
-class="new-order"
-id="newOrderCard">
+    class="new-order"
+    id="newOrderCard">
 
 
     <div class="new-order-header">
@@ -2098,8 +2099,8 @@ id="newOrderCard">
         <div class="new-order-title">
 
             <i
-            class="fa-solid fa-motorcycle"
-            style="color:#ff5a00">
+                class="fa-solid fa-motorcycle"
+                style="color:#ff5a00">
 
             </i>
 
@@ -2108,8 +2109,8 @@ id="newOrderCard">
 
 
             <span
-            class="order-number"
-            id="orderCount">
+                class="order-number"
+                id="orderCount">
 
                 1
 
@@ -2119,8 +2120,8 @@ id="newOrderCard">
 
 
         <span
-        class="timer"
-        id="orderTimer">
+            class="timer"
+            id="orderTimer">
 
             --
 
@@ -2154,8 +2155,8 @@ id="newOrderCard">
 
 
                 <div
-                class="location-name"
-                id="restaurant">
+                    class="location-name"
+                    id="restaurant">
 
                     -
 
@@ -2163,8 +2164,8 @@ id="newOrderCard">
 
 
                 <div
-                class="location-address"
-                id="restaurantAddress">
+                    class="location-address"
+                    id="restaurantAddress">
 
                     -
 
@@ -2172,12 +2173,12 @@ id="newOrderCard">
 
 
                 <div
-                id="pickupDistance"
-                style="
-                margin-top:4px;
-                font-size:12px;
-                font-weight:700;
-                ">
+                    id="pickupDistance"
+                    style="
+                    margin-top:4px;
+                    font-size:12px;
+                    font-weight:700;
+                    ">
 
                 </div>
 
@@ -2193,8 +2194,8 @@ id="newOrderCard">
 
 
             <div
-            class="location-line"
-            style="background:transparent">
+                class="location-line"
+                style="background:transparent">
 
             </div>
 
@@ -2210,8 +2211,8 @@ id="newOrderCard">
 
 
                 <div
-                class="location-name"
-                id="customer">
+                    class="location-name"
+                    id="customer">
 
                     -
 
@@ -2219,8 +2220,8 @@ id="newOrderCard">
 
 
                 <div
-                class="location-address"
-                id="customerAddress">
+                    class="location-address"
+                    id="customerAddress">
 
                     -
 
@@ -2228,12 +2229,12 @@ id="newOrderCard">
 
 
                 <div
-                id="dropDistance"
-                style="
-                margin-top:4px;
-                font-size:12px;
-                font-weight:700;
-                ">
+                    id="dropDistance"
+                    style="
+                    margin-top:4px;
+                    font-size:12px;
+                    font-weight:700;
+                    ">
 
                 </div>
 
@@ -2258,8 +2259,8 @@ id="newOrderCard">
 
 
                 <div
-                class="info-value"
-                id="deliveryFee">
+                    class="info-value"
+                    id="deliveryFee">
 
                     ₹0
 
@@ -2279,8 +2280,8 @@ id="newOrderCard">
 
 
                 <div
-                class="info-value"
-                id="amount">
+                    class="info-value"
+                    id="amount">
 
                     ₹0
 
@@ -2298,8 +2299,8 @@ id="newOrderCard">
 
 
             <button
-            class="reject-btn"
-            id="rejectOrder">
+                class="reject-btn"
+                id="rejectOrder">
 
                 Reject
 
@@ -2307,8 +2308,8 @@ id="newOrderCard">
 
 
             <button
-            class="accept-btn"
-            id="acceptOrder">
+                class="accept-btn"
+                id="acceptOrder">
 
                 Accept Order
 
@@ -2327,8 +2328,8 @@ id="newOrderCard">
 ===================================== -->
 
 <div
-class="current-order"
-id="currentOrder">
+    class="current-order"
+    id="currentOrder">
 
 
     <!-- HEADER -->
@@ -2344,8 +2345,8 @@ id="currentOrder">
 
 
         <span
-        class="current-status"
-        id="currentStatus">
+            class="current-status"
+            id="currentStatus">
 
             In Progress
 
@@ -2354,48 +2355,55 @@ id="currentOrder">
     </div>
 
 
-    <!-- =====================================
-     WALLET BALANCE
-===================================== -->
+    <!-- =================================
+         WALLET BALANCE
+    ================================= -->
 
-<div class="wallet-card">
+    <div class="wallet-card">
 
-    <div class="wallet-left">
+        <div class="wallet-left">
 
-        <div class="wallet-icon">
-            <i class="fa-solid fa-wallet"></i>
+            <div class="wallet-icon">
+
+                <i class="fa-solid fa-wallet"></i>
+
+            </div>
+
+            <div>
+
+                <div class="wallet-label">
+
+                    Delivery Wallet
+
+                </div>
+
+                <div
+                    class="wallet-balance"
+                    id="walletBalance">
+
+                    ₹0.00
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div>
+        <div class="wallet-status">
 
-            <div class="wallet-label">
-                Delivery Wallet
-            </div>
+            <i class="fa-solid fa-circle-check"></i>
 
-            <div
-                class="wallet-balance"
-                id="walletBalance">
-
-                ₹0.00
-
-            </div>
+            Active
 
         </div>
 
     </div>
-
-    <div class="wallet-status">
-        <i class="fa-solid fa-circle-check"></i>
-        Active
-    </div>
-
-</div>
 
 
 
     <div
-    class="order-id"
-    id="currentOrderId">
+        class="order-id"
+        id="currentOrderId">
 
         Order ID: -
 
@@ -2413,16 +2421,13 @@ id="currentOrder">
         <!-- ACCEPTED -->
 
         <div
-        class="progress-step active"
-        id="stepAccepted">
+            class="progress-step active"
+            id="stepAccepted">
 
 
             <div class="progress-circle">
 
-                <i
-                class="fa-solid fa-motorcycle">
-
-                </i>
+                <i class="fa-solid fa-motorcycle"></i>
 
             </div>
 
@@ -2435,8 +2440,8 @@ id="currentOrder">
 
 
             <div
-            class="progress-time"
-            id="acceptedTime">
+                class="progress-time"
+                id="acceptedTime">
 
                 --
 
@@ -2449,16 +2454,13 @@ id="currentOrder">
         <!-- REACHED RESTAURANT -->
 
         <div
-        class="progress-step"
-        id="stepReached">
+            class="progress-step"
+            id="stepReached">
 
 
             <div class="progress-circle">
 
-                <i
-                class="fa-solid fa-store">
-
-                </i>
+                <i class="fa-solid fa-store"></i>
 
             </div>
 
@@ -2471,8 +2473,8 @@ id="currentOrder">
 
 
             <div
-            class="progress-time"
-            id="reachedTime">
+                class="progress-time"
+                id="reachedTime">
 
                 --
 
@@ -2485,16 +2487,13 @@ id="currentOrder">
         <!-- PICKED -->
 
         <div
-        class="progress-step"
-        id="stepPicked">
+            class="progress-step"
+            id="stepPicked">
 
 
             <div class="progress-circle">
 
-                <i
-                class="fa-solid fa-bag-shopping">
-
-                </i>
+                <i class="fa-solid fa-bag-shopping"></i>
 
             </div>
 
@@ -2507,8 +2506,8 @@ id="currentOrder">
 
 
             <div
-            class="progress-time"
-            id="pickedTime">
+                class="progress-time"
+                id="pickedTime">
 
                 --
 
@@ -2521,16 +2520,13 @@ id="currentOrder">
         <!-- DELIVERED -->
 
         <div
-        class="progress-step"
-        id="stepDelivered">
+            class="progress-step"
+            id="stepDelivered">
 
 
             <div class="progress-circle">
 
-                <i
-                class="fa-solid fa-flag-checkered">
-
-                </i>
+                <i class="fa-solid fa-flag-checkered"></i>
 
             </div>
 
@@ -2543,8 +2539,8 @@ id="currentOrder">
 
 
             <div
-            class="progress-time"
-            id="deliveredTime">
+                class="progress-time"
+                id="deliveredTime">
 
                 --
 
@@ -2573,10 +2569,7 @@ id="currentOrder">
 
                 <div class="contact-icon">
 
-                    <i
-                    class="fa-solid fa-store">
-
-                    </i>
+                    <i class="fa-solid fa-store"></i>
 
                 </div>
 
@@ -2585,7 +2578,7 @@ id="currentOrder">
 
 
                     <strong
-                    id="currentRestaurant">
+                        id="currentRestaurant">
 
                         -
 
@@ -2593,7 +2586,7 @@ id="currentOrder">
 
 
                     <span
-                    id="currentRestaurantAddress">
+                        id="currentRestaurantAddress">
 
                         -
 
@@ -2605,13 +2598,10 @@ id="currentOrder">
 
 
             <button
-            class="call-btn"
-            id="restaurantCall">
+                class="call-btn"
+                id="restaurantCall">
 
-                <i
-                class="fa-solid fa-phone">
-
-                </i>
+                <i class="fa-solid fa-phone"></i>
 
             </button>
 
@@ -2628,16 +2618,13 @@ id="currentOrder">
 
 
                 <div
-                class="contact-icon"
-                style="
-                color:#1ba672;
-                background:#effaf5;
-                ">
+                    class="contact-icon"
+                    style="
+                    color:#1ba672;
+                    background:#effaf5;
+                    ">
 
-                    <i
-                    class="fa-solid fa-location-dot">
-
-                    </i>
+                    <i class="fa-solid fa-location-dot"></i>
 
                 </div>
 
@@ -2646,7 +2633,7 @@ id="currentOrder">
 
 
                     <strong
-                    id="currentCustomer">
+                        id="currentCustomer">
 
                         -
 
@@ -2654,7 +2641,7 @@ id="currentOrder">
 
 
                     <span
-                    id="currentCustomerAddress">
+                        id="currentCustomerAddress">
 
                         -
 
@@ -2666,13 +2653,10 @@ id="currentOrder">
 
 
             <button
-            class="call-btn"
-            id="customerCall">
+                class="call-btn"
+                id="customerCall">
 
-                <i
-                class="fa-solid fa-phone">
-
-                </i>
+                <i class="fa-solid fa-phone"></i>
 
             </button>
 
@@ -2687,30 +2671,23 @@ id="currentOrder">
     ================================= -->
 
     <button
-    class="map-btn"
-    id="navigatePickup">
+        class="map-btn"
+        id="navigatePickup">
 
-        <i
-        class="fa-solid fa-map">
-
-        </i>
+        <i class="fa-solid fa-map"></i>
 
         Navigate to Restaurant
 
-
         <i
-        class="fa-solid fa-chevron-right"
-        style="
-        float:right;
-        margin-top:3px;
-        ">
+            class="fa-solid fa-chevron-right"
+            style="
+            float:right;
+            margin-top:3px;
+            ">
 
         </i>
 
     </button>
-
-
-
 
 
 
@@ -2719,8 +2696,8 @@ id="currentOrder">
     ================================= -->
 
     <div
-    class="pickup-section"
-    id="pickupSection">
+        class="pickup-section"
+        id="pickupSection">
 
 
         <h3>
@@ -2740,8 +2717,8 @@ id="currentOrder">
 
 
             <div
-            id="pickupOrderId"
-            style="margin-top:4px;">
+                id="pickupOrderId"
+                style="margin-top:4px;">
 
                 -
 
@@ -2760,8 +2737,8 @@ id="currentOrder">
 
 
             <div
-            id="pickupCustomer"
-            style="margin-top:4px;">
+                id="pickupCustomer"
+                style="margin-top:4px;">
 
                 -
 
@@ -2770,8 +2747,9 @@ id="currentOrder">
         </div>
 
 
-        <div class="pickup-items"
-        id="pickupItems">
+        <div
+            class="pickup-items"
+            id="pickupItems">
 
             Loading order items...
 
@@ -2779,8 +2757,8 @@ id="currentOrder">
 
 
         <div
-        class="pickup-waiting"
-        id="pickupWaiting">
+            class="pickup-waiting"
+            id="pickupWaiting">
 
             ⏳ Waiting for partner pickup confirmation...
 
@@ -2795,34 +2773,28 @@ id="currentOrder">
     ================================= -->
 
     <button
-    class="map-btn"
-    id="navigateCustomer"
-    style="
-    display:none;
-    margin-top:7px;
-    ">
+        class="map-btn"
+        id="navigateCustomer"
+        style="
+        display:none;
+        margin-top:7px;
+        ">
 
 
-        <i
-        class="fa-solid fa-location-arrow">
-
-        </i>
+        <i class="fa-solid fa-location-arrow"></i>
 
         Navigate to Customer
 
-
         <i
-        class="fa-solid fa-chevron-right"
-        style="
-        float:right;
-        margin-top:3px;
-        ">
+            class="fa-solid fa-chevron-right"
+            style="
+            float:right;
+            margin-top:3px;
+            ">
 
         </i>
 
     </button>
-
-
 
 
 
@@ -2831,8 +2803,8 @@ id="currentOrder">
     ================================= -->
 
     <div
-    class="otp-section"
-    id="otpSection">
+        class="otp-section"
+        id="otpSection">
 
 
         <h3>
@@ -2851,17 +2823,22 @@ id="currentOrder">
 
 
         <input
-        id="deliveryOtp"
-        class="otp-input"
-        type="text"
-        inputmode="numeric"
-        maxlength="6"
-        placeholder="Enter OTP">
+            id="deliveryOtp"
+            class="otp-input"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="Enter OTP">
 
 
-        <button type="button" id="verifyOtpBtn">
-    Verify OTP
-</button>
+        <button
+            type="button"
+            id="verifyOtpBtn"
+            class="verify-btn">
+
+            Verify OTP
+
+        </button>
 
     </div>
 
@@ -2874,16 +2851,13 @@ id="currentOrder">
 ===================================== -->
 
 <div
-class="delivery-success"
-id="deliverySuccess">
+    class="delivery-success"
+    id="deliverySuccess">
 
 
     <div class="success-icon">
 
-        <i
-        class="fa-solid fa-check">
-
-        </i>
+        <i class="fa-solid fa-check"></i>
 
     </div>
 
@@ -2913,8 +2887,8 @@ id="deliverySuccess">
 
 
         <div
-        class="earned-amount"
-        id="earnedAmount">
+            class="earned-amount"
+            id="earnedAmount">
 
             ₹0.00
 
@@ -2922,11 +2896,11 @@ id="deliverySuccess">
 
 
         <div
-        style="
-        margin-top:5px;
-        color:#777;
-        font-size:12px;
-        ">
+            style="
+            margin-top:5px;
+            color:#777;
+            font-size:12px;
+            ">
 
             Delivery Fee
 
@@ -2936,8 +2910,8 @@ id="deliverySuccess">
 
 
     <button
-    class="back-dashboard"
-    id="backDashboard">
+        class="back-dashboard"
+        id="backDashboard">
 
         Back to Dashboard
 
@@ -2965,9 +2939,9 @@ id="deliverySuccess">
 
 
         <button
-        onclick="
-        window.location.href='delivery-history.html'
-        ">
+            onclick="
+            window.location.href='delivery-history.html'
+            ">
 
             View All
 
@@ -2987,17 +2961,14 @@ id="deliverySuccess">
 
             <div class="summary-icon">
 
-                <i
-                class="fa-solid fa-indian-rupee-sign">
-
-                </i>
+                <i class="fa-solid fa-indian-rupee-sign"></i>
 
             </div>
 
 
             <div
-            class="summary-value"
-            id="summaryEarnings">
+                class="summary-value"
+                id="summaryEarnings">
 
                 ₹0
 
@@ -3021,17 +2992,14 @@ id="deliverySuccess">
 
             <div class="summary-icon">
 
-                <i
-                class="fa-solid fa-bag-shopping">
-
-                </i>
+                <i class="fa-solid fa-bag-shopping"></i>
 
             </div>
 
 
             <div
-            class="summary-value"
-            id="summaryOrders">
+                class="summary-value"
+                id="summaryOrders">
 
                 0
 
@@ -3055,17 +3023,14 @@ id="deliverySuccess">
 
             <div class="summary-icon">
 
-                <i
-                class="fa-regular fa-clock">
-
-                </i>
+                <i class="fa-regular fa-clock"></i>
 
             </div>
 
 
             <div
-            class="summary-value"
-            id="summaryTime">
+                class="summary-value"
+                id="summaryTime">
 
                 0h 00m
 
@@ -3097,13 +3062,10 @@ id="deliverySuccess">
 
 
     <a
-    href="delivery-dashboard.html"
-    class="active">
+        href="delivery-dashboard.html"
+        class="active">
 
-        <i
-        class="fa-solid fa-house">
-
-        </i>
+        <i class="fa-solid fa-house"></i>
 
         <span>
 
@@ -3116,12 +3078,9 @@ id="deliverySuccess">
 
 
     <a
-    href="delivery-earnings.html">
+        href="delivery-earnings.html">
 
-        <i
-        class="fa-solid fa-chart-simple">
-
-        </i>
+        <i class="fa-solid fa-chart-simple"></i>
 
         <span>
 
@@ -3134,12 +3093,9 @@ id="deliverySuccess">
 
 
     <a
-    href="delivery-history.html">
+        href="delivery-history.html">
 
-        <i
-        class="fa-solid fa-bag-shopping">
-
-        </i>
+        <i class="fa-solid fa-bag-shopping"></i>
 
         <span>
 
@@ -3152,12 +3108,9 @@ id="deliverySuccess">
 
 
     <a
-    href="delivery-profile.html">
+        href="delivery-profile.html">
 
-        <i
-        class="fa-solid fa-user">
-
-        </i>
+        <i class="fa-solid fa-user"></i>
 
         <span>
 

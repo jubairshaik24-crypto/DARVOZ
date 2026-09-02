@@ -1,10 +1,8 @@
-
 // =====================================================
 // API
 // =====================================================
 
 const API = window.location.origin;
-
 
 // =====================================================
 // LOGIN
@@ -14,7 +12,6 @@ const delivery =
     JSON.parse(
         localStorage.getItem("deliveryPartner")
     );
-
 
 if (!delivery) {
 
@@ -27,14 +24,12 @@ if (!delivery) {
 
 }
 
-
 // =====================================================
 // SOCKET.IO
 // =====================================================
 
 const socket =
     io(API);
-
 
 socket.on("connect", () => {
 
@@ -43,12 +38,10 @@ socket.on("connect", () => {
         socket.id
     );
 
-
     socket.emit(
         "joinDelivery",
         delivery.id
     );
-
 
     console.log(
         "Joined:",
@@ -57,7 +50,6 @@ socket.on("connect", () => {
 
 });
 
-
 socket.on("disconnect", () => {
 
     console.log(
@@ -65,7 +57,6 @@ socket.on("disconnect", () => {
     );
 
 });
-
 
 // =====================================================
 // ELEMENT HELPER
@@ -76,7 +67,6 @@ function el(id) {
     return document.getElementById(id);
 
 }
-
 
 // =====================================================
 // MAIN ELEMENTS
@@ -112,7 +102,6 @@ const acceptOrderButton =
 const rejectOrderButton =
     el("rejectOrder");
 
-
 // =====================================================
 // STATE
 // =====================================================
@@ -132,7 +121,6 @@ let orderReceivedAt =
 let isLoadingCurrentOrder =
     false;
 
-
 // =====================================================
 // NAVIGATION STATE
 // =====================================================
@@ -146,7 +134,6 @@ let googleMapsLoading =
 let googleMapsCallback =
     null;
 
-
 // =====================================================
 // LOCATION STATE
 // =====================================================
@@ -156,7 +143,6 @@ let lastLocationSentAt =
 
 const LOCATION_SEND_INTERVAL =
     5000;
-
 
 // =====================================================
 // PROFILE
@@ -168,9 +154,8 @@ async function loadProfile() {
 
         const response =
             await fetch(
-                `${API}/delivery/profile/${delivery.id}`
+                `${API}/deliveryPartner/profile/${delivery.id}`
             );
-
 
         if (!response.ok) {
 
@@ -183,16 +168,13 @@ async function loadProfile() {
 
         }
 
-
         const data =
             await response.json();
-
 
         console.log(
             "DELIVERY PROFILE:",
             data
         );
-
 
         if (
             !data.success ||
@@ -203,10 +185,8 @@ async function loadProfile() {
 
         }
 
-
         const partner =
             data.partner;
-
 
         // -----------------------------------------
         // NAME
@@ -214,7 +194,6 @@ async function loadProfile() {
 
         const nameElement =
             el("deliveryName");
-
 
         if (
             nameElement &&
@@ -225,7 +204,6 @@ async function loadProfile() {
                 `Hi, ${escapeHTML(partner.name)} 👋`;
 
         }
-
 
         // -----------------------------------------
         // PROFILE IMAGE
@@ -241,7 +219,6 @@ async function loadProfile() {
             const icon =
                 el("profileIcon");
 
-
             if (image) {
 
                 image.src =
@@ -252,7 +229,6 @@ async function loadProfile() {
 
             }
 
-
             if (icon) {
 
                 icon.style.display =
@@ -261,7 +237,6 @@ async function loadProfile() {
             }
 
         }
-
 
         // -----------------------------------------
         // ONLINE STATUS
@@ -284,7 +259,6 @@ async function loadProfile() {
 
 }
 
-
 // =====================================================
 // ONLINE UI
 // =====================================================
@@ -297,10 +271,8 @@ function setOnlineUI(isOnline) {
 
     }
 
-
     onlineToggle.checked =
         isOnline;
-
 
     if (isOnline) {
 
@@ -311,7 +283,6 @@ function setOnlineUI(isOnline) {
 
         }
 
-
         if (onlineTitle) {
 
             onlineTitle.innerHTML =
@@ -319,14 +290,12 @@ function setOnlineUI(isOnline) {
 
         }
 
-
         if (onlineSubtitle) {
 
             onlineSubtitle.innerHTML =
                 "You will receive orders";
 
         }
-
 
         if (
             !currentOrderData &&
@@ -349,14 +318,12 @@ function setOnlineUI(isOnline) {
 
         }
 
-
         if (onlineTitle) {
 
             onlineTitle.innerHTML =
                 "You are Offline";
 
         }
-
 
         if (onlineSubtitle) {
 
@@ -365,13 +332,11 @@ function setOnlineUI(isOnline) {
 
         }
 
-
         hideSearching();
 
     }
 
 }
-
 
 // =====================================================
 // SEARCHING UI
@@ -385,7 +350,6 @@ function showSearching() {
 
     }
 
-
     if (
         !onlineToggle ||
         !onlineToggle.checked
@@ -397,7 +361,6 @@ function showSearching() {
 
     }
 
-
     if (currentOrderData) {
 
         hideSearching();
@@ -405,7 +368,6 @@ function showSearching() {
         return;
 
     }
-
 
     if (
         newOrderCard &&
@@ -418,10 +380,8 @@ function showSearching() {
 
     }
 
-
     searchingCard.style.display =
         "block";
-
 
     const title =
         el("searchTitle");
@@ -429,14 +389,12 @@ function showSearching() {
     const text =
         el("searchText");
 
-
     if (title) {
 
         title.innerHTML =
             "Searching for orders...";
 
     }
-
 
     if (text) {
 
@@ -446,7 +404,6 @@ function showSearching() {
     }
 
 }
-
 
 function hideSearching() {
 
@@ -459,7 +416,6 @@ function hideSearching() {
 
 }
 
-
 // =====================================================
 // DASHBOARD STATISTICS
 // =====================================================
@@ -470,9 +426,8 @@ async function loadDashboard() {
 
         const response =
             await fetch(
-                `${API}/delivery/dashboard/${delivery.id}`
+                `${API}/deliveryPartner/dashboard/${delivery.id}`
             );
-
 
         if (!response.ok) {
 
@@ -485,16 +440,13 @@ async function loadDashboard() {
 
         }
 
-
         const data =
             await response.json();
-
 
         console.log(
             "DASHBOARD:",
             data
         );
-
 
         if (!data.success) {
 
@@ -502,41 +454,35 @@ async function loadDashboard() {
 
         }
 
-
         const earnings =
             Number(
                 data.todayEarnings || 0
             );
 
-            const walletBalance =
-    Number(
-        data.walletBalance || 0
-    );
-
+        const walletBalance =
+            Number(
+                data.walletBalance || 0
+            );
 
         const deliveries =
             Number(
                 data.todayDeliveries || 0
             );
 
-
         const earningsElement =
             el("earnings");
 
-            const walletBalanceElement =
-    el("walletBalance");
+        const walletBalanceElement =
+            el("walletBalance");
 
         const deliveriesElement =
             el("deliveries");
-   
 
-            
         const summaryEarnings =
             el("summaryEarnings");
 
         const summaryOrders =
             el("summaryOrders");
-
 
         if (earningsElement) {
 
@@ -544,12 +490,13 @@ async function loadDashboard() {
                 `₹${earnings.toFixed(2)}`;
 
         }
-   if (walletBalanceElement) {
 
-    walletBalanceElement.innerHTML =
-        `₹${walletBalance.toFixed(2)}`;
+        if (walletBalanceElement) {
 
-}
+            walletBalanceElement.innerHTML =
+                `₹${walletBalance.toFixed(2)}`;
+
+        }
 
         if (deliveriesElement) {
 
@@ -558,7 +505,6 @@ async function loadDashboard() {
 
         }
 
-
         if (summaryEarnings) {
 
             summaryEarnings.innerHTML =
@@ -566,14 +512,12 @@ async function loadDashboard() {
 
         }
 
-
         if (summaryOrders) {
 
             summaryOrders.innerHTML =
                 deliveries;
 
         }
-
 
         // -----------------------------------------
         // ONLINE TIME
@@ -589,14 +533,12 @@ async function loadDashboard() {
             const summaryTime =
                 el("summaryTime");
 
-
             if (onlineTime) {
 
                 onlineTime.innerHTML =
                     data.onlineTime;
 
             }
-
 
             if (summaryTime) {
 
@@ -606,7 +548,6 @@ async function loadDashboard() {
             }
 
         }
-
 
         // -----------------------------------------
         // DISTANCE
@@ -618,7 +559,6 @@ async function loadDashboard() {
 
             const distance =
                 el("distance");
-
 
             if (distance) {
 
@@ -642,7 +582,6 @@ async function loadDashboard() {
 
 }
 
-
 // =====================================================
 // CURRENT ORDER
 // =====================================================
@@ -655,18 +594,15 @@ async function loadCurrentOrder() {
 
     }
 
-
     isLoadingCurrentOrder =
         true;
-
 
     try {
 
         const response =
             await fetch(
-                `${API}/delivery/current/${delivery.id}`
+                `${API}/deliveryPartner/current/${delivery.id}`
             );
-
 
         if (!response.ok) {
 
@@ -679,16 +615,13 @@ async function loadCurrentOrder() {
 
         }
 
-
         const data =
             await response.json();
-
 
         console.log(
             "📦 CURRENT ORDER RESPONSE:",
             data
         );
-
 
         // -----------------------------------------
         // CURRENT ORDER FOUND
@@ -704,17 +637,13 @@ async function loadCurrentOrder() {
                 data.order.id
             );
 
-
             currentOrderData =
                 data.order;
-
 
             currentOrderId =
                 data.order.id;
 
-
             hideSearching();
-
 
             if (newOrderCard) {
 
@@ -726,14 +655,12 @@ async function loadCurrentOrder() {
 
             }
 
-
             if (badge) {
 
                 badge.style.display =
                     "none";
 
             }
-
 
             if (currentOrder) {
 
@@ -742,16 +669,13 @@ async function loadCurrentOrder() {
 
             }
 
-
             renderCurrentOrder(
                 data.order
             );
 
-
             return;
 
         }
-
 
         // -----------------------------------------
         // NO CURRENT ORDER
@@ -760,9 +684,6 @@ async function loadCurrentOrder() {
         console.log(
             "ℹ️ No active accepted delivery."
         );
-
-
-        // Keep pending new order visible
 
         if (
             newOrderCard &&
@@ -779,14 +700,11 @@ async function loadCurrentOrder() {
 
         }
 
-
         currentOrderData =
             null;
 
-
         currentOrderId =
             null;
-
 
         if (currentOrder) {
 
@@ -794,7 +712,6 @@ async function loadCurrentOrder() {
                 "none";
 
         }
-
 
         if (
             onlineToggle &&
@@ -825,7 +742,6 @@ async function loadCurrentOrder() {
 
 }
 
-
 // =====================================================
 // ONLINE / OFFLINE TOGGLE
 // =====================================================
@@ -833,104 +749,94 @@ async function loadCurrentOrder() {
 if (onlineToggle) {
 
     onlineToggle.onchange =
-    async function () {
+        async function () {
 
-        const toggle =
-            this;
+            const toggle =
+                this;
 
+            const status =
+                toggle.checked
+                    ? "Online"
+                    : "Offline";
 
-        const status =
-            toggle.checked
-                ? "Online"
-                : "Offline";
+            try {
 
+                const response =
+                    await fetch(
+                        `${API}/deliveryPartner/status`,
+                        {
 
-        try {
+                            method:
+                                "PUT",
 
-            const response =
-                await fetch(
-                    `${API}/delivery/status`,
-                    {
+                            headers: {
 
-                        method:
-                            "PUT",
+                                "Content-Type":
+                                    "application/json"
 
-                        headers: {
+                            },
 
-                            "Content-Type":
-                                "application/json"
+                            body:
+                                JSON.stringify({
 
-                        },
+                                    id:
+                                        delivery.id,
 
-                        body:
-                        JSON.stringify({
+                                    status:
+                                        status
 
-                            id:
-                                delivery.id,
+                                })
 
-                            status:
-                                status
+                        }
+                    );
 
-                        })
+                if (!response.ok) {
 
-                    }
+                    toggle.checked =
+                        !toggle.checked;
+
+                    return;
+
+                }
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "STATUS RESPONSE:",
+                    data
                 );
 
+                if (!data.success) {
 
-            if (!response.ok) {
+                    toggle.checked =
+                        !toggle.checked;
+
+                    return;
+
+                }
+
+                setOnlineUI(
+                    status === "Online"
+                );
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "STATUS ERROR:",
+                    error
+                );
 
                 toggle.checked =
                     !toggle.checked;
 
-                return;
-
             }
 
-
-            const data =
-                await response.json();
-
-
-            console.log(
-                "STATUS RESPONSE:",
-                data
-            );
-
-
-            if (!data.success) {
-
-                toggle.checked =
-                    !toggle.checked;
-
-                return;
-
-            }
-
-
-            setOnlineUI(
-                status === "Online"
-            );
-
-
-        }
-
-        catch (error) {
-
-            console.log(
-                "STATUS ERROR:",
-                error
-            );
-
-
-            toggle.checked =
-                !toggle.checked;
-
-        }
-
-    };
+        };
 
 }
-
 
 // =====================================================
 // NEW ORDER SOCKET
@@ -945,7 +851,6 @@ socket.on(
             order
         );
 
-
         if (
             !order ||
             !order.id
@@ -958,7 +863,6 @@ socket.on(
             return;
 
         }
-
 
         // -----------------------------------------
         // MUST BE ONLINE
@@ -977,7 +881,6 @@ socket.on(
 
         }
 
-
         // -----------------------------------------
         // ALREADY HAS ORDER
         // -----------------------------------------
@@ -992,14 +895,11 @@ socket.on(
 
         }
 
-
         currentOrderId =
             order.id;
 
-
         currentOrderData =
             null;
-
 
         if (newOrderCard) {
 
@@ -1011,14 +911,11 @@ socket.on(
 
         }
 
-
         hideSearching();
-
 
         renderNewOrder(
             order
         );
-
 
         if (badge) {
 
@@ -1030,13 +927,10 @@ socket.on(
 
         }
 
-
         orderReceivedAt =
             Date.now();
 
-
         startOrderTimer();
-
 
         // -----------------------------------------
         // SOUND
@@ -1048,7 +942,6 @@ socket.on(
                 new Audio(
                     "/assets/sounds/notification.mp3"
                 );
-
 
             audio.play().catch(
                 () => {}
@@ -1065,7 +958,6 @@ socket.on(
 
         }
 
-
         // -----------------------------------------
         // VIBRATION
         // -----------------------------------------
@@ -1079,7 +971,6 @@ socket.on(
             );
 
         }
-
 
         // -----------------------------------------
         // BROWSER NOTIFICATION
@@ -1097,10 +988,10 @@ socket.on(
                     {
 
                         body:
-                        `New order from ${
-                            order.restaurant_name ||
-                            "Partner"
-                        }`
+                            `New order from ${
+                                order.restaurant_name ||
+                                "Partner"
+                            }`
 
                     }
                 );
@@ -1119,8 +1010,8 @@ socket.on(
         }
 
     }
-);
 
+);
 
 // =====================================================
 // RENDER NEW ORDER
@@ -1152,7 +1043,6 @@ function renderNewOrder(order) {
     const dropDistance =
         el("dropDistance");
 
-
     if (restaurant) {
 
         restaurant.innerHTML =
@@ -1163,7 +1053,6 @@ function renderNewOrder(order) {
 
     }
 
-
     if (customer) {
 
         customer.innerHTML =
@@ -1173,7 +1062,6 @@ function renderNewOrder(order) {
             );
 
     }
-
 
     if (restaurantAddress) {
 
@@ -1186,7 +1074,6 @@ function renderNewOrder(order) {
 
     }
 
-
     if (customerAddress) {
 
         customerAddress.innerHTML =
@@ -1197,7 +1084,6 @@ function renderNewOrder(order) {
 
     }
 
-
     if (deliveryFee) {
 
         deliveryFee.innerHTML =
@@ -1206,7 +1092,6 @@ function renderNewOrder(order) {
             ).toFixed(2)}`;
 
     }
-
 
     if (amount) {
 
@@ -1217,16 +1102,13 @@ function renderNewOrder(order) {
 
     }
 
-
     const pickup =
         order.pickup_distance ??
         order.restaurant_distance;
 
-
     const drop =
         order.drop_distance ??
         order.customer_distance;
-
 
     if (pickupDistance) {
 
@@ -1237,7 +1119,6 @@ function renderNewOrder(order) {
                 : "";
 
     }
-
 
     if (dropDistance) {
 
@@ -1251,7 +1132,6 @@ function renderNewOrder(order) {
 
 }
 
-
 // =====================================================
 // ORDER TIMER
 // =====================================================
@@ -1261,7 +1141,6 @@ function startOrderTimer() {
     clearInterval(
         orderTimerInterval
     );
-
 
     orderTimerInterval =
         setInterval(
@@ -1273,7 +1152,6 @@ function startOrderTimer() {
 
                 }
 
-
                 const seconds =
                     Math.floor(
                         (
@@ -1282,10 +1160,8 @@ function startOrderTimer() {
                         ) / 1000
                     );
 
-
                 const timer =
                     el("orderTimer");
-
 
                 if (timer) {
 
@@ -1300,7 +1176,6 @@ function startOrderTimer() {
 
 }
 
-
 // =====================================================
 // ACCEPT ORDER
 // FIRST RIDER WINS
@@ -1309,180 +1184,160 @@ function startOrderTimer() {
 if (acceptOrderButton) {
 
     acceptOrderButton.onclick =
-    async function () {
+        async function () {
 
-        if (
-            currentOrderId === null ||
-            currentOrderId === undefined
-        ) {
-
-            alert(
-                "No order available to accept."
-            );
-
-            return;
-
-        }
-
-
-        const orderId =
-            currentOrderId;
-
-
-        this.disabled =
-            true;
-
-
-        this.innerHTML =
-            "Accepting...";
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API}/delivery/accept/${orderId}`,
-                    {
-
-                        method:
-                            "PUT",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                        JSON.stringify({
-
-                            deliveryId:
-                                delivery.id
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            console.log(
-                "ACCEPT RESPONSE:",
-                data
-            );
-
-
-            if (data.success) {
-
-                clearInterval(
-                    orderTimerInterval
-                );
-
-
-                orderReceivedAt =
-                    null;
-
-
-                if (newOrderCard) {
-
-                    newOrderCard.style.display =
-                        "none";
-
-                    newOrderCard.dataset.visible =
-                        "";
-
-                }
-
-
-                if (badge) {
-
-                    badge.style.display =
-                        "none";
-
-                }
-
-
-                currentOrderId =
-                    orderId;
-
-
-                await loadCurrentOrder();
-
+            if (
+                currentOrderId === null ||
+                currentOrderId === undefined
+            ) {
 
                 alert(
-                    "✅ Order Accepted!"
+                    "No order available to accept."
                 );
+
+                return;
 
             }
 
-            else {
-
-                alert(
-                    "❌ " +
-                    (
-                        data.message ||
-                        "Order was already accepted by another rider."
-                    )
-                );
-
-
-                hideNewOrder();
-
-
-                currentOrderId =
-                    null;
-
-
-                currentOrderData =
-                    null;
-
-
-                if (
-                    onlineToggle &&
-                    onlineToggle.checked
-                ) {
-
-                    showSearching();
-
-                }
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.log(
-                "ACCEPT ERROR:",
-                error
-            );
-
-
-            alert(
-                "Unable to accept order."
-            );
-
-        }
-
-        finally {
+            const orderId =
+                currentOrderId;
 
             this.disabled =
-                false;
-
+                true;
 
             this.innerHTML =
-                "Accept Order";
+                "Accepting...";
 
-        }
+            try {
 
-    };
+                const response =
+                    await fetch(
+                        `${API}/deliveryPartner/accept/${orderId}`,
+                        {
+
+                            method:
+                                "PUT",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    deliveryId:
+                                        delivery.id
+
+                                })
+
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "ACCEPT RESPONSE:",
+                    data
+                );
+
+                if (data.success) {
+
+                    clearInterval(
+                        orderTimerInterval
+                    );
+
+                    orderReceivedAt =
+                        null;
+
+                    if (newOrderCard) {
+
+                        newOrderCard.style.display =
+                            "none";
+
+                        newOrderCard.dataset.visible =
+                            "";
+
+                    }
+
+                    if (badge) {
+
+                        badge.style.display =
+                            "none";
+
+                    }
+
+                    currentOrderId =
+                        orderId;
+
+                    await loadCurrentOrder();
+
+                    alert(
+                        "✅ Order Accepted!"
+                    );
+
+                }
+
+                else {
+
+                    alert(
+                        "❌ " +
+                        (
+                            data.message ||
+                            "Order was already accepted by another rider."
+                        )
+                    );
+
+                    hideNewOrder();
+
+                    currentOrderId =
+                        null;
+
+                    currentOrderData =
+                        null;
+
+                    if (
+                        onlineToggle &&
+                        onlineToggle.checked
+                    ) {
+
+                        showSearching();
+
+                    }
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "ACCEPT ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to accept order."
+                );
+
+            }
+
+            finally {
+
+                this.disabled =
+                    false;
+
+                this.innerHTML =
+                    "Accept Order";
+
+            }
+
+        };
 
 }
-
 
 // =====================================================
 // HIDE NEW ORDER
@@ -1494,10 +1349,8 @@ function hideNewOrder() {
         orderTimerInterval
     );
 
-
     orderReceivedAt =
         null;
-
 
     if (newOrderCard) {
 
@@ -1509,7 +1362,6 @@ function hideNewOrder() {
 
     }
 
-
     if (badge) {
 
         badge.style.display =
@@ -1519,7 +1371,6 @@ function hideNewOrder() {
 
 }
 
-
 // =====================================================
 // REJECT ORDER
 // =====================================================
@@ -1527,119 +1378,107 @@ function hideNewOrder() {
 if (rejectOrderButton) {
 
     rejectOrderButton.onclick =
-    async function () {
+        async function () {
 
-        if (
-            currentOrderId === null ||
-            currentOrderId === undefined
-        ) {
+            if (
+                currentOrderId === null ||
+                currentOrderId === undefined
+            ) {
 
-            return;
+                return;
 
-        }
+            }
 
+            const orderId =
+                currentOrderId;
 
-        const orderId =
-            currentOrderId;
-
-
-        this.disabled =
-            true;
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API}/delivery/reject/${orderId}`,
-                    {
-
-                        method:
-                            "PUT",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                        JSON.stringify({
-
-                            deliveryId:
-                                delivery.id
-
-                        })
-
-                    }
-                );
-
-
-            let data =
-                null;
-
+            this.disabled =
+                true;
 
             try {
 
-                data =
-                    await response.json();
+                const response =
+                    await fetch(
+                        `${API}/deliveryPartner/reject/${orderId}`,
+                        {
 
-            }
+                            method:
+                                "PUT",
 
-            catch {
+                            headers: {
 
-                data =
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    deliveryId:
+                                        delivery.id
+
+                                })
+
+                        }
+                    );
+
+                let data =
                     null;
 
+                try {
+
+                    data =
+                        await response.json();
+
+                }
+
+                catch {
+
+                    data =
+                        null;
+
+                }
+
+                console.log(
+                    "REJECT RESPONSE:",
+                    data
+                );
+
             }
 
+            catch (error) {
 
-            console.log(
-                "REJECT RESPONSE:",
-                data
-            );
+                console.log(
+                    "REJECT API ERROR:",
+                    error
+                );
 
-        }
+            }
 
-        catch (error) {
+            hideNewOrder();
 
-            console.log(
-                "REJECT API ERROR:",
-                error
-            );
+            currentOrderId =
+                null;
 
-        }
+            currentOrderData =
+                null;
 
+            if (
+                onlineToggle &&
+                onlineToggle.checked
+            ) {
 
-        hideNewOrder();
+                showSearching();
 
+            }
 
-        currentOrderId =
-            null;
+            this.disabled =
+                false;
 
-
-        currentOrderData =
-            null;
-
-
-        if (
-            onlineToggle &&
-            onlineToggle.checked
-        ) {
-
-            showSearching();
-
-        }
-
-
-        this.disabled =
-            false;
-
-    };
+        };
 
 }
-
 
 // =====================================================
 // RENDER CURRENT ORDER
@@ -1652,7 +1491,6 @@ function renderCurrentOrder(order) {
         return;
 
     }
-
 
     const orderId =
         el("currentOrderId");
@@ -1669,14 +1507,12 @@ function renderCurrentOrder(order) {
     const customerAddress =
         el("currentCustomerAddress");
 
-
     if (orderId) {
 
         orderId.innerHTML =
             `Order ID: #${escapeHTML(order.id)}`;
 
     }
-
 
     if (restaurant) {
 
@@ -1687,7 +1523,6 @@ function renderCurrentOrder(order) {
             );
 
     }
-
 
     if (restaurantAddress) {
 
@@ -1700,14 +1535,11 @@ function renderCurrentOrder(order) {
 
     }
 
-
     const status =
         getDeliveryStatus(order);
 
-
     const pickedUp =
         isPickedUpOrLater(status);
-
 
     if (customer) {
 
@@ -1730,7 +1562,6 @@ function renderCurrentOrder(order) {
 
     }
 
-
     if (customerAddress) {
 
         if (pickedUp) {
@@ -1752,29 +1583,24 @@ function renderCurrentOrder(order) {
 
     }
 
-
     updateProgress(
         order
     );
-
 
     setupPhoneButtons(
         order,
         pickedUp
     );
 
-
     setupNavigation(
         order
     );
-
 
     updateDeliveryActions(
         order
     );
 
 }
-
 
 // =====================================================
 // DELIVERY STATUS
@@ -1787,12 +1613,10 @@ function getDeliveryStatus(order) {
         order.status ??
         "RiderAccepted";
 
-
     raw =
         String(raw)
             .trim()
             .toLowerCase();
-
 
     if (
         raw === "waiting"
@@ -1801,7 +1625,6 @@ function getDeliveryStatus(order) {
         return "rideraccepted";
 
     }
-
 
     if (
         raw === "delivery assigned" ||
@@ -1812,7 +1635,6 @@ function getDeliveryStatus(order) {
 
     }
 
-
     return raw
         .replace(
             /[\s_-]+/g,
@@ -1820,7 +1642,6 @@ function getDeliveryStatus(order) {
         );
 
 }
-
 
 // =====================================================
 // STATUS HELPERS
@@ -1835,7 +1656,6 @@ function isReachedRestaurant(status) {
 
 }
 
-
 function isPickedUpOrLater(status) {
 
     return (
@@ -1849,7 +1669,6 @@ function isPickedUpOrLater(status) {
 
 }
 
-
 function isReachedCustomer(status) {
 
     return (
@@ -1857,7 +1676,6 @@ function isReachedCustomer(status) {
     );
 
 }
-
 
 function isDelivered(status) {
 
@@ -1868,7 +1686,6 @@ function isDelivered(status) {
 
 }
 
-
 // =====================================================
 // PROGRESS
 // =====================================================
@@ -1878,12 +1695,10 @@ function updateProgress(order) {
     const status =
         getDeliveryStatus(order);
 
-
     console.log(
         "📊 PROGRESS STATUS:",
         status
     );
-
 
     const accepted =
         el("stepAccepted");
@@ -1900,7 +1715,6 @@ function updateProgress(order) {
     const currentStatus =
         el("currentStatus");
 
-
     const steps = [
 
         accepted,
@@ -1909,7 +1723,6 @@ function updateProgress(order) {
         delivered
 
     ];
-
 
     steps.forEach(
         step => {
@@ -1924,7 +1737,6 @@ function updateProgress(order) {
 
         }
     );
-
 
     // -----------------------------------------
     // ACCEPTED
@@ -1946,7 +1758,6 @@ function updateProgress(order) {
 
         }
 
-
         if (currentStatus) {
 
             currentStatus.innerHTML =
@@ -1954,11 +1765,9 @@ function updateProgress(order) {
 
         }
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // REACHED RESTAURANT
@@ -1975,7 +1784,6 @@ function updateProgress(order) {
         if (reached)
             reached.classList.add("active");
 
-
         if (currentStatus) {
 
             currentStatus.innerHTML =
@@ -1983,11 +1791,9 @@ function updateProgress(order) {
 
         }
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // PICKED UP
@@ -2008,7 +1814,6 @@ function updateProgress(order) {
         if (picked)
             picked.classList.add("active");
 
-
         if (currentStatus) {
 
             currentStatus.innerHTML =
@@ -2016,11 +1821,9 @@ function updateProgress(order) {
 
         }
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // REACHED CUSTOMER
@@ -2039,7 +1842,6 @@ function updateProgress(order) {
         if (picked)
             picked.classList.add("active");
 
-
         if (currentStatus) {
 
             currentStatus.innerHTML =
@@ -2047,11 +1849,9 @@ function updateProgress(order) {
 
         }
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // DELIVERED
@@ -2076,7 +1876,6 @@ function updateProgress(order) {
             }
         );
 
-
         if (currentStatus) {
 
             currentStatus.innerHTML =
@@ -2084,11 +1883,9 @@ function updateProgress(order) {
 
         }
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // FALLBACK
@@ -2102,7 +1899,6 @@ function updateProgress(order) {
 
     }
 
-
     if (currentStatus) {
 
         currentStatus.innerHTML =
@@ -2111,7 +1907,6 @@ function updateProgress(order) {
     }
 
 }
-
 
 // =====================================================
 // DELIVERY ACTIONS
@@ -2122,19 +1917,16 @@ function updateDeliveryActions(order) {
     const status =
         getDeliveryStatus(order);
 
-
     console.log(
         "🚚 DELIVERY STATUS:",
         status
     );
-
 
     const navigatePickup =
         el("navigatePickup");
 
     const navigateCustomer =
         el("navigateCustomer");
-
 
     if (navigatePickup) {
 
@@ -2143,14 +1935,12 @@ function updateDeliveryActions(order) {
 
     }
 
-
     if (navigateCustomer) {
 
         navigateCustomer.style.display =
             "none";
 
     }
-
 
     // -----------------------------------------
     // RIDER ACCEPTED
@@ -2180,16 +1970,13 @@ function updateDeliveryActions(order) {
 
         }
 
-
         setupRestaurantReachedButton(
             order
         );
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // REACHED RESTAURANT
@@ -2204,11 +1991,9 @@ function updateDeliveryActions(order) {
             order
         );
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // PICKED UP
@@ -2236,16 +2021,13 @@ function updateDeliveryActions(order) {
 
         }
 
-
         setupReachedCustomerButton(
             order
         );
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // REACHED CUSTOMER
@@ -2259,11 +2041,9 @@ function updateDeliveryActions(order) {
             order
         );
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // DELIVERED
@@ -2278,11 +2058,9 @@ function updateDeliveryActions(order) {
             order
         );
 
-
         return;
 
     }
-
 
     // -----------------------------------------
     // FALLBACK
@@ -2304,13 +2082,11 @@ function updateDeliveryActions(order) {
 
     }
 
-
     setupRestaurantReachedButton(
         order
     );
 
 }
-
 
 // =====================================================
 // STAGE CONTAINER
@@ -2321,17 +2097,14 @@ function getStageContainer() {
     let container =
         el("darvozStageActions");
 
-
     if (container) {
 
         return container;
 
     }
 
-
     const current =
         el("currentOrder");
-
 
     if (!current) {
 
@@ -2339,28 +2112,22 @@ function getStageContainer() {
 
     }
 
-
     container =
         document.createElement("div");
-
 
     container.id =
         "darvozStageActions";
 
-
     container.style.marginTop =
         "10px";
-
 
     current.appendChild(
         container
     );
 
-
     return container;
 
 }
-
 
 // =====================================================
 // RESTAURANT REACHED BUTTON
@@ -2371,48 +2138,40 @@ function setupRestaurantReachedButton(order) {
     const container =
         getStageContainer();
 
-
     if (!container) {
 
         return;
 
     }
 
-
     container.innerHTML =
         "";
-
 
     const button =
         document.createElement("button");
 
-
     button.className =
         "map-btn";
-
 
     button.innerHTML = `
         <i class="fa-solid fa-location-dot"></i>
         I Reached Restaurant
     `;
 
-
     button.onclick =
-    async function () {
+        async function () {
 
-        await markReachedRestaurant(
-            order
-        );
+            await markReachedRestaurant(
+                order
+            );
 
-    };
-
+        };
 
     container.appendChild(
         button
     );
 
 }
-
 
 // =====================================================
 // MARK REACHED RESTAURANT
@@ -2426,64 +2185,129 @@ async function markReachedRestaurant(order) {
 
     }
 
-
     try {
 
-        const response =
-            await fetch(
-                `${API}/delivery/reached-restaurant/${order.id}`,
-                {
+        // This simple button does not know GPS.
+        // The navigation button uses the GPS-aware
+        // checkReachedRestaurantFromNavigation() below.
 
-                    method:
-                        "PUT",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                    JSON.stringify({
-
-                        deliveryId:
-                            delivery.id
-
-                    })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "REACHED RESTAURANT:",
-            data
-        );
-
-
-        if (!data.success) {
+        if (
+            !navigator.geolocation
+        ) {
 
             alert(
-                data.message ||
-                "Unable to update restaurant status."
+                "GPS is not available."
             );
 
             return;
 
         }
 
+        navigator.geolocation.getCurrentPosition(
+            async function(position) {
 
-        currentOrderData.delivery_status =
-            "ReachedRestaurant";
+                try {
 
+                    const response =
+                        await fetch(
+                            `${API}/deliveryPartner/reached-restaurant/${order.id}`,
+                            {
 
-        renderCurrentOrder(
-            currentOrderData
+                                method:
+                                    "PUT",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        deliveryId:
+                                            delivery.id,
+
+                                        latitude:
+                                            position.coords.latitude,
+
+                                        longitude:
+                                            position.coords.longitude
+
+                                    })
+
+                            }
+                        );
+
+                    const data =
+                        await response.json();
+
+                    console.log(
+                        "REACHED RESTAURANT:",
+                        data
+                    );
+
+                    if (!data.success) {
+
+                        alert(
+                            data.message ||
+                            "Unable to update restaurant status."
+                        );
+
+                        return;
+
+                    }
+
+                    currentOrderData.delivery_status =
+                        "ReachedRestaurant";
+
+                    renderCurrentOrder(
+                        currentOrderData
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.log(
+                        "REACHED RESTAURANT ERROR:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to mark restaurant reached."
+                    );
+
+                }
+
+            },
+
+            function(error) {
+
+                console.log(
+                    "GPS ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to get your current location."
+                );
+
+            },
+
+            {
+
+                enableHighAccuracy:
+                    true,
+
+                maximumAge:
+                    5000,
+
+                timeout:
+                    10000
+
+            }
         );
 
     }
@@ -2495,15 +2319,9 @@ async function markReachedRestaurant(order) {
             error
         );
 
-
-        alert(
-            "Unable to mark restaurant reached."
-        );
-
     }
 
 }
-
 
 // =====================================================
 // PICKUP WAITING UI
@@ -2514,21 +2332,17 @@ function showPickupWaitingUI(order) {
     const container =
         getStageContainer();
 
-
     if (!container) {
 
         return;
 
     }
 
-
     container.innerHTML =
         "";
 
-
     const box =
         document.createElement("div");
-
 
     box.style.background =
         "#fff7f0";
@@ -2542,7 +2356,6 @@ function showPickupWaitingUI(order) {
     box.style.padding =
         "15px";
 
-
     box.innerHTML = `
 
         <div style="
@@ -2555,7 +2368,6 @@ function showPickupWaitingUI(order) {
 
         </div>
 
-
         <div style="
             font-size:13px;
             margin-bottom:6px;
@@ -2566,7 +2378,6 @@ function showPickupWaitingUI(order) {
 
         </div>
 
-
         <div style="
             font-size:13px;
             color:#555;
@@ -2575,7 +2386,6 @@ function showPickupWaitingUI(order) {
             Tell the restaurant this Order ID.
 
         </div>
-
 
         <div style="
             margin-top:10px;
@@ -2590,13 +2400,11 @@ function showPickupWaitingUI(order) {
 
     `;
 
-
     container.appendChild(
         box
     );
 
 }
-
 
 // =====================================================
 // REACHED CUSTOMER BUTTON
@@ -2607,48 +2415,40 @@ function setupReachedCustomerButton(order) {
     const container =
         getStageContainer();
 
-
     if (!container) {
 
         return;
 
     }
 
-
     container.innerHTML =
         "";
-
 
     const button =
         document.createElement("button");
 
-
     button.className =
         "map-btn";
-
 
     button.innerHTML = `
         <i class="fa-solid fa-location-dot"></i>
         I Reached Customer
     `;
 
-
     button.onclick =
-    async function () {
+        async function () {
 
-        await markReachedCustomer(
-            order
-        );
+            await markReachedCustomer(
+                order
+            );
 
-    };
-
+        };
 
     container.appendChild(
         button
     );
 
 }
-
 
 // =====================================================
 // MARK REACHED CUSTOMER
@@ -2662,64 +2462,125 @@ async function markReachedCustomer(order) {
 
     }
 
-
     try {
 
-        const response =
-            await fetch(
-                `${API}/delivery/reached-customer/${order.id}`,
-                {
-
-                    method:
-                        "PUT",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                    JSON.stringify({
-
-                        deliveryId:
-                            delivery.id
-
-                    })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "REACHED CUSTOMER:",
-            data
-        );
-
-
-        if (!data.success) {
+        if (
+            !navigator.geolocation
+        ) {
 
             alert(
-                data.message ||
-                "Unable to update customer status."
+                "GPS is not available."
             );
 
             return;
 
         }
 
+        navigator.geolocation.getCurrentPosition(
+            async function(position) {
 
-        currentOrderData.delivery_status =
-            "ReachedCustomer";
+                try {
 
+                    const response =
+                        await fetch(
+                            `${API}/deliveryPartner/reached-customer/${order.id}`,
+                            {
 
-        renderCurrentOrder(
-            currentOrderData
+                                method:
+                                    "PUT",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        deliveryId:
+                                            delivery.id,
+
+                                        latitude:
+                                            position.coords.latitude,
+
+                                        longitude:
+                                            position.coords.longitude
+
+                                    })
+
+                            }
+                        );
+
+                    const data =
+                        await response.json();
+
+                    console.log(
+                        "REACHED CUSTOMER:",
+                        data
+                    );
+
+                    if (!data.success) {
+
+                        alert(
+                            data.message ||
+                            "Unable to update customer status."
+                        );
+
+                        return;
+
+                    }
+
+                    currentOrderData.delivery_status =
+                        "ReachedCustomer";
+
+                    renderCurrentOrder(
+                        currentOrderData
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.log(
+                        "REACHED CUSTOMER ERROR:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to mark customer reached."
+                    );
+
+                }
+
+            },
+
+            function(error) {
+
+                console.log(
+                    "GPS ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to get your current location."
+                );
+
+            },
+
+            {
+
+                enableHighAccuracy:
+                    true,
+
+                maximumAge:
+                    5000,
+
+                timeout:
+                    10000
+
+            }
         );
 
     }
@@ -2731,15 +2592,9 @@ async function markReachedCustomer(order) {
             error
         );
 
-
-        alert(
-            "Unable to mark customer reached."
-        );
-
     }
 
 }
-
 
 // =====================================================
 // OTP UI
@@ -2750,25 +2605,17 @@ function showOTPUI(order) {
     const container =
         getStageContainer();
 
-
     if (!container) {
 
         return;
 
     }
 
-
-    // =================================================
-    // IMPORTANT:
-    // DO NOT RECREATE OTP INPUT EVERY 5 SECONDS
-    // =================================================
-
     const existingInput =
         el("deliveryOtpInput");
 
     const existingButton =
         el("verifyDeliveryOtp");
-
 
     if (
         existingInput &&
@@ -2783,18 +2630,11 @@ function showOTPUI(order) {
 
     }
 
-
-    // =================================================
-    // CREATE OTP UI ONLY ONCE
-    // =================================================
-
     container.innerHTML =
         "";
 
-
     const box =
         document.createElement("div");
-
 
     box.style.background =
         "#fff7f0";
@@ -2808,7 +2648,6 @@ function showOTPUI(order) {
     box.style.padding =
         "15px";
 
-
     box.innerHTML = `
 
         <div style="
@@ -2821,7 +2660,6 @@ function showOTPUI(order) {
 
         </div>
 
-
         <div style="
             font-size:13px;
             color:#666;
@@ -2831,7 +2669,6 @@ function showOTPUI(order) {
             Ask the customer for the delivery OTP.
 
         </div>
-
 
         <input
             id="deliveryOtpInput"
@@ -2853,7 +2690,6 @@ function showOTPUI(order) {
             "
         >
 
-
         <button
             type="button"
             id="verifyDeliveryOtp"
@@ -2871,11 +2707,9 @@ function showOTPUI(order) {
 
     `;
 
-
     container.appendChild(
         box
     );
-
 
     // =================================================
     // OTP INPUT
@@ -2884,14 +2718,12 @@ function showOTPUI(order) {
     const input =
         el("deliveryOtpInput");
 
-
     if (input) {
 
         input.addEventListener(
             "input",
             function () {
 
-                // Only numbers
                 this.value =
                     this.value
                         .replace(/\D/g, "")
@@ -2902,7 +2734,6 @@ function showOTPUI(order) {
 
     }
 
-
     // =================================================
     // VERIFY BUTTON
     // =================================================
@@ -2910,161 +2741,140 @@ function showOTPUI(order) {
     const verifyButton =
         el("verifyDeliveryOtp");
 
-
     if (!verifyButton) {
 
         return;
 
     }
 
-
     verifyButton.onclick =
-    async function () {
+        async function () {
 
-        const input =
-            el("deliveryOtpInput");
+            const input =
+                el("deliveryOtpInput");
 
+            const otp =
+                input
+                    ? input.value.trim()
+                    : "";
 
-        const otp =
-            input
-                ? input.value.trim()
-                : "";
-
-
-        if (!otp) {
-
-            alert(
-                "Please enter the OTP."
-            );
-
-            return;
-
-        }
-
-
-        if (!/^\d{4}$/.test(otp)) {
-
-            alert(
-                "Please enter the 4-digit OTP."
-            );
-
-            return;
-
-        }
-
-
-        this.disabled =
-            true;
-
-
-        this.innerHTML =
-            "Verifying...";
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `${API}/delivery/verify-otp/${order.id}`,
-                    {
-
-                        method:
-                            "PUT",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                        JSON.stringify({
-
-                            deliveryId:
-                                delivery.id,
-
-                            otp:
-                                otp
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            console.log(
-                "OTP RESPONSE:",
-                data
-            );
-
-
-            if (!data.success) {
+            if (!otp) {
 
                 alert(
-                    data.message ||
-                    "Invalid OTP."
+                    "Please enter the OTP."
                 );
-
-
-                this.disabled =
-                    false;
-
-
-                this.innerHTML =
-                    "Verify OTP & Deliver";
-
 
                 return;
 
             }
 
+            if (!/^\d{4}$/.test(otp)) {
 
-            currentOrderData.delivery_status =
-                "Delivered";
+                alert(
+                    "Please enter the 4-digit OTP."
+                );
 
+                return;
 
-            alert(
-                "✅ Delivery completed successfully!"
-            );
-
-
-            renderCurrentOrder(
-                currentOrderData
-            );
-
-        }
-
-        catch (error) {
-
-            console.log(
-                "OTP ERROR:",
-                error
-            );
-
-
-            alert(
-                "Unable to verify OTP."
-            );
-
+            }
 
             this.disabled =
-                false;
-
+                true;
 
             this.innerHTML =
-                "Verify OTP & Deliver";
+                "Verifying...";
 
-        }
+            try {
 
-    };
+                const response =
+                    await fetch(
+                        `${API}/deliveryPartner/verify-otp/${order.id}`,
+                        {
+
+                            method:
+                                "PUT",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    deliveryId:
+                                        delivery.id,
+
+                                    otp:
+                                        otp
+
+                                })
+
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "OTP RESPONSE:",
+                    data
+                );
+
+                if (!data.success) {
+
+                    alert(
+                        data.message ||
+                        "Invalid OTP."
+                    );
+
+                    this.disabled =
+                        false;
+
+                    this.innerHTML =
+                        "Verify OTP & Deliver";
+
+                    return;
+
+                }
+
+                currentOrderData.delivery_status =
+                    "Delivered";
+
+                alert(
+                    "✅ Delivery completed successfully!"
+                );
+
+                renderCurrentOrder(
+                    currentOrderData
+                );
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "OTP ERROR:",
+                    error
+                );
+
+                alert(
+                    "Unable to verify OTP."
+                );
+
+                this.disabled =
+                    false;
+
+                this.innerHTML =
+                    "Verify OTP & Deliver";
+
+            }
+
+        };
 
 }
-
 
 // =====================================================
 // DELIVERY SUCCESS
@@ -3074,17 +2884,14 @@ function showDeliverySuccess(order) {
 
     stopDarvozNavigation();
 
-
     const container =
         getStageContainer();
-
 
     if (!container) {
 
         return;
 
     }
-
 
     if (
         container.dataset.completed === "true"
@@ -3094,16 +2901,13 @@ function showDeliverySuccess(order) {
 
     }
 
-
     container.dataset.completed =
         "true";
-
 
     const fee =
         Number(
             order.delivery_fee || 0
         );
-
 
     container.innerHTML = `
 
@@ -3124,7 +2928,6 @@ function showDeliverySuccess(order) {
 
             </div>
 
-
             <div style="
                 font-size:18px;
                 font-weight:800;
@@ -3134,7 +2937,6 @@ function showDeliverySuccess(order) {
                 Delivery Completed
 
             </div>
-
 
             <div style="
                 margin-top:10px;
@@ -3146,7 +2948,6 @@ function showDeliverySuccess(order) {
 
             </div>
 
-
             <div style="
                 margin-top:14px;
                 font-size:20px;
@@ -3157,7 +2958,6 @@ function showDeliverySuccess(order) {
                 You earned ₹${fee.toFixed(2)}
 
             </div>
-
 
             <div style="
                 margin-top:5px;
@@ -3173,17 +2973,14 @@ function showDeliverySuccess(order) {
 
     `;
 
-
     setTimeout(
         async () => {
 
             currentOrderData =
                 null;
 
-
             currentOrderId =
                 null;
-
 
             if (currentOrder) {
 
@@ -3191,7 +2988,6 @@ function showDeliverySuccess(order) {
                     "none";
 
             }
-
 
             if (
                 onlineToggle &&
@@ -3202,7 +2998,6 @@ function showDeliverySuccess(order) {
 
             }
 
-
             await loadDashboard();
 
         },
@@ -3210,7 +3005,6 @@ function showDeliverySuccess(order) {
     );
 
 }
-
 
 // =====================================================
 // PHONE BUTTONS
@@ -3226,12 +3020,10 @@ function setupPhoneButtons(
         order.partner_mobile ||
         null;
 
-
     const customerPhone =
         order.mobile ||
         order.customer_mobile ||
         null;
-
 
     const restaurantCall =
         el("restaurantCall");
@@ -3239,31 +3031,29 @@ function setupPhoneButtons(
     const customerCall =
         el("customerCall");
 
-
     if (restaurantCall) {
 
         restaurantCall.onclick =
-        function () {
+            function () {
 
-            if (restaurantPhone) {
+                if (restaurantPhone) {
 
-                window.location.href =
-                    `tel:${restaurantPhone}`;
+                    window.location.href =
+                        `tel:${restaurantPhone}`;
 
-            }
+                }
 
-            else {
+                else {
 
-                alert(
-                    "Restaurant phone number is not available."
-                );
+                    alert(
+                        "Restaurant phone number is not available."
+                    );
 
-            }
+                }
 
-        };
+            };
 
     }
-
 
     if (customerCall) {
 
@@ -3272,31 +3062,29 @@ function setupPhoneButtons(
                 ? "block"
                 : "none";
 
-
         customerCall.onclick =
-        function () {
+            function () {
 
-            if (customerPhone) {
+                if (customerPhone) {
 
-                window.location.href =
-                    `tel:${customerPhone}`;
+                    window.location.href =
+                        `tel:${customerPhone}`;
 
-            }
+                }
 
-            else {
+                else {
 
-                alert(
-                    "Customer phone number is not available."
-                );
+                    alert(
+                        "Customer phone number is not available."
+                    );
 
-            }
+                }
 
-        };
+            };
 
     }
 
 }
-
 
 // =====================================================
 // NAVIGATION SETUP
@@ -3310,7 +3098,6 @@ function setupNavigation(order) {
     const navigateCustomer =
         el("navigateCustomer");
 
-
     // -----------------------------------------
     // RESTAURANT
     // -----------------------------------------
@@ -3318,66 +3105,61 @@ function setupNavigation(order) {
     if (navigatePickup) {
 
         navigatePickup.onclick =
-        function () {
+            function () {
 
-            const restaurantLat =
-                getNumber(
-                    order.restaurant_lat ??
-                    order.pickup_lat ??
-                    order.restaurant_latitude
-                );
+                const restaurantLat =
+                    getNumber(
+                        order.restaurant_lat ??
+                        order.pickup_lat ??
+                        order.restaurant_latitude
+                    );
 
+                const restaurantLng =
+                    getNumber(
+                        order.restaurant_lng ??
+                        order.pickup_lng ??
+                        order.restaurant_longitude
+                    );
 
-            const restaurantLng =
-                getNumber(
-                    order.restaurant_lng ??
-                    order.pickup_lng ??
-                    order.restaurant_longitude
-                );
-
-
-            console.log(
-                "🏪 RESTAURANT GPS:",
-                restaurantLat,
-                restaurantLng
-            );
-
-
-            if (
-                !Number.isFinite(restaurantLat) ||
-                !Number.isFinite(restaurantLng)
-            ) {
-
-                alert(
-                    "Restaurant GPS location is not available."
-                );
-
-                return;
-
-            }
-
-
-            openDarvozNavigation({
-
-                type:
-                    "restaurant",
-
-                destinationLat:
+                console.log(
+                    "🏪 RESTAURANT GPS:",
                     restaurantLat,
+                    restaurantLng
+                );
 
-                destinationLng:
-                    restaurantLng,
+                if (
+                    !Number.isFinite(restaurantLat) ||
+                    !Number.isFinite(restaurantLng)
+                ) {
 
-                destinationName:
-                    order.restaurant_name ||
-                    "Partner Store"
+                    alert(
+                        "Restaurant GPS location is not available."
+                    );
 
-            });
+                    return;
 
-        };
+                }
+
+                openDarvozNavigation({
+
+                    type:
+                        "restaurant",
+
+                    destinationLat:
+                        restaurantLat,
+
+                    destinationLng:
+                        restaurantLng,
+
+                    destinationName:
+                        order.restaurant_name ||
+                        "Partner Store"
+
+                });
+
+            };
 
     }
-
 
     // -----------------------------------------
     // CUSTOMER
@@ -3386,68 +3168,63 @@ function setupNavigation(order) {
     if (navigateCustomer) {
 
         navigateCustomer.onclick =
-        function () {
+            function () {
 
-            const customerLat =
-                getNumber(
-                    order.customer_lat ??
-                    order.delivery_lat ??
-                    order.customer_latitude
-                );
+                const customerLat =
+                    getNumber(
+                        order.customer_lat ??
+                        order.delivery_lat ??
+                        order.customer_latitude
+                    );
 
+                const customerLng =
+                    getNumber(
+                        order.customer_lng ??
+                        order.delivery_lng ??
+                        order.customer_longitude
+                    );
 
-            const customerLng =
-                getNumber(
-                    order.customer_lng ??
-                    order.delivery_lng ??
-                    order.customer_longitude
-                );
-
-
-            console.log(
-                "🏠 CUSTOMER GPS:",
-                customerLat,
-                customerLng
-            );
-
-
-            if (
-                !Number.isFinite(customerLat) ||
-                !Number.isFinite(customerLng)
-            ) {
-
-                alert(
-                    "Customer GPS location is not available."
-                );
-
-                return;
-
-            }
-
-
-            openDarvozNavigation({
-
-                type:
-                    "customer",
-
-                destinationLat:
+                console.log(
+                    "🏠 CUSTOMER GPS:",
                     customerLat,
+                    customerLng
+                );
 
-                destinationLng:
-                    customerLng,
+                if (
+                    !Number.isFinite(customerLat) ||
+                    !Number.isFinite(customerLng)
+                ) {
 
-                destinationName:
-                    order.customer_name ||
-                    "Customer"
+                    alert(
+                        "Customer GPS location is not available."
+                    );
 
-            });
+                    return;
 
-        };
+                }
+
+                openDarvozNavigation({
+
+                    type:
+                        "customer",
+
+                    destinationLat:
+                        customerLat,
+
+                    destinationLng:
+                        customerLng,
+
+                    destinationName:
+                        order.customer_name ||
+                        "Customer"
+
+                });
+
+            };
 
     }
 
 }
-
 
 // =====================================================
 // OPEN DARVOZ NAVIGATION
@@ -3460,18 +3237,15 @@ function openDarvozNavigation(options) {
         options
     );
 
-
     const lat =
         Number(
             options.destinationLat
         );
 
-
     const lng =
         Number(
             options.destinationLng
         );
-
 
     if (
         !Number.isFinite(lat) ||
@@ -3486,17 +3260,7 @@ function openDarvozNavigation(options) {
 
     }
 
-
-    // -----------------------------------------
-    // STOP PREVIOUS NAVIGATION
-    // -----------------------------------------
-
     stopDarvozNavigation();
-
-
-    // -----------------------------------------
-    // CREATE NEW STATE
-    // -----------------------------------------
 
     darvozNavigation = {
 
@@ -3550,21 +3314,17 @@ function openDarvozNavigation(options) {
             false,
 
         gpsReceived:
-            false
+            false,
+
+        lastHeading:
+            0
 
     };
 
-
-    // -----------------------------------------
-    // CREATE SCREEN
-    // -----------------------------------------
-
     createDarvozNavigationScreen();
-
 
     const screen =
         el("darvozNavigationScreen");
-
 
     if (screen) {
 
@@ -3573,14 +3333,8 @@ function openDarvozNavigation(options) {
 
     }
 
-
-    // -----------------------------------------
-    // DESTINATION
-    // -----------------------------------------
-
     const destinationElement =
         el("darvozNavDestination");
-
 
     if (destinationElement) {
 
@@ -3591,20 +3345,10 @@ function openDarvozNavigation(options) {
 
     }
 
-
-    // -----------------------------------------
-    // RESET INFO
-    // -----------------------------------------
-
     setNavigationInfo(
         "Getting GPS...",
         "Getting GPS..."
     );
-
-
-    // -----------------------------------------
-    // LOAD GOOGLE MAPS
-    // -----------------------------------------
 
     loadDarvozGoogleMaps(
         function () {
@@ -3616,7 +3360,6 @@ function openDarvozNavigation(options) {
 
 }
 
-
 // =====================================================
 // CREATE NAVIGATION SCREEN
 // =====================================================
@@ -3626,26 +3369,52 @@ function createDarvozNavigationScreen() {
     let screen =
         el("darvozNavigationScreen");
 
-
     if (screen) {
 
         return;
 
     }
 
-
     screen =
         document.createElement("div");
-
 
     screen.id =
         "darvozNavigationScreen";
 
-
     screen.innerHTML = `
 
-       
+        <div
+            class="darvoz-nav-header"
+            id="darvozNavHeader">
 
+            <button
+                type="button"
+                id="darvozNavBack"
+                class="darvoz-nav-back">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </button>
+
+            <div>
+
+                <div class="darvoz-nav-title">
+
+                    DARVOZ Navigation
+
+                </div>
+
+                <div
+                    id="darvozNavDestination"
+                    class="darvoz-nav-destination">
+
+                    Destination
+
+                </div>
+
+            </div>
+
+        </div>
 
         <div
             id="darvozGoogleMap"
@@ -3653,91 +3422,84 @@ function createDarvozNavigationScreen() {
 
         </div>
 
-
         <div class="darvoz-nav-bottom">
 
-    <!-- NEXT TURN -->
-    <div class="darvoz-next-turn">
+            <div class="darvoz-next-turn">
 
-        <div
-            id="darvozTurnIcon"
-            class="darvoz-turn-icon">
+                <div
+                    id="darvozTurnIcon"
+                    class="darvoz-turn-icon">
 
-            ⬆️
+                    ⬆️
 
-        </div>
+                </div>
 
-        <div class="darvoz-turn-details">
+                <div class="darvoz-turn-details">
 
-            <div
-                id="darvozTurnInstruction"
-                class="darvoz-turn-instruction">
+                    <div
+                        id="darvozTurnInstruction"
+                        class="darvoz-turn-instruction">
 
-                Continue straight
+                        Continue straight
+
+                    </div>
+
+                    <div
+                        id="darvozTurnDistance"
+                        class="darvoz-turn-distance">
+
+                        --
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <div
-                id="darvozTurnDistance"
-                class="darvoz-turn-distance">
+            <div class="darvoz-nav-summary">
 
-                --
+                <div class="darvoz-nav-main">
+
+                    <span
+                        id="darvozNavTime">
+
+                        --
+
+                    </span>
+
+                    <span class="darvoz-summary-dot">
+
+                        ·
+
+                    </span>
+
+                    <span
+                        id="darvozNavDistance">
+
+                        --
+
+                    </span>
+
+                </div>
+
+                <div
+                    id="darvozArrivalTime"
+                    class="darvoz-arrival-time">
+
+                    Arrive --
+
+                </div>
+
+                <button
+                    type="button"
+                    class="darvoz-recenter-btn"
+                    onclick="recenterDarvozNavigationMap()">
+
+                    <i class="fa-solid fa-crosshairs"></i>
+
+                </button>
 
             </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- NAVIGATION SUMMARY -->
-    <div class="darvoz-nav-summary">
-
-        <div class="darvoz-nav-main">
-
-            <span
-                id="darvozNavTime">
-
-                --
-
-            </span>
-
-            <span class="darvoz-summary-dot">
-                ·
-            </span>
-
-            <span
-                id="darvozNavDistance">
-
-                --
-
-            </span>
-
-        </div>
-
-
-        <div
-            id="darvozArrivalTime"
-            class="darvoz-arrival-time">
-
-            Arrive --
-
-        </div>
-
-
-        <!-- RECENTER BUTTON -->
-
-        <button
-            type="button"
-            class="darvoz-recenter-btn"
-            onclick="recenterDarvozNavigationMap()">
-
-            <i class="fa-solid fa-crosshairs"></i>
-
-        </button>
-
-    </div>
-
 
             <button
                 id="darvozStartNavigation"
@@ -3749,7 +3511,6 @@ function createDarvozNavigationScreen() {
 
             </button>
 
-
             <button
                 id="darvozReachedPartner"
                 class="darvoz-reached-btn"
@@ -3760,7 +3521,6 @@ function createDarvozNavigationScreen() {
                 Reached at Partner Store
 
             </button>
-
 
             <button
                 id="darvozReachedCustomer"
@@ -3777,14 +3537,11 @@ function createDarvozNavigationScreen() {
 
     `;
 
-
     document.body.appendChild(
         screen
     );
 
-
     addDarvozNavigationCSS();
-
 
     // -----------------------------------------
     // BACK
@@ -3793,22 +3550,19 @@ function createDarvozNavigationScreen() {
     const back =
         el("darvozNavBack");
 
-
     if (back) {
 
         back.onclick =
-        function () {
+            function () {
 
-            stopDarvozNavigation();
+                stopDarvozNavigation();
 
+                screen.style.display =
+                    "none";
 
-            screen.style.display =
-                "none";
-
-        };
+            };
 
     }
-
 
     // -----------------------------------------
     // START
@@ -3817,18 +3571,16 @@ function createDarvozNavigationScreen() {
     const start =
         el("darvozStartNavigation");
 
-
     if (start) {
 
         start.onclick =
-        function () {
+            function () {
 
-            startDarvozNavigation();
+                startDarvozNavigation();
 
-        };
+            };
 
     }
-
 
     // -----------------------------------------
     // REACHED RESTAURANT
@@ -3837,36 +3589,30 @@ function createDarvozNavigationScreen() {
     const reachedPartner =
         el("darvozReachedPartner");
 
-
     if (reachedPartner) {
 
         reachedPartner.onclick =
-        async function () {
+            async function () {
 
-            this.disabled =
-                true;
+                this.disabled =
+                    true;
 
+                this.innerHTML =
+                    "Checking location...";
 
-            this.innerHTML =
-                "Checking location...";
+                await checkReachedRestaurantFromNavigation();
 
+                this.disabled =
+                    false;
 
-            await checkReachedRestaurantFromNavigation();
+                this.innerHTML = `
+                    <i class="fa-solid fa-store"></i>
+                    Reached at Partner Store
+                `;
 
-
-            this.disabled =
-                false;
-
-
-            this.innerHTML = `
-                <i class="fa-solid fa-store"></i>
-                Reached at Partner Store
-            `;
-
-        };
+            };
 
     }
-
 
     // -----------------------------------------
     // REACHED CUSTOMER
@@ -3875,38 +3621,32 @@ function createDarvozNavigationScreen() {
     const reachedCustomer =
         el("darvozReachedCustomer");
 
-
     if (reachedCustomer) {
 
         reachedCustomer.onclick =
-        async function () {
+            async function () {
 
-            this.disabled =
-                true;
+                this.disabled =
+                    true;
 
+                this.innerHTML =
+                    "Checking location...";
 
-            this.innerHTML =
-                "Checking location...";
+                await checkReachedCustomerFromNavigation();
 
+                this.disabled =
+                    false;
 
-            await checkReachedCustomerFromNavigation();
+                this.innerHTML = `
+                    <i class="fa-solid fa-location-dot"></i>
+                    Reached Customer
+                `;
 
-
-            this.disabled =
-                false;
-
-
-            this.innerHTML = `
-                <i class="fa-solid fa-location-dot"></i>
-                Reached Customer
-            `;
-
-        };
+            };
 
     }
 
 }
-
 
 // =====================================================
 // GOOGLE MAPS LOADER
@@ -3925,7 +3665,6 @@ function loadDarvozGoogleMaps(callback) {
 
     }
 
-
     if (googleMapsLoading) {
 
         googleMapsCallback =
@@ -3935,103 +3674,72 @@ function loadDarvozGoogleMaps(callback) {
 
     }
 
-
     googleMapsLoading =
         true;
-
 
     googleMapsCallback =
         callback;
 
-
     const script =
         document.createElement("script");
-
-
-    /*
-       IMPORTANT:
-
-       Replace YOUR_GOOGLE_MAPS_API_KEY
-       with your Google Maps browser API key.
-
-       Enable:
-       - Maps JavaScript API
-       - Directions API / corresponding
-         Google Maps routing service
-
-       Restrict the key to your domain.
-    */
 
     script.src =
         "https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ&libraries=geometry";
 
-
     script.async =
         true;
-
 
     script.defer =
         true;
 
-
     script.onload =
-    function () {
+        function () {
 
-        console.log(
-            "✅ GOOGLE MAPS API LOADED"
-        );
+            console.log(
+                "✅ GOOGLE MAPS API LOADED"
+            );
 
+            googleMapsLoading =
+                false;
 
-        googleMapsLoading =
-            false;
+            if (googleMapsCallback) {
 
+                const callbackFunction =
+                    googleMapsCallback;
 
-        if (googleMapsCallback) {
+                googleMapsCallback =
+                    null;
 
-            const callbackFunction =
-                googleMapsCallback;
+                callbackFunction();
 
+            }
+
+        };
+
+    script.onerror =
+        function () {
+
+            console.log(
+                "❌ GOOGLE MAPS API FAILED"
+            );
+
+            googleMapsLoading =
+                false;
 
             googleMapsCallback =
                 null;
 
+            alert(
+                "Unable to load Google Maps."
+            );
 
-            callbackFunction();
-
-        }
-
-    };
-
-
-    script.onerror =
-    function () {
-
-        console.log(
-            "❌ GOOGLE MAPS API FAILED"
-        );
-
-
-        googleMapsLoading =
-            false;
-
-
-        googleMapsCallback =
-            null;
-
-
-        alert(
-            "Unable to load Google Maps."
-        );
-
-    };
-
+        };
 
     document.head.appendChild(
         script
     );
 
 }
-
 
 // =====================================================
 // INITIALIZE GOOGLE MAP
@@ -4045,10 +3753,8 @@ function initializeDarvozNavigation() {
 
     }
 
-
     const mapElement =
         el("darvozGoogleMap");
-
 
     if (!mapElement) {
 
@@ -4060,7 +3766,6 @@ function initializeDarvozNavigation() {
 
     }
 
-
     const destination = {
 
         lat:
@@ -4070,11 +3775,6 @@ function initializeDarvozNavigation() {
             darvozNavigation.destinationLng
 
     };
-
-
-    // -----------------------------------------
-    // CREATE MAP
-    // -----------------------------------------
 
     darvozNavigation.map =
         new google.maps.Map(
@@ -4102,52 +3802,35 @@ function initializeDarvozNavigation() {
             }
         );
 
-
-    // -----------------------------------------
-    // DIRECTIONS SERVICE
-    // -----------------------------------------
-
     darvozNavigation.directionsService =
         new google.maps.DirectionsService();
 
+    darvozNavigation.directionsRenderer =
+        new google.maps.DirectionsRenderer({
 
-    // -----------------------------------------
-    // DIRECTIONS RENDERER
-    // -----------------------------------------
-       darvozNavigation.directionsRenderer =
-    new google.maps.DirectionsRenderer({
+            map:
+                darvozNavigation.map,
 
-        map:
-            darvozNavigation.map,
+            suppressMarkers:
+                true,
 
-        suppressMarkers:
-            true,
+            preserveViewport:
+                true,
 
-        // IMPORTANT:
-        // Don't let Google automatically zoom
-        // out to show the complete route.
-        preserveViewport:
-            true,
+            polylineOptions: {
 
-        polylineOptions: {
+                strokeColor:
+                    "#1557D5",
 
-            strokeColor: "#1557D5",
+                strokeOpacity:
+                    0.9,
 
-            strokeOpacity:
-                0.9,
+                strokeWeight:
+                    6
 
-            strokeWeight:
-                6
+            }
 
-        }
-
-    });
-    
-
-
-    // -----------------------------------------
-    // DESTINATION MARKER
-    // -----------------------------------------
+        });
 
     darvozNavigation.destinationMarker =
         new google.maps.Marker({
@@ -4176,27 +3859,11 @@ function initializeDarvozNavigation() {
 
         });
 
-
     console.log(
         "✅ DARVOZ MAP READY"
     );
 
-
-    /*
-       IMPORTANT:
-
-       We start GPS immediately.
-
-       This means Distance + ETA can appear
-       BEFORE START NAVIGATION is pressed.
-    */
-
     startDarvozGPS();
-
-
-    // -----------------------------------------
-    // INITIAL HIGH ACCURACY FALLBACK
-    // -----------------------------------------
 
     setTimeout(
         () => {
@@ -4216,7 +3883,6 @@ function initializeDarvozNavigation() {
 
 }
 
-
 // =====================================================
 // START GPS
 // =====================================================
@@ -4229,29 +3895,24 @@ function startDarvozGPS() {
             "❌ GEOLOCATION NOT SUPPORTED"
         );
 
-
         setNavigationInfo(
             "GPS unavailable",
             "GPS unavailable"
         );
 
-
         alert(
             "Your phone does not support GPS."
         );
 
-
         return;
 
     }
-
 
     if (!darvozNavigation) {
 
         return;
 
     }
-
 
     if (
         darvozNavigation.watchId !== null
@@ -4261,19 +3922,9 @@ function startDarvozGPS() {
 
     }
 
-
     console.log(
         "📍 STARTING GPS WATCH..."
     );
-
-
-    /*
-       First try normal GPS.
-
-       This is intentionally NOT high accuracy
-       because Android can take much longer when
-       high accuracy is forced.
-    */
 
     darvozNavigation.watchId =
         navigator.geolocation.watchPosition(
@@ -4286,7 +3937,6 @@ function startDarvozGPS() {
 
             },
 
-
             function (error) {
 
                 console.log(
@@ -4294,7 +3944,6 @@ function startDarvozGPS() {
                     error.code,
                     error.message
                 );
-
 
                 if (
                     error.code === 3 &&
@@ -4305,7 +3954,6 @@ function startDarvozGPS() {
                     requestHighAccuracyGPS();
 
                 }
-
 
                 if (
                     error.code === 1
@@ -4319,7 +3967,6 @@ function startDarvozGPS() {
                 }
 
             },
-
 
             {
 
@@ -4338,7 +3985,6 @@ function startDarvozGPS() {
 
 }
 
-
 // =====================================================
 // HIGH ACCURACY GPS FALLBACK
 // =====================================================
@@ -4351,7 +3997,6 @@ function requestHighAccuracyGPS() {
 
     }
 
-
     if (
         darvozNavigation.gpsFallbackStarted
     ) {
@@ -4360,15 +4005,12 @@ function requestHighAccuracyGPS() {
 
     }
 
-
     darvozNavigation.gpsFallbackStarted =
         true;
-
 
     console.log(
         "📍 REQUESTING HIGH ACCURACY GPS..."
     );
-
 
     navigator.geolocation.getCurrentPosition(
 
@@ -4380,7 +4022,6 @@ function requestHighAccuracyGPS() {
 
         },
 
-
         function (error) {
 
             console.log(
@@ -4389,13 +4030,11 @@ function requestHighAccuracyGPS() {
                 error.message
             );
 
-
             if (!darvozNavigation) {
 
                 return;
 
             }
-
 
             if (
                 !darvozNavigation.gpsReceived
@@ -4409,7 +4048,6 @@ function requestHighAccuracyGPS() {
                         "Location denied",
                         "Location denied"
                     );
-
 
                     alert(
                         "Location permission is denied. Allow location permission for DARVOZ."
@@ -4426,7 +4064,6 @@ function requestHighAccuracyGPS() {
                         "Location unavailable"
                     );
 
-
                     alert(
                         "Turn ON Location/GPS on your phone and try again."
                     );
@@ -4442,7 +4079,6 @@ function requestHighAccuracyGPS() {
                         "GPS timeout"
                     );
 
-
                     console.log(
                         "❌ GPS TIMEOUT - CHECK ANDROID LOCATION SETTINGS"
                     );
@@ -4452,7 +4088,6 @@ function requestHighAccuracyGPS() {
             }
 
         },
-
 
         {
 
@@ -4489,7 +4124,6 @@ function createRiderMarker(
 
     }
 
-
     const riderArrow = {
 
         path:
@@ -4515,7 +4149,6 @@ function createRiderMarker(
             heading
 
     };
-
 
     const riderMarker =
         new google.maps.Marker({
@@ -4543,16 +4176,12 @@ function createRiderMarker(
 
         });
 
-
     window.riderMarker =
         riderMarker;
-
 
     return riderMarker;
 
 }
-
-
 
 // =====================================================
 // HANDLE GPS
@@ -4566,24 +4195,20 @@ function handleDarvozGPS(position) {
 
     }
 
-
     const latitude =
         Number(
             position.coords.latitude
         );
-
 
     const longitude =
         Number(
             position.coords.longitude
         );
 
-
     const accuracy =
         Number(
             position.coords.accuracy
         );
-
 
     if (
         !Number.isFinite(latitude) ||
@@ -4598,10 +4223,8 @@ function handleDarvozGPS(position) {
 
     }
 
-
     darvozNavigation.gpsReceived =
         true;
-
 
     darvozNavigation.riderLocation = {
 
@@ -4613,7 +4236,6 @@ function handleDarvozGPS(position) {
 
     };
 
-
     console.log(
         "📍 GPS:",
         latitude,
@@ -4622,35 +4244,32 @@ function handleDarvozGPS(position) {
         accuracy
     );
 
+    // -----------------------------------------
+    // RIDER DIRECTION / HEADING
+    // -----------------------------------------
 
-   // -----------------------------------------
-// RIDER DIRECTION / HEADING
-// -----------------------------------------
+    const heading =
+        Number(
+            position.coords.heading
+        );
 
-const heading =
-    Number(
-        position.coords.heading
+    if (
+        Number.isFinite(heading) &&
+        heading >= 0
+    ) {
+
+        darvozNavigation.lastHeading =
+            heading;
+
+    }
+
+    // -----------------------------------------
+    // RIDER MARKER
+    // -----------------------------------------
+
+    updateDarvozRiderMarker(
+        darvozNavigation.riderLocation
     );
-
-
-if (
-    Number.isFinite(heading) &&
-    heading >= 0
-) {
-
-    darvozNavigation.lastHeading =
-        heading;
-
-}
-
-
-// -----------------------------------------
-// RIDER MARKER
-// -----------------------------------------
-
-updateDarvozRiderMarker(
-    darvozNavigation.riderLocation
-);
 
     // -----------------------------------------
     // ROUTE
@@ -4659,7 +4278,6 @@ updateDarvozRiderMarker(
     calculateDarvozRoute(
         false
     );
-
 
     // -----------------------------------------
     // BACKEND LOCATION
@@ -4671,7 +4289,6 @@ updateDarvozRiderMarker(
     );
 
 }
-
 
 // =====================================================
 // START NAVIGATION BUTTON
@@ -4685,19 +4302,15 @@ function startDarvozNavigation() {
 
     }
 
-
     console.log(
         "🚀 START NAVIGATION CLICKED"
     );
 
-
     darvozNavigation.navigationStarted =
         true;
 
-
     const startButton =
         el("darvozStartNavigation");
-
 
     if (startButton) {
 
@@ -4705,7 +4318,6 @@ function startDarvozNavigation() {
             "none";
 
     }
-
 
     // -----------------------------------------
     // SHOW REACHED BUTTON
@@ -4719,7 +4331,6 @@ function startDarvozNavigation() {
         const button =
             el("darvozReachedPartner");
 
-
         if (button) {
 
             button.style.display =
@@ -4728,7 +4339,6 @@ function startDarvozNavigation() {
         }
 
     }
-
 
     if (
         darvozNavigation.type ===
@@ -4738,7 +4348,6 @@ function startDarvozNavigation() {
         const button =
             el("darvozReachedCustomer");
 
-
         if (button) {
 
             button.style.display =
@@ -4747,7 +4356,6 @@ function startDarvozNavigation() {
         }
 
     }
-
 
     // -----------------------------------------
     // GPS IS ALREADY RUNNING
@@ -4760,7 +4368,6 @@ function startDarvozNavigation() {
         startDarvozGPS();
 
     }
-
 
     // -----------------------------------------
     // FORCE ROUTE
@@ -4778,10 +4385,10 @@ function startDarvozNavigation() {
 
 }
 
-
 // =====================================================
 // RIDER MARKER
 // =====================================================
+
 function updateDarvozRiderMarker(
     location
 ) {
@@ -4790,17 +4397,13 @@ function updateDarvozRiderMarker(
         !darvozNavigation ||
         !darvozNavigation.map
     ) {
-        return;
-    }
 
+        return;
+
+    }
 
     const heading =
         darvozNavigation.lastHeading || 0;
-
-
-    // -----------------------------------------
-    // CREATE BLUE NAVIGATION ARROW FIRST TIME
-    // -----------------------------------------
 
     if (
         !darvozNavigation.riderMarker
@@ -4813,8 +4416,6 @@ function updateDarvozRiderMarker(
                 heading
             );
 
-
-        // Keep global reference same
         window.riderMarker =
             darvozNavigation.riderMarker;
 
@@ -4822,32 +4423,21 @@ function updateDarvozRiderMarker(
 
     else {
 
-        // -----------------------------------------
-        // MOVE EXISTING ARROW
-        // -----------------------------------------
-
         darvozNavigation
             .riderMarker
             .setPosition(
                 location
             );
 
-
-        // -----------------------------------------
-        // ROTATE ARROW
-        // -----------------------------------------
-
         const icon =
             darvozNavigation
                 .riderMarker
                 .getIcon();
 
-
         if (icon) {
 
             icon.rotation =
                 heading;
-
 
             darvozNavigation
                 .riderMarker
@@ -4859,11 +4449,6 @@ function updateDarvozRiderMarker(
 
     }
 
-
-    // -----------------------------------------
-    // FIRST TIME CENTER ON RIDER
-    // -----------------------------------------
-
     if (
         !darvozNavigation.mapCentered
     ) {
@@ -4872,11 +4457,9 @@ function updateDarvozRiderMarker(
             location
         );
 
-
         darvozNavigation.map.setZoom(
             17
         );
-
 
         darvozNavigation.mapCentered =
             true;
@@ -4887,8 +4470,8 @@ function updateDarvozRiderMarker(
 
 // =====================================================
 // RECENTER NAVIGATION MAP
-// RIDER-FOCUSED LIKE GOOGLE MAPS
 // =====================================================
+
 function recenterDarvozNavigationMap() {
 
     if (
@@ -4901,10 +4484,8 @@ function recenterDarvozNavigationMap() {
 
     }
 
-
     const map =
         darvozNavigation.map;
-
 
     const rider =
         new google.maps.LatLng(
@@ -4923,23 +4504,12 @@ function recenterDarvozNavigationMap() {
 
         );
 
-
-    // ==========================================
-    // RECENTER ON RIDER
-    // ==========================================
-
     map.panTo(
         rider
     );
 
-
-    // ==========================================
-    // KEEP NAVIGATION ZOOM
-    // ==========================================
-
     const zoom =
         map.getZoom();
-
 
     if (
         !zoom ||
@@ -4951,7 +4521,6 @@ function recenterDarvozNavigationMap() {
         );
 
     }
-
 
     console.log(
         "🎯 RECENTERED ON RIDER"
@@ -4977,18 +4546,11 @@ function updateDarvozNextTurn(
 
     }
 
-
     const steps =
         leg.steps;
 
-
     let nextStep =
         null;
-
-
-    // -----------------------------------------
-    // FIND NEXT NAVIGATION STEP
-    // -----------------------------------------
 
     for (
         let i = 0;
@@ -5012,7 +4574,6 @@ function updateDarvozNextTurn(
 
     }
 
-
     if (!nextStep) {
 
         nextStep =
@@ -5020,10 +4581,8 @@ function updateDarvozNextTurn(
 
     }
 
-
     const maneuver =
         nextStep.maneuver || "";
-
 
     const instruction =
         nextStep.instructions
@@ -5034,37 +4593,23 @@ function updateDarvozNextTurn(
                 )
             : "Continue straight";
 
-
     const distance =
         nextStep.distance &&
         nextStep.distance.text
             ? nextStep.distance.text
             : "--";
 
-
-    // -----------------------------------------
-    // ELEMENTS
-    // -----------------------------------------
-
     const iconElement =
         el("darvozTurnIcon");
-
 
     const instructionElement =
         el("darvozTurnInstruction");
 
-
     const distanceElement =
         el("darvozTurnDistance");
 
-
-    // -----------------------------------------
-    // TURN ICON
-    // -----------------------------------------
-
     let icon =
         "⬆️";
-
 
     if (
         maneuver.includes(
@@ -5110,18 +4655,12 @@ function updateDarvozNextTurn(
 
     }
 
-
-    // -----------------------------------------
-    // UPDATE UI
-    // -----------------------------------------
-
     if (iconElement) {
 
         iconElement.innerHTML =
             icon;
 
     }
-
 
     if (instructionElement) {
 
@@ -5130,14 +4669,12 @@ function updateDarvozNextTurn(
 
     }
 
-
     if (distanceElement) {
 
         distanceElement.textContent =
             distance;
 
     }
-
 
     console.log(
         "🧭 NEXT TURN:",
@@ -5147,35 +4684,7 @@ function updateDarvozNextTurn(
     );
 
 }
-{
 
-    const distanceElement =
-        el("darvozNavDistance");
-
-    const etaElement =
-        el("darvozNavTime");
-
-
-    if (distanceElement) {
-
-        distanceElement.innerHTML =
-            escapeHTML(
-                distance || "--"
-            );
-
-    }
-
-
-    if (etaElement) {
-
-        etaElement.innerHTML =
-            escapeHTML(
-                eta || "--"
-            );
-
-    }
-
-}
 // =====================================================
 // CALCULATE ROUTE
 // =====================================================
@@ -5190,7 +4699,6 @@ function calculateDarvozRoute(
 
     }
 
-
     if (
         !darvozNavigation.riderLocation
     ) {
@@ -5202,7 +4710,6 @@ function calculateDarvozRoute(
         return;
 
     }
-
 
     if (
         !darvozNavigation.directionsService ||
@@ -5217,17 +4724,8 @@ function calculateDarvozRoute(
 
     }
 
-
     const now =
         Date.now();
-
-
-    /*
-       Don't call Google Directions too often.
-
-       First route = immediate.
-       Later route = every 15 seconds.
-    */
 
     if (
         !force &&
@@ -5242,7 +4740,6 @@ function calculateDarvozRoute(
 
     }
 
-
     if (
         darvozNavigation.routeRequestRunning
     ) {
@@ -5251,14 +4748,11 @@ function calculateDarvozRoute(
 
     }
 
-
     darvozNavigation.routeRequestRunning =
         true;
 
-
     darvozNavigation.lastRouteTime =
         now;
-
 
     const origin = {
 
@@ -5270,7 +4764,6 @@ function calculateDarvozRoute(
 
     };
 
-
     const destination = {
 
         lat:
@@ -5281,23 +4774,19 @@ function calculateDarvozRoute(
 
     };
 
-
     console.log(
         "🛣️ CALCULATING ROUTE"
     );
-
 
     console.log(
         "🚴 ORIGIN:",
         origin
     );
 
-
     console.log(
         "📍 DESTINATION:",
         destination
     );
-
 
     darvozNavigation.directionsService.route(
 
@@ -5317,7 +4806,6 @@ function calculateDarvozRoute(
 
         },
 
-
         function (
             result,
             status
@@ -5329,16 +4817,13 @@ function calculateDarvozRoute(
 
             }
 
-
             darvozNavigation.routeRequestRunning =
                 false;
-
 
             console.log(
                 "🗺️ DIRECTIONS STATUS:",
                 status
             );
-
 
             if (
                 status !== "OK"
@@ -5349,17 +4834,14 @@ function calculateDarvozRoute(
                     status
                 );
 
-
                 setNavigationInfo(
                     "Unavailable",
                     "Unavailable"
                 );
 
-
                 return;
 
             }
-
 
             if (
                 !result ||
@@ -5375,27 +4857,16 @@ function calculateDarvozRoute(
 
             }
 
+            darvozNavigation
+                .directionsRenderer
+                .setDirections(
+                    result
+                );
 
-            // -----------------------------------------
-            // DRAW ROUTE
-            // -----------------------------------------
+            const route =
+                result.routes[0];
 
-           darvozNavigation
-    .directionsRenderer
-    .setDirections(
-        result
-    );
-
-
-const route =
-    result.routes[0];
-
-// ==========================================
-// RECENTER + ZOOM ON ACTIVE ROUTE
-// ==========================================
-
-recenterDarvozNavigationMap();
-
+            recenterDarvozNavigationMap();
 
             if (
                 !route.legs ||
@@ -5410,16 +4881,16 @@ recenterDarvozNavigationMap();
 
             }
 
-        const leg =
-    route.legs[0];
+            const leg =
+                route.legs[0];
 
-           // -----------------------------------------
-// UPDATE NEXT TURN
-// -----------------------------------------
+            // -----------------------------------------
+            // NEXT TURN
+            // -----------------------------------------
 
-updateDarvozNextTurn(
-    leg
-);
+            updateDarvozNextTurn(
+                leg
+            );
 
             // -----------------------------------------
             // DISTANCE
@@ -5431,7 +4902,6 @@ updateDarvozNextTurn(
                     ? leg.distance.text
                     : "--";
 
-
             // -----------------------------------------
             // ETA
             // -----------------------------------------
@@ -5442,18 +4912,15 @@ updateDarvozNextTurn(
                     ? leg.duration.text
                     : "--";
 
-
             console.log(
                 "📏 DISTANCE:",
                 distance
             );
 
-
             console.log(
                 "⏱️ ETA:",
                 eta
             );
-
 
             setNavigationInfo(
                 distance,
@@ -5463,11 +4930,10 @@ updateDarvozNextTurn(
         }
 
     );
+
 }
 
-
-
- // =====================================================
+// =====================================================
 // SET NAVIGATION INFO
 // =====================================================
 
@@ -5489,12 +4955,14 @@ function setNavigationInfo(
 
         distanceElement.textContent =
             distance || "--";
+
     }
 
     if (etaElement) {
 
         etaElement.textContent =
             eta || "--";
+
     }
 
     if (arrivalElement) {
@@ -5528,26 +4996,39 @@ function setNavigationInfo(
                     arrival.toLocaleTimeString(
                         [],
                         {
-                            hour: "numeric",
-                            minute: "2-digit"
+
+                            hour:
+                                "numeric",
+
+                            minute:
+                                "2-digit"
+
                         }
                     );
 
                 arrivalElement.textContent =
                     `Arrive ${arrivalText}`;
 
-            } else {
+            }
+
+            else {
 
                 arrivalElement.textContent =
                     `Arrive in ${eta}`;
+
             }
 
-        } else {
+        }
+
+        else {
 
             arrivalElement.textContent =
                 "Arrive --";
+
         }
+
     }
+
 }
 
 // =====================================================
@@ -5562,7 +5043,6 @@ async function sendDarvozLocation(
     const now =
         Date.now();
 
-
     if (
         now -
         lastLocationSentAt <
@@ -5573,16 +5053,14 @@ async function sendDarvozLocation(
 
     }
 
-
     lastLocationSentAt =
         now;
-
 
     try {
 
         const response =
             await fetch(
-                `${API}/delivery/location`,
+                `${API}/deliveryPartner/location`,
                 {
 
                     method:
@@ -5596,22 +5074,21 @@ async function sendDarvozLocation(
                     },
 
                     body:
-                    JSON.stringify({
+                        JSON.stringify({
 
-                        deliveryId:
-                            delivery.id,
+                            deliveryId:
+                                delivery.id,
 
-                        latitude:
-                            latitude,
+                            latitude:
+                                latitude,
 
-                        longitude:
-                            longitude
+                            longitude:
+                                longitude
 
-                    })
+                        })
 
                 }
             );
-
 
         if (!response.ok) {
 
@@ -5623,7 +5100,6 @@ async function sendDarvozLocation(
             return;
 
         }
-
 
         console.log(
             "📡 RIDER LOCATION SENT:",
@@ -5644,7 +5120,6 @@ async function sendDarvozLocation(
 
 }
 
-
 // =====================================================
 // STOP NAVIGATION
 // =====================================================
@@ -5657,11 +5132,9 @@ function stopDarvozNavigation() {
 
     }
 
-
     console.log(
         "🛑 STOPPING DARVOZ NAVIGATION"
     );
-
 
     if (
         darvozNavigation.watchId !== null &&
@@ -5674,20 +5147,37 @@ function stopDarvozNavigation() {
 
     }
 
-
     darvozNavigation.watchId =
         null;
-
 
     darvozNavigation.navigationStarted =
         false;
 
+    if (
+        darvozNavigation.riderMarker
+    ) {
+
+        darvozNavigation.riderMarker.setMap(
+            null
+        );
+
+    }
+
+    if (window.riderMarker) {
+
+        window.riderMarker.setMap(
+            null
+        );
+
+        window.riderMarker =
+            null;
+
+    }
 
     darvozNavigation =
         null;
 
 }
-
 
 // =====================================================
 // REACHED RESTAURANT FROM NAVIGATION
@@ -5705,7 +5195,6 @@ async function checkReachedRestaurantFromNavigation() {
 
     }
 
-
     if (
         darvozNavigation.type !==
         "restaurant"
@@ -5714,7 +5203,6 @@ async function checkReachedRestaurantFromNavigation() {
         return;
 
     }
-
 
     if (
         !currentOrderData
@@ -5728,7 +5216,6 @@ async function checkReachedRestaurantFromNavigation() {
 
     }
 
-
     if (
         !darvozNavigation.riderLocation
     ) {
@@ -5741,14 +5228,12 @@ async function checkReachedRestaurantFromNavigation() {
 
     }
 
-
     const latitude =
         Number(
             darvozNavigation
                 .riderLocation
                 .lat
         );
-
 
     const longitude =
         Number(
@@ -5757,12 +5242,11 @@ async function checkReachedRestaurantFromNavigation() {
                 .lng
         );
 
-
     try {
 
         const response =
             await fetch(
-                `${API}/delivery/reached-restaurant/${currentOrderData.id}`,
+                `${API}/deliveryPartner/reached-restaurant/${currentOrderData.id}`,
                 {
 
                     method:
@@ -5776,32 +5260,29 @@ async function checkReachedRestaurantFromNavigation() {
                     },
 
                     body:
-                    JSON.stringify({
+                        JSON.stringify({
 
-                        deliveryId:
-                            delivery.id,
+                            deliveryId:
+                                delivery.id,
 
-                        latitude:
-                            latitude,
+                            latitude:
+                                latitude,
 
-                        longitude:
-                            longitude
+                            longitude:
+                                longitude
 
-                    })
+                        })
 
                 }
             );
 
-
         const result =
             await response.json();
-
 
         console.log(
             "🏪 REACHED RESTAURANT RESPONSE:",
             result
         );
-
 
         if (!result.success) {
 
@@ -5814,17 +5295,13 @@ async function checkReachedRestaurantFromNavigation() {
 
         }
 
-
         currentOrderData.delivery_status =
             "ReachedRestaurant";
 
-
         stopDarvozNavigation();
-
 
         const screen =
             el("darvozNavigationScreen");
-
 
         if (screen) {
 
@@ -5833,11 +5310,9 @@ async function checkReachedRestaurantFromNavigation() {
 
         }
 
-
         renderCurrentOrder(
             currentOrderData
         );
-
 
         alert(
             "✅ You reached the restaurant."
@@ -5852,7 +5327,6 @@ async function checkReachedRestaurantFromNavigation() {
             error
         );
 
-
         alert(
             "Unable to verify your location."
         );
@@ -5860,7 +5334,6 @@ async function checkReachedRestaurantFromNavigation() {
     }
 
 }
-
 
 // =====================================================
 // REACHED CUSTOMER FROM NAVIGATION
@@ -5878,7 +5351,6 @@ async function checkReachedCustomerFromNavigation() {
 
     }
 
-
     if (
         darvozNavigation.type !==
         "customer"
@@ -5887,7 +5359,6 @@ async function checkReachedCustomerFromNavigation() {
         return;
 
     }
-
 
     if (
         !currentOrderData
@@ -5901,7 +5372,6 @@ async function checkReachedCustomerFromNavigation() {
 
     }
 
-
     if (
         !darvozNavigation.riderLocation
     ) {
@@ -5914,14 +5384,12 @@ async function checkReachedCustomerFromNavigation() {
 
     }
 
-
     const latitude =
         Number(
             darvozNavigation
                 .riderLocation
                 .lat
         );
-
 
     const longitude =
         Number(
@@ -5930,12 +5398,11 @@ async function checkReachedCustomerFromNavigation() {
                 .lng
         );
 
-
     try {
 
         const response =
             await fetch(
-                `${API}/delivery/reached-customer/${currentOrderData.id}`,
+                `${API}/deliveryPartner/reached-customer/${currentOrderData.id}`,
                 {
 
                     method:
@@ -5949,32 +5416,29 @@ async function checkReachedCustomerFromNavigation() {
                     },
 
                     body:
-                    JSON.stringify({
+                        JSON.stringify({
 
-                        deliveryId:
-                            delivery.id,
+                            deliveryId:
+                                delivery.id,
 
-                        latitude:
-                            latitude,
+                            latitude:
+                                latitude,
 
-                        longitude:
-                            longitude
+                            longitude:
+                                longitude
 
-                    })
+                        })
 
                 }
             );
 
-
         const result =
             await response.json();
-
 
         console.log(
             "🏠 REACHED CUSTOMER RESPONSE:",
             result
         );
-
 
         if (!result.success) {
 
@@ -5987,17 +5451,13 @@ async function checkReachedCustomerFromNavigation() {
 
         }
 
-
         currentOrderData.delivery_status =
             "ReachedCustomer";
 
-
         stopDarvozNavigation();
-
 
         const screen =
             el("darvozNavigationScreen");
-
 
         if (screen) {
 
@@ -6006,11 +5466,9 @@ async function checkReachedCustomerFromNavigation() {
 
         }
 
-
         renderCurrentOrder(
             currentOrderData
         );
-
 
         alert(
             "✅ You reached the customer."
@@ -6025,7 +5483,6 @@ async function checkReachedCustomerFromNavigation() {
             error
         );
 
-
         alert(
             "Unable to verify your location."
         );
@@ -6033,7 +5490,6 @@ async function checkReachedCustomerFromNavigation() {
     }
 
 }
-
 
 // =====================================================
 // SOCKET ORDER STATUS
@@ -6048,13 +5504,11 @@ socket.on(
             data
         );
 
-
         if (!currentOrderData) {
 
             return;
 
         }
-
 
         if (
             Number(data.orderId) !==
@@ -6065,7 +5519,6 @@ socket.on(
 
         }
 
-
         if (data.status) {
 
             currentOrderData.delivery_status =
@@ -6073,14 +5526,13 @@ socket.on(
 
         }
 
-
         renderCurrentOrder(
             currentOrderData
         );
 
     }
-);
 
+);
 
 // =====================================================
 // DIRECT DELIVERY STATUS SOCKET
@@ -6095,13 +5547,11 @@ socket.on(
             data
         );
 
-
         if (!currentOrderData) {
 
             return;
 
         }
-
 
         if (
             Number(data.orderId) !==
@@ -6112,7 +5562,6 @@ socket.on(
 
         }
 
-
         if (data.status) {
 
             currentOrderData.delivery_status =
@@ -6120,14 +5569,13 @@ socket.on(
 
         }
 
-
         renderCurrentOrder(
             currentOrderData
         );
 
     }
-);
 
+);
 
 // =====================================================
 // NAVIGATION CSS
@@ -6143,14 +5591,11 @@ function addDarvozNavigationCSS() {
 
     }
 
-
     const style =
         document.createElement("style");
 
-
     style.id =
         "darvozNavigationCSS";
-
 
     style.innerHTML = `
 
@@ -6169,7 +5614,6 @@ function addDarvozNavigationCSS() {
             flex-direction: column;
 
         }
-
 
         .darvoz-nav-header {
 
@@ -6192,7 +5636,6 @@ function addDarvozNavigationCSS() {
 
         }
 
-
         .darvoz-nav-back {
 
             width: 42px;
@@ -6211,7 +5654,6 @@ function addDarvozNavigationCSS() {
 
         }
 
-
         .darvoz-nav-title {
 
             font-size: 18px;
@@ -6219,7 +5661,6 @@ function addDarvozNavigationCSS() {
             font-weight: 800;
 
         }
-
 
         .darvoz-nav-destination {
 
@@ -6231,7 +5672,6 @@ function addDarvozNavigationCSS() {
 
         }
 
-
         .darvoz-google-map {
 
             flex: 1;
@@ -6241,7 +5681,6 @@ function addDarvozNavigationCSS() {
             min-height: 0;
 
         }
-
 
         .darvoz-nav-bottom {
 
@@ -6254,8 +5693,9 @@ function addDarvozNavigationCSS() {
 
             z-index: 5;
 
-        }
+            position: relative;
 
+        }
 
         .darvoz-nav-info {
 
@@ -6269,7 +5709,6 @@ function addDarvozNavigationCSS() {
 
         }
 
-
         .darvoz-nav-info div {
 
             display: flex;
@@ -6277,7 +5716,6 @@ function addDarvozNavigationCSS() {
             flex-direction: column;
 
         }
-
 
         .darvoz-nav-info span {
 
@@ -6287,7 +5725,6 @@ function addDarvozNavigationCSS() {
 
         }
 
-
         .darvoz-nav-info small {
 
             color: #777;
@@ -6295,7 +5732,6 @@ function addDarvozNavigationCSS() {
             margin-top: 2px;
 
         }
-
 
         .darvoz-start-btn,
         .darvoz-reached-btn {
@@ -6322,14 +5758,13 @@ function addDarvozNavigationCSS() {
 
         }
 
-
         .darvoz-start-btn:active,
         .darvoz-reached-btn:active {
 
-            transform: scale(.98);
+            transform:
+                scale(.98);
 
         }
-
 
         .darvoz-start-btn:disabled,
         .darvoz-reached-btn:disabled {
@@ -6341,188 +5776,187 @@ function addDarvozNavigationCSS() {
         }
 
         /* ==========================================
-   NEXT TURN CARD
-========================================== */
+           NEXT TURN CARD
+        ========================================== */
 
+        .darvoz-next-turn {
 
-.darvoz-next-turn {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    right: 16px;
-    z-index: 100;
+            position: absolute;
 
-    display: flex;
-    align-items: center;
-    gap: 14px;
+            top: -82px;
 
-    padding: 14px 16px;
+            left: 16px;
 
-    background: #ffffff;
-    border-radius: 16px;
+            right: 16px;
 
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-}
+            z-index: 100;
 
-.darvoz-turn-icon {
+            display: flex;
 
-    width: 56px;
+            align-items: center;
 
-    height: 56px;
+            gap: 14px;
 
-    border-radius: 16px;
+            padding: 14px 16px;
 
-    display: flex;
+            background: #ffffff;
 
-    align-items: center;
+            border-radius: 16px;
 
-    justify-content: center;
+            box-shadow:
+                0 4px 16px
+                rgba(0, 0, 0, 0.18);
 
-    background: #fbfdff;
+        }
 
-    color: white;
+        .darvoz-turn-icon {
 
-    font-size: 30px;
+            width: 56px;
 
-    flex-shrink: 0;
+            height: 56px;
 
-}
+            border-radius: 16px;
 
+            display: flex;
 
-.darvoz-turn-details {
+            align-items: center;
 
-    min-width: 0;
+            justify-content: center;
 
-}
+            background: #fbfdff;
 
+            color: white;
 
-.darvoz-turn-instruction {
+            font-size: 30px;
 
-    font-size: 16px;
+            flex-shrink: 0;
 
-    font-weight: 800;
+        }
 
-    color: #111;
+        .darvoz-turn-details {
 
-    white-space: nowrap;
+            min-width: 0;
 
-    overflow: hidden;
+        }
 
-    text-overflow: ellipsis;
+        .darvoz-turn-instruction {
 
-}
+            font-size: 16px;
 
+            font-weight: 800;
 
-.darvoz-turn-distance {
+            color: #111;
 
-    margin-top: 4px;
+            white-space: nowrap;
 
-    font-size: 14px;
+            overflow: hidden;
 
-    color: #666;
+            text-overflow: ellipsis;
 
-    font-weight: 600;
+        }
 
-}
+        .darvoz-turn-distance {
 
+            margin-top: 4px;
 
-/* ==========================================
-   GOOGLE MAPS STYLE SUMMARY
-========================================== */
+            font-size: 14px;
 
-.darvoz-nav-summary {
+            color: #666;
 
-    position: relative;
+            font-weight: 600;
 
-    padding: 14px 52px 6px 0;
+        }
 
-}
+        /* ==========================================
+           GOOGLE MAPS STYLE SUMMARY
+        ========================================== */
 
+        .darvoz-nav-summary {
 
-.darvoz-nav-main {
+            position: relative;
 
-    font-size: 15px;
+            padding: 14px 52px 6px 0;
 
-    font-weight: 800;
+        }
 
-    color: #01060f;
+        .darvoz-nav-main {
 
-}
+            font-size: 15px;
 
+            font-weight: 800;
 
-.darvoz-summary-dot {
+            color: #01060f;
 
-    color: #777;
+        }
 
-    margin: 0 4px;
+        .darvoz-summary-dot {
 
-}
+            color: #777;
 
+            margin: 0 4px;
 
-.darvoz-arrival-time {
+        }
 
-    margin-top: 4px;
+        .darvoz-arrival-time {
 
-    font-size: 13px;
+            margin-top: 4px;
 
-    color: #666;
+            font-size: 13px;
 
-    font-weight: 600;
+            color: #666;
 
-}
+            font-weight: 600;
 
+        }
 
-/* ==========================================
-   RECENTER BUTTON
-========================================== */
+        /* ==========================================
+           RECENTER BUTTON
+        ========================================== */
 
-.darvoz-recenter-btn {
+        .darvoz-recenter-btn {
 
-    position: absolute;
+            position: absolute;
 
-    right: 0;
+            right: 0;
 
-    top: 14px;
+            top: 14px;
 
-    width: 42px;
+            width: 42px;
 
-    height: 42px;
+            height: 42px;
 
-    border: none;
+            border: none;
 
-    border-radius: 50%;
+            border-radius: 50%;
 
-    background: #f5f5f5;
+            background: #f5f5f5;
 
-    color: #1557D5;
+            color: #1557D5;
 
-    font-size: 18px;
+            font-size: 18px;
 
-    cursor: pointer;
+            cursor: pointer;
 
-    box-shadow:
-        0 2px 8px
-        rgba(0,0,0,.12);
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,.12);
 
-}
+        }
 
+        .darvoz-recenter-btn:active {
 
-.darvoz-recenter-btn:active {
+            transform:
+                scale(.94);
 
-    transform:
-        scale(.94);
-
-}
+        }
 
     `;
-
 
     document.head.appendChild(
         style
     );
 
 }
-
 
 // =====================================================
 // ESCAPE HTML
@@ -6533,17 +5967,14 @@ function escapeHTML(value) {
     const div =
         document.createElement("div");
 
-
     div.textContent =
         value == null
             ? ""
             : String(value);
 
-
     return div.innerHTML;
 
 }
-
 
 // =====================================================
 // NUMBER
@@ -6561,17 +5992,14 @@ function getNumber(value) {
 
     }
 
-
     const number =
         Number(value);
-
 
     return Number.isFinite(number)
         ? number
         : NaN;
 
 }
-
 
 // =====================================================
 // NOTIFICATION PERMISSION
@@ -6589,7 +6017,6 @@ if (
 
 }
 
-
 // =====================================================
 // INITIAL LOAD
 // =====================================================
@@ -6600,7 +6027,6 @@ loadDashboard();
 
 loadCurrentOrder();
 
-
 // =====================================================
 // REFRESH DASHBOARD
 // =====================================================
@@ -6610,7 +6036,6 @@ setInterval(
     10000
 );
 
-
 // =====================================================
 // REFRESH CURRENT ORDER
 // =====================================================
@@ -6619,7 +6044,6 @@ setInterval(
     loadCurrentOrder,
     5000
 );
-
 
 // =====================================================
 // INITIAL OFFLINE
@@ -6634,7 +6058,6 @@ if (
 
 }
 
-
 // =====================================================
 // PAGE EXIT
 // =====================================================
@@ -6645,18 +6068,23 @@ window.addEventListener(
 
         stopDarvozNavigation();
 
+        stopLocationTracking();
+
     }
 );
+
 // =======================================
 // REAL GPS TRACKING
 // =======================================
 
-let locationWatcher = null;
+let locationWatcher =
+    null;
 
+function startLocationTracking() {
 
-function startLocationTracking(){
-
-    if(!navigator.geolocation){
+    if (
+        !navigator.geolocation
+    ) {
 
         console.log(
             "Geolocation is not supported."
@@ -6666,11 +6094,18 @@ function startLocationTracking(){
 
     }
 
+    if (
+        locationWatcher !== null
+    ) {
+
+        return;
+
+    }
 
     locationWatcher =
         navigator.geolocation.watchPosition(
 
-            async function(position){
+            async function(position) {
 
                 const latitude =
                     position.coords.latitude;
@@ -6678,47 +6113,48 @@ function startLocationTracking(){
                 const longitude =
                     position.coords.longitude;
 
-
                 console.log(
                     "DARVOZ GPS:",
                     latitude,
                     longitude
                 );
 
-
-                try{
+                try {
 
                     const response =
                         await fetch(
-                            `${API}/delivery/location`,
+                            `${API}/deliveryPartner/location`,
                             {
-                                method:"PUT",
 
-                                headers:{
+                                method:
+                                    "PUT",
+
+                                headers: {
+
                                     "Content-Type":
                                         "application/json"
+
                                 },
 
-                                body:JSON.stringify({
+                                body:
+                                    JSON.stringify({
 
-                                    deliveryId:
-                                        delivery.id,
+                                        deliveryId:
+                                            delivery.id,
 
-                                    latitude:
-                                        latitude,
+                                        latitude:
+                                            latitude,
 
-                                    longitude:
-                                        longitude
+                                        longitude:
+                                            longitude
 
-                                })
+                                    })
 
                             }
                         );
 
-
                     const data =
                         await response.json();
-
 
                     console.log(
                         "DARVOZ DISTANCE:",
@@ -6726,7 +6162,8 @@ function startLocationTracking(){
                     );
 
                 }
-                catch(error){
+
+                catch(error) {
 
                     console.log(
                         "GPS UPDATE ERROR:",
@@ -6737,7 +6174,7 @@ function startLocationTracking(){
 
             },
 
-            function(error){
+            function(error) {
 
                 console.log(
                     "GPS ERROR:",
@@ -6747,11 +6184,15 @@ function startLocationTracking(){
             },
 
             {
-                enableHighAccuracy:true,
 
-                maximumAge:5000,
+                enableHighAccuracy:
+                    true,
 
-                timeout:10000
+                maximumAge:
+                    5000,
+
+                timeout:
+                    10000
 
             }
 
@@ -6759,8 +6200,7 @@ function startLocationTracking(){
 
 }
 
-
-function stopLocationTracking(){
+function stopLocationTracking() {
 
     if(
         locationWatcher !== null
@@ -6789,9 +6229,12 @@ console.log(
 // WALLET
 // =====================================================
 
-function openWallet(){
+function openWallet() {
 
-    if(!delivery || !delivery.id){
+    if(
+        !delivery ||
+        !delivery.id
+    ){
 
         alert(
             "Delivery partner information not found."
@@ -6801,14 +6244,16 @@ function openWallet(){
 
     }
 
-
     window.location.href =
         `wallet.html?userType=delivery&userId=${encodeURIComponent(delivery.id)}`;
 
 }
 
+// =====================================================
+// NOTIFICATIONS
+// =====================================================
 
-function openNotifications(){
+function openNotifications() {
 
     console.log(
         "Notifications clicked"

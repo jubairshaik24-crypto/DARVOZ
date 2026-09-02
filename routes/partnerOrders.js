@@ -273,47 +273,52 @@ function dispatchOrderToRiders(io, orderId) {
 
 }
 // =====================================================
-// PARTNER ACCEPT ORDER
+// RIDER ACCEPT ORDER
+// FIRST RIDER TO ACCEPT WINS
+// DARVOZ V1
 // =====================================================
 
 router.put("/accept/:id", (req, res) => {
 
     const orderId = req.params.id;
-    const { partnerId } = req.body;
+    const { partner_id } = req.body;
 
-    if (!partnerId) {
+    console.log("=================================");
+    console.log("🚴 RIDER ACCEPT ORDER");
+    console.log("Order ID:", orderId);
+    console.log("Rider ID:", partner_id);
+    console.log("=================================");
+
+    if (!partner_id) {
 
         return res.status(400).json({
             success: false,
-            message: "Partner ID required."
+            message: "Delivery Partner ID required."
         });
 
     }
 
     // =================================================
-    // CHECK WHETHER PARTNER ALREADY REJECTED
+    // VERIFY RIDER IS APPROVED + ONLINE
     // =================================================
 
     db.query(
 
         `SELECT id
-         FROM order_partner_responses
-         WHERE order_id=?
-         AND partner_id=?
-         AND response='Rejected'`,
+         FROM delivery_partners
+         WHERE id=?
+         AND account_status='Approved'
+         AND online_status='Online'`,
 
-        [
-            orderId,
-            partnerId
-        ],
+        [partner_id],
 
-        (err, rejected) => {
+        (riderErr, riders) => {
 
-            if (err) {
+            if (riderErr) {
 
                 console.log(
-                    "PARTNER REJECTION CHECK ERROR:",
-                    err
+                    "RIDER VERIFY ERROR:",
+                    riderErr
                 );
 
                 return res.status(500).json({
@@ -323,37 +328,45 @@ router.put("/accept/:id", (req, res) => {
 
             }
 
-            if (rejected.length > 0) {
+            if (riders.length === 0) {
 
                 return res.json({
                     success: false,
                     message:
-                        "You already rejected this order and cannot accept it."
+                        "You are not approved or currently offline."
                 });
 
             }
 
-
             // =================================================
-            // GET ORDER
+            // FIRST RIDER WINS
             // =================================================
 
             db.query(
 
-                `SELECT *
-                 FROM orders
-                 WHERE id=?`,
+                `UPDATE orders
+
+                 SET
+                    delivery_partner_id=?,
+                    status='Delivery Assigned',
+                    delivery_status='Assigned'
+
+                 WHERE
+                    id=?
+                    AND delivery_partner_id IS NULL
+                    AND status='Accepted'`,
 
                 [
+                    partner_id,
                     orderId
                 ],
 
-                (err, orders) => {
+                (err, result) => {
 
                     if (err) {
 
                         console.log(
-                            "GET ORDER ERROR:",
+                            "RIDER ACCEPT ERROR:",
                             err
                         );
 
@@ -364,149 +377,123 @@ router.put("/accept/:id", (req, res) => {
 
                     }
 
-                    if (orders.length === 0) {
-
-                        return res.json({
-                            success: false,
-                            message: "Order not found."
-                        });
-
-                    }
-
-                    const order =
-                        orders[0];
-
-
                     // =================================================
-                    // ANOTHER PARTNER ALREADY ACCEPTED
+                    // ANOTHER RIDER WON THE ORDER
                     // =================================================
 
-                    if (
-                        order.partner_id &&
-                        Number(order.partner_id) !==
-                        Number(partnerId)
-                    ) {
+                    if (result.affectedRows === 0) {
 
                         return res.json({
+
                             success: false,
+
                             message:
-                                "This order has already been accepted by another partner."
+                                "This order has already been accepted by another delivery partner."
+
                         });
 
                     }
 
+                    console.log(
+                        `✅ RIDER ${partner_id} WON ORDER ${orderId}`
+                    );
 
                     // =================================================
-                    // ACCEPT ORDER
+                    // MARK THIS RIDER'S DISPATCH LOG AS ACCEPTED
                     // =================================================
 
                     db.query(
 
-                        `UPDATE orders
+                        `UPDATE order_dispatch_log
 
-                         SET
-                            partner_id=?,
-                            status='Accepted',
-                            rider_response_deadline=
-                                DATE_ADD(NOW(), INTERVAL 10 MINUTE),
-                            dispatch_time=NOW(),
-                            delivery_status='Waiting'
+                         SET status='Accepted'
 
-                         WHERE id=?
-
-                         AND (
-                            partner_id IS NULL
-                            OR partner_id=?
-                         )`,
+                         WHERE
+                            order_id=?
+                            AND delivery_partner_id=?`,
 
                         [
-                            partnerId,
                             orderId,
-                            partnerId
+                            partner_id
                         ],
 
-                        (updateErr, result) => {
+                        (logErr) => {
 
-                            if (updateErr) {
+                            if (logErr) {
 
                                 console.log(
-                                    "ACCEPT ORDER ERROR:",
-                                    updateErr
+                                    "DISPATCH LOG UPDATE ERROR:",
+                                    logErr
                                 );
 
-                                return res.status(500).json({
-                                    success: false,
-                                    message:
-                                        "Unable to accept order."
-                                });
+                            }
+
+                        }
+
+                    );
+
+                    // =================================================
+                    // MARK OTHER RIDERS' REQUESTS AS REJECTED
+                    // =================================================
+
+                    db.query(
+
+                        `UPDATE order_dispatch_log
+
+                         SET status='Rejected'
+
+                         WHERE
+                            order_id=?
+                            AND delivery_partner_id<>?
+                            AND status='Pending'`,
+
+                        [
+                            orderId,
+                            partner_id
+                        ],
+
+                        (logErr) => {
+
+                            if (logErr) {
+
+                                console.log(
+                                    "OTHER RIDERS LOG UPDATE ERROR:",
+                                    logErr
+                                );
 
                             }
 
+                        }
 
-                            if (
-                                result.affectedRows === 0
-                            ) {
+                    );
 
-                                return res.json({
-                                    success: false,
-                                    message:
-                                        "Order was already accepted."
-                                });
+                    // =================================================
+                    // GET ORDER DETAILS
+                    // =================================================
+
+                    db.query(
+
+                        `SELECT
+                            customer_id,
+                            partner_id
+                         FROM orders
+                         WHERE id=?`,
+
+                        [orderId],
+
+                        (orderErr, rows) => {
+
+                            if (orderErr) {
+
+                                console.log(
+                                    "ORDER DETAILS ERROR:",
+                                    orderErr
+                                );
 
                             }
-
-
-                            // =================================================
-                            // SAVE PARTNER RESPONSE
-                            // =================================================
-
-                            db.query(
-
-                                `INSERT INTO order_partner_responses
-                                (
-                                    order_id,
-                                    partner_id,
-                                    response
-                                )
-
-                                VALUES (?, ?, 'Accepted')
-
-                                ON DUPLICATE KEY UPDATE
-                                response='Accepted'`,
-
-                                [
-                                    orderId,
-                                    partnerId
-                                ],
-
-                                (responseErr) => {
-
-                                    if (responseErr) {
-
-                                        console.log(
-                                            "Response save error:",
-                                            responseErr
-                                        );
-
-                                    }
-
-                                }
-
-                            );
-
-
-                            // =================================================
-                            // DISPATCH TO RIDERS
-                            // =================================================
 
                             const io =
                                 req.app.get("io");
-
-                            dispatchOrderToRiders(
-                                io,
-                                orderId
-                            );
-
 
                             // =================================================
                             // CUSTOMER UPDATE
@@ -514,50 +501,79 @@ router.put("/accept/:id", (req, res) => {
 
                             if (
                                 io &&
-                                order.customer_id
+                                rows &&
+                                rows.length > 0 &&
+                                rows[0].customer_id
                             ) {
 
                                 io.to(
-                                    `customer_${order.customer_id}`
+                                    `customer_${rows[0].customer_id}`
                                 ).emit(
-                                    "orderStatusUpdated",
-                                    {
-                                        orderId:
-                                            orderId,
 
+                                    "orderStatusUpdated",
+
+                                    {
+                                        orderId: orderId,
                                         status:
-                                            "Accepted"
+                                            "Delivery Assigned"
                                     }
+
                                 );
 
                             }
 
-
                             // =================================================
-                            // ONLY ONE RESPONSE
+                            // PARTNER UPDATE
                             // =================================================
 
-                            return res.json({
+                            if (
+                                io &&
+                                rows &&
+                                rows.length > 0 &&
+                                rows[0].partner_id
+                            ) {
 
-                                success: true,
+                                io.to(
+                                    `partner_${rows[0].partner_id}`
+                                ).emit(
 
-                                message:
-                                    "Order accepted successfully.",
+                                    "orderStatusUpdated",
 
-                                orderId:
-                                    orderId,
+                                    {
+                                        orderId: orderId,
+                                        status:
+                                            "Delivery Assigned"
+                                    }
 
-                                partnerId:
-                                    partnerId,
+                                );
 
-                                status:
-                                    "Accepted"
-
-                            });
+                            }
 
                         }
 
                     );
+
+                    // =================================================
+                    // SUCCESS
+                    // =================================================
+
+                    return res.json({
+
+                        success: true,
+
+                        message:
+                            "Order accepted successfully.",
+
+                        orderId:
+                            orderId,
+
+                        deliveryId:
+                            partner_id,
+
+                        status:
+                            "Delivery Assigned"
+
+                    });
 
                 }
 
