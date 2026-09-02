@@ -378,6 +378,7 @@ const newOrderSound = new Audio("/sounds/notification.mp3");
 newOrderSound.preload = "auto";
 newOrderSound.volume = 1.0;
 
+
 // =====================================================
 // ENABLE DARVOZ ORDER SOUND
 // =====================================================
@@ -431,32 +432,24 @@ async function showNewOrderAlert(order) {
 
     // 🔊 Play ringing sound
 if (soundEnabled) {
-
     try {
+        for (let i = 0; i < 3; i++) {
+            newOrderSound.currentTime = 0;
 
-        newOrderSound.currentTime = 0;
+            await newOrderSound.play();
 
-        await newOrderSound.play();
+            await new Promise(resolve => {
+                newOrderSound.onended = resolve;
+            });
+        }
 
-        console.log(
-            "🔊 NEW ORDER RING PLAYING"
-        );
+        console.log("🔊 DARVOZ ORDER RING PLAYED 3 TIMES");
 
     } catch (error) {
-
-        console.warn(
-            "⚠️ Sound playback failed:",
-            error
-        );
-
+        console.warn("⚠️ Sound playback failed:", error);
     }
-
 } else {
-
-    console.warn(
-        "⚠️ ORDER SOUND IS OFF"
-    );
-
+    console.warn("⚠️ ORDER SOUND IS OFF");
 }
 
     // 🔔 Browser / mobile notification
