@@ -364,22 +364,126 @@ socket.on("connect", () => {
     );
 
 });
+ // =====================================================
+// DARVOZ PARTNER NOTIFICATION + SOUND
+// =====================================================
 
+const newOrderSound = new Audio("/sounds/new-order.mp3");
+newOrderSound.preload = "auto";
+newOrderSound.volume = 1.0;
+
+// Unlock audio after partner interacts with the page
+function unlockOrderSound() {
+    newOrderSound.play()
+        .then(() => {
+            newOrderSound.pause();
+            newOrderSound.currentTime = 0;
+        })
+        .catch(() => {});
+}
+
+document.addEventListener("click", unlockOrderSound, { once: true });
+document.addEventListener("touchstart", unlockOrderSound, { once: true });
+
+async function showNewOrderAlert(order) {
+
+    // 🔊 Play ringing sound
+    try {
+        newOrderSound.currentTime = 0;
+        await newOrderSound.play();
+        console.log("🔊 NEW ORDER RING PLAYING");
+    } catch (error) {
+        console.warn(
+            "⚠️ Sound blocked by browser:",
+            error
+        );
+    }
+
+    // 🔔 Browser / mobile notification
+    if ("Notification" in window) {
+
+        if (Notification.permission === "default") {
+            try {
+                await Notification.requestPermission();
+            } catch (error) {
+                console.warn(
+                    "Notification permission error:",
+                    error
+                );
+            }
+        }
+
+        if (Notification.permission === "granted") {
+
+            const notification =
+                new Notification(
+                    "🍽️ DARVOZ Partner",
+                    {
+                        body:
+                            `New Order #${order.id}\n` +
+                            `Customer: ${order.customer_name || "-"}\n` +
+                            `Total: ₹${order.grand_total || 0}`,
+
+                        icon:
+                            "/icons/partner-notification.png",
+
+                        badge:
+                            "/icons/partner-notification.png",
+
+                        tag:
+                            `darvoz-order-${order.id}`,
+
+                        requireInteraction: true
+                    }
+                );
+
+            notification.onclick = function () {
+
+                window.focus();
+
+                notification.close();
+
+                const orderElement =
+                    document.getElementById("orders");
+
+                if (orderElement) {
+                    orderElement.scrollIntoView({
+                        behavior: "smooth"
+                    });
+                }
+
+            };
+
+            console.log(
+                "🔔 NEW ORDER NOTIFICATION SHOWN"
+            );
+        }
+    }
+}
 // =====================================================
 // NEW ORDER NOTIFICATION
 // =====================================================
 
-socket.on("newOrder", (data) => {
+socket.on("newOrder", async (data) => {
 
     console.log("🔥🔥🔥 NEW ORDER RECEIVED 🔥🔥🔥");
     console.log("Order:", data);
 
     if (!data || !data.id) {
-        console.warn("⚠️ Invalid newOrder data:", data);
+        console.warn(
+            "⚠️ Invalid newOrder data:",
+            data
+        );
         return;
     }
 
-    console.log("🔄 Refreshing partner orders...");
+    // 🔔 Notification + 🔊 Ring
+    await showNewOrderAlert(data);
+
+    // 🔄 Refresh orders without page reload
+    console.log(
+        "🔄 Refreshing partner orders..."
+    );
 
     loadOrders();
 
