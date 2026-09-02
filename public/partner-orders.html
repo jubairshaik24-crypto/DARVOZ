@@ -379,20 +379,9 @@ socket.on("newOrder", (data) => {
         return;
     }
 
-    // Reload the orders from database
-    socket.on("newOrder", (data) => {
+    console.log("🔄 Refreshing partner orders...");
 
-    console.log("🔥🔥🔥 NEW ORDER RECEIVED 🔥🔥🔥");
-    console.log("Order:", data);
-
-    if (!data || !data.id) {
-        console.warn("⚠️ Invalid newOrder data:", data);
-        return;
-    }
-
-    window.location.reload();
-
-});
+    loadOrders();
 
 });
 
