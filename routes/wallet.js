@@ -14,221 +14,201 @@ const db = require("../config/db");
 
 router.get("/:userType/:userId", async (req, res) => {
 
-    try {
+  try {
 
-        const { userType, userId } = req.params;
-
-        // ==========================================
-        // VALIDATE USER TYPE
-        // ==========================================
-
-        if (
-            userType !== "partner" &&
-            userType !== "delivery"
-        ) {
-
-            return res.status(400).json({
-                success: false,
-                message: "Invalid user type"
-            });
-
-        }
+    const { userType, userId } = req.params;
 
 
-        // ==========================================
-        // GET WALLET
-        // ==========================================
+    // ==========================================
+    // VALIDATE USER TYPE
+    // ==========================================
 
-        const [wallet] = await db.promise().query(
+    if (
+      userType !== "partner" &&
+      userType !== "delivery"
+    ) {
 
-            `SELECT
-                id,
-                user_type,
-                user_id,
-                balance
-             FROM wallets
-             WHERE user_type=?
-             AND user_id=?`,
-
-            [
-                userType,
-                userId
-            ]
-
-        );
-
-
-        // ==========================================
-        // TODAY'S EARNINGS
-        // ==========================================
-
-        const [today] = await db.promise().query(
-
-            `SELECT
-                COUNT(*) AS transactions,
-                IFNULL(SUM(amount),0) AS earnings
-             FROM wallet_transactions
-             WHERE user_type=?
-             AND user_id=?
-             AND DATE(created_at)=CURDATE()
-             AND type='Credit'
-AND transaction_type='Order Earnings'`,
-
-            [
-                userType,
-                userId
-            ]
-
-        );
-
-
-        // ==========================================
-        // WEEKLY EARNINGS
-        // ==========================================
-
-        const [week] = await db.promise().query(
-
-            `SELECT
-                IFNULL(SUM(amount),0) AS earnings
-             FROM wallet_transactions
-             WHERE user_type=?
-             AND user_id=?
-             AND YEARWEEK(created_at,1)
-                 = YEARWEEK(CURDATE(),1)
-             AND type='Credit'
-AND transaction_type='Order Earnings'`,
-
-            [
-                userType,
-                userId
-            ]
-
-        );
-
-
-        // ==========================================
-        // MONTHLY EARNINGS
-        // ==========================================
-
-        const [month] = await db.promise().query(
-
-            `SELECT
-                IFNULL(SUM(amount),0) AS earnings
-             FROM wallet_transactions
-             WHERE user_type=?
-             AND user_id=?
-             AND MONTH(created_at)=MONTH(CURDATE())
-             AND YEAR(created_at)=YEAR(CURDATE())
-             AND type='Credit'
-AND transaction_type='Order Earnings'`,
-
-            [
-                userType,
-                userId
-            ]
-
-        );
-
-
-        // ==========================================
-        // TOTAL EARNINGS
-        // ==========================================
-
-        const [total] = await db.promise().query(
-
-            `SELECT
-                IFNULL(SUM(amount),0) AS earnings
-             FROM wallet_transactions
-             WHERE user_type=?
-             AND user_id=?
-             AND type='Credit'
-AND transaction_type='Order Earnings'`,
-
-            [
-                userType,
-                userId
-            ]
-
-        );
-
-
-        // ==========================================
-        // LAST 20 TRANSACTIONS
-        // ==========================================
-
-        const [transactions] = await db.promise().query(
-
-            `SELECT
-                id,
-                order_id,
-                amount,
-                type,
-                created_at
-             FROM wallet_transactions
-             WHERE user_type=?
-             AND user_id=?
-             ORDER BY id DESC
-             LIMIT 20`,
-
-            [
-                userType,
-                userId
-            ]
-
-        );
-
-
-        // ==========================================
-        // RESPONSE
-        // ==========================================
-
-        res.json({
-
-            success: true,
-
-            userType: userType,
-
-            userId: userId,
-
-            balance:
-                wallet.length > 0
-                    ? Number(wallet[0].balance)
-                    : 0,
-
-            today:
-                Number(today[0].earnings || 0),
-
-            week:
-                Number(week[0].earnings || 0),
-
-            month:
-                Number(month[0].earnings || 0),
-
-            total:
-                Number(total[0].earnings || 0),
-
-            transactions: transactions
-
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user type"
+      });
 
     }
 
-    catch (err) {
 
-        console.log(
-            "WALLET ERROR:",
-            err
-        );
+    // ==========================================
+    // GET WALLET
+    // ==========================================
 
-        res.status(500).json({
+    const [wallet] = await db.promise().query(
+      `SELECT
+          id,
+          user_type,
+          user_id,
+          balance
+       FROM wallets
+       WHERE user_type=?
+       AND user_id=?`,
+      [
+        userType,
+        userId
+      ]
+    );
 
-            success: false,
 
-            message: "Server Error"
+    // ==========================================
+    // TODAY'S EARNINGS
+    // ==========================================
 
-        });
+    const [today] = await db.promise().query(
+      `SELECT
+          COUNT(*) AS transactions,
+          IFNULL(SUM(amount),0) AS earnings
+       FROM wallet_transactions
+       WHERE user_type=?
+       AND user_id=?
+       AND DATE(created_at)=CURDATE()
+       AND type='Credit'`,
+      [
+        userType,
+        userId
+      ]
+    );
 
-    }
+
+    // ==========================================
+    // WEEKLY EARNINGS
+    // ==========================================
+
+    const [week] = await db.promise().query(
+      `SELECT
+          IFNULL(SUM(amount),0) AS earnings
+       FROM wallet_transactions
+       WHERE user_type=?
+       AND user_id=?
+       AND YEARWEEK(created_at,1)
+           = YEARWEEK(CURDATE(),1)
+       AND type='Credit'`,
+      [
+        userType,
+        userId
+      ]
+    );
+
+
+    // ==========================================
+    // MONTHLY EARNINGS
+    // ==========================================
+
+    const [month] = await db.promise().query(
+      `SELECT
+          IFNULL(SUM(amount),0) AS earnings
+       FROM wallet_transactions
+       WHERE user_type=?
+       AND user_id=?
+       AND MONTH(created_at)=MONTH(CURDATE())
+       AND YEAR(created_at)=YEAR(CURDATE())
+       AND type='Credit'`,
+      [
+        userType,
+        userId
+      ]
+    );
+
+
+    // ==========================================
+    // TOTAL EARNINGS
+    // ==========================================
+
+    const [total] = await db.promise().query(
+      `SELECT
+          IFNULL(SUM(amount),0) AS earnings
+       FROM wallet_transactions
+       WHERE user_type=?
+       AND user_id=?
+       AND type='Credit'`,
+      [
+        userType,
+        userId
+      ]
+    );
+
+
+    // ==========================================
+    // LAST 20 TRANSACTIONS
+    // ==========================================
+
+    const [transactions] = await db.promise().query(
+      `SELECT
+          id,
+          order_id,
+          amount,
+          type,
+          transaction_type,
+          created_at
+       FROM wallet_transactions
+       WHERE user_type=?
+       AND user_id=?
+       ORDER BY id DESC
+       LIMIT 20`,
+      [
+        userType,
+        userId
+      ]
+    );
+
+
+    // ==========================================
+    // RESPONSE
+    // ==========================================
+
+    res.json({
+
+      success: true,
+
+      userType: userType,
+
+      userId: userId,
+
+      balance:
+        wallet.length > 0
+          ? Number(wallet[0].balance)
+          : 0,
+
+      today:
+        Number(today[0].earnings || 0),
+
+      week:
+        Number(week[0].earnings || 0),
+
+      month:
+        Number(month[0].earnings || 0),
+
+      total:
+        Number(total[0].earnings || 0),
+
+      transactions: transactions
+
+    });
+
+  }
+
+  catch (err) {
+
+    console.log(
+      "WALLET ERROR:",
+      err
+    );
+
+    res.status(500).json({
+
+      success: false,
+
+      message: "Server Error"
+
+    });
+
+  }
 
 });
 

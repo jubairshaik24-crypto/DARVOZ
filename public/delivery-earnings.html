@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DARVOZ - Earnings</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f7;
+      color: #222;
+    }
+
+    .header {
+      background: #ff6b00;
+      color: white;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .back-btn {
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .header h1 {
+      font-size: 23px;
+      flex: 1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    /* TOTAL EARNINGS */
+
+    .hero {
+      background: linear-gradient(135deg, #ff6b00, #ff8c32);
+      color: white;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+    }
+
+    .hero-title {
+      font-size: 15px;
+      opacity: 0.95;
+    }
+
+    .hero-amount {
+      font-size: 38px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+    }
+
+    /* CARDS */
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    /* SUMMARY */
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .summary-item {
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .summary-label {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .summary-value {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* WALLET */
+
+    .wallet-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #eee;
+      padding: 13px 0;
+    }
+
+    .wallet-row:last-child {
+      border-bottom: none;
+    }
+
+    .wallet-label {
+      color: #666;
+    }
+
+    .wallet-value {
+      font-weight: bold;
+    }
+
+    .green {
+      color: #16a34a;
+    }
+
+    .orange {
+      color: #ff6b00;
+    }
+
+    .red {
+      color: #dc2626;
+    }
+
+    /* WITHDRAW */
+
+    .withdraw-btn {
+      width: 100%;
+      border: none;
+      background: #ff6b00;
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .withdraw-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* TRANSACTIONS */
+
+    .transaction {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .transaction:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eaf8ef;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .transaction-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .transaction-title {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .transaction-type {
+      color: #777;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .transaction-date {
+      color: #888;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .transaction-amount {
+      font-weight: bold;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .credit {
+      color: #16a34a;
+    }
+
+    .debit {
+      color: #dc2626;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 35px;
+      color: #777;
+    }
+
+    .error {
+      background: #fff0f0;
+      color: #c62828;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      padding: 25px 10px;
+    }
+
+    @media (max-width: 500px) {
+
+      .hero-amount {
+        font-size: 32px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="header">
+
+  <button class="back-btn" onclick="history.back()">
+    ←
+  </button>
+
+  <h1>Earnings</h1>
+
+</header>
+
+
+<main class="container">
+
+  <div id="page">
+
+    <div class="loading">
+      Loading earnings...
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+  const API = window.location.origin;
+
+  let delivery = null;
+  let walletData = null;
+
+
+  // =====================================================
+  // GET LOGGED-IN RIDER
+  // =====================================================
+
+  function getDeliveryPartner() {
+
+    const saved =
+      localStorage.getItem("deliveryPartner");
+
+    if (!saved) {
+      return null;
+    }
+
+    try {
+
+      return JSON.parse(saved);
+
+    } catch (error) {
+
+      console.error(
+        "❌ Invalid delivery partner data:",
+        error
+      );
+
+      return null;
+    }
+  }
+
+
+  // =====================================================
+  // NUMBER FORMAT
+  // =====================================================
+
+  function money(value) {
+
+    const amount = Number(value || 0);
+
+    return "₹" + amount.toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+
+  // =====================================================
+  // ESCAPE HTML
+  // =====================================================
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  // =====================================================
+  // DATE
+  // =====================================================
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "Date unavailable";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+
+  // =====================================================
+  // LOAD WALLET
+  // =====================================================
+
+  async function loadEarnings() {
+
+    delivery = getDeliveryPartner();
+
+    if (!delivery || !delivery.id) {
+
+      document.getElementById("page").innerHTML = `
+        <div class="error">
+          Delivery partner login not found.<br><br>
+          Please login again.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    console.log(
+      "🚴 DELIVERY PARTNER ID:",
+      delivery.id
+    );
+
+
+    try {
+
+      const response = await fetch(
+        `${API}/wallet/delivery/${delivery.id}`
+      );
+
+
+      const data = await response.json();
+
+
+      console.log(
+        "💰 WALLET RESPONSE:",
+        data
+      );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Unable to load wallet."
+        );
+      }
+
+
+      /*
+        Keep the complete real API response.
+        Nothing is hardcoded here.
+      */
+
+      walletData = data;
+
+
+      renderEarnings();
+
+
+    } catch (error) {
+
+      console.error(
+        "❌ WALLET ERROR:",
+        error
+      );
+
+
+      document.getElementById("page").innerHTML = `
+        <div class="error">
+          ${escapeHtml(
+            error.message ||
+            "Unable to load earnings."
+          )}
+        </div>
+      `;
+    }
+  }
+
+
+  // =====================================================
+  // GET VALUE FROM WALLET RESPONSE
+  // =====================================================
+
+  function getWalletValue(...keys) {
+
+    for (const key of keys) {
+
+      if (
+        walletData &&
+        walletData[key] !== undefined &&
+        walletData[key] !== null
+      ) {
+        return walletData[key];
+      }
+
+    }
+
+    return 0;
+  }
+
+
+  // =====================================================
+  // RENDER EARNINGS
+  // =====================================================
+
+  function renderEarnings() {
+
+    /*
+      These are the real fields from your wallet API:
+      balance
+      today
+      week
+      month
+      total
+      transactions
+    */
+
+    const balance =
+      getWalletValue("balance");
+
+
+    const today =
+      getWalletValue("today");
+
+
+    const week =
+      getWalletValue(
+        "week",
+        "thisWeek"
+      );
+
+
+    const month =
+      getWalletValue(
+        "month",
+        "thisMonth"
+      );
+
+
+    const total =
+      getWalletValue(
+        "total",
+        "totalEarnings"
+      );
+
+
+    const transactions =
+      Array.isArray(walletData.transactions)
+        ? walletData.transactions
+        : [];
+
+
+    document.getElementById("page").innerHTML = `
+
+      <!-- TOTAL EARNINGS -->
+
+      <section class="hero">
+
+        <div class="hero-title">
+          Total Earnings
+        </div>
+
+        <div class="hero-amount">
+          ${money(month)}
+        </div>
+
+        <div class="hero-subtitle">
+          This Month
+        </div>
+
+      </section>
+
+
+      <!-- EARNINGS SUMMARY -->
+
+      <section class="card">
+
+        <div class="card-title">
+          Earnings Summary
+        </div>
+
+
+        <div class="summary-grid">
+
+          <div class="summary-item">
+
+            <div class="summary-label">
+              Today
+            </div>
+
+            <div class="summary-value green">
+              ${money(today)}
+            </div>
+
+          </div>
+
+
+          <div class="summary-item">
+
+            <div class="summary-label">
+              This Week
+            </div>
+
+            <div class="summary-value">
+              ${money(week)}
+            </div>
+
+          </div>
+
+
+          <div class="summary-item">
+
+            <div class="summary-label">
+              This Month
+            </div>
+
+            <div class="summary-value orange">
+              ${money(month)}
+            </div>
+
+          </div>
+
+
+          <div class="summary-item">
+
+            <div class="summary-label">
+              Total Earnings
+            </div>
+
+            <div class="summary-value">
+              ${money(total)}
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- WALLET -->
+
+      <section class="card">
+
+        <div class="card-title">
+          Wallet
+        </div>
+
+
+        <div class="wallet-row">
+
+          <div class="wallet-label">
+            Available Balance
+          </div>
+
+          <div class="wallet-value green">
+            ${money(balance)}
+          </div>
+
+        </div>
+
+
+        <button
+          class="withdraw-btn"
+          onclick="withdrawEarnings()"
+        >
+          Withdraw Earnings
+        </button>
+
+      </section>
+
+
+      <!-- TRANSACTIONS -->
+
+      <section class="card">
+
+        <div class="card-title">
+          Recent Transactions
+        </div>
+
+
+        <div id="transactions">
+
+          ${
+            transactions.length
+              ? transactions
+                  .map(
+                    transaction =>
+                      createTransaction(transaction)
+                  )
+                  .join("")
+              : `
+                <div class="empty">
+                  No transactions found.
+                </div>
+              `
+          }
+
+        </div>
+
+      </section>
+
+    `;
+  }
+
+
+  // =====================================================
+  // TRANSACTION CARD
+  // =====================================================
+
+  function createTransaction(transaction) {
+
+    const type =
+      String(
+        transaction.transaction_type ||
+        transaction.type ||
+        ""
+      );
+
+
+    const amount =
+      Number(
+        transaction.amount || 0
+      );
+
+
+    const isCredit =
+      String(
+        transaction.type || ""
+      ).toLowerCase() === "credit";
+
+
+    const title =
+      transaction.description ||
+      transaction.transaction_type ||
+      "Wallet Transaction";
+
+
+    const date =
+      transaction.created_at ||
+      transaction.date ||
+      transaction.transaction_date;
+
+
+    return `
+
+      <div class="transaction">
+
+        <div class="transaction-icon">
+
+          ${isCredit ? "💰" : "💳"}
+
+        </div>
+
+
+        <div class="transaction-info">
+
+          <div class="transaction-title">
+
+            ${escapeHtml(title)}
+
+          </div>
+
+
+          <div class="transaction-type">
+
+            ${escapeHtml(type)}
+
+          </div>
+
+
+          <div class="transaction-date">
+
+            ${escapeHtml(formatDate(date))}
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="transaction-amount
+          ${isCredit ? "credit" : "debit"}"
+        >
+
+          ${isCredit ? "+" : "-"}
+          ${money(amount)}
+
+        </div>
+
+      </div>
+
+    `;
+  }
+
+
+  // =====================================================
+  // WITHDRAW
+  // =====================================================
+
+  async function withdrawEarnings() {
+
+    const amountInput =
+      prompt(
+        "Enter withdrawal amount (minimum ₹100):"
+      );
+
+
+    if (amountInput === null) {
+      return;
+    }
+
+
+    const amount =
+      Number(amountInput);
+
+
+    if (!Number.isFinite(amount) || amount < 100) {
+
+      alert(
+        "Minimum withdrawal amount is ₹100."
+      );
+
+      return;
+    }
+
+
+    if (!delivery || !delivery.id) {
+
+      alert(
+        "Delivery partner login not found."
+      );
+
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        `Withdraw ₹${amount.toFixed(2)} from your wallet?`
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    try {
+
+      const response = await fetch(
+        `${API}/wallet/withdraw`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+
+            userType: "delivery",
+
+            userId: delivery.id,
+
+            amount: amount
+
+          })
+        }
+      );
+
+
+      const data =
+        await response.json();
+
+
+      console.log(
+        "💸 WITHDRAW RESPONSE:",
+        data
+      );
+
+
+      if (!response.ok || !data.success) {
+
+        alert(
+          data.message ||
+          "Withdrawal failed."
+        );
+
+        return;
+      }
+
+
+      alert(
+        "✅ Withdrawal request submitted."
+      );
+
+
+      await loadEarnings();
+
+
+    } catch (error) {
+
+      console.error(
+        "❌ WITHDRAW ERROR:",
+        error
+      );
+
+
+      alert(
+        "Server error while processing withdrawal."
+      );
+    }
+  }
+
+
+  // =====================================================
+  // START
+  // =====================================================
+
+  loadEarnings();
+
+</script>
+
+</body>
+</html>

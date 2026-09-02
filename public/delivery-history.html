@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DARVOZ - Delivery History</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f7;
+      color: #222;
+    }
+
+    .header {
+      background: #ff6b00;
+      color: white;
+      padding: 18px 16px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .back-btn {
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .header h1 {
+      font-size: 23px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .filters select {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: white;
+      font-size: 15px;
+    }
+
+    .summary {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .summary-title {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 5px;
+    }
+
+    .summary-value {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #orders {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .order-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .order-id {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .restaurant {
+      margin-top: 5px;
+      font-size: 15px;
+      color: #555;
+    }
+
+    .status {
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .status.completed {
+      background: #e8f7ed;
+      color: #17863a;
+    }
+
+    .status.cancelled {
+      background: #fff0e5;
+      color: #d95f00;
+    }
+
+    .status.other {
+      background: #eeeeee;
+      color: #555;
+    }
+
+    .info {
+      border-top: 1px solid #eee;
+      padding-top: 11px;
+      margin-top: 10px;
+    }
+
+    .info-row {
+      display: flex;
+      gap: 8px;
+      margin: 7px 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .label {
+      min-width: 95px;
+      color: #777;
+    }
+
+    .value {
+      color: #222;
+      word-break: break-word;
+    }
+
+    .amount {
+      font-size: 19px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .cancel-reason {
+      margin-top: 10px;
+      padding: 10px;
+      background: #fff7ef;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #9a5200;
+    }
+
+    .empty {
+      background: white;
+      border-radius: 14px;
+      padding: 40px 20px;
+      text-align: center;
+      color: #777;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 35px;
+      color: #777;
+    }
+
+    .error {
+      background: #fff0f0;
+      color: #c62828;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    @media (max-width: 500px) {
+      .filters {
+        flex-direction: column;
+      }
+
+      .order-top {
+        align-items: flex-start;
+      }
+
+      .order-id {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <h1>Delivery History</h1>
+  </header>
+
+  <main class="container">
+
+    <div class="filters">
+      <select id="statusFilter" onchange="renderOrders()">
+        <option value="ALL">All Status</option>
+        <option value="DELIVERED">Delivered</option>
+        <option value="CANCELLED">Cancelled</option>
+        <option value="OTHER">Other</option>
+      </select>
+
+      <select id="sortFilter" onchange="renderOrders()">
+        <option value="NEWEST">Newest First</option>
+        <option value="OLDEST">Oldest First</option>
+      </select>
+    </div>
+
+    <div class="summary">
+      <div class="summary-title">Total deliveries shown</div>
+      <div class="summary-value" id="totalOrders">0</div>
+    </div>
+
+    <div id="orders">
+      <div class="loading">Loading delivery history...</div>
+    </div>
+
+  </main>
+
+  <script>
+
+    const API = window.location.origin;
+
+    let delivery = null;
+    let allOrders = [];
+
+    // ======================================================
+    // GET LOGGED-IN DELIVERY PARTNER
+    // ======================================================
+    function getDeliveryPartner() {
+
+     const saved = localStorage.getItem("deliveryPartner"); 
+
+      if (!saved) {
+        return null;
+      }
+
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.error("❌ Invalid delivery login data:", error);
+        return null;
+      }
+    }
+
+
+    // ======================================================
+    // LOAD REAL HISTORY
+    // ======================================================
+    async function loadHistory() {
+
+      delivery = getDeliveryPartner();
+
+      if (!delivery || !delivery.id) {
+
+        document.getElementById("orders").innerHTML = `
+          <div class="error">
+            Delivery partner login not found.<br><br>
+            Please login again.
+          </div>
+        `;
+
+        return;
+      }
+
+      console.log("🚴 DELIVERY PARTNER ID:", delivery.id);
+
+      try {
+
+        const response = await fetch(
+          `${API}/deliveryPartner/history/${delivery.id}`
+        );
+
+        const data = await response.json();
+
+        console.log("📦 DELIVERY HISTORY RESPONSE:", data);
+
+        if (!response.ok || !data.success) {
+
+          document.getElementById("orders").innerHTML = `
+            <div class="error">
+              ${data.message || "Unable to load delivery history."}
+            </div>
+          `;
+
+          return;
+        }
+
+        allOrders = Array.isArray(data.orders)
+          ? data.orders
+          : [];
+
+        renderOrders();
+
+      } catch (error) {
+
+        console.error("❌ HISTORY FETCH ERROR:", error);
+
+        document.getElementById("orders").innerHTML = `
+          <div class="error">
+            Server error while loading delivery history.
+          </div>
+        `;
+      }
+    }
+
+
+    // ======================================================
+    // RENDER REAL ORDERS
+    // ======================================================
+    function renderOrders() {
+
+      const container = document.getElementById("orders");
+      const statusFilter = document.getElementById("statusFilter").value;
+      const sortFilter = document.getElementById("sortFilter").value;
+
+      let orders = [...allOrders];
+
+
+      // STATUS FILTER
+      if (statusFilter === "DELIVERED") {
+
+        orders = orders.filter(order => {
+
+          const status =
+            String(order.status || "").toLowerCase();
+
+          const deliveryStatus =
+            String(order.delivery_status || "").toLowerCase();
+
+          return (
+            status === "delivered" ||
+            deliveryStatus === "delivered"
+          );
+        });
+
+      } else if (statusFilter === "CANCELLED") {
+
+        orders = orders.filter(order => {
+
+          const status =
+            String(order.status || "").toLowerCase();
+
+          const deliveryStatus =
+            String(order.delivery_status || "").toLowerCase();
+
+          return (
+            status.includes("cancel") ||
+            deliveryStatus.includes("cancel")
+          );
+        });
+
+      } else if (statusFilter === "OTHER") {
+
+        orders = orders.filter(order => {
+
+          const status =
+            String(order.status || "").toLowerCase();
+
+          const deliveryStatus =
+            String(order.delivery_status || "").toLowerCase();
+
+          const delivered =
+            status === "delivered" ||
+            deliveryStatus === "delivered";
+
+          const cancelled =
+            status.includes("cancel") ||
+            deliveryStatus.includes("cancel");
+
+          return !delivered && !cancelled;
+        });
+      }
+
+
+      // SORT BY REAL dispatch_time
+      orders.sort((a, b) => {
+
+        const dateA = a.dispatch_time
+          ? new Date(a.dispatch_time).getTime()
+          : 0;
+
+        const dateB = b.dispatch_time
+          ? new Date(b.dispatch_time).getTime()
+          : 0;
+
+        return sortFilter === "NEWEST"
+          ? dateB - dateA
+          : dateA - dateB;
+      });
+
+
+      document.getElementById("totalOrders").textContent =
+        orders.length;
+
+
+      if (orders.length === 0) {
+
+        container.innerHTML = `
+          <div class="empty">
+            No delivery history found.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      container.innerHTML = orders
+        .map(order => createOrderCard(order))
+        .join("");
+    }
+
+
+    // ======================================================
+    // CREATE ORDER CARD FROM SQL DATA
+    // ======================================================
+    function createOrderCard(order) {
+
+      const status =
+        order.status || "Unknown";
+
+      const deliveryStatus =
+        order.delivery_status || "Unknown";
+
+
+      const statusText =
+        deliveryStatus !== "Unknown"
+          ? deliveryStatus
+          : status;
+
+
+      const statusLower =
+        String(statusText).toLowerCase();
+
+
+      let statusClass = "other";
+
+      if (
+        statusLower === "delivered" ||
+        statusLower === "completed"
+      ) {
+        statusClass = "completed";
+      }
+
+      if (
+        statusLower.includes("cancel") ||
+        statusLower.includes("reject")
+      ) {
+        statusClass = "cancelled";
+      }
+
+
+      const restaurant =
+        order.restaurant_name ||
+        "Restaurant name not available";
+
+
+      const address =
+        order.address ||
+        "Address not available";
+
+
+      const payment =
+        order.payment ||
+        "Payment information not available";
+
+
+      const amount =
+        order.grand_total !== null &&
+        order.grand_total !== undefined
+          ? `₹${Number(order.grand_total).toFixed(2)}`
+          : "Amount not available";
+
+
+      const dispatchTime =
+        formatDateTime(order.dispatch_time);
+
+
+      const cancellationReason =
+        order.cancellation_reason;
+
+
+      return `
+        <div class="order-card">
+
+          <div class="order-top">
+
+            <div>
+              <div class="order-id">
+                Order #${escapeHtml(order.id)}
+              </div>
+
+              <div class="restaurant">
+                ${escapeHtml(restaurant)}
+              </div>
+            </div>
+
+            <div class="status ${statusClass}">
+              ${escapeHtml(statusText)}
+            </div>
+
+          </div>
+
+
+          <div class="info">
+
+            <div class="info-row">
+              <div class="label">📍 Address</div>
+              <div class="value">
+                ${escapeHtml(address)}
+              </div>
+            </div>
+
+
+            <div class="info-row">
+              <div class="label">💳 Payment</div>
+              <div class="value">
+                ${escapeHtml(payment)}
+              </div>
+            </div>
+
+
+            <div class="info-row">
+              <div class="label">🕒 Dispatch</div>
+              <div class="value">
+                ${escapeHtml(dispatchTime)}
+              </div>
+            </div>
+
+
+            <div class="info-row">
+              <div class="label">Delivery</div>
+              <div class="value">
+                ${escapeHtml(deliveryStatus)}
+              </div>
+            </div>
+
+
+            <div class="amount">
+              ${amount}
+            </div>
+
+
+            ${
+              cancellationReason
+                ? `
+                  <div class="cancel-reason">
+                    Cancellation reason:
+                    ${escapeHtml(cancellationReason)}
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+        </div>
+      `;
+    }
+
+
+    // ======================================================
+    // REAL DATABASE DATETIME
+    // ======================================================
+    function formatDateTime(value) {
+
+      if (!value) {
+        return "Not available";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
+
+      return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+
+    // ======================================================
+    // SECURITY - ESCAPE DATABASE TEXT
+    // ======================================================
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    // ======================================================
+    // BACK
+    // ======================================================
+    function goBack() {
+
+      if (document.referrer) {
+        history.back();
+      } else {
+        window.location.href = "delivery-dashboard.html";
+      }
+    }
+
+
+    // ======================================================
+    // START
+    // ======================================================
+    loadHistory();
+
+  </script>
+
+</body>
+</html>

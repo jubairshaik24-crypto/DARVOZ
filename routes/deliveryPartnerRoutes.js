@@ -3019,67 +3019,111 @@ router.put(
 );
 
 
-// =======================================
+// ======================================================
 // DELIVERY HISTORY
-// =======================================
+// GET /deliveryPartner/history/:id
+// ======================================================
 
-router.get(
-    "/history/:id",
-    (req, res) => {
+router.get("/history/:id", async (req, res) => {
 
-        db.query(
+  try {
 
-            `SELECT *
+    const deliveryId = Number(req.params.id);
 
-             FROM orders
+    if (!Number.isInteger(deliveryId) || deliveryId <= 0) {
 
-             WHERE
-                delivery_partner_id=?
-
-             ORDER BY
-                id DESC`,
-
-            [
-                req.params.id
-            ],
-
-            (err, result) => {
-
-                if (err) {
-
-                    console.log(
-                        "DELIVERY HISTORY ERROR:",
-                        err
-                    );
-
-                    return res.status(500).json({
-
-                        success: false,
-
-                        message:
-                            "Database Error"
-
-                    });
-
-                }
-
-
-                return res.json({
-
-                    success: true,
-
-                    orders:
-                        result
-
-                });
-
-            }
-
-        );
+      return res.status(400).json({
+        success: false,
+        message: "Invalid delivery partner ID."
+      });
 
     }
 
-);
+
+    const [orders] = await db.promise().query(
+
+      `SELECT
+          id,
+          customer_name,
+          mobile,
+          address,
+          payment,
+          food_total,
+          delivery_fee,
+          platform_fee,
+          grand_total,
+          status,
+          partner_id,
+          restaurant_name,
+          delivery_partner_id,
+          customer_id,
+          customer_lat,
+          customer_lng,
+          dispatch_attempt,
+          dispatch_time,
+          delivery_status,
+          delivery_otp,
+          payment_id,
+          payment_order_id,
+          partner_response_deadline,
+          rider_response_deadline,
+          refund_status,
+          cancellation_reason,
+          partner_wallet_credited,
+          admin_commission_credited,
+          delivery_wallet_credited,
+          commission_percent
+       FROM orders
+       WHERE delivery_partner_id = ?
+       ORDER BY
+         CASE
+           WHEN dispatch_time IS NULL THEN 1
+           ELSE 0
+         END,
+         dispatch_time DESC,
+         id DESC`,
+
+      [deliveryId]
+
+    );
+
+
+    console.log(
+      "📦 DELIVERY HISTORY:",
+      deliveryId,
+      orders.length,
+      "orders"
+    );
+
+
+    return res.json({
+
+      success: true,
+
+      orders: orders
+
+    });
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "❌ DELIVERY HISTORY ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+
+      success: false,
+
+      message: "Failed to load delivery history."
+
+    });
+
+  }
+
+});
 
 
 // =======================================

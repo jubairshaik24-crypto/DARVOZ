@@ -121,6 +121,276 @@ let orderReceivedAt =
 let isLoadingCurrentOrder =
     false;
 
+    // =====================================================
+// ONLINE TIME TRACKING
+// =====================================================
+
+let onlineSessionStartedAt = null;
+let totalOnlineSecondsToday = 0;
+let onlineTimeInterval = null;
+
+const ONLINE_TIME_KEY =
+    `darvoz_online_time_${delivery.id}`;
+
+const ONLINE_START_KEY =
+    `darvoz_online_start_${delivery.id}`;
+
+const ONLINE_DATE_KEY =
+    `darvoz_online_date_${delivery.id}`;
+
+
+// =====================================================
+// LOAD TODAY'S ONLINE TIME
+// =====================================================
+
+function loadOnlineTime() {
+
+    const today =
+        new Date().toISOString().slice(0, 10);
+
+    const savedDate =
+        localStorage.getItem(ONLINE_DATE_KEY);
+
+    // New day → reset
+    if (savedDate !== today) {
+
+        totalOnlineSecondsToday = 0;
+
+        onlineSessionStartedAt = null;
+
+        localStorage.setItem(
+            ONLINE_DATE_KEY,
+            today
+        );
+
+        localStorage.setItem(
+            ONLINE_TIME_KEY,
+            "0"
+        );
+
+        localStorage.removeItem(
+            ONLINE_START_KEY
+        );
+
+        updateOnlineTimeUI();
+
+        return;
+    }
+
+    totalOnlineSecondsToday =
+        Number(
+            localStorage.getItem(
+                ONLINE_TIME_KEY
+            ) || 0
+        );
+
+    const savedStart =
+        localStorage.getItem(
+            ONLINE_START_KEY
+        );
+
+    if (savedStart) {
+
+        onlineSessionStartedAt =
+            Number(savedStart);
+
+    }
+
+    updateOnlineTimeUI();
+
+}
+
+
+// =====================================================
+// FORMAT ONLINE TIME
+// =====================================================
+
+function formatOnlineTime(seconds) {
+
+    seconds =
+        Math.max(
+            0,
+            Math.floor(
+                Number(seconds) || 0
+            )
+        );
+
+    const hours =
+        Math.floor(
+            seconds / 3600
+        );
+
+    const minutes =
+        Math.floor(
+            (seconds % 3600) / 60
+        );
+
+    return `${hours}h ${String(minutes).padStart(2, "0")}m`;
+
+}
+
+
+// =====================================================
+// UPDATE ONLINE TIME UI
+// =====================================================
+
+function updateOnlineTimeUI() {
+
+    let seconds =
+        totalOnlineSecondsToday;
+
+    // Add current active session
+    if (
+        onlineSessionStartedAt !== null
+    ) {
+
+        seconds +=
+            Math.floor(
+                (
+                    Date.now() -
+                    onlineSessionStartedAt
+                ) / 1000
+            );
+
+    }
+
+    const formatted =
+        formatOnlineTime(
+            seconds
+        );
+
+    const onlineTime =
+        el("onlineTime");
+
+    const summaryTime =
+        el("summaryTime");
+
+    if (onlineTime) {
+
+        onlineTime.textContent =
+            formatted;
+
+    }
+
+    if (summaryTime) {
+
+        summaryTime.textContent =
+            formatted;
+
+    }
+
+}
+
+
+// =====================================================
+// START ONLINE TIMER
+// =====================================================
+
+function startOnlineTimeTracking() {
+
+    // If there is no existing session,
+    // start a new one.
+    if (onlineSessionStartedAt === null) {
+
+        onlineSessionStartedAt =
+            Date.now();
+
+        localStorage.setItem(
+            ONLINE_START_KEY,
+            String(
+                onlineSessionStartedAt
+            )
+        );
+
+        console.log(
+            "🟢 ONLINE TIME SESSION STARTED"
+        );
+
+    }
+
+    // IMPORTANT:
+    // Always restart the display timer after refresh.
+    clearInterval(
+        onlineTimeInterval
+    );
+
+    onlineTimeInterval =
+        setInterval(
+            updateOnlineTimeUI,
+            1000
+        );
+
+    // Show immediately
+    updateOnlineTimeUI();
+
+    console.log(
+        "⏱️ ONLINE TIME DISPLAY RUNNING"
+    );
+}
+
+// =====================================================
+// STOP ONLINE TIMER
+// =====================================================
+
+function stopOnlineTimeTracking() {
+
+    if (
+        onlineSessionStartedAt === null
+    ) {
+
+        return;
+
+    }
+
+    const elapsed =
+        Math.floor(
+            (
+                Date.now() -
+                onlineSessionStartedAt
+            ) / 1000
+        );
+
+    totalOnlineSecondsToday +=
+        Math.max(
+            0,
+            elapsed
+        );
+
+    onlineSessionStartedAt =
+        null;
+
+    localStorage.setItem(
+        ONLINE_TIME_KEY,
+        String(
+            totalOnlineSecondsToday
+        )
+    );
+
+    localStorage.removeItem(
+        ONLINE_START_KEY
+    );
+
+    clearInterval(
+        onlineTimeInterval
+    );
+
+    onlineTimeInterval =
+        null;
+
+    updateOnlineTimeUI();
+
+if (onlineSessionStartedAt !== null) {
+    startOnlineTimeTracking();
+} 
+    console.log(
+        "🔴 ONLINE TIME STOPPED:",
+        formatOnlineTime(
+            totalOnlineSecondsToday
+        )
+    );
+
+}
+
 // =====================================================
 // NAVIGATION STATE
 // =====================================================
@@ -262,7 +532,6 @@ async function loadProfile() {
 // =====================================================
 // ONLINE UI
 // =====================================================
-
 function setOnlineUI(isOnline) {
 
     if (!onlineToggle) {
@@ -273,6 +542,11 @@ function setOnlineUI(isOnline) {
 
     onlineToggle.checked =
         isOnline;
+
+
+    // =================================================
+    // ONLINE
+    // =================================================
 
     if (isOnline) {
 
@@ -297,6 +571,8 @@ function setOnlineUI(isOnline) {
 
         }
 
+        startOnlineTimeTracking();
+
         if (
             !currentOrderData &&
             newOrderCard &&
@@ -308,6 +584,11 @@ function setOnlineUI(isOnline) {
         }
 
     }
+
+
+    // =================================================
+    // OFFLINE
+    // =================================================
 
     else {
 
@@ -331,6 +612,8 @@ function setOnlineUI(isOnline) {
                 "Go online to receive orders";
 
         }
+
+        stopOnlineTimeTracking();
 
         hideSearching();
 
@@ -6020,6 +6303,8 @@ if (
 // =====================================================
 // INITIAL LOAD
 // =====================================================
+
+loadOnlineTime();
 
 loadProfile();
 
