@@ -13,10 +13,7 @@ const partner =
     JSON.parse(localStorage.getItem("partner"));
 
 if (!partner) {
-
-    window.location.href =
-        "partner-login.html";
-
+    window.location.href = "partner-login.html";
 }
 
 
@@ -38,49 +35,38 @@ const overlay =
 
 
 if (menuBtn) {
-
     menuBtn.onclick = () => {
 
-        sideMenu.classList.add("active");
-        overlay.classList.add("active");
+        if (sideMenu) {
+            sideMenu.classList.add("active");
+        }
+
+        if (overlay) {
+            overlay.classList.add("active");
+        }
 
     };
-
 }
 
 
 if (closeBtn) {
-
-    closeBtn.onclick =
-        closeMenu;
-
+    closeBtn.onclick = closeMenu;
 }
 
 
 if (overlay) {
-
-    overlay.onclick =
-        closeMenu;
-
+    overlay.onclick = closeMenu;
 }
 
 
 function closeMenu() {
 
     if (sideMenu) {
-
-        sideMenu.classList.remove(
-            "active"
-        );
-
+        sideMenu.classList.remove("active");
     }
 
     if (overlay) {
-
-        overlay.classList.remove(
-            "active"
-        );
-
+        overlay.classList.remove("active");
     }
 
 }
@@ -93,14 +79,10 @@ function closeMenu() {
 if (partner) {
 
     const partnerName =
-        document.getElementById(
-            "partnerName"
-        );
+        document.getElementById("partnerName");
 
     const partnerId =
-        document.getElementById(
-            "partnerId"
-        );
+        document.getElementById("partnerId");
 
 
     if (partnerName) {
@@ -140,11 +122,9 @@ const socket = io(API, {
 
     reconnection: true,
 
-    reconnectionAttempts:
-        Infinity,
+    reconnectionAttempts: Infinity,
 
-    reconnectionDelay:
-        1000
+    reconnectionDelay: 1000
 
 });
 
@@ -170,8 +150,7 @@ socket.on("connect", () => {
 
         console.log(
             "Joined Room:",
-            "partner_" +
-            partner.id
+            "partner_" + partner.id
         );
 
     }
@@ -218,7 +197,7 @@ if ("Notification" in window) {
 
 
 // =====================================================
-// STORE OPEN / CLOSE STATUS
+// STORE STATUS
 // =====================================================
 
 let onlineStatus = "Open";
@@ -234,9 +213,7 @@ async function loadStoreStatus() {
         !partner ||
         !partner.id
     ) {
-
         return;
-
     }
 
 
@@ -293,9 +270,7 @@ function updateStoreButton() {
 
 
     if (!status || !btn) {
-
         return;
-
     }
 
 
@@ -349,9 +324,7 @@ if (toggleStoreBtn) {
                 !partner ||
                 !partner.id
             ) {
-
                 return;
-
             }
 
 
@@ -378,10 +351,8 @@ if (toggleStoreBtn) {
                             method: "PUT",
 
                             headers: {
-
                                 "Content-Type":
                                     "application/json"
-
                             },
 
                             body:
@@ -432,6 +403,7 @@ if (toggleStoreBtn) {
 
                 updateStoreButton();
 
+
                 alert(
                     "Unable to update store status."
                 );
@@ -453,9 +425,7 @@ async function loadDashboardStats() {
         !partner ||
         !partner.id
     ) {
-
         return;
-
     }
 
 
@@ -546,7 +516,6 @@ async function loadDashboardStats() {
 }
 
 
-
 // =====================================================
 // PARTNER WALLET BALANCE
 // =====================================================
@@ -555,36 +524,27 @@ async function loadPartnerWallet() {
 
     try {
 
-        if (!partner || !partner.id) {
+        if (
+            !partner ||
+            !partner.id
+        ) {
 
-            console.log("❌ Partner ID not found");
+            console.log(
+                "❌ Partner ID not found"
+            );
 
             return;
 
         }
 
-        console.log("=================================");
-        console.log("💰 WALLET DEBUG");
-        console.log("Partner object:", partner);
-        console.log("Partner DB ID:", partner.id);
-        console.log("Partner ID:", partner.partnerId);
-        console.log(
-            "Wallet URL:",
-            `${API}/partner/wallet/${partner.id}`
-        );
-        console.log("=================================");
-
 
         const response =
             await fetch(
-                `${API}/partner/wallet/${partner.id}`
+                `${API}/partner/wallet/${partner.id}`,
+                {
+                    cache: "no-store"
+                }
             );
-
-
-        console.log(
-            "Wallet HTTP Status:",
-            response.status
-        );
 
 
         const data =
@@ -600,7 +560,9 @@ async function loadPartnerWallet() {
         if (data.success) {
 
             const balance =
-                Number(data.balance || 0);
+                Number(
+                    data.balance || 0
+                );
 
 
             const walletElement =
@@ -616,12 +578,6 @@ async function loadPartnerWallet() {
                     balance.toFixed(2);
 
             }
-
-
-            console.log(
-                "✅ DISPLAYED WALLET:",
-                balance
-            );
 
         }
 
@@ -658,39 +614,37 @@ async function loadOrders() {
         !partner ||
         !partner.id
     ) {
-
         return;
-
     }
-
 
     try {
 
         const response =
             await fetch(
-                `${API}/partner/orders/${partner.id}`
+                `${API}/partner/orders/${partner.id}`,
+                {
+                    cache:"no-store"
+                }
             );
-
 
         const orders =
             await response.json();
-
 
         const container =
             document.getElementById(
                 "ordersTable"
             );
 
-
         if (!container) {
-
             return;
-
         }
-
 
         container.innerHTML = "";
 
+
+        // =================================================
+        // NO ORDERS
+        // =================================================
 
         if (
             !Array.isArray(orders) ||
@@ -698,61 +652,335 @@ async function loadOrders() {
         ) {
 
             container.innerHTML = `
-
                 <div class="order-card">
-
-                    <p>No Orders Yet</p>
-
+                    <div class="order-main">
+                        <span class="order-id">
+                            No Orders Yet
+                        </span>
+                        <div class="customer">
+                            New orders will appear here.
+                        </div>
+                    </div>
                 </div>
-
             `;
 
             return;
+        }
+
+
+        // =================================================
+        // STATUS CLASS
+        // =================================================
+
+        function getStatusClass(status){
+
+            const value =
+                String(status || "Pending")
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                value === "new"
+            ){
+                return "new";
+            }
+
+            if (
+                value === "preparing"
+            ){
+                return "preparing";
+            }
+
+            if (
+                value === "confirmed"
+            ){
+                return "confirmed";
+            }
+
+            if (
+                value === "accepted"
+            ){
+                return "accepted";
+            }
+
+            if (
+                value === "out for delivery" ||
+                value === "out_for_delivery" ||
+                value === "out-delivery"
+            ){
+                return "out-delivery";
+            }
+
+            if (
+                value === "delivered"
+            ){
+                return "delivered";
+            }
+
+            if (
+                value === "cancelled" ||
+                value === "canceled"
+            ){
+                return "cancelled";
+            }
+
+            return "pending";
+        }
+
+
+        // =================================================
+        // PAYMENT TYPE
+        // =================================================
+
+        function getPaymentInfo(order){
+
+            const method =
+                String(
+                    order.payment ||
+                    order.payment_method ||
+                    order.paymentMethod ||
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if (
+                method === "COD" ||
+                method === "CASH" ||
+                method === "CASH ON DELIVERY"
+            ){
+
+                return {
+                    text:"COD",
+                    icon:"fa-money-bill-wave",
+                    className:"cod"
+                };
+
+            }
+
+
+            return {
+                text:"UPI Payment",
+                icon:"fa-credit-card",
+                className:"upi"
+            };
 
         }
 
 
+        // =================================================
+        // TIME FORMAT
+        // =================================================
+
+        function formatOrderTime(order){
+
+            const raw =
+                order.created_at ||
+                order.createdAt ||
+                order.order_date ||
+                order.orderDate;
+
+            if (!raw){
+                return "";
+            }
+
+            const date =
+                new Date(raw);
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ){
+                return "";
+            }
+
+
+            const now =
+                new Date();
+
+            const difference =
+                Math.floor(
+                    (
+                        now.getTime() -
+                        date.getTime()
+                    ) / 60000
+                );
+
+
+            if (difference < 1){
+                return "Just now";
+            }
+
+            if (difference < 60){
+                return `${difference} min${difference === 1 ? "" : "s"} ago`;
+            }
+
+
+            const hours =
+                Math.floor(
+                    difference / 60
+                );
+
+
+            if (hours < 24){
+                return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+            }
+
+
+            const days =
+                Math.floor(
+                    hours / 24
+                );
+
+
+            return `${days} day${days === 1 ? "" : "s"} ago`;
+
+        }
+
+
+        // =================================================
+        // RENDER ORDERS
+        // =================================================
+
         orders.forEach(
             (order) => {
 
+                const orderId =
+                    order.order_id ||
+                    order.id ||
+                    "";
+
+                const customerName =
+                    order.customer_name ||
+                    order.customerName ||
+                    "Customer";
+
+
+                const itemCount =
+                    order.item_count ||
+                    order.items_count ||
+                    order.total_items ||
+                    order.itemsCount ||
+                    "";
+
+
+                const amount =
+                    Number(
+                        order.total ||
+                        order.grand_total ||
+                        0
+                    );
+
+
+                const status =
+                    order.status ||
+                    "Pending";
+
+
+                const statusClass =
+                    getStatusClass(status);
+
+
+                const payment =
+                    getPaymentInfo(order);
+
+
+                const orderTime =
+                    formatOrderTime(order);
+
+
                 container.innerHTML += `
 
-                    <div class="order-card">
+                    <div
+                        class="order-card"
+                        data-order-id="${orderId}"
+                    >
 
-                        <div class="order-top">
+
+                        <!-- ORDER + CUSTOMER -->
+
+                        <div class="order-main">
 
                             <span class="order-id">
 
-                                #${order.order_id}
+                                #${orderId}
 
                             </span>
 
 
-                            <span class="order-status">
+                            <div class="customer">
 
-                                ${order.status || "Pending"}
+                                ${customerName}
+
+                                ${
+                                    itemCount
+                                    ? ` • ${itemCount} Item${Number(itemCount) === 1 ? "" : "s"}`
+                                    : ""
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- AMOUNT + PAYMENT -->
+
+                        <div class="order-payment">
+
+                            <span class="total">
+
+                                ₹${amount.toFixed(2)}
 
                             </span>
 
-                        </div>
 
+                            <div
+                                class="payment-method ${payment.className}"
+                            >
 
-                        <div class="customer">
+                                <i
+                                    class="fa-solid ${payment.icon}"
+                                ></i>
 
-                            ${order.customer_name || "Customer"}
+                                <span>
+                                    ${payment.text}
+                                </span>
 
-                        </div>
-
-
-                        <div class="total">
-
-                            ₹${Number(
-                                order.total ||
-                                order.grand_total ||
-                                0
-                            ).toFixed(2)}
+                            </div>
 
                         </div>
+
+
+                        <!-- STATUS -->
+
+                        <span
+                            class="order-status ${statusClass}"
+                        >
+
+                            ${status}
+
+                        </span>
+
+
+                        <!-- TIME -->
+
+                        <span class="order-time">
+
+                            ${orderTime}
+
+                        </span>
+
+
+                        <!-- ARROW -->
+
+                        <span class="order-arrow">
+
+                            <i class="fa-solid fa-chevron-right"></i>
+
+                        </span>
+
 
                     </div>
 
@@ -760,6 +988,36 @@ async function loadOrders() {
 
             }
         );
+
+
+        // =================================================
+        // CLICK ORDER
+        // =================================================
+
+        container
+            .querySelectorAll(".order-card")
+            .forEach(
+                (card) => {
+
+                    card.addEventListener(
+                        "click",
+                        () => {
+
+                            const orderId =
+                                card.dataset.orderId;
+
+                            if (!orderId){
+                                return;
+                            }
+
+                            window.location.href =
+                                `partner-order.html?id=${orderId}`;
+
+                        }
+                    );
+
+                }
+            );
 
     }
 
@@ -773,6 +1031,7 @@ async function loadOrders() {
     }
 
 }
+
 
 
 // =====================================================
@@ -921,7 +1180,6 @@ socket.on(
 
             sound.currentTime = 0;
 
-
             sound.play()
                 .catch(
                     (error) => {
@@ -1032,9 +1290,7 @@ if (viewOrderBtn) {
             if (
                 !currentPopupOrder
             ) {
-
                 return;
-
             }
 
 
@@ -1044,9 +1300,7 @@ if (viewOrderBtn) {
 
 
             if (!orderId) {
-
                 return;
-
             }
 
 

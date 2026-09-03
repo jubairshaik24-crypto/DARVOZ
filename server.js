@@ -572,20 +572,382 @@ app.get(
 
 app.post(
     "/webhook",
-    (req, res) => {
+    async (req, res) => {
 
-        console.log(
-            "WhatsApp Webhook:",
-            JSON.stringify(
-                req.body,
-                null,
-                2
-            )
-        );
+        try {
+
+            console.log("=================================");
+            console.log("📩 WHATSAPP WEBHOOK RECEIVED");
+            console.log(
+                JSON.stringify(
+                    req.body,
+                    null,
+                    2
+                )
+            );
+            console.log("=================================");
 
 
-        // Meta requires quick 200 response
-        res.sendStatus(200);
+            // Meta requires quick 200 response
+            res.sendStatus(200);
+
+
+            // ==============================
+            // GET MESSAGE DATA
+            // ==============================
+
+            const entry =
+                req.body?.entry?.[0];
+
+            const changes =
+                entry?.changes?.[0];
+
+            const value =
+                changes?.value;
+
+            const message =
+                value?.messages?.[0];
+
+
+            // Ignore status updates,
+            // delivery receipts, etc.
+            if (!message) {
+
+                console.log(
+                    "ℹ️ No incoming customer message"
+                );
+
+                return;
+
+            }
+
+
+            // ==============================
+            // CUSTOMER WHATSAPP NUMBER
+            // ==============================
+
+            const whatsappPhone =
+                String(
+                    message.from || ""
+                ).replace(/\D/g, "");
+
+
+            if (!whatsappPhone) {
+
+                console.log(
+                    "❌ WhatsApp sender number missing"
+                );
+
+                return;
+
+            }
+
+
+            // ==============================
+            // CONVERT INDIA NUMBER
+            // 918333995837
+            //        ↓
+            // 8333995837
+            // ==============================
+
+            const customerMobile =
+                (
+                    whatsappPhone.startsWith("91") &&
+                    whatsappPhone.length === 12
+                )
+                    ? whatsappPhone.substring(2)
+                    : whatsappPhone;
+
+
+            // ==============================
+            // MESSAGE TEXT
+            // ==============================
+
+            let messageText = "";
+
+
+            if (
+                message.type === "text" &&
+                message.text?.body
+            ) {
+
+                messageText =
+                    String(
+                        message.text.body
+                    ).trim();
+
+            }
+            else {
+
+                messageText =
+                    `[${message.type || "unknown"} message]`;
+
+            }
+
+
+            if (!messageText) {
+
+                console.log(
+                    "❌ Empty WhatsApp message"
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "📱 WhatsApp:",
+                whatsappPhone
+            );
+
+            console.log(
+                "📱 Customer Mobile:",
+                customerMobile
+            );
+
+            console.log(
+                "💬 Message:",
+                messageText
+            );
+
+
+            // ==============================
+            // FIND CUSTOMER
+            // ==============================
+
+            const customerResult =
+                await db.promise().query(
+                    `
+                    SELECT
+                        id,
+                        mobile,
+                        name
+                    FROM customers
+                    WHERE mobile = ?
+                    LIMIT 1
+                    `,
+                    [
+                        customerMobile
+                    ]
+                );
+
+
+            let customerId = null;
+
+            let customerName =
+                "WhatsApp Customer";
+
+
+            if (
+                customerResult[0] &&
+                customerResult[0].length > 0
+            ) {
+
+                const customer =
+                    customerResult[0][0];
+
+                customerId =
+                    customer.id;
+
+                customerName =
+                    customer.name ||
+                    "WhatsApp Customer";
+
+
+                console.log(
+                    "👤 CUSTOMER FOUND:",
+                    customerId
+                );
+
+            }
+            else {
+
+                console.log(
+                    "⚠️ WhatsApp number is not registered:",
+                    customerMobile
+                );
+
+            }
+
+
+            // ==============================
+            // FIND OPEN SUPPORT CHAT
+            // ==============================
+
+            let existingChatResult;
+
+
+            if (customerId) {
+
+                [
+                    existingChatResult
+                ] =
+                    await db.promise().query(
+                        `
+                        SELECT
+                            chat_id,
+                            order_id,
+                            customer_id,
+                            customer_name,
+                            whatsapp_phone,
+                            status
+                        FROM support_chats
+                        WHERE status IN ('waiting', 'active')
+                        AND customer_id = ?
+                        ORDER BY id DESC
+                        LIMIT 1
+                        `,
+                        [
+                            customerId
+                        ]
+                    );
+
+            }
+            else {
+
+                [
+                    existingChatResult
+                ] =
+                    await db.promise().query(
+                        `
+                        SELECT
+                            chat_id,
+                            order_id,
+                            customer_id,
+                            customer_name,
+                            whatsapp_phone,
+                            status
+                        FROM support_chats
+                        WHERE status IN ('waiting', 'active')
+                        AND whatsapp_phone = ?
+                        ORDER BY id DESC
+                        LIMIT 1
+                        `,
+                        [
+                            whatsappPhone
+                        ]
+                    );
+
+            }
+
+
+            let chatId = null;
+
+
+            // ==============================
+            // EXISTING CHAT
+            // ==============================
+
+            if (
+                existingChatResult &&
+                existingChatResult.length > 0
+            ) {
+
+                chatId =
+                    existingChatResult[0].chat_id;
+
+
+                console.log(
+                    "♻️ EXISTING SUPPORT CHAT:",
+                    chatId
+                );
+
+            }
+
+
+            // ==============================
+            // CREATE NEW CHAT
+            // ==============================
+
+            else {
+
+                chatId =
+                    "SUP-" +
+                    Date.now()
+                        .toString(36)
+                        .toUpperCase() +
+                    "-" +
+                    Math.random()
+                        .toString(36)
+                        .substring(2, 7)
+                        .toUpperCase();
+
+
+                await db.promise().query(
+                    `
+                    INSERT INTO support_chats
+                    (
+                        chat_id,
+                        order_id,
+                        customer_id,
+                        customer_name,
+                        whatsapp_phone,
+                        status
+                    )
+                    VALUES (?, NULL, ?, ?, ?, 'waiting')
+                    `,
+                    [
+                        chatId,
+                        customerId,
+                        customerName,
+                        whatsappPhone
+                    ]
+                );
+
+
+                console.log(
+                    "🆕 NEW SUPPORT CHAT:",
+                    chatId
+                );
+
+            }
+
+
+            // ==============================
+            // SAVE MESSAGE
+            // ==============================
+
+            await db.promise().query(
+                `
+                INSERT INTO support_messages
+                (
+                    chat_id,
+                    sender,
+                    message
+                )
+                VALUES (?, 'customer', ?)
+                `,
+                [
+                    chatId,
+                    messageText
+                ]
+            );
+
+
+            console.log(
+                "✅ WHATSAPP MESSAGE SAVED"
+            );
+
+            console.log(
+                "💬 CHAT ID:",
+                chatId
+            );
+
+            console.log(
+                "================================="
+            );
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "❌ WHATSAPP WEBHOOK ERROR:",
+                error
+            );
+
+        }
 
     }
 );

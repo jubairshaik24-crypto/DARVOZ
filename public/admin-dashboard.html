@@ -814,6 +814,205 @@ SMALL MOBILE
     color:#047857;
     font-size:17px;
 }
+
+/* =====================================================
+   CUSTOMER / ORDER LOOKUP
+   ===================================================== */
+
+.lookup-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+.lookup-input-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.lookup-input-row input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+.lookup-input-row input:focus {
+    border-color: #ff6b00;
+}
+
+.lookup-input-row button {
+    border: none;
+    background: #ff6b00;
+    color: #fff;
+    padding: 0 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.lookup-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.lookup-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.lookup-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.lookup-card h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.lookup-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.lookup-row:last-child {
+    border-bottom: none;
+}
+
+.lookup-row span {
+    text-align: right;
+    word-break: break-word;
+}
+
+.lookup-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #f2f2f2;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lookup-total {
+    font-size: 18px;
+    margin-top: 8px;
+}
+
+.lookup-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lookup-item {
+    display: grid;
+    grid-template-columns:
+        1fr auto auto;
+    gap: 20px;
+    padding: 12px;
+    background: #f8f8f8;
+    border-radius: 8px;
+}
+
+.lookup-support-chat {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.lookup-message {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.lookup-message span {
+    text-align: left;
+}
+
+.lookup-order-card {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+
+.lookup-order-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.lookup-view-order {
+    margin-top: 15px;
+    border: none;
+    background: #ff6b00;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.lookup-empty,
+.lookup-loading,
+.lookup-empty-small {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+}
+
+.lookup-not-assigned {
+    margin-top: 15px;
+    padding: 12px;
+    background: #fff5f5;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+
+    .lookup-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lookup-input-row {
+        flex-direction: column;
+    }
+
+    .lookup-input-row button {
+        height: 48px;
+    }
+
+    .lookup-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .lookup-row span {
+        text-align: left;
+    }
+
+    .lookup-item {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+}
 </style>
 
 </head>
@@ -849,6 +1048,10 @@ onclick="closeSidebar()">
         <li onclick="showOrders()">
             📦 Orders
         </li>
+
+        <li onclick="showCustomerLookup()">
+    🔎 Customer / Order Lookup
+</li>
 
         <li onclick="showCustomers()">
             👥 Customers
@@ -5039,6 +5242,11 @@ const order =
 
     formData.append("title",title);
 
+    formData.append(
+    "notification_message",
+    notificationMessage
+);
+
     formData.append("display_order",order);
  
     formData.append(
@@ -5289,6 +5497,1116 @@ async function loadAdminWallet(){
     }
 
 }
+
+// =====================================================
+// CUSTOMER / ORDER LOOKUP
+// =====================================================
+
+function showCustomerLookup() {
+
+    dashboardPage.style.display = "none";
+
+    withdrawPage.style.display = "none";
+
+    pageContent.style.display = "block";
+
+    pageContent.innerHTML = `
+
+        <div class="page-header">
+
+            <h2>
+                🔎 Customer / Order Lookup
+            </h2>
+
+            <p>
+                Search using Order ID or Customer Mobile Number
+            </p>
+
+        </div>
+
+        <div class="lookup-box">
+
+            <div class="lookup-input-row">
+
+                <input
+                    type="text"
+                    id="lookupSearchInput"
+                    placeholder="Enter Order ID or customer mobile"
+                    autocomplete="off"
+                >
+
+                <button
+                    onclick="searchCustomerOrOrder()"
+                >
+                    🔍 Search
+                </button>
+
+            </div>
+
+            <div
+                id="lookupResult"
+                class="lookup-result"
+            ></div>
+
+        </div>
+
+    `;
+
+    const input =
+        document.getElementById(
+            "lookupSearchInput"
+        );
+
+    if (input) {
+
+        input.focus();
+
+        input.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    searchCustomerOrOrder();
+
+                }
+
+            }
+        );
+
+    }
+
+}
+
+// =====================================================
+// SEARCH CUSTOMER / ORDER
+// =====================================================
+
+async function searchCustomerOrOrder() {
+
+    const input =
+        document.getElementById(
+            "lookupSearchInput"
+        );
+
+    const result =
+        document.getElementById(
+            "lookupResult"
+        );
+
+    if (!input || !result) {
+        return;
+    }
+
+    const search =
+        input.value.trim();
+
+    if (!search) {
+
+        result.innerHTML = `
+            <div class="lookup-empty">
+                Please enter an Order ID or customer mobile number.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    result.innerHTML = `
+        <div class="lookup-loading">
+            🔄 Searching database...
+        </div>
+    `;
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/customer-order-lookup?search=" +
+                encodeURIComponent(search),
+                {
+                    cache: "no-store"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            result.innerHTML = `
+                <div class="lookup-empty">
+                    ❌ ${
+                        data.message ||
+                        "No customer or order found."
+                    }
+                </div>
+            `;
+
+            return;
+
+        }
+
+        if (
+            data.searchType === "order"
+        ) {
+
+            renderOrderLookup(
+                data
+            );
+
+            return;
+
+        }
+
+        if (
+            data.searchType === "mobile"
+        ) {
+
+            renderMobileLookup(
+                data
+            );
+
+            return;
+
+        }
+
+        result.innerHTML = `
+            <div class="lookup-empty">
+                No results found.
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error(
+            "LOOKUP ERROR:",
+            error
+        );
+
+        result.innerHTML = `
+            <div class="lookup-empty">
+                ❌ Unable to search right now.
+            </div>
+        `;
+
+    }
+
+}
+
+// =====================================================
+// RENDER ORDER LOOKUP
+// =====================================================
+
+function renderOrderLookup(data) {
+
+    const result =
+        document.getElementById(
+            "lookupResult"
+        );
+
+    const order =
+        data.order || {};
+
+    const customer =
+        data.customer || {};
+
+    const delivery =
+        data.deliveryPartner || null;
+
+    const payment =
+        data.payment || {};
+
+    const items =
+        Array.isArray(order.items)
+            ? order.items
+            : [];
+
+    const supportChats =
+        Array.isArray(data.supportChats)
+            ? data.supportChats
+            : [];
+
+    const deliveryAssigned =
+        !!order.delivery_partner_id;
+
+    const paymentStatus =
+        payment.status ||
+        "Not stored";
+
+    result.innerHTML = `
+
+        <div class="lookup-title">
+            📦 Order #${escapeHtml(
+                String(order.id || "")
+            )}
+        </div>
+
+        <div class="lookup-grid">
+
+            <div class="lookup-card">
+
+                <h3>👤 Customer Details</h3>
+
+                <div class="lookup-row">
+                    <b>Customer ID</b>
+                    <span>
+                        ${escapeHtml(
+                            String(customer.id || order.customer_id || "N/A")
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Name</b>
+                    <span>
+                        ${escapeHtml(
+                            customer.name ||
+                            order.customer_name ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Mobile</b>
+                    <span>
+                        ${escapeHtml(
+                            customer.mobile ||
+                            order.mobile ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Email</b>
+                    <span>
+                        ${escapeHtml(
+                            customer.email ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>City</b>
+                    <span>
+                        ${escapeHtml(
+                            customer.city ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>State</b>
+                    <span>
+                        ${escapeHtml(
+                            customer.state ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Verified</b>
+                    <span>
+                        ${
+                            Number(customer.is_verified) === 1
+                                ? "✅ Yes"
+                                : "❌ No"
+                        }
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="lookup-card">
+
+                <h3>📦 Order Details</h3>
+
+                <div class="lookup-row">
+                    <b>Order ID</b>
+                    <span>
+                        #${escapeHtml(
+                            String(order.id || "")
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Restaurant</b>
+                    <span>
+                        ${escapeHtml(
+                            order.restaurant_name ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Order Status</b>
+                    <span class="lookup-badge">
+                        ${escapeHtml(
+                            order.status ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Address</b>
+                    <span>
+                        ${escapeHtml(
+                            order.address ||
+                            "N/A"
+                        )}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Food Total</b>
+                    <span>
+                        ₹${Number(
+                            order.food_total || 0
+                        ).toFixed(2)}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Delivery Fee</b>
+                    <span>
+                        ₹${Number(
+                            order.delivery_fee || 0
+                        ).toFixed(2)}
+                    </span>
+                </div>
+
+                <div class="lookup-row">
+                    <b>Platform Fee</b>
+                    <span>
+                        ₹${Number(
+                            order.platform_fee || 0
+                        ).toFixed(2)}
+                    </span>
+                </div>
+
+                <div class="lookup-row lookup-total">
+                    <b>Grand Total</b>
+                    <strong>
+                        ₹${Number(
+                            order.grand_total || 0
+                        ).toFixed(2)}
+                    </strong>
+                </div>
+
+            </div>
+
+
+          <div class="lookup-card">
+    <h3>💳 Payment Details</h3>
+
+    <div class="lookup-row">
+        <strong>Payment Method</strong>
+        <span>${payment.method || "N/A"}</span>
+    </div>
+
+    <div class="lookup-row">
+        <strong>Payment Status</strong>
+        <span>${payment.status || "N/A"}</span>
+    </div>
+
+    <div class="lookup-row">
+        <strong>Transaction ID</strong>
+        <span>${payment.transaction_id || "N/A"}</span>
+    </div>
+
+    <div class="lookup-row">
+        <strong>Payment ID</strong>
+        <span>${payment.payment_id || "N/A"}</span>
+    </div>
+
+    <div class="lookup-row">
+        <strong>Payment Order ID</strong>
+        <span>${payment.payment_order_id || "N/A"}</span>
+    </div>
+</div>
+
+
+            <div class="lookup-card">
+
+                <h3>🛵 Delivery</h3>
+
+                <div class="lookup-row">
+
+                    <b>Assigned</b>
+
+                    <span>
+                        ${
+                            deliveryAssigned
+                                ? "✅ Assigned"
+                                : "❌ Not Assigned"
+                        }
+                    </span>
+
+                </div>
+
+                ${
+                    delivery
+                    ? `
+
+                        <div class="lookup-row">
+                            <b>Partner ID</b>
+                            <span>
+                                ${escapeHtml(
+                                    String(
+                                        delivery.id ||
+                                        order.delivery_partner_id
+                                    )
+                                )}
+                            </span>
+                        </div>
+
+                        <div class="lookup-row">
+                            <b>Name</b>
+                            <span>
+                                ${escapeHtml(
+                                    delivery.name ||
+                                    "N/A"
+                                )}
+                            </span>
+                        </div>
+
+                        <div class="lookup-row">
+                            <b>Mobile</b>
+                            <span>
+                                ${escapeHtml(
+                                    delivery.mobile ||
+                                    "N/A"
+                                )}
+                            </span>
+                        </div>
+
+                        <div class="lookup-row">
+                            <b>Vehicle</b>
+                            <span>
+                                ${escapeHtml(
+                                    delivery.vehicle ||
+                                    "N/A"
+                                )}
+                            </span>
+                        </div>
+
+                        <div class="lookup-row">
+                            <b>Online Status</b>
+                            <span>
+                                ${escapeHtml(
+                                    delivery.online_status ||
+                                    "N/A"
+                                )}
+                            </span>
+                        </div>
+
+                    `
+                    : `
+                        <div class="lookup-not-assigned">
+                            No delivery partner is assigned to this order.
+                        </div>
+                    `
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="lookup-card">
+
+            <h3>🛒 Order Items</h3>
+
+            ${
+                items.length
+                    ? `
+                        <div class="lookup-items">
+
+                            ${items.map(item => `
+
+                                <div class="lookup-item">
+
+                                    <span>
+                                        ${escapeHtml(
+                                            String(
+                                                item.name ||
+                                                item.item_name ||
+                                                item.product_name ||
+                                                "Item"
+                                            )
+                                        )}
+                                    </span>
+
+                                    <span>
+                                        Qty:
+                                        ${escapeHtml(
+                                            String(
+                                                item.quantity ||
+                                                1
+                                            )
+                                        )}
+                                    </span>
+
+                                    <strong>
+                                        ₹${Number(
+                                            item.total ||
+                                            item.price ||
+                                            0
+                                        ).toFixed(2)}
+                                    </strong>
+
+                                </div>
+
+                            `).join("")}
+
+                        </div>
+                    `
+                    : `
+                        <div class="lookup-empty-small">
+                            No order items found.
+                        </div>
+                    `
+            }
+
+        </div>
+
+
+        <div class="lookup-card">
+
+            <h3>💬 Support History</h3>
+
+            ${
+                supportChats.length
+                    ? supportChats.map(chat => `
+
+                        <div class="lookup-support-chat">
+
+                            <div class="lookup-row">
+
+                                <b>
+                                    ${escapeHtml(
+                                        chat.chat_id
+                                    )}
+                                </b>
+
+                                <span>
+                                    ${escapeHtml(
+                                        chat.status
+                                    )}
+                                </span>
+
+                            </div>
+
+                            ${
+                                Array.isArray(chat.messages) &&
+                                chat.messages.length
+                                    ? chat.messages.map(message => `
+
+                                        <div class="lookup-message">
+
+                                            <b>
+                                                ${escapeHtml(
+                                                    message.sender
+                                                )}
+                                            </b>
+
+                                            <span>
+                                                ${escapeHtml(
+                                                    message.message
+                                                )}
+                                            </span>
+
+                                        </div>
+
+                                    `).join("")
+                                    : `
+                                        <div class="lookup-empty-small">
+                                            No messages.
+                                        </div>
+                                    `
+                            }
+
+                        </div>
+
+                    `).join("")
+                    : `
+                        <div class="lookup-empty-small">
+                            No support conversation found for this order.
+                        </div>
+                    `
+            }
+
+        </div>
+
+    `;
+
+}
+
+function renderMobileLookup(data) {
+
+    const container =
+        document.getElementById("lookupResult");
+
+    if (!container) {
+        console.error(
+            "lookupResult element not found"
+        );
+        return;
+    }
+
+    container.innerHTML = "";
+
+    container.innerHTML = "";
+
+    const results =
+        Array.isArray(data.results)
+            ? data.results
+            : [];
+
+    if (results.length === 0) {
+
+        container.innerHTML = `
+            <div class="lookup-empty">
+                <h3>No Orders Found</h3>
+                <p>
+                    Customer was found, but no orders
+                    are linked to this mobile number.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    results.forEach((result) => {
+
+        const customer =
+            result.customer || {};
+
+        const orders =
+            Array.isArray(result.orders)
+                ? result.orders
+                : [];
+
+        const customerCard =
+            document.createElement("div");
+
+        customerCard.className =
+            "lookup-customer-card";
+
+        customerCard.innerHTML = `
+
+            <div class="lookup-customer-header">
+
+                <div>
+                    <h2>
+                        ${escapeHtml(
+                            customer.name ||
+                            "Customer"
+                        )}
+                    </h2>
+
+                    <p>
+                        <b>Customer ID:</b>
+                        ${escapeHtml(
+                            customer.id ?? "-"
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Mobile:</b>
+                        ${escapeHtml(
+                            customer.mobile || "-"
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Email:</b>
+                        ${escapeHtml(
+                            customer.email || "-"
+                        )}
+                    </p>
+
+                    <p>
+                        <b>City:</b>
+                        ${escapeHtml(
+                            customer.city || "-"
+                        )}
+                    </p>
+
+                    <p>
+                        <b>State:</b>
+                        ${escapeHtml(
+                            customer.state || "-"
+                        )}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="lookup-orders">
+
+                <h3>
+                    Customer Orders
+                    (${orders.length})
+                </h3>
+
+            </div>
+        `;
+
+        const ordersContainer =
+            customerCard.querySelector(
+                ".lookup-orders"
+            );
+
+        orders.forEach((order) => {
+
+            const delivery =
+                order.deliveryPartner || null;
+
+            const payment =
+                order.paymentDetails || {};
+
+            const paymentStatus =
+                payment.status ||
+                order.payment ||
+                "Not Available";
+
+            const deliveryStatus =
+                delivery
+                    ? "Assigned"
+                    : "Not Assigned";
+
+            const orderCard =
+                document.createElement("div");
+
+            orderCard.className =
+                "lookup-order-card";
+
+            orderCard.innerHTML = `
+
+                <div class="lookup-order-top">
+
+                    <div>
+
+                        <h3>
+                            Order #${escapeHtml(
+                                order.id
+                            )}
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                order.created_at || ""
+                            )}
+                        </p>
+
+                    </div>
+
+                    <strong>
+                        ${escapeHtml(
+                            order.status || "-"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="lookup-grid">
+
+                    <div>
+                        <span>Restaurant</span>
+                        <b>
+                            ${escapeHtml(
+                                order.restaurant_name ||
+                                "-"
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Order Total</span>
+                        <b>
+                            ₹${escapeHtml(
+                                Number(
+                                    order.grand_total || 0
+                                ).toFixed(2)
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Food Total</span>
+                        <b>
+                            ₹${escapeHtml(
+                                Number(
+                                    order.food_total || 0
+                                ).toFixed(2)
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Delivery Fee</span>
+                        <b>
+                            ₹${escapeHtml(
+                                Number(
+                                    order.delivery_fee || 0
+                                ).toFixed(2)
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Platform Fee</span>
+                        <b>
+                            ₹${escapeHtml(
+                                Number(
+                                    order.platform_fee || 0
+                                ).toFixed(2)
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Payment Method</span>
+                        <b>
+                            ${escapeHtml(
+                                payment.method ||
+                                order.payment ||
+                                "-"
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Payment Status</span>
+                        <b>
+                            ${escapeHtml(
+                                paymentStatus
+                            )}
+                        </b>
+                    </div>
+
+                    <div>
+                        <span>Delivery</span>
+                        <b>
+                            ${deliveryStatus}
+                        </b>
+                    </div>
+
+                </div>
+
+
+                <div class="lookup-section">
+
+                    <h4>Delivery Partner</h4>
+
+                    ${
+                        delivery
+                        ? `
+                            <p>
+                                <b>Name:</b>
+                                ${escapeHtml(
+                                    delivery.name || "-"
+                                )}
+                            </p>
+
+                            <p>
+                                <b>Mobile:</b>
+                                ${escapeHtml(
+                                    delivery.mobile || "-"
+                                )}
+                            </p>
+
+                            <p>
+                                <b>Vehicle:</b>
+                                ${escapeHtml(
+                                    delivery.vehicle || "-"
+                                )}
+                            </p>
+
+                            <p>
+                                <b>Online Status:</b>
+                                ${escapeHtml(
+                                    delivery.online_status || "-"
+                                )}
+                            </p>
+                        `
+                        : `
+                            <p>
+                                No delivery partner assigned.
+                            </p>
+                        `
+                    }
+
+                </div>
+
+
+                <div class="lookup-section">
+
+                    <h4>Order Items</h4>
+
+                    <div class="lookup-items">
+
+                        ${
+                            Array.isArray(order.items) &&
+                            order.items.length
+                            ? order.items.map(item => `
+                                <div class="lookup-item">
+
+                                    <span>
+                                        ${escapeHtml(
+                                            item.item_name ||
+                                            item.name ||
+                                            item.product_name ||
+                                            "Item"
+                                        )}
+                                    </span>
+
+                                    <span>
+                                        Qty:
+                                        ${escapeHtml(
+                                            item.quantity || 1
+                                        )}
+                                    </span>
+
+                                    <strong>
+                                        ₹${escapeHtml(
+                                            Number(
+                                                item.price ||
+                                                item.total ||
+                                                0
+                                            ).toFixed(2)
+                                        )}
+                                    </strong>
+
+                                </div>
+                            `).join("")
+                            : `
+                                <p>No item details available.</p>
+                            `
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="lookup-section">
+
+                    <h4>Payment Details</h4>
+
+                    <p>
+                        <b>Method:</b>
+                        ${escapeHtml(
+                            payment.method || "-"
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Status:</b>
+                        ${escapeHtml(
+                            payment.status || "-"
+                        )}
+                    </p>
+
+                    <p>
+                        <b>Transaction ID:</b>
+                        ${escapeHtml(
+                            payment.transaction_id || "-"
+                        )}
+                    </p>
+
+                </div>
+
+
+                <div class="lookup-section">
+
+                    <h4>Support History</h4>
+
+                    ${
+                        Array.isArray(
+                            order.supportChats
+                        ) &&
+                        order.supportChats.length
+                        ? order.supportChats.map(chat => `
+                            <div class="lookup-support-chat">
+
+                                <p>
+                                    <b>Chat:</b>
+                                    ${escapeHtml(
+                                        chat.chat_id || "-"
+                                    )}
+                                </p>
+
+                                <p>
+                                    <b>Status:</b>
+                                    ${escapeHtml(
+                                        chat.status || "-"
+                                    )}
+                                </p>
+
+                                <p>
+                                    <b>Created:</b>
+                                    ${escapeHtml(
+                                        chat.created_at || "-"
+                                    )}
+                                </p>
+
+                            </div>
+                        `).join("")
+                        : `
+                            <p>
+                                No support conversations
+                                linked to this order.
+                            </p>
+                        `
+                    }
+
+                </div>
+
+            `;
+
+            ordersContainer.appendChild(orderCard);
+
+        });
+
+        container.appendChild(customerCard);
+
+    });
+}
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
 </script>
 
 </body>

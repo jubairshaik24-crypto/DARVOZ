@@ -30,18 +30,16 @@
     font-family:Arial,sans-serif;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-
     width:100%;
-
     min-height:100vh;
-
-    background:#f5f5f5;
-
-    color:#222;
-
+    background:#f7f7f8;
+    color:#171717;
     padding-bottom:80px;
-
 }
 
 
@@ -50,48 +48,69 @@ body{
 ===================================================== */
 
 .header{
-
     position:sticky;
-
     top:0;
-
     width:100%;
-
-    height:60px;
-
-    background:#ff6b00;
-
-    color:#fff;
-
+    height:72px;
+    background:#fff;
+    color:#222;
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
-    padding:0 18px;
-
+    padding:0 24px;
     z-index:1000;
-
-    box-shadow:
-        0 2px 10px rgba(0,0,0,.15);
-
+    border-bottom:1px solid #eee;
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
 }
 
-.header i{
 
-    font-size:22px;
+/* =====================================================
+   HEADER LEFT
+===================================================== */
 
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.menu-btn{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
+    color:#333;
+    transition:.2s;
+}
 
+.menu-btn:hover{
+    background:#fff3e8;
+    color:#ff6b00;
+}
+
+.menu-btn i{
+    font-size:21px;
+}
+
+.logo{
+    display:flex;
+    flex-direction:column;
+    line-height:1.1;
 }
 
 .logo h2{
-
-    font-size:22px;
-
+    color:#ff6b00;
+    font-size:23px;
     letter-spacing:1px;
+}
 
+.logo span{
+    font-size:11px;
+    color:#777;
+    margin-top:3px;
 }
 
 
@@ -100,53 +119,69 @@ body{
 ===================================================== */
 
 .header-right{
-
     display:flex;
-
     align-items:center;
-
-    gap:14px;
-
+    gap:12px;
 }
 
 
 /* =====================================================
-   WALLET MINI
+   WALLET
 ===================================================== */
 
 .wallet-mini{
-
     display:flex;
-
     align-items:center;
-
-    gap:7px;
-
+    gap:8px;
     background:#fff;
-
-    color:#ff6b00;
-
-    padding:8px 12px;
-
-    border-radius:22px;
-
+    color:#222;
+    padding:10px 15px;
+    border-radius:13px;
     font-weight:700;
-
     font-size:14px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.12);
-
+    border:1px solid #eee;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
     white-space:nowrap;
-
+    text-decoration:none;
+    transition:.2s;
 }
 
 .wallet-mini i{
-
-    font-size:15px;
-
     color:#ff6b00;
+    font-size:16px;
+}
 
+.wallet-mini:hover{
+    border-color:#ff6b00;
+    transform:translateY(-1px);
+}
+
+
+/* =====================================================
+   HELP ICON
+===================================================== */
+
+.header-help{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    background:#fff3e8;
+    color:#ff6b00;
+    border:1px solid #ffe1cc;
+    transition:.2s;
+}
+
+.header-help i{
+    font-size:18px;
+}
+
+.header-help:hover{
+    background:#ff6b00;
+    color:#fff;
 }
 
 
@@ -155,30 +190,122 @@ body{
 ===================================================== */
 
 .notify{
-
     position:relative;
-
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
+    border-radius:50%;
+    transition:.2s;
+}
 
+.notify:hover{
+    background:#f5f5f5;
 }
 
 .notify i{
+    color:#444;
+    font-size:20px;
+}
 
+.notify-badge{
+    position:absolute;
+    top:1px;
+    right:1px;
+    min-width:17px;
+    height:17px;
+    padding:0 4px;
+    border-radius:20px;
+    background:#ff3b30;
     color:#fff;
-
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:bold;
 }
 
 
 /* =====================================================
-   CONTAINER
+   DESKTOP SIDEBAR
+===================================================== */
+
+.desktop-sidebar{
+    position:fixed;
+    left:0;
+    top:72px;
+    width:220px;
+    height:calc(100vh - 72px);
+    background:#fff;
+    border-right:1px solid #eee;
+    padding:20px 14px;
+    z-index:900;
+}
+
+.desktop-sidebar a{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:13px 14px;
+    margin-bottom:5px;
+    border-radius:12px;
+    text-decoration:none;
+    color:#555;
+    font-size:14px;
+    transition:.2s;
+}
+
+.desktop-sidebar a i{
+    width:22px;
+    text-align:center;
+    font-size:16px;
+}
+
+.desktop-sidebar a:hover{
+    background:#fff3e8;
+    color:#ff6b00;
+}
+
+.desktop-sidebar a.active{
+    background:#fff1e7;
+    color:#ff6b00;
+    font-weight:700;
+}
+
+.desktop-sidebar .logout{
+    color:#e53935;
+    margin-top:25px;
+}
+
+.desktop-sidebar .logout:hover{
+    background:#fff0f0;
+    color:#e53935;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
 ===================================================== */
 
 .container{
+    width:calc(100% - 220px);
+    margin-left:220px;
+    padding:24px;
+    max-width:1500px;
+}
 
-    width:100%;
 
-    padding:0 15px;
+/* =====================================================
+   DASHBOARD TOP GRID
+===================================================== */
 
+.dashboard-top{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 300px;
+    gap:18px;
+    margin-bottom:18px;
 }
 
 
@@ -187,155 +314,264 @@ body{
 ===================================================== */
 
 .welcome{
-
     background:#fff;
-
-    margin:20px 0;
-
     border-radius:18px;
+    padding:25px;
+    min-height:190px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+    border:1px solid #eee;
+    position:relative;
+    overflow:hidden;
+}
 
-    padding:20px;
-
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.08);
-
+.welcome::after{
+    content:"";
+    position:absolute;
+    right:-70px;
+    bottom:-90px;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:#fff3e8;
 }
 
 .welcome h2{
-
-    color:#ff6b00;
-
-    margin-bottom:5px;
-
+    color:#777;
+    font-size:15px;
+    margin-bottom:7px;
+    position:relative;
+    z-index:2;
 }
 
 .welcome h3{
-
     margin-bottom:8px;
-
-    font-size:20px;
-
+    font-size:28px;
+    position:relative;
+    z-index:2;
 }
 
 .welcome p{
-
-    color:#555;
-
+    color:#666;
     font-size:14px;
-
+    position:relative;
+    z-index:2;
 }
 
 .welcome p b{
-
-    color:#222;
-
+    color:#ff6b00;
 }
-
-
-/* =====================================================
-   APPROVED STATUS
-===================================================== */
 
 .status{
-
-    display:inline-block;
-
-    margin-top:12px;
-
-    background:#28a745;
-
-    color:#fff;
-
-    padding:6px 15px;
-
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:18px;
+    background:#e9f8ee;
+    color:#198754;
+    padding:8px 13px;
     border-radius:20px;
-
     font-size:13px;
+    font-weight:700;
+    position:relative;
+    z-index:2;
+}
 
-    font-weight:600;
-
+.status::before{
+    content:"✓";
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#22a447;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
 }
 
 
 /* =====================================================
-   STORE STATUS
+   BUSINESS HOURS
 ===================================================== */
 
-.store-status-box{
+.business-hours{
+    background:#fff;
+    border-radius:18px;
+    padding:22px;
+    border:1px solid #eee;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
 
-    margin-top:18px;
+.business-hours-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:17px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.business-hours-title i{
+    color:#ff6b00;
+    font-size:18px;
+}
+
+.hours-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid #f1f1f1;
+    font-size:12px;
+}
+
+.hours-row:last-of-type{
+    border-bottom:none;
+}
+
+.hours-day{
+    font-weight:700;
+    color:#333;
+}
+
+.hours-time{
+    color:#666;
+    text-align:right;
+}
+
+/* =====================================================
+   MANAGE BUSINESS HOURS LINK
+===================================================== */
+
+.hours-note{
 
     display:flex;
 
-    justify-content:space-between;
-
     align-items:center;
 
-    gap:15px;
+    justify-content:center;
 
-    flex-wrap:wrap;
+    gap:6px;
 
-}
+    margin-top:14px;
 
-.store-status{
+    padding:10px 12px;
 
-    padding:10px 18px;
+    background:#fff7f0;
 
-    border-radius:30px;
+    border-radius:10px;
 
-    font-size:14px;
+    color:#ff6b00;
+
+    font-size:11px;
 
     font-weight:700;
 
-}
+    text-decoration:none;
 
-.store-status.open{
-
-    background:#d1fae5;
-
-    color:#16a34a;
+    transition:.2s;
 
 }
 
-.store-status.closed{
-
-    background:#fee2e2;
-
-    color:#dc2626;
-
-}
-
-
-/* =====================================================
-   STORE BUTTON
-===================================================== */
-
-#toggleStoreBtn{
-
-    border:none;
+.hours-note:hover{
 
     background:#ff6b00;
 
     color:#fff;
 
-    padding:11px 18px;
+}
 
-    border-radius:10px;
+.hours-note i{
 
-    font-size:14px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.3s;
+    font-size:11px;
 
 }
 
-#toggleStoreBtn:hover{
+/* =====================================================
+   DAYS SCROLL CONTAINER
+===================================================== */
 
-    opacity:.9;
+#daysContainer{
 
+    /*
+       Show approximately 2 days at a time
+       while keeping all 7 days available.
+    */
+
+    height:220px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    padding-right:5px;
+
+    scroll-behavior:smooth;
+
+    overscroll-behavior:contain;
+
+}
+
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+===================================================== */
+
+#daysContainer::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+#daysContainer::-webkit-scrollbar-track{
+
+    background:#f5f5f5;
+
+    border-radius:10px;
+
+}
+
+#daysContainer::-webkit-scrollbar-thumb{
+
+    background:#d2d2d2;
+
+    border-radius:10px;
+
+}
+
+#daysContainer::-webkit-scrollbar-thumb:hover{
+
+    background:#ff6b00;
+
+}
+
+
+/* Firefox */
+
+#daysContainer{
+
+    scrollbar-width:thin;
+
+    scrollbar-color:#d2d2d2 #f5f5f5;
+
+}
+
+/* =====================================================
+   OLD STORE STATUS
+   KEPT ONLY FOR JS COMPATIBILITY
+===================================================== */
+
+.store-status-box{
+    display:none !important;
+}
+
+.store-status{
+    display:none !important;
+}
+
+#toggleStoreBtn{
+    display:none !important;
 }
 
 
@@ -344,65 +580,70 @@ body{
 ===================================================== */
 
 .cards{
-
     display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:15px;
-
+    margin-bottom:18px;
 }
 
 .card{
-
     background:#fff;
-
-    border-radius:18px;
-
-    padding:18px;
-
-    text-align:center;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,.08);
-
-    transition:.3s;
-
+    border-radius:17px;
+    padding:19px;
+    min-height:145px;
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+    border:1px solid #eee;
+    transition:.2s;
 }
 
 .card:hover{
-
-    transform:translateY(-3px);
-
+    transform:translateY(-2px);
 }
 
-.card i{
+.card-icon{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    margin-bottom:14px;
+}
 
-    font-size:28px;
-
+.card:nth-child(1) .card-icon{
+    background:#fff0e5;
     color:#ff6b00;
+}
 
-    margin-bottom:10px;
+.card:nth-child(2) .card-icon{
+    background:#eaf9ef;
+    color:#16a34a;
+}
 
+.card:nth-child(3) .card-icon{
+    background:#f0ebff;
+    color:#7048e8;
+}
+
+.card:nth-child(4) .card-icon{
+    background:#eaf2ff;
+    color:#2563eb;
+}
+
+.card-icon i{
+    font-size:19px;
 }
 
 .card h4{
-
     color:#666;
-
-    font-size:14px;
-
+    font-size:13px;
+    font-weight:600;
 }
 
 .card h1{
-
-    margin-top:10px;
-
-    color:#ff6b00;
-
-    font-size:28px;
-
+    margin-top:7px;
+    color:#222;
+    font-size:25px;
 }
 
 
@@ -411,21 +652,35 @@ body{
 ===================================================== */
 
 .orders{
-
-    margin-top:20px;
-
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.05);
+    border:1px solid #eee;
 }
 
 .section-title{
-
-    margin-bottom:12px;
-
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:5px;
+    padding:0 4px 12px;
+    border-bottom:1px solid #eee;
 }
 
 .section-title h3{
+    font-size:18px;
+}
 
-    font-size:19px;
+.view-all{
+    color:#ff6b00;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+}
 
+.view-all:hover{
+    text-decoration:underline;
 }
 
 
@@ -434,68 +689,389 @@ body{
 ===================================================== */
 
 .order-card{
+    display:grid;
 
-    background:#fff;
+    /*
+       CUSTOMER / ORDER
+       AMOUNT / PAYMENT
+       STATUS
+       TIME
+       ARROW
+    */
 
-    border-radius:15px;
-
-    padding:15px;
-
-    margin-bottom:12px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.08);
-
-}
-
-.order-top{
-
-    display:flex;
-
-    justify-content:space-between;
+    grid-template-columns:
+        minmax(220px,1.35fr)
+        minmax(150px,1fr)
+        120px
+        100px
+        20px;
 
     align-items:center;
 
-    margin-bottom:8px;
+    gap:16px;
 
+    padding:17px 8px;
+
+    background:#fff;
+
+    border-bottom:1px solid #eeeeee;
+
+    cursor:pointer;
+
+    transition:
+        background .2s,
+        transform .2s;
+}
+
+.order-card:hover{
+    background:#fafafa;
+}
+
+.order-card:last-child{
+    border-bottom:none;
+}
+
+
+/* =====================================================
+   ORDER MAIN
+===================================================== */
+
+.order-main{
+    min-width:0;
 }
 
 .order-id{
+    display:block;
 
-    font-weight:bold;
+    font-size:15px;
 
-    color:#ff6b00;
+    font-weight:800;
 
-}
+    color:#171717;
 
-.order-status{
+    margin-bottom:5px;
 
-    background:#fff3e8;
-
-    color:#ff6b00;
-
-    padding:4px 10px;
-
-    border-radius:20px;
-
-    font-size:12px;
-
+    white-space:nowrap;
 }
 
 .customer{
+    color:#555;
 
-    color:#444;
+    font-size:13px;
 
-    margin-bottom:6px;
+    white-space:nowrap;
 
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/* =====================================================
+   AMOUNT + PAYMENT
+===================================================== */
+
+.order-payment{
+    min-width:0;
 }
 
 .total{
+    display:block;
 
-    font-size:18px;
+    font-size:17px;
 
-    font-weight:bold;
+    font-weight:800;
 
+    color:#171717;
+
+    margin-bottom:5px;
+
+    white-space:nowrap;
+}
+
+.payment-method{
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    color:#555;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+.payment-method i{
+    font-size:12px;
+}
+
+
+/* UPI */
+
+.payment-method.upi i{
+    color:#673ab7;
+}
+
+
+/* COD */
+
+.payment-method.cod i{
+    color:#16a34a;
+}
+
+
+/* =====================================================
+   STATUS COLORS
+===================================================== */
+
+.order-status{
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:95px;
+
+    padding:8px 11px;
+
+    border-radius:10px;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    text-align:center;
+
+    white-space:nowrap;
+}
+
+
+/* NEW */
+
+.order-status.new{
+    background:#fff0e5;
+
+    color:#ff6b00;
+}
+
+
+/* PREPARING */
+
+.order-status.preparing{
+    background:#eaf2ff;
+
+    color:#2563eb;
+}
+
+
+/* CONFIRMED */
+
+.order-status.confirmed{
+    background:#eaf9ef;
+
+    color:#15803d;
+}
+
+
+/* ACCEPTED */
+
+.order-status.accepted{
+    background:#f0ebff;
+
+    color:#7048e8;
+}
+
+
+/* OUT FOR DELIVERY */
+
+.order-status.out-delivery{
+    background:#e9f7ff;
+
+    color:#0284c7;
+}
+
+
+/* DELIVERED */
+
+.order-status.delivered{
+    background:#eaf9ef;
+
+    color:#15803d;
+}
+
+
+/* PENDING */
+
+.order-status.pending{
+    background:#f0ebff;
+
+    color:#7048e8;
+}
+
+
+/* CANCELLED */
+
+.order-status.cancelled{
+    background:#fee2e2;
+
+    color:#dc2626;
+}
+
+
+/* =====================================================
+   ORDER TIME
+===================================================== */
+
+.order-time{
+    color:#777;
+
+    font-size:12px;
+
+    white-space:nowrap;
+
+    text-align:right;
+}
+
+
+/* =====================================================
+   ORDER ARROW
+===================================================== */
+
+.order-arrow{
+    color:#777;
+
+    font-size:15px;
+
+    text-align:right;
+
+    transition:.2s;
+}
+
+.order-card:hover .order-arrow{
+    color:#ff6b00;
+
+    transform:translateX(2px);
+}
+
+
+/* =====================================================
+   SUPPORT
+===================================================== */
+
+.support-card{
+    margin-top:18px;
+
+    background:#fff;
+
+    border:1px solid #dceaff;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.04);
+}
+
+.support-left{
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+}
+
+.support-icon{
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#eaf2ff;
+
+    color:#2563eb;
+
+    font-size:22px;
+}
+
+.support-text h3{
+    font-size:17px;
+
+    margin-bottom:4px;
+}
+
+.support-text p{
+    color:#777;
+
+    font-size:13px;
+}
+
+.support-call{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    padding:12px 18px;
+
+    border:1px solid #2563eb;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    color:#2563eb;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    transition:.2s;
+}
+
+.support-call:hover{
+    background:#2563eb;
+
+    color:#fff;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+    text-align:center;
+
+    color:#999;
+
+    font-size:11px;
+
+    padding:22px 0 5px;
 }
 
 
@@ -504,6 +1080,7 @@ body{
 ===================================================== */
 
 .bottom-nav{
+    display:none;
 
     position:fixed;
 
@@ -513,28 +1090,25 @@ body{
 
     width:100%;
 
-    height:65px;
+    height:68px;
 
     background:#fff;
-
-    display:flex;
 
     justify-content:space-around;
 
     align-items:center;
 
-    box-shadow:
-        0 -3px 12px rgba(0,0,0,.12);
+    box-shadow:0 -3px 15px rgba(0,0,0,.10);
 
     z-index:999;
 
+    border-top:1px solid #eee;
 }
 
 .bottom-nav a{
-
     text-decoration:none;
 
-    color:#666;
+    color:#777;
 
     display:flex;
 
@@ -542,38 +1116,38 @@ body{
 
     align-items:center;
 
-    font-size:12px;
+    justify-content:center;
 
+    gap:4px;
+
+    font-size:10px;
+
+    font-weight:600;
+
+    min-width:55px;
 }
 
 .bottom-nav i{
-
-    font-size:22px;
-
-    margin-bottom:4px;
-
+    font-size:20px;
 }
 
 .bottom-nav .active{
-
     color:#ff6b00;
-
 }
 
 
 /* =====================================================
-   SIDE MENU
+   MOBILE SIDE MENU
 ===================================================== */
 
 .side-menu{
-
     position:fixed;
 
     top:0;
 
-    left:-270px;
+    left:-280px;
 
-    width:260px;
+    width:270px;
 
     height:100%;
 
@@ -583,59 +1157,49 @@ body{
 
     z-index:1001;
 
-    box-shadow:
-        5px 0 20px rgba(0,0,0,.15);
+    box-shadow:5px 0 20px rgba(0,0,0,.15);
 
-    padding-top:20px;
+    padding-top:15px;
 
+    overflow-y:auto;
 }
 
 .side-menu.active{
-
     left:0;
-
 }
 
 .close{
-
     text-align:right;
 
     padding:15px;
-
 }
 
 .close i{
-
     font-size:22px;
 
     cursor:pointer;
 
     color:#333;
-
 }
 
 .side-menu a{
-
     display:block;
 
     text-decoration:none;
 
     color:#333;
 
-    padding:18px 20px;
+    padding:17px 20px;
 
     border-bottom:1px solid #eee;
 
-    font-size:16px;
-
+    font-size:15px;
 }
 
 .side-menu a:hover{
-
     background:#fff3e8;
 
     color:#ff6b00;
-
 }
 
 
@@ -644,7 +1208,6 @@ body{
 ===================================================== */
 
 .overlay{
-
     position:fixed;
 
     inset:0;
@@ -654,13 +1217,10 @@ body{
     display:none;
 
     z-index:1000;
-
 }
 
 .overlay.active{
-
     display:block;
-
 }
 
 
@@ -669,12 +1229,11 @@ body{
 ===================================================== */
 
 .new-order-popup{
-
     position:fixed;
 
     top:85px;
 
-    right:20px;
+    right:25px;
 
     width:340px;
 
@@ -682,8 +1241,7 @@ body{
 
     border-radius:18px;
 
-    box-shadow:
-        0 10px 40px rgba(0,0,0,.25);
+    box-shadow:0 10px 40px rgba(0,0,0,.25);
 
     z-index:99999;
 
@@ -691,33 +1249,25 @@ body{
 
     display:none;
 
-    animation:
-        popupIn .35s ease;
-
+    animation:popupIn .35s ease;
 }
 
 .new-order-popup.show{
-
     display:block;
-
 }
 
 @keyframes popupIn{
 
     from{
-
         transform:translateX(120%);
 
         opacity:0;
-
     }
 
     to{
-
         transform:translateX(0);
 
         opacity:1;
-
     }
 
 }
@@ -728,17 +1278,14 @@ body{
 ===================================================== */
 
 .popup-header{
-
     display:flex;
 
     align-items:center;
 
     gap:12px;
-
 }
 
 .popup-icon{
-
     width:45px;
 
     height:45px;
@@ -756,27 +1303,21 @@ body{
     justify-content:center;
 
     font-size:20px;
-
 }
 
 .popup-header h3{
-
     font-size:15px;
 
     color:#222;
-
 }
 
 .popup-header p{
-
     font-size:10px;
 
     color:#888;
-
 }
 
 .popup-close{
-
     margin-left:auto;
 
     border:none;
@@ -788,7 +1329,10 @@ body{
     cursor:pointer;
 
     color:#777;
+}
 
+.popup-close:hover{
+    color:#ff5a00;
 }
 
 
@@ -797,17 +1341,14 @@ body{
 ===================================================== */
 
 .popup-body{
-
     margin-top:18px;
 
     display:grid;
 
     gap:9px;
-
 }
 
 .popup-body div{
-
     display:flex;
 
     justify-content:space-between;
@@ -817,21 +1358,16 @@ body{
     padding:9px 11px;
 
     border-radius:8px;
-
 }
 
 .popup-body span{
-
     color:#777;
 
     font-size:11px;
-
 }
 
 .popup-body b{
-
     font-size:12px;
-
 }
 
 
@@ -840,7 +1376,6 @@ body{
 ===================================================== */
 
 .view-order-btn{
-
     width:100%;
 
     margin-top:15px;
@@ -859,12 +1394,13 @@ body{
 
     cursor:pointer;
 
+    transition:.2s;
 }
 
 .view-order-btn:hover{
-
     opacity:.9;
 
+    transform:translateY(-1px);
 }
 
 
@@ -875,46 +1411,46 @@ body{
 @media(min-width:1024px){
 
     .header{
+        padding-left:24px;
 
-        max-width:1200px;
+        padding-right:28px;
+    }
 
-        margin:auto;
+    .side-menu{
+        display:none;
+    }
 
-        left:50%;
+}
 
-        transform:translateX(-50%);
 
-        border-radius:
-            0 0 18px 18px;
+/* =====================================================
+   TABLET
+===================================================== */
 
+@media(max-width:1023px){
+
+    .desktop-sidebar{
+        display:none;
     }
 
     .container{
+        width:100%;
 
-        width:min(1200px,95%);
+        margin-left:0;
 
-        margin:20px auto;
-
-    }
-
-    .cards{
-
-        grid-template-columns:
-            repeat(4,1fr);
-
+        padding:20px;
     }
 
     .bottom-nav{
+        display:flex;
+    }
 
-        max-width:1200px;
+    .header{
+        height:64px;
+    }
 
-        left:50%;
-
-        transform:translateX(-50%);
-
-        border-radius:
-            18px 18px 0 0;
-
+    .dashboard-top{
+        grid-template-columns:1fr;
     }
 
 }
@@ -924,78 +1460,362 @@ body{
    MOBILE
 ===================================================== */
 
-@media(max-width:600px){
+@media(max-width:700px){
+
+    body{
+        padding-bottom:75px;
+    }
+
+
+    /* HEADER */
 
     .header{
+        height:62px;
 
-        padding:0 12px;
+        padding:0 10px;
+    }
 
+    .header-left{
+        gap:6px;
+    }
+
+    .menu-btn{
+        width:38px;
+
+        height:38px;
+    }
+
+    .menu-btn i{
+        font-size:19px;
     }
 
     .logo h2{
+        font-size:19px;
+    }
 
-        font-size:20px;
-
+    .logo span{
+        font-size:9px;
     }
 
     .header-right{
-
-        gap:8px;
-
+        gap:5px;
     }
 
     .wallet-mini{
-
-        padding:7px 9px;
+        padding:8px 9px;
 
         font-size:12px;
 
+        gap:5px;
     }
 
     .wallet-mini i{
-
         font-size:13px;
+    }
 
+    .header-help{
+        width:37px;
+
+        height:37px;
+    }
+
+    .header-help i{
+        font-size:16px;
+    }
+
+    .notify{
+        width:37px;
+
+        height:37px;
     }
 
     .notify i{
-
-        font-size:20px;
-
+        font-size:19px;
     }
 
-    .store-status-box{
+
+    /* MAIN */
+
+    .container{
+        padding:12px;
+    }
+
+    .dashboard-top{
+        gap:12px;
+
+        margin-bottom:12px;
+    }
+
+
+    /* WELCOME */
+
+    .welcome{
+        padding:18px;
+
+        min-height:auto;
+    }
+
+    .welcome h2{
+        font-size:13px;
+    }
+
+    .welcome h3{
+        font-size:22px;
+    }
+
+    .welcome p{
+        font-size:12px;
+    }
+
+    .status{
+        margin-top:13px;
+
+        font-size:11px;
+    }
+
+
+    /* BUSINESS HOURS */
+
+    .business-hours{
+        padding:17px;
+    }
+
+    .business-hours-title{
+        font-size:15px;
+
+        margin-bottom:12px;
+    }
+
+    .hours-row{
+        font-size:11px;
+
+        padding:8px 0;
+    }
+
+    .hours-note{
+        font-size:10px;
+    }
+
+
+    /* STATS */
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+
+        gap:10px;
+
+        margin-bottom:12px;
+    }
+
+    .card{
+        min-height:130px;
+
+        padding:15px;
+    }
+
+    .card-icon{
+        width:37px;
+
+        height:37px;
+
+        margin-bottom:10px;
+    }
+
+    .card-icon i{
+        font-size:16px;
+    }
+
+    .card h4{
+        font-size:11px;
+    }
+
+    .card h1{
+        font-size:22px;
+    }
+
+
+    /* ORDERS */
+
+    .orders{
+        padding:14px;
+    }
+
+    .section-title{
+        padding:0 2px 11px;
+
+        margin-bottom:0;
+    }
+
+    .section-title h3{
+        font-size:17px;
+    }
+
+    .view-all{
+        font-size:12px;
+    }
+
+
+    /* MOBILE ORDER ROW */
+
+    .order-card{
+
+        grid-template-columns:
+            minmax(0,1fr)
+            auto
+            auto;
+
+        gap:7px 10px;
+
+        padding:15px 3px;
+    }
+
+
+    .order-main{
+        grid-column:1;
+
+        grid-row:1;
+    }
+
+
+    .order-payment{
+        grid-column:2;
+
+        grid-row:1;
+    }
+
+
+    .order-status{
+        grid-column:3;
+
+        grid-row:1;
+
+        min-width:auto;
+
+        max-width:100px;
+
+        padding:7px 8px;
+
+        font-size:9px;
+    }
+
+
+    .order-time{
+        grid-column:1 / 3;
+
+        grid-row:2;
+
+        text-align:left;
+
+        font-size:10px;
+
+        padding-left:1px;
+    }
+
+
+    .order-arrow{
+        grid-column:3;
+
+        grid-row:2;
+
+        text-align:right;
+
+        font-size:13px;
+    }
+
+
+    .order-id{
+        font-size:13px;
+
+        margin-bottom:4px;
+    }
+
+    .customer{
+        font-size:11px;
+
+        max-width:150px;
+    }
+
+    .total{
+        font-size:14px;
+
+        margin-bottom:4px;
+    }
+
+    .payment-method{
+        font-size:10px;
+
+        gap:4px;
+    }
+
+    .payment-method i{
+        font-size:10px;
+    }
+
+
+    /* SUPPORT */
+
+    .support-card{
+        padding:16px;
 
         flex-direction:column;
 
         align-items:stretch;
 
+        gap:15px;
+    }
+
+    .support-left{
         gap:12px;
-
     }
 
-    .store-status{
+    .support-icon{
+        width:46px;
 
-        text-align:center;
+        height:46px;
 
+        font-size:19px;
     }
 
-    #toggleStoreBtn{
+    .support-text h3{
+        font-size:15px;
+    }
 
+    .support-text p{
+        font-size:11px;
+    }
+
+    .support-call{
         width:100%;
 
+        min-height:44px;
     }
 
-    .new-order-popup{
 
+    /* POPUP */
+
+    .new-order-popup{
         left:12px;
 
         right:12px;
 
         width:auto;
 
-        top:75px;
+        top:72px;
+    }
 
+
+    /* BOTTOM NAV */
+
+    .bottom-nav{
+        height:68px;
+    }
+
+    .bottom-nav a{
+        font-size:10px;
+    }
+
+    .bottom-nav i{
+        font-size:20px;
     }
 
 }
@@ -1007,76 +1827,91 @@ body{
 
 @media(max-width:380px){
 
-    .wallet-mini{
+    .logo h2{
+        font-size:17px;
+    }
 
-        padding:6px 8px;
+    .logo span{
+        display:none;
+    }
+
+    .wallet-mini{
+        padding:7px 8px;
 
         font-size:11px;
-
     }
 
     .wallet-mini i{
-
         display:none;
-
     }
 
-    .logo h2{
+    .header-help{
+        width:35px;
 
-        font-size:18px;
-
+        height:35px;
     }
 
-    .header{
+    .notify{
+        width:35px;
 
-        padding:0 10px;
+        height:35px;
+    }
 
+    .card{
+        padding:13px;
+    }
+
+    .card h1{
+        font-size:20px;
+    }
+
+
+    /* EXTRA SMALL ORDER */
+
+    .order-card{
+        gap:6px 7px;
+    }
+
+    .order-id{
+        font-size:12px;
+    }
+
+    .customer{
+        font-size:10px;
+
+        max-width:120px;
+    }
+
+    .total{
+        font-size:13px;
+    }
+
+    .payment-method{
+        font-size:9px;
+    }
+
+    .order-status{
+        padding:6px 6px;
+
+        font-size:8px;
+    }
+
+    .order-time{
+        font-size:9px;
     }
 
 }
 
-.wallet-mini{
 
-    display:flex;
+/* =====================================================
+   HIDE DESKTOP SIDEBAR ON MOBILE
+===================================================== */
 
-    align-items:center;
+@media(max-width:1023px){
 
-    gap:7px;
-
-    background:#fff;
-
-    color:#ff6b00;
-
-    padding:8px 12px;
-
-    border-radius:22px;
-
-    font-weight:700;
-
-    font-size:14px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,.12);
-
-    white-space:nowrap;
-
-    text-decoration:none;
-
-    cursor:pointer;
-
-}
-
-.wallet-mini i{
-
-    font-size:15px;
-
-    color:#ff6b00;
-
-}
-
-.wallet-mini:hover{
-
-    transform:scale(1.03);
+    .desktop-sidebar{
+        display:none;
+    }
 
 }
 
@@ -1094,17 +1929,21 @@ body{
 
 <header class="header">
 
+    <div class="header-left">
 
-    <div class="menu-btn">
+        <div class="menu-btn">
 
-        <i class="fa-solid fa-bars"></i>
+            <i class="fa-solid fa-bars"></i>
 
-    </div>
+        </div>
 
+        <div class="logo">
 
-    <div class="logo">
+            <h2>DARVOZ</h2>
 
-        <h2>DARVOZ</h2>
+            <span>Partner Dashboard</span>
+
+        </div>
 
     </div>
 
@@ -1112,21 +1951,35 @@ body{
     <div class="header-right">
 
 
-        <!-- WALLET BALANCE -->
+        <!-- WALLET -->
 
-      <a
-    href="wallet.html"
-    class="wallet-mini"
-    id="walletBalanceBox"
->
+        <a
+            href="wallet.html"
+            class="wallet-mini"
+            id="walletBalanceBox"
+        >
 
-    <i class="fa-solid fa-wallet"></i>
+            <i class="fa-solid fa-wallet"></i>
 
-    <span id="partnerWalletBalance">
-        ₹0.00
-    </span>
+            <span id="partnerWalletBalance">
+                ₹0.00
+            </span>
 
-</a>  
+        </a>
+
+
+        <!-- HELP -->
+
+        <a
+            href="tel:+918333995837"
+            class="header-help"
+            aria-label="Call DARVOZ Support"
+            title="Call DARVOZ Support"
+        >
+
+            <i class="fa-solid fa-circle-question"></i>
+
+        </a>
 
 
         <!-- NOTIFICATION -->
@@ -1135,13 +1988,95 @@ body{
 
             <i class="fa-solid fa-bell"></i>
 
+            <span class="notify-badge">
+                3
+            </span>
+
         </div>
 
 
     </div>
 
-
 </header>
+
+
+
+<!-- =====================================================
+     DESKTOP SIDEBAR
+===================================================== -->
+
+<aside class="desktop-sidebar">
+
+    <a
+        href="partner-dashboard.html"
+        class="active"
+    >
+
+        <i class="fa-solid fa-house"></i>
+
+        Dashboard
+
+    </a>
+
+
+    <a href="partner-orders.html">
+
+        <i class="fa-solid fa-box"></i>
+
+        Orders
+
+    </a>
+
+
+    <a href="partner-menu.html">
+
+        <i class="fa-solid fa-utensils"></i>
+
+        Menu
+
+    </a>
+
+
+    <a href="partner-earnings.html">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        Earnings
+
+    </a>
+
+
+    <a href="partner-profile.html">
+
+        <i class="fa-solid fa-user"></i>
+
+        Profile
+
+    </a>
+
+
+    <a href="tel:+918333995837">
+
+        <i class="fa-solid fa-headset"></i>
+
+        Help & Support
+
+    </a>
+
+
+    <a
+        href="#"
+        id="desktopLogoutBtn"
+        class="logout"
+    >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</aside>
 
 
 
@@ -1152,179 +2087,300 @@ body{
 <div class="container">
 
 
-<!-- =====================================================
-     WELCOME
-===================================================== -->
+    <!-- =================================================
+         TOP SECTION
+    ================================================== -->
 
-<section class="welcome">
+    <div class="dashboard-top">
 
 
-    <h2>
-        Welcome 👋
-    </h2>
+        <!-- WELCOME -->
 
+        <section class="welcome">
 
-    <h3 id="partnerName">
-        Partner
-    </h3>
+            <h2>
+                Welcome back,
+            </h2>
 
-
-    <p>
-
-        Partner ID :
-
-        <b id="partnerId">
-            DAR0001
-        </b>
-
-    </p>
-
-
-    <span class="status">
-        Approved
-    </span>
-
-
-    <!-- STORE STATUS -->
-
-    <div class="store-status-box">
-
-
-        <span
-            id="storeStatus"
-            class="store-status open"
-        >
-
-            🟢 OPEN
-
-        </span>
-
-
-        <button id="toggleStoreBtn">
-
-            Go Offline
-
-        </button>
-
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     DASHBOARD CARDS
-===================================================== -->
-
-<section class="cards">
-
-
-    <!-- TODAY ORDERS -->
-
-    <div class="card">
-
-        <i class="fa-solid fa-box"></i>
-
-        <h4>
-            Today's Orders
-        </h4>
-
-        <h1 id="todayOrders">
-            0
-        </h1>
-
-    </div>
-
-
-    <!-- TODAY REVENUE -->
-
-    <div class="card">
-
-        <i class="fa-solid fa-wallet"></i>
-
-        <h4>
-            Today's Revenue
-        </h4>
-
-        <h1 id="todayRevenue">
-            ₹0
-        </h1>
-
-    </div>
-
-
-    <!-- PENDING -->
-
-    <div class="card">
-
-        <i class="fa-solid fa-hourglass-half"></i>
-
-        <h4>
-            Pending
-        </h4>
-
-        <h1 id="pendingOrders">
-            0
-        </h1>
-
-    </div>
-
-
-    <!-- COMPLETED -->
-
-    <div class="card">
-
-        <i class="fa-solid fa-circle-check"></i>
-
-        <h4>
-            Completed
-        </h4>
-
-        <h1 id="completedOrders">
-            0
-        </h1>
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     RECENT ORDERS
-===================================================== -->
-
-<section class="orders">
-
-
-    <div class="section-title">
-
-        <h3>
-            Recent Orders
-        </h3>
-
-    </div>
-
-
-    <div id="ordersTable">
-
-
-        <div class="order-card">
+            <h3 id="partnerName">
+                Partner 👋
+            </h3>
 
             <p>
-                Loading Orders...
+
+                Partner ID :
+
+                <b id="partnerId">
+                    DAR0001
+                </b>
+
             </p>
+
+
+            <span class="status">
+
+                Approved Partner
+
+            </span>
+
+
+            <!-- STORE STATUS -->
+
+            
+
+        </section>
+
+
+
+        <!-- BUSINESS HOURS -->
+
+        <section class="business-hours">
+
+            <div class="business-hours-title">
+
+                <i class="fa-regular fa-clock"></i>
+
+                <span>
+                    Business Hours
+                </span>
+
+            </div>
+
+
+            <div class="hours-row">
+
+                <span class="hours-day">
+                    Mon - Fri
+                </span>
+
+                <span class="hours-time">
+                    9:00 AM - 11:00 PM
+                </span>
+
+            </div>
+
+
+            <div class="hours-row">
+
+                <span class="hours-day">
+                    Sat - Sun
+                </span>
+
+                <span class="hours-time">
+                    9:00 AM - 12:00 AM
+                </span>
+
+            </div>
+
+
+            <a
+    href="partner-business-hours.html"
+    class="hours-note"
+>
+    <i class="fa-solid fa-pen"></i>
+
+    Manage business hours
+</a>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =================================================
+         DASHBOARD CARDS
+    ================================================== -->
+
+    <section class="cards">
+
+
+        <!-- TODAY ORDERS -->
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+            <h4>
+                Today's Orders
+            </h4>
+
+            <h1 id="todayOrders">
+                0
+            </h1>
 
         </div>
 
 
-    </div>
+        <!-- TODAY REVENUE -->
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <h4>
+                Today's Revenue
+            </h4>
+
+            <h1 id="todayRevenue">
+                ₹0
+            </h1>
+
+        </div>
 
 
-</section>
+        <!-- PENDING -->
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+            <h4>
+                Pending Orders
+            </h4>
+
+            <h1 id="pendingOrders">
+                0
+            </h1>
+
+        </div>
+
+
+        <!-- COMPLETED -->
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+            <h4>
+                Completed Orders
+            </h4>
+
+            <h1 id="completedOrders">
+                0
+            </h1>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         RECENT ORDERS
+    ================================================== -->
+
+    <section class="orders">
+
+
+        <div class="section-title">
+
+            <h3>
+                Recent Orders
+            </h3>
+
+            <a
+                href="partner-orders.html"
+                class="view-all"
+            >
+                View All Orders
+            </a>
+
+        </div>
+
+
+        <div id="ordersTable">
+
+
+            <div class="order-card">
+
+                <p>
+                    Loading Orders...
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         SUPPORT
+    ================================================== -->
+
+    <section class="support-card">
+
+
+        <div class="support-left">
+
+            <div class="support-icon">
+
+                <i class="fa-solid fa-headset"></i>
+
+            </div>
+
+
+            <div class="support-text">
+
+                <h3>
+                    Need Help?
+                </h3>
+
+                <p>
+                    Call DARVOZ Support
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="tel:+918333995837"
+            class="support-call"
+        >
+
+            <i class="fa-solid fa-phone"></i>
+
+            8333995837
+
+        </a>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+        © 2026 DARVOZ. All rights reserved.
+
+    </footer>
 
 
 </div>
@@ -1332,7 +2388,7 @@ body{
 
 
 <!-- =====================================================
-     BOTTOM NAVIGATION
+     MOBILE BOTTOM NAVIGATION
 ===================================================== -->
 
 <nav class="bottom-nav">
@@ -1363,7 +2419,7 @@ body{
     </a>
 
 
-    <a href="import-menu.html">
+    <a href="partner-menu.html">
 
         <i class="fa-solid fa-utensils"></i>
 
@@ -1401,7 +2457,7 @@ body{
 
 
 <!-- =====================================================
-     SIDE MENU
+     MOBILE SIDE MENU
 ===================================================== -->
 
 <div
@@ -1452,7 +2508,19 @@ body{
     </a>
 
 
-    <a href="#" id="logoutBtn">
+    <!-- DIRECT HELP -->
+
+    <a href="tel:+918333995837">
+
+        📞 Help
+
+    </a>
+
+
+    <a
+        href="#"
+        id="logoutBtn"
+    >
 
         🚪 Logout
 
@@ -1608,10 +2676,52 @@ body{
 
 
 <!-- =====================================================
-     PARTNER DASHBOARD JS
+     EXISTING PARTNER DASHBOARD JS
 ===================================================== -->
 
 <script src="partner-dashboard.js"></script>
+
+
+
+<script>
+
+/* =====================================================
+   DESKTOP LOGOUT
+   Uses the same existing logout behavior
+===================================================== */
+
+const desktopLogoutBtn =
+    document.getElementById(
+        "desktopLogoutBtn"
+    );
+
+if (desktopLogoutBtn) {
+
+    desktopLogoutBtn.onclick =
+        function(event){
+
+            event.preventDefault();
+
+            if(confirm("Logout?")){
+
+                localStorage.removeItem(
+                    "partner"
+                );
+
+                localStorage.removeItem(
+                    "partnerId"
+                );
+
+                window.location.href =
+                    "partner-login.html";
+
+            }
+
+        };
+
+}
+
+</script>
 
 
 </body>

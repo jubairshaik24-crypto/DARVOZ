@@ -1,0 +1,4322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DARVOZ Support Dashboard</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        *,
+        *::before,
+        *::after {
+
+            box-sizing: border-box;
+
+            margin: 0;
+            padding: 0;
+
+        }
+
+
+        html,
+        body {
+
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+        :root {
+
+            --orange: #ff5a00;
+            --orange-dark: #e94d00;
+
+            --bg: #f5f6f8;
+            --white: #ffffff;
+
+            --text: #171a1f;
+            --muted: #737b84;
+
+            --border: #e8eaed;
+
+            --green: #20b15a;
+            --red: #e53935;
+
+            --shadow:
+                0 8px 30px rgba(0, 0, 0, .07);
+
+        }
+
+
+        body {
+
+            font-family:
+                "Poppins",
+                sans-serif;
+
+            background:
+                var(--bg);
+
+            color:
+                var(--text);
+
+            min-height:
+                100vh;
+
+            overflow:
+                hidden;
+
+        }
+
+
+        button,
+        input {
+
+            font-family:
+                inherit;
+
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+
+            width:
+                100%;
+
+            height:
+                72px;
+
+            background:
+                var(--white);
+
+            border-bottom:
+                1px solid var(--border);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                0 24px;
+
+            position:
+                relative;
+
+            z-index:
+                2000;
+
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+        }
+
+
+        .brand-logo {
+
+            width:
+                44px;
+
+            height:
+                44px;
+
+            border-radius:
+                13px;
+
+            background:
+                var(--orange);
+
+            color:
+                white;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                20px;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .brand-text h1 {
+
+            font-size:
+                18px;
+
+            line-height:
+                1.1;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .brand-text p {
+
+            margin-top:
+                3px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+        }
+
+
+        /* =====================================================
+           ONLINE STATUS
+        ===================================================== */
+
+        .online-status {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                600;
+
+            color:
+                var(--green);
+
+        }
+
+
+        .online-dot {
+
+            width:
+                8px;
+
+            height:
+                8px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--green);
+
+        }
+
+
+        /* =====================================================
+           MOBILE MENU
+        ===================================================== */
+
+        .mobile-menu-btn {
+
+            display:
+                none;
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            border:
+                none;
+
+            border-radius:
+                12px;
+
+            background:
+                #f3f4f5;
+
+            color:
+                #333;
+
+            cursor:
+                pointer;
+
+            font-size:
+                18px;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+        }
+
+
+        .mobile-menu-btn:active {
+
+            transform:
+                scale(.96);
+
+        }
+
+
+        /* =====================================================
+           MAIN DASHBOARD
+        ===================================================== */
+
+        .dashboard {
+
+            width:
+                100%;
+
+            max-width:
+                1450px;
+
+            height:
+                calc(100vh - 72px);
+
+            margin:
+                0 auto;
+
+            padding:
+                18px 22px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                390px minmax(0, 1fr);
+
+            gap:
+                20px;
+
+            min-height:
+                0;
+
+            overflow:
+                hidden;
+
+        }
+
+
+        /* =====================================================
+           LEFT CHAT LIST
+        ===================================================== */
+
+        .chat-list-panel {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                20px;
+
+            overflow:
+                hidden;
+
+            box-shadow:
+                var(--shadow);
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            height:
+                100%;
+
+            min-height:
+                0;
+
+        }
+
+
+        .list-header {
+
+            padding:
+                18px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .list-header-top {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+        }
+
+
+        .list-header h2 {
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .refresh-btn {
+
+            width:
+                36px;
+
+            height:
+                36px;
+
+            border:
+                none;
+
+            border-radius:
+                11px;
+
+            background:
+                #f3f4f5;
+
+            color:
+                #555d66;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .refresh-btn:hover {
+
+            background:
+                #eceeef;
+
+        }
+
+
+        .refresh-btn:disabled {
+
+            opacity:
+                .5;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                9px;
+
+            margin-top:
+                15px;
+
+        }
+
+
+        .stat {
+
+            padding:
+                11px;
+
+            border-radius:
+                12px;
+
+            background:
+                #f7f8f9;
+
+        }
+
+
+        .stat span {
+
+            display:
+                block;
+
+            font-size:
+                10px;
+
+            color:
+                var(--muted);
+
+        }
+
+
+        .stat strong {
+
+            display:
+                block;
+
+            margin-top:
+                2px;
+
+            font-size:
+                18px;
+
+        }
+
+
+        .stat.waiting strong {
+
+            color:
+                var(--orange);
+
+        }
+
+
+        .stat.active strong {
+
+            color:
+                var(--green);
+
+        }
+
+
+        /* =====================================================
+           CHAT LIST
+        ===================================================== */
+
+        #chatList {
+
+            flex:
+                1 1 auto;
+
+            min-height:
+                0;
+
+            overflow-y:
+                auto;
+
+            overflow-x:
+                hidden;
+
+        }
+
+
+        .chat-item {
+
+            padding:
+                15px 17px;
+
+            border-bottom:
+                1px solid #f0f1f2;
+
+            cursor:
+                pointer;
+
+            transition:
+                background .18s ease;
+
+        }
+
+
+        .chat-item:hover {
+
+            background:
+                #fff8f4;
+
+        }
+
+
+        .chat-item.selected {
+
+            background:
+                #fff1e9;
+
+            border-left:
+                3px solid var(--orange);
+
+            padding-left:
+                14px;
+
+        }
+
+
+        .chat-item-top {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            justify-content:
+                space-between;
+
+            gap:
+                10px;
+
+        }
+
+
+        .customer-info {
+
+            min-width:
+                0;
+
+        }
+
+
+        .customer-name {
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+        }
+
+
+        .customer-phone {
+
+            margin-top:
+                2px;
+
+            font-size:
+                10px;
+
+            color:
+                var(--muted);
+
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-badge {
+
+            flex-shrink:
+                0;
+
+            padding:
+                4px 8px;
+
+            border-radius:
+                20px;
+
+            font-size:
+                9px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .status-badge.waiting {
+
+            background:
+                #fff0e5;
+
+            color:
+                var(--orange);
+
+        }
+
+
+        .status-badge.active {
+
+            background:
+                #eaf9f0;
+
+            color:
+                var(--green);
+
+        }
+
+
+        /* =====================================================
+           CHAT PREVIEW
+        ===================================================== */
+
+        .chat-preview {
+
+            margin-top:
+                9px;
+
+            font-size:
+                11px;
+
+            color:
+                #555d66;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+        }
+
+
+        .chat-meta {
+
+            margin-top:
+                8px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                10px;
+
+        }
+
+
+        .chat-context {
+
+            font-size:
+                9px;
+
+            color:
+                #8a9198;
+
+        }
+
+
+        /* =====================================================
+           JOIN SMALL
+        ===================================================== */
+
+        .join-small {
+
+            border:
+                none;
+
+            background:
+                var(--orange);
+
+            color:
+                white;
+
+            padding:
+                6px 10px;
+
+            border-radius:
+                8px;
+
+            font-size:
+                9px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .join-small:hover {
+
+            background:
+                var(--orange-dark);
+
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty-list {
+
+            padding:
+                50px 25px;
+
+            text-align:
+                center;
+
+            color:
+                var(--muted);
+
+        }
+
+
+        .empty-list i {
+
+            font-size:
+                34px;
+
+            opacity:
+                .45;
+
+            margin-bottom:
+                13px;
+
+        }
+
+
+        .empty-list h3 {
+
+            font-size:
+                13px;
+
+            color:
+                #555d66;
+
+        }
+
+
+        .empty-list p {
+
+            margin-top:
+                5px;
+
+            font-size:
+                10px;
+
+        }
+
+
+        /* =====================================================
+           RIGHT CHAT PANEL
+        ===================================================== */
+
+        .chat-panel {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                20px;
+
+            overflow:
+                hidden;
+
+            box-shadow:
+                var(--shadow);
+
+            height:
+                100%;
+
+            min-height:
+                0;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+        }
+
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome {
+
+            flex:
+                1 1 auto;
+
+            min-height:
+                0;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            color:
+                var(--muted);
+
+            text-align:
+                center;
+
+            padding:
+                30px;
+
+        }
+
+
+        .welcome-icon {
+
+            width:
+                68px;
+
+            height:
+                68px;
+
+            border-radius:
+                22px;
+
+            background:
+                #fff0e7;
+
+            color:
+                var(--orange);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                27px;
+
+            margin-bottom:
+                16px;
+
+        }
+
+
+        .welcome h2 {
+
+            font-size:
+                17px;
+
+            color:
+                #343a40;
+
+        }
+
+
+        .welcome p {
+
+            max-width:
+                370px;
+
+            margin-top:
+                7px;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.6;
+
+        }
+
+
+        /* =====================================================
+           CHAT AREA
+        ===================================================== */
+
+        #chatArea {
+
+            flex:
+                1 1 auto;
+
+            min-height:
+                0;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            overflow:
+                hidden;
+
+        }
+
+
+        /* =====================================================
+           CHAT HEADER
+        ===================================================== */
+
+        .chat-header {
+
+            min-height:
+                76px;
+
+            padding:
+                14px 18px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                15px;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .chat-customer {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                11px;
+
+            min-width:
+                0;
+
+        }
+
+
+        .customer-avatar {
+
+            width:
+                45px;
+
+            height:
+                45px;
+
+            border-radius:
+                14px;
+
+            background:
+                var(--orange);
+
+            color:
+                white;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .chat-customer h3 {
+
+            font-size:
+                14px;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+        }
+
+
+        .chat-customer p {
+
+            margin-top:
+                3px;
+
+            color:
+                var(--muted);
+
+            font-size:
+                10px;
+
+        }
+
+
+        .header-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .context-badge {
+
+            padding:
+                7px 10px;
+
+            border-radius:
+                9px;
+
+            background:
+                #f5f6f7;
+
+            font-size:
+                10px;
+
+            color:
+                #555d66;
+
+            font-weight:
+                600;
+
+        }
+
+
+        .join-main {
+
+            border:
+                none;
+
+            background:
+                var(--orange);
+
+            color:
+                white;
+
+            padding:
+                10px 15px;
+
+            border-radius:
+                10px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .join-main:hover {
+
+            background:
+                var(--orange-dark);
+
+        }
+
+
+        .join-main:disabled {
+
+            opacity:
+                .55;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        /* =====================================================
+           COMPLETE CHAT BUTTON
+        ===================================================== */
+
+        .complete-main {
+
+            border:
+                none;
+
+            background:
+                var(--red);
+
+            color:
+                white;
+
+            padding:
+                10px 14px;
+
+            border-radius:
+                10px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            display:
+                none;
+
+        }
+
+
+        .complete-main:hover {
+
+            background:
+                #c92f2b;
+
+        }
+
+
+        .complete-main:disabled {
+
+            opacity:
+                .55;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE CONTAINER
+        ===================================================== */
+
+        #messages {
+
+            flex:
+                1 1 auto;
+
+            min-height:
+                0;
+
+            width:
+                100%;
+
+            overflow-y:
+                auto;
+
+            overflow-x:
+                hidden;
+
+            padding:
+                18px;
+
+            background:
+                #f8f9f9;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                8px;
+
+            align-items:
+                stretch;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE ROW
+        ===================================================== */
+
+        #messages > .msg-row {
+
+            display:
+                flex !important;
+
+            width:
+                100% !important;
+
+            height:
+                auto !important;
+
+            min-height:
+                0 !important;
+
+            max-height:
+                none !important;
+
+            flex:
+                0 0 auto !important;
+
+            padding:
+                0 !important;
+
+            margin:
+                0 !important;
+
+        }
+
+
+        #messages > .msg-row.customer,
+        #messages > .msg-row.ai {
+
+            justify-content:
+                flex-start !important;
+
+        }
+
+
+        #messages > .msg-row.support {
+
+            justify-content:
+                flex-end !important;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE BUBBLE
+        ===================================================== */
+
+        #messages > .msg-row > .msg-bubble {
+
+            display:
+                block !important;
+
+            width:
+                fit-content !important;
+
+            max-width:
+                68% !important;
+
+            height:
+                auto !important;
+
+            min-height:
+                0 !important;
+
+            max-height:
+                none !important;
+
+            flex:
+                0 0 auto !important;
+
+            padding:
+                9px 12px !important;
+
+            margin:
+                0 !important;
+
+            border-radius:
+                14px;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.45;
+
+            white-space:
+                normal !important;
+
+            overflow:
+                visible !important;
+
+            overflow-wrap:
+                anywhere !important;
+
+            word-break:
+                break-word !important;
+
+        }
+
+
+        /* =====================================================
+           CUSTOMER
+        ===================================================== */
+
+        #messages > .msg-row.customer > .msg-bubble {
+
+            background:
+                white;
+
+            color:
+                #30363d;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                14px 14px 14px 4px;
+
+        }
+
+
+        /* =====================================================
+           SUPPORT
+        ===================================================== */
+
+        #messages > .msg-row.support > .msg-bubble {
+
+            background:
+                var(--orange);
+
+            color:
+                white;
+
+            border:
+                none;
+
+            border-radius:
+                14px 14px 4px 14px;
+
+        }
+
+
+        /* =====================================================
+           AI
+        ===================================================== */
+
+        #messages > .msg-row.ai > .msg-bubble {
+
+            background:
+                #f0f1f2;
+
+            color:
+                #555d66;
+
+            border-radius:
+                14px 14px 14px 4px;
+
+        }
+
+
+        /* =====================================================
+           LABEL
+        ===================================================== */
+
+        #messages .msg-label {
+
+            display:
+                block !important;
+
+            width:
+                auto !important;
+
+            height:
+                auto !important;
+
+            min-height:
+                0 !important;
+
+            margin:
+                0 0 4px 0 !important;
+
+            padding:
+                0 !important;
+
+            font-size:
+                8px;
+
+            line-height:
+                1.2;
+
+            font-weight:
+                700;
+
+            opacity:
+                .65;
+
+        }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        #messages .msg-body {
+
+            display:
+                block !important;
+
+            width:
+                auto !important;
+
+            height:
+                auto !important;
+
+            min-height:
+                0 !important;
+
+            margin:
+                0 !important;
+
+            padding:
+                0 !important;
+
+            line-height:
+                1.45;
+
+        }
+
+
+        /* =====================================================
+           TIME
+        ===================================================== */
+
+        #messages .msg-time {
+
+            display:
+                block !important;
+
+            width:
+                auto !important;
+
+            height:
+                auto !important;
+
+            min-height:
+                0 !important;
+
+            margin-top:
+                5px !important;
+
+            padding:
+                0 !important;
+
+            font-size:
+                7px;
+
+            line-height:
+                1;
+
+            opacity:
+                .65;
+
+            text-align:
+                right;
+
+        }
+
+
+        /* =====================================================
+           CLOSED NOTICE
+        ===================================================== */
+
+        .closed-notice {
+
+            margin:
+                12px auto;
+
+            padding:
+                8px 12px;
+
+            border-radius:
+                20px;
+
+            background:
+                #eeeeee;
+
+            color:
+                #777;
+
+            font-size:
+                9px;
+
+            font-weight:
+                600;
+
+            text-align:
+                center;
+
+        }
+
+
+        /* =====================================================
+           COMPOSER
+        ===================================================== */
+
+        .composer {
+
+            padding:
+                12px 15px;
+
+            border-top:
+                1px solid var(--border);
+
+            display:
+                flex;
+
+            gap:
+                9px;
+
+            background:
+                white;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .composer input {
+
+            flex:
+                1 1 auto;
+
+            min-width:
+                0;
+
+            height:
+                43px;
+
+            border:
+                1px solid #dfe2e5;
+
+            border-radius:
+                22px;
+
+            padding:
+                0 15px;
+
+            outline:
+                none;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .composer input:focus {
+
+            border-color:
+                var(--orange);
+
+        }
+
+
+        .composer input:disabled {
+
+            background:
+                #f5f6f7;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        .composer button {
+
+            width:
+                43px;
+
+            height:
+                43px;
+
+            border:
+                none;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--orange);
+
+            color:
+                white;
+
+            cursor:
+                pointer;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .composer button:hover {
+
+            background:
+                var(--orange-dark);
+
+        }
+
+
+        .composer button:disabled {
+
+            opacity:
+                .5;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        /* =====================================================
+           MOBILE OVERLAY
+        ===================================================== */
+
+        .sidebar-overlay {
+
+            display:
+                none;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            body {
+
+                overflow:
+                    hidden;
+
+            }
+
+
+            .topbar {
+
+                height:
+                    64px;
+
+                padding:
+                    0 14px;
+
+            }
+
+
+            .brand {
+
+                gap:
+                    9px;
+
+            }
+
+
+            .brand-logo {
+
+                width:
+                    40px;
+
+                height:
+                    40px;
+
+                border-radius:
+                    11px;
+
+                font-size:
+                    18px;
+
+            }
+
+
+            .brand-text h1 {
+
+                font-size:
+                    16px;
+
+            }
+
+
+            .brand-text p {
+
+                font-size:
+                    9px;
+
+            }
+
+
+            .online-status {
+
+                display:
+                    none;
+
+            }
+
+
+            .mobile-menu-btn {
+
+                display:
+                    flex;
+
+            }
+
+
+            .dashboard {
+
+                height:
+                    calc(100vh - 64px);
+
+                display:
+                    block;
+
+                padding:
+                    0;
+
+                max-width:
+                    none;
+
+                overflow:
+                    hidden;
+
+            }
+
+
+            .chat-list-panel {
+
+                position:
+                    fixed;
+
+                top:
+                    64px;
+
+                left:
+                    0;
+
+                bottom:
+                    0;
+
+                width:
+                    min(360px, 88vw);
+
+                height:
+                    auto;
+
+                min-height:
+                    0;
+
+                border-radius:
+                    0 20px 20px 0;
+
+                z-index:
+                    1500;
+
+                transform:
+                    translateX(-105%);
+
+                transition:
+                    transform .25s ease;
+
+                box-shadow:
+                    10px 0 35px rgba(0, 0, 0, .15);
+
+            }
+
+
+            .chat-list-panel.open {
+
+                transform:
+                    translateX(0);
+
+            }
+
+
+            .sidebar-overlay {
+
+                display:
+                    block;
+
+                position:
+                    fixed;
+
+                top:
+                    64px;
+
+                left:
+                    0;
+
+                right:
+                    0;
+
+                bottom:
+                    0;
+
+                background:
+                    rgba(0, 0, 0, .42);
+
+                z-index:
+                    1400;
+
+                opacity:
+                    0;
+
+                visibility:
+                    hidden;
+
+                pointer-events:
+                    none;
+
+                transition:
+                    opacity .25s ease,
+                    visibility .25s ease;
+
+            }
+
+
+            .sidebar-overlay.show {
+
+                opacity:
+                    1;
+
+                visibility:
+                    visible;
+
+                pointer-events:
+                    auto;
+
+            }
+
+
+            .chat-panel {
+
+                width:
+                    100%;
+
+                height:
+                    100%;
+
+                min-height:
+                    0;
+
+                border:
+                    none;
+
+                border-radius:
+                    0;
+
+                box-shadow:
+                    none;
+
+            }
+
+
+            .chat-header {
+
+                min-height:
+                    70px;
+
+                padding:
+                    12px 14px;
+
+                gap:
+                    8px;
+
+            }
+
+
+            .customer-avatar {
+
+                width:
+                    40px;
+
+                height:
+                    40px;
+
+                border-radius:
+                    12px;
+
+            }
+
+
+            .chat-customer h3 {
+
+                font-size:
+                    13px;
+
+                max-width:
+                    180px;
+
+            }
+
+
+            .chat-customer p {
+
+                font-size:
+                    9px;
+
+            }
+
+
+            .header-actions {
+
+                gap:
+                    5px;
+
+            }
+
+
+            .context-badge {
+
+                display:
+                    none;
+
+            }
+
+
+            .join-main,
+            .complete-main {
+
+                padding:
+                    9px 10px;
+
+                font-size:
+                    9px;
+
+            }
+
+
+            #messages {
+
+                padding:
+                    14px;
+
+                gap:
+                    8px;
+
+            }
+
+
+            #messages > .msg-row > .msg-bubble {
+
+                max-width:
+                    82% !important;
+
+                font-size:
+                    12px;
+
+                padding:
+                    9px 11px !important;
+
+            }
+
+
+            .composer {
+
+                padding:
+                    9px 10px;
+
+                padding-bottom:
+                    max(
+                        9px,
+                        env(safe-area-inset-bottom)
+                    );
+
+            }
+
+
+            .composer input {
+
+                height:
+                    42px;
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .composer button {
+
+                width:
+                    42px;
+
+                height:
+                    42px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .brand-text h1 {
+
+                font-size:
+                    15px;
+
+            }
+
+
+            .brand-text p {
+
+                font-size:
+                    8px;
+
+            }
+
+
+            .mobile-menu-btn {
+
+                width:
+                    40px;
+
+                height:
+                    40px;
+
+            }
+
+
+            .chat-header {
+
+                padding:
+                    10px 12px;
+
+            }
+
+
+            .chat-customer h3 {
+
+                max-width:
+                    150px;
+
+            }
+
+
+            #messages > .msg-row > .msg-bubble {
+
+                max-width:
+                    88% !important;
+
+            }
+
+
+            .join-main,
+            .complete-main {
+
+                padding:
+                    8px 8px;
+
+                border-radius:
+                    9px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+
+                <i class="fa-solid fa-headset"></i>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <h1>DARVOZ Support</h1>
+
+                <p>Customer Support Console</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="online-status">
+
+            <span class="online-dot"></span>
+
+            Support Online
+
+        </div>
+
+
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open support requests"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         DASHBOARD
+    ====================================================== -->
+
+    <main class="dashboard">
+
+
+        <!-- =================================================
+             LEFT SUPPORT REQUESTS
+        ================================================== -->
+
+        <section
+            class="chat-list-panel"
+            id="chatListPanel"
+        >
+
+            <div class="list-header">
+
+                <div class="list-header-top">
+
+                    <h2>Support Requests</h2>
+
+
+                    <button
+                        type="button"
+                        class="refresh-btn"
+                        id="refreshBtn"
+                        title="Refresh"
+                    >
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="stats">
+
+                    <div class="stat waiting">
+
+                        <span>Waiting</span>
+
+                        <strong id="waitingCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat active">
+
+                        <span>Active</span>
+
+                        <strong id="activeCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div id="chatList">
+
+                <div class="empty-list">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                    <h3>
+                        Loading support chats...
+                    </h3>
+
+                    <p>
+                        Please wait.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RIGHT CHAT
+        ================================================== -->
+
+        <section class="chat-panel">
+
+
+            <!-- =================================================
+                 WELCOME
+            ================================================== -->
+
+            <div
+                class="welcome"
+                id="welcomePanel"
+            >
+
+                <div class="welcome-icon">
+
+                    <i class="fa-solid fa-headset"></i>
+
+                </div>
+
+
+                <h2>
+                    DARVOZ Support
+                </h2>
+
+
+                <p>
+                    Select a customer conversation
+                    from the support requests menu
+                    to view messages and provide support.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 CHAT AREA
+            ================================================== -->
+
+            <div
+                id="chatArea"
+                style="display:none;"
+            >
+
+
+                <!-- CHAT HEADER -->
+
+                <div class="chat-header">
+
+                    <div class="chat-customer">
+
+                        <div class="customer-avatar">
+
+                            <i class="fa-solid fa-user"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3 id="customerName">
+                                Customer
+                            </h3>
+
+
+                            <p id="customerPhone">
+                                —
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="header-actions">
+
+                        <div
+                            class="context-badge"
+                            id="contextBadge"
+                        >
+                            General Support
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="join-main"
+                            id="joinBtn"
+                        >
+
+                            <i class="fa-solid fa-user-headset"></i>
+
+                            JOIN CHAT
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="complete-main"
+                            id="completeBtn"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                            COMPLETE
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     MESSAGES
+                ================================================== -->
+
+                <div id="messages"></div>
+
+
+                <!-- =================================================
+                     COMPOSER
+                ================================================== -->
+
+                <form
+                    class="composer"
+                    id="composer"
+                >
+
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Type your reply..."
+                        autocomplete="off"
+                        disabled
+                    >
+
+
+                    <button
+                        type="submit"
+                        id="sendBtn"
+                        disabled
+                        aria-label="Send message"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+
+        /* =====================================================
+           API
+        ===================================================== */
+
+        const API =
+            window.location.origin;
+
+
+        /* =====================================================
+           STATE
+        ===================================================== */
+
+        let chats = [];
+
+        let selectedChatId = null;
+
+        let selectedChat = null;
+
+        let messagePollingTimer = null;
+
+        let chatLoadTimer = null;
+
+        let chatRequestToken = 0;
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const chatList =
+            document.getElementById("chatList");
+
+        const chatListPanel =
+            document.getElementById("chatListPanel");
+
+        const sidebarOverlay =
+            document.getElementById("sidebarOverlay");
+
+        const mobileMenuBtn =
+            document.getElementById("mobileMenuBtn");
+
+        const waitingCount =
+            document.getElementById("waitingCount");
+
+        const activeCount =
+            document.getElementById("activeCount");
+
+        const welcomePanel =
+            document.getElementById("welcomePanel");
+
+        const chatArea =
+            document.getElementById("chatArea");
+
+        const customerName =
+            document.getElementById("customerName");
+
+        const customerPhone =
+            document.getElementById("customerPhone");
+
+        const contextBadge =
+            document.getElementById("contextBadge");
+
+        const joinBtn =
+            document.getElementById("joinBtn");
+
+        const completeBtn =
+            document.getElementById("completeBtn");
+
+        const messages =
+            document.getElementById("messages");
+
+        const messageInput =
+            document.getElementById("messageInput");
+
+        const sendBtn =
+            document.getElementById("sendBtn");
+
+        const composer =
+            document.getElementById("composer");
+
+        const refreshBtn =
+            document.getElementById("refreshBtn");
+
+
+        /* =====================================================
+           MOBILE SIDEBAR
+        ===================================================== */
+
+        function openMobileSidebar() {
+
+            if (window.innerWidth > 850) {
+                return;
+            }
+
+            chatListPanel.classList.add("open");
+
+            sidebarOverlay.classList.add("show");
+
+            mobileMenuBtn.innerHTML =
+                '<i class="fa-solid fa-xmark"></i>';
+
+        }
+
+
+        function closeMobileSidebar() {
+
+            chatListPanel.classList.remove("open");
+
+            sidebarOverlay.classList.remove("show");
+
+            mobileMenuBtn.innerHTML =
+                '<i class="fa-solid fa-bars"></i>';
+
+        }
+
+
+        mobileMenuBtn.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    chatListPanel.classList.contains("open")
+                ) {
+
+                    closeMobileSidebar();
+
+                } else {
+
+                    openMobileSidebar();
+
+                }
+
+            }
+        );
+
+
+        sidebarOverlay.addEventListener(
+            "click",
+            closeMobileSidebar
+        );
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =====================================================
+           FORMAT TIME
+        ===================================================== */
+
+        function formatTime(value) {
+
+            if (!value) {
+                return "";
+            }
+
+            const date =
+                new Date(value);
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return "";
+
+            }
+
+            return date.toLocaleTimeString(
+                [],
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           LOAD CHATS
+        ===================================================== */
+
+        async function loadChats() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API}/api/support/dashboard/chats`,
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load support chats"
+                    );
+
+                }
+
+
+                chats =
+                    Array.isArray(data.chats)
+                        ? data.chats
+                        : [];
+
+
+                renderChatList();
+
+
+                /*
+                   Keep selected chat object updated.
+                */
+
+                if (selectedChatId) {
+
+                    const updated =
+                        chats.find(
+                            chat =>
+                                String(chat.chat_id) ===
+                                String(selectedChatId)
+                        );
+
+
+                    if (updated) {
+
+                        selectedChat = {
+                            ...selectedChat,
+                            ...updated
+                        };
+
+                        updateChatHeader();
+
+                    }
+
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "LOAD SUPPORT CHATS ERROR:",
+                    error
+                );
+
+
+                if (!chats.length) {
+
+                    chatList.innerHTML = `
+
+                        <div class="empty-list">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            <h3>
+                                Unable to load chats
+                            </h3>
+
+                            <p>
+                                ${escapeHtml(error.message)}
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RENDER CHAT LIST
+        ===================================================== */
+
+        function renderChatList() {
+
+            const waiting =
+                chats.filter(
+                    chat =>
+                        chat.status === "waiting"
+                ).length;
+
+
+            const active =
+                chats.filter(
+                    chat =>
+                        chat.status === "active"
+                ).length;
+
+
+            waitingCount.textContent =
+                waiting;
+
+
+            activeCount.textContent =
+                active;
+
+
+            if (!chats.length) {
+
+                chatList.innerHTML = `
+
+                    <div class="empty-list">
+
+                        <i class="fa-regular fa-face-smile"></i>
+
+                        <h3>
+                            No active support requests
+                        </h3>
+
+                        <p>
+                            New customer requests will appear here.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            chatList.innerHTML =
+                chats.map(
+                    chat => {
+
+                        const selected =
+                            String(chat.chat_id) ===
+                            String(selectedChatId);
+
+
+                        const isWaiting =
+                            chat.status === "waiting";
+
+
+                        const name =
+                            chat.customer_name ||
+                            "WhatsApp Customer";
+
+
+                        const phone =
+                            chat.whatsapp_phone
+                                ? "+" + chat.whatsapp_phone
+                                : "Website Support";
+
+
+                        const context =
+                            chat.order_id
+                                ? `Order #${chat.order_id}`
+                                : "General Support";
+
+
+                        return `
+
+                            <div
+                                class="chat-item ${
+                                    selected
+                                        ? "selected"
+                                        : ""
+                                }"
+                                data-chat-id="${escapeHtml(
+                                    chat.chat_id
+                                )}"
+                            >
+
+                                <div class="chat-item-top">
+
+                                    <div class="customer-info">
+
+                                        <div class="customer-name">
+                                            ${escapeHtml(name)}
+                                        </div>
+
+                                        <div class="customer-phone">
+                                            ${escapeHtml(phone)}
+                                        </div>
+
+                                    </div>
+
+
+                                    <span
+                                        class="status-badge ${
+                                            isWaiting
+                                                ? "waiting"
+                                                : "active"
+                                        }"
+                                    >
+                                        ${
+                                            isWaiting
+                                                ? "WAITING"
+                                                : "ACTIVE"
+                                        }
+                                    </span>
+
+                                </div>
+
+
+                                <div class="chat-preview">
+                                    ${escapeHtml(
+                                        chat.last_message ||
+                                        "No messages yet"
+                                    )}
+                                </div>
+
+
+                                <div class="chat-meta">
+
+                                    <span class="chat-context">
+                                        ${escapeHtml(context)}
+                                    </span>
+
+
+                                    ${
+                                        isWaiting
+                                            ? `
+
+                                                <button
+                                                    type="button"
+                                                    class="join-small"
+                                                    data-join-id="${escapeHtml(
+                                                        chat.chat_id
+                                                    )}"
+                                                >
+                                                    JOIN
+                                                </button>
+
+                                            `
+                                            : `
+
+                                                <span class="chat-context">
+                                                    Support connected
+                                                </span>
+
+                                            `
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                ).join("");
+
+        }
+
+
+        /* =====================================================
+           CHAT LIST CLICK
+        ===================================================== */
+
+        chatList.addEventListener(
+            "click",
+            async event => {
+
+                const joinButton =
+                    event.target.closest(
+                        ".join-small"
+                    );
+
+
+                if (joinButton) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    const chatId =
+                        joinButton.dataset.joinId;
+
+
+                    if (chatId) {
+
+                        await joinChat(chatId);
+
+                    }
+
+                    return;
+
+                }
+
+
+                const chatItem =
+                    event.target.closest(
+                        ".chat-item"
+                    );
+
+
+                if (!chatItem) {
+                    return;
+                }
+
+
+                const chatId =
+                    chatItem.dataset.chatId;
+
+
+                if (!chatId) {
+                    return;
+                }
+
+
+                await openChat(chatId);
+
+            }
+        );
+
+
+        /* =====================================================
+           OPEN CHAT
+        ===================================================== */
+
+        async function openChat(chatId) {
+
+            const requestToken =
+                ++chatRequestToken;
+
+
+            /*
+               Stop old chat polling immediately.
+            */
+
+            stopMessagePolling();
+
+
+            selectedChatId =
+                String(chatId);
+
+
+            selectedChat =
+                chats.find(
+                    chat =>
+                        String(chat.chat_id) ===
+                        String(chatId)
+                ) || null;
+
+
+            welcomePanel.style.display =
+                "none";
+
+
+            chatArea.style.display =
+                "flex";
+
+
+            updateChatHeader();
+
+
+            messages.innerHTML = `
+
+                <div class="welcome">
+
+                    <div class="welcome-icon">
+
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    </div>
+
+                    <p>
+                        Loading conversation...
+                    </p>
+
+                </div>
+
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API}/api/support/${encodeURIComponent(
+                            chatId
+                        )}`,
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    requestToken !==
+                    chatRequestToken ||
+                    String(selectedChatId) !==
+                    String(chatId)
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !response.ok ||
+                    !data.success ||
+                    !data.chat
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load conversation"
+                    );
+
+                }
+
+
+                selectedChat =
+                    data.chat;
+
+
+                updateChatHeader();
+
+
+                renderMessages(
+                    data.chat.messages || []
+                );
+
+
+                /*
+                   Only active chats need polling.
+                   Waiting chats also poll so JOIN state
+                   can update.
+                */
+
+                if (
+                    data.chat.status === "waiting" ||
+                    data.chat.status === "active"
+                ) {
+
+                    startMessagePolling();
+
+                }
+
+
+                if (
+                    window.innerWidth <= 850
+                ) {
+
+                    closeMobileSidebar();
+
+                }
+
+            }
+            catch (error) {
+
+                if (
+                    requestToken !==
+                    chatRequestToken
+                ) {
+
+                    return;
+
+                }
+
+
+                console.error(
+                    "OPEN SUPPORT CHAT ERROR:",
+                    error
+                );
+
+
+                messages.innerHTML = `
+
+                    <div class="welcome">
+
+                        <div class="welcome-icon">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        </div>
+
+                        <p>
+                            ${escapeHtml(
+                                error.message
+                            )}
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           UPDATE CHAT HEADER
+        ===================================================== */
+
+        function updateChatHeader() {
+
+            if (!selectedChat) {
+                return;
+            }
+
+
+            customerName.textContent =
+                selectedChat.customer_name ||
+                "Customer";
+
+
+            customerPhone.textContent =
+                selectedChat.whatsapp_phone
+                    ? "+" +
+                      selectedChat.whatsapp_phone
+                    : "Website Support";
+
+
+            contextBadge.textContent =
+                selectedChat.order_id
+                    ? `Order #${selectedChat.order_id}`
+                    : "General Support";
+
+
+            /* -----------------------------------------------
+               WAITING
+            ------------------------------------------------ */
+
+            if (
+                selectedChat.status === "waiting"
+            ) {
+
+                joinBtn.style.display =
+                    "block";
+
+
+                joinBtn.disabled =
+                    false;
+
+
+                joinBtn.innerHTML = `
+
+                    <i class="fa-solid fa-user-headset"></i>
+
+                    JOIN CHAT
+
+                `;
+
+
+                completeBtn.style.display =
+                    "none";
+
+
+                messageInput.disabled =
+                    true;
+
+
+                sendBtn.disabled =
+                    true;
+
+
+                messageInput.placeholder =
+                    "Waiting for support to join...";
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------------
+               ACTIVE
+            ------------------------------------------------ */
+
+            if (
+                selectedChat.status === "active"
+            ) {
+
+                joinBtn.style.display =
+                    "none";
+
+
+                completeBtn.style.display =
+                    "block";
+
+
+                completeBtn.disabled =
+                    false;
+
+
+                completeBtn.innerHTML = `
+
+                    <i class="fa-solid fa-check"></i>
+
+                    COMPLETE
+
+                `;
+
+
+                messageInput.disabled =
+                    false;
+
+
+                sendBtn.disabled =
+                    false;
+
+
+                messageInput.placeholder =
+                    "Type your reply...";
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------------
+               CLOSED
+            ------------------------------------------------ */
+
+            if (
+                selectedChat.status === "closed"
+            ) {
+
+                joinBtn.style.display =
+                    "none";
+
+
+                completeBtn.style.display =
+                    "none";
+
+
+                messageInput.disabled =
+                    true;
+
+
+                sendBtn.disabled =
+                    true;
+
+
+                messageInput.placeholder =
+                    "This conversation has ended";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           JOIN CHAT
+        ===================================================== */
+
+        async function joinChat(chatId) {
+
+            try {
+
+                selectedChatId =
+                    String(chatId);
+
+
+                selectedChat =
+                    chats.find(
+                        chat =>
+                            String(chat.chat_id) ===
+                            String(chatId)
+                    ) || null;
+
+
+                welcomePanel.style.display =
+                    "none";
+
+
+                chatArea.style.display =
+                    "flex";
+
+
+                updateChatHeader();
+
+
+                joinBtn.disabled =
+                    true;
+
+
+                const response =
+                    await fetch(
+                        `${API}/api/support/${encodeURIComponent(
+                            chatId
+                        )}/join`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to join chat"
+                    );
+
+                }
+
+
+                /*
+                   Open the now-active conversation.
+                */
+
+                await openChat(chatId);
+
+
+                await loadChats();
+
+            }
+            catch (error) {
+
+                console.error(
+                    "JOIN CHAT ERROR:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Unable to join support chat"
+                );
+
+
+                if (
+                    selectedChat &&
+                    selectedChat.status === "waiting"
+                ) {
+
+                    joinBtn.disabled =
+                        false;
+
+                }
+
+            }
+
+        }
+
+
+        /* =====================================================
+           COMPLETE CHAT
+        ===================================================== */
+
+        completeBtn.addEventListener(
+            "click",
+            async () => {
+
+                if (!selectedChatId) {
+                    return;
+                }
+
+
+                if (
+                    !selectedChat ||
+                    selectedChat.status !== "active"
+                ) {
+
+                    return;
+                }
+
+
+                const chatId =
+                    String(selectedChatId);
+
+
+                /*
+                   Confirmation prevents accidental closure.
+                */
+
+                const confirmed =
+                    window.confirm(
+                        "Complete this support conversation?\n\nThe conversation will be closed, and the customer will see that DARVOZ Support disconnected."
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                completeBtn.disabled =
+                    true;
+
+
+                completeBtn.innerHTML = `
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    CLOSING...
+
+                `;
+
+
+                /*
+                   Stop polling while closing.
+                */
+
+                stopMessagePolling();
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API}/api/support/${encodeURIComponent(
+                                chatId
+                            )}/close`,
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                }
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        throw new Error(
+                            data.message ||
+                            "Unable to complete chat"
+                        );
+
+                    }
+
+
+                    /*
+                       Update local state immediately.
+                    */
+
+                    selectedChat = {
+
+                        ...selectedChat,
+
+                        status: "closed"
+
+                    };
+
+
+                    /*
+                       Add closed state to current chat.
+                    */
+
+                    updateChatHeader();
+
+
+                    /*
+                       Reload complete conversation
+                       so closing message appears.
+                    */
+
+                    await refreshSelectedChat(
+                        chatId
+                    );
+
+
+                    /*
+                       Remove closed chat from active list.
+                    */
+
+                    await loadChats();
+
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "COMPLETE CHAT ERROR:",
+                        error
+                    );
+
+
+                    alert(
+                        error.message ||
+                        "Unable to complete support chat"
+                    );
+
+
+                    /*
+                       Chat failed to close,
+                       restore active state.
+                    */
+
+                    if (
+                        selectedChat &&
+                        selectedChat.status === "active"
+                    ) {
+
+                        completeBtn.disabled =
+                            false;
+
+                        completeBtn.innerHTML = `
+
+                            <i class="fa-solid fa-check"></i>
+
+                            COMPLETE
+
+                        `;
+
+
+                        startMessagePolling();
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           RENDER MESSAGES
+        ===================================================== */
+
+        function renderMessages(
+            messageList,
+            preserveScroll = false
+        ) {
+
+            if (
+                !Array.isArray(messageList) ||
+                !messageList.length
+            ) {
+
+                messages.innerHTML = `
+
+                    <div class="welcome">
+
+                        <div class="welcome-icon">
+
+                            <i class="fa-regular fa-comments"></i>
+
+                        </div>
+
+                        <p>
+                            No messages yet.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            const oldScrollHeight =
+                messages.scrollHeight;
+
+
+            const oldScrollTop =
+                messages.scrollTop;
+
+
+            messages.innerHTML =
+                messageList.map(
+                    msg => {
+
+                        const sender =
+                            msg.sender ||
+                            "customer";
+
+
+                        const isSupport =
+                            sender === "support";
+
+
+                        const isAI =
+                            sender === "ai";
+
+
+                        const role =
+                            isSupport
+                                ? "support"
+                                : isAI
+                                    ? "ai"
+                                    : "customer";
+
+
+                        const label =
+                            isSupport
+                                ? "DARVOZ SUPPORT"
+                                : isAI
+                                    ? "DARVOZ AI"
+                                    : (
+                                        selectedChat?.customer_name ||
+                                        "CUSTOMER"
+                                    );
+
+
+                        return `
+
+                            <div class="msg-row ${role}">
+
+                                <div class="msg-bubble ${role}">
+
+                                    <div class="msg-label">
+                                        ${escapeHtml(label)}
+                                    </div>
+
+
+                                    <div class="msg-body">
+                                        ${escapeHtml(
+                                            msg.message
+                                        )}
+                                    </div>
+
+
+                                    <div class="msg-time">
+                                        ${formatTime(
+                                            msg.created_at
+                                        )}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                ).join("");
+
+
+            /*
+               Show disconnected notice after
+               the actual closing message.
+            */
+
+            if (
+                selectedChat &&
+                selectedChat.status === "closed"
+            ) {
+
+                messages.insertAdjacentHTML(
+                    "beforeend",
+
+                    `
+
+                        <div class="closed-notice">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            DARVOZ Support disconnected
+
+                        </div>
+
+                    `
+                );
+
+            }
+
+
+            const nearBottom =
+                oldScrollHeight -
+                oldScrollTop -
+                messages.clientHeight <
+                100;
+
+
+            if (
+                !preserveScroll ||
+                nearBottom
+            ) {
+
+                messages.scrollTop =
+                    messages.scrollHeight;
+
+            }
+            else {
+
+                messages.scrollTop =
+                    oldScrollTop;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           START MESSAGE POLLING
+        ===================================================== */
+
+        function startMessagePolling() {
+
+            stopMessagePolling();
+
+
+            if (!selectedChatId) {
+                return;
+            }
+
+
+            const pollingChatId =
+                String(selectedChatId);
+
+
+            messagePollingTimer =
+                setInterval(
+                    async () => {
+
+                        if (
+                            String(selectedChatId) !==
+                            pollingChatId
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        if (
+                            selectedChat &&
+                            selectedChat.status === "closed"
+                        ) {
+
+                            stopMessagePolling();
+
+                            return;
+
+                        }
+
+
+                        await refreshSelectedChat(
+                            pollingChatId
+                        );
+
+                    },
+                    3000
+                );
+
+        }
+
+
+        /* =====================================================
+           STOP MESSAGE POLLING
+        ===================================================== */
+
+        function stopMessagePolling() {
+
+            if (
+                messagePollingTimer
+            ) {
+
+                clearInterval(
+                    messagePollingTimer
+                );
+
+                messagePollingTimer =
+                    null;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           REFRESH SELECTED CHAT
+        ===================================================== */
+
+        async function refreshSelectedChat(
+            chatId
+        ) {
+
+            if (!chatId) {
+                return;
+            }
+
+
+            if (
+                String(selectedChatId) !==
+                String(chatId)
+            ) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API}/api/support/${encodeURIComponent(
+                            chatId
+                        )}`,
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    String(selectedChatId) !==
+                    String(chatId)
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !response.ok ||
+                    !data.success ||
+                    !data.chat
+                ) {
+
+                    return;
+
+                }
+
+
+                selectedChat =
+                    data.chat;
+
+
+                updateChatHeader();
+
+
+                renderMessages(
+                    data.chat.messages || [],
+                    true
+                );
+
+
+                /*
+                   Automatically stop polling when
+                   the backend says the chat is closed.
+                */
+
+                if (
+                    data.chat.status === "closed"
+                ) {
+
+                    stopMessagePolling();
+
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "MESSAGE POLLING ERROR:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SEND SUPPORT MESSAGE
+        ===================================================== */
+
+        composer.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                if (!selectedChatId) {
+                    return;
+                }
+
+
+                if (
+                    !selectedChat ||
+                    selectedChat.status !== "active"
+                ) {
+
+                    return;
+                }
+
+
+                const chatId =
+                    String(selectedChatId);
+
+
+                const text =
+                    messageInput.value.trim();
+
+
+                if (!text) {
+                    return;
+                }
+
+
+                messageInput.disabled =
+                    true;
+
+
+                sendBtn.disabled =
+                    true;
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API}/api/support/${encodeURIComponent(
+                                chatId
+                            )}/message`,
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        message: text
+                                    })
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        throw new Error(
+                            data.message ||
+                            "Unable to send message"
+                        );
+
+                    }
+
+
+                    messageInput.value =
+                        "";
+
+
+                    if (
+                        String(selectedChatId) ===
+                        chatId
+                    ) {
+
+                        await refreshSelectedChat(
+                            chatId
+                        );
+
+                    }
+
+
+                    await loadChats();
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "SEND SUPPORT MESSAGE ERROR:",
+                        error
+                    );
+
+
+                    alert(
+                        error.message ||
+                        "Unable to send message"
+                    );
+
+                }
+                finally {
+
+                    if (
+                        selectedChat &&
+                        selectedChat.status === "active" &&
+                        String(selectedChatId) ===
+                        chatId
+                    ) {
+
+                        messageInput.disabled =
+                            false;
+
+                        sendBtn.disabled =
+                            false;
+
+                        messageInput.focus();
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           ENTER TO SEND
+        ===================================================== */
+
+        messageInput.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Enter" &&
+                    !event.shiftKey
+                ) {
+
+                    event.preventDefault();
+
+                    composer.requestSubmit();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           REFRESH BUTTON
+        ===================================================== */
+
+        refreshBtn.addEventListener(
+            "click",
+            async () => {
+
+                refreshBtn.disabled =
+                    true;
+
+
+                try {
+
+                    await loadChats();
+
+                }
+                finally {
+
+                    refreshBtn.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           INITIAL LOAD
+        ===================================================== */
+
+        loadChats();
+
+
+        /* =====================================================
+           AUTO REFRESH CHAT LIST
+        ===================================================== */
+
+        chatLoadTimer =
+            setInterval(
+                async () => {
+
+                    await loadChats();
+
+                },
+                5000
+            );
+
+
+        /* =====================================================
+           RESIZE
+        ===================================================== */
+
+        window.addEventListener(
+            "resize",
+            () => {
+
+                if (
+                    window.innerWidth > 850
+                ) {
+
+                    closeMobileSidebar();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           CLEANUP
+        ===================================================== */
+
+        window.addEventListener(
+            "beforeunload",
+            () => {
+
+                stopMessagePolling();
+
+
+                if (chatLoadTimer) {
+
+                    clearInterval(
+                        chatLoadTimer
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

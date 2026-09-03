@@ -7,36 +7,88 @@ const db = require("../config/db");
 
 
 // =====================================================
-// GET SINGLE ORDER
+// GET SINGLE ORDER + ORDER ITEMS
 // =====================================================
 
-router.get("/order/:id", (req, res) => {
+router.get("/order/:id", async (req, res) => {
 
-    const id = req.params.id;
+    const orderId = req.params.id;
 
-    db.query(
-        "SELECT * FROM orders WHERE id = ?",
-        [id],
-        (err, result) => {
+    try {
 
-            if (err) {
-                console.log(err);
+        // =========================================
+        // GET ORDER
+        // =========================================
 
-                return res.status(500).json({
-                    success: false
-                });
-            }
+        const [orders] = await db.promise().query(
+            `SELECT *
+             FROM orders
+             WHERE id = ?
+             LIMIT 1`,
+            [orderId]
+        );
 
-            if (result.length === 0) {
-                return res.json({
-                    success: false,
-                    message: "Order Not Found"
-                });
-            }
+        if (orders.length === 0) {
 
-            res.json(result[0]);
+            return res.status(404).json({
+                success: false,
+                message: "Order Not Found"
+            });
+
         }
-    );
+
+        const order = orders[0];
+
+        // =========================================
+        // GET ORDER ITEMS
+        // =========================================
+
+        const [items] = await db.promise().query(
+            `SELECT
+                id,
+                order_id,
+                product_name,
+                price,
+                qty
+             FROM order_items
+             WHERE order_id = ?
+             ORDER BY id ASC`,
+            [orderId]
+        );
+
+        // =========================================
+        // RETURN ORDER + ITEMS
+        // =========================================
+
+        return res.json({
+
+            success: true,
+
+            order: order,
+
+            items: items
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(
+            "GET PARTNER ORDER DETAILS ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to load order details."
+
+        });
+
+    }
+
 });
 
 

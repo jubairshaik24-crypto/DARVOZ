@@ -77,6 +77,104 @@ language: { code: "en" },
     }
 };
 
+// ==============================
+// SEND WHATSAPP SUPPORT MESSAGE
+// ==============================
+
+const sendWhatsAppMessage = async (
+    phone,
+    message
+) => {
+
+    try {
+
+        console.log(
+            "📤 SENDING WHATSAPP MESSAGE TO:",
+            phone
+        );
+
+        const response =
+            await axios.post(
+
+                `https://graph.facebook.com/v23.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
+
+                {
+                    messaging_product: "whatsapp",
+
+                    to: phone,
+
+                    type: "text",
+
+                    text: {
+                        body: message
+                    }
+                },
+
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+
+            );
+
+
+        console.log(
+            "✅ WHATSAPP MESSAGE SENT:",
+            JSON.stringify(
+                response.data,
+                null,
+                2
+            )
+        );
+
+
+        return {
+            success: true,
+            data: response.data
+        };
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "================================="
+        );
+
+        console.error(
+            "❌ WHATSAPP SEND ERROR:"
+        );
+
+        console.error(
+            JSON.stringify(
+                error.response?.data ||
+                error.message,
+                null,
+                2
+            )
+        );
+
+        console.error(
+            "================================="
+        );
+
+
+        return {
+            success: false,
+            error:
+                error.response?.data ||
+                error.message
+        };
+
+    }
+
+};
+
 
 const checkTemplates = async () => {
     try {
@@ -115,5 +213,6 @@ const checkTemplates = async () => {
 checkTemplates();
 
 module.exports = {
-    sendWhatsAppOTP
+    sendWhatsAppOTP,
+    sendWhatsAppMessage
 };

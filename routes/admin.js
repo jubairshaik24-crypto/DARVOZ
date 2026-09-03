@@ -900,6 +900,569 @@ router.get(
 );
 
 // =====================================================
+// CUSTOMER / ORDER LOOKUP
+// SEARCH BY ORDER ID OR CUSTOMER MOBILE
+// =====================================================
+
+router.get(
+    "/customer-order-lookup",
+    async (req, res) => {
+
+        try {
+
+            const search =
+                String(req.query.search || "").trim();
+
+            if (!search) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Order ID or customer mobile is required."
+
+                });
+
+            }
+
+            // =================================================
+            // SEARCH BY ORDER ID
+            // =================================================
+
+            if (/^\d+$/.test(search)) {
+
+                const orderId =
+                    Number(search);
+
+                const [orderRows] =
+                    await db.promise().query(
+                        `
+                        SELECT *
+                        FROM orders
+                        WHERE id=?
+                        LIMIT 1
+                        `,
+                        [orderId]
+                    );
+
+                if (orderRows.length > 0) {
+
+                    const order =
+                        orderRows[0];
+
+                    // =========================================
+                    // ORDER ITEMS
+                    // =========================================
+
+                    const [items] =
+                        await db.promise().query(
+                            `
+                            SELECT *
+                            FROM order_items
+                            WHERE order_id=?
+                            ORDER BY id ASC
+                            `,
+                            [orderId]
+                        );
+
+                    // =========================================
+                    // CUSTOMER
+                    // =========================================
+
+                    let customer = null;
+
+                    if (order.customer_id) {
+
+                        const [customerRows] =
+                            await db.promise().query(
+                                `
+                                SELECT *
+                                FROM customers
+                                WHERE id=?
+                                LIMIT 1
+                                `,
+                                [order.customer_id]
+                            );
+
+                        if (customerRows.length > 0) {
+
+                            customer =
+                                customerRows[0];
+
+                        }
+
+                    }
+
+                    // =========================================
+                    // FALLBACK CUSTOMER BY MOBILE
+                    // =========================================
+
+                    if (
+                        !customer &&
+                        order.mobile
+                    ) {
+
+                        const [customerRows] =
+                            await db.promise().query(
+                                `
+                                SELECT *
+                                FROM customers
+                                WHERE mobile=?
+                                LIMIT 1
+                                `,
+                                [order.mobile]
+                            );
+
+                        if (customerRows.length > 0) {
+
+                            customer =
+                                customerRows[0];
+
+                        }
+
+                    }
+
+                    // =========================================
+                    // DELIVERY PARTNER
+                    // =========================================
+
+                    let deliveryPartner = null;
+
+                    if (
+                        order.delivery_partner_id
+                    ) {
+
+                        const [deliveryRows] =
+                            await db.promise().query(
+                                `
+                                SELECT *
+                                FROM delivery_partners
+                                WHERE id=?
+                                LIMIT 1
+                                `,
+                                [
+                                    order.delivery_partner_id
+                                ]
+                            );
+
+                        if (
+                            deliveryRows.length > 0
+                        ) {
+
+                            deliveryPartner =
+                                deliveryRows[0];
+
+                        }
+
+                    }
+
+                    // =========================================
+                    // SUPPORT HISTORY
+                    // =========================================
+
+                    const [supportChats] =
+                        await db.promise().query(
+                            `
+                            SELECT
+                                chat_id,
+                                order_id,
+                                customer_id,
+                                customer_name,
+                                status,
+                                support_joined_at,
+                                created_at,
+                                updated_at
+                            FROM support_chats
+                            WHERE order_id=?
+                            ORDER BY created_at DESC
+                            `,
+                            [orderId]
+                        );
+
+                    // =========================================
+                    // SUPPORT MESSAGES
+                    // =========================================
+
+                    for (
+                        const chat
+                        of supportChats
+                    ) {
+
+                        const [messages] =
+                            await db.promise().query(
+                                `
+                                SELECT
+                                    id,
+                                    sender,
+                                    message,
+                                    created_at
+                                FROM support_messages
+                                WHERE chat_id=?
+                                ORDER BY created_at ASC
+                                `,
+                                [chat.chat_id]
+                            );
+
+                        chat.messages =
+                            messages;
+
+                    }
+
+// =========================================
+// PAYMENT INFORMATION
+// =========================================
+
+const paymentStatus =
+    order.payment_status ||
+    order.paymentStatus ||
+    order.transaction_status ||
+    order.transactionStatus ||
+    (
+        order.payment_id
+            ? "Paid"
+            : (
+                String(order.payment || "")
+                    .trim()
+                    .toUpperCase() === "COD"
+                    ? "Cash on Delivery"
+                    : "Not stored"
+            )
+    );
+
+const payment = {
+
+    method:
+        order.payment || null,
+
+    status:
+        paymentStatus,
+
+    transaction_id:
+        order.payment_id || null,
+
+    payment_id:
+        order.payment_id || null,
+
+    payment_order_id:
+        order.payment_order_id || null
+
+};
+
+                    return res.json({
+
+                        success: true,
+
+                        searchType: "order",
+
+                        order: {
+
+                            ...order,
+
+                            items
+
+                        },
+
+                        customer,
+
+                        deliveryPartner,
+
+                        payment,
+
+                        supportChats
+
+                    });
+
+                }
+
+            }
+
+            // =================================================
+            // SEARCH CUSTOMER BY MOBILE
+            // =================================================
+
+            const mobileSearch =
+                search.replace(
+                    /[\s\-()+]/g,
+                    ""
+                );
+
+            const [customers] =
+                await db.promise().query(
+                    `
+                    SELECT *
+                    FROM customers
+                    WHERE
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(mobile, ' ', ''),
+                                    '-',
+                                    ''
+                                ),
+                                '+',
+                                ''
+                            ),
+                            '(',
+                            ''
+                        ) LIKE ?
+                    ORDER BY id DESC
+                    `,
+                    [
+                        `%${mobileSearch}%`
+                    ]
+                );
+
+            if (customers.length === 0) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "No order or customer found."
+
+                });
+
+            }
+
+            const customerResults = [];
+
+            for (
+                const customer
+                of customers
+            ) {
+
+                // =============================================
+// ALL CUSTOMER ORDERS
+// =============================================
+
+const normalizedCustomerMobile =
+    String(customer.mobile || "")
+        .replace(/[\s\-()+]/g, "");
+
+const [orders] =
+    await db.promise().query(
+        `
+        SELECT *
+        FROM orders
+        WHERE
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(mobile, ' ', ''),
+                        '-',
+                        ''
+                    ),
+                    '+',
+                    ''
+                ),
+                '(',
+                ''
+            ) LIKE ?
+        ORDER BY id DESC
+        `,
+        [
+            `%${normalizedCustomerMobile}%`
+        ]
+    );
+                
+
+                for (
+                    const order
+                    of orders
+                ) {
+
+                    // =========================================
+                    // ITEMS
+                    // =========================================
+
+                    const [items] =
+                        await db.promise().query(
+                            `
+                            SELECT *
+                            FROM order_items
+                            WHERE order_id=?
+                            ORDER BY id ASC
+                            `,
+                            [order.id]
+                        );
+
+                    order.items =
+                        items;
+
+                    // =========================================
+                    // DELIVERY PARTNER
+                    // =========================================
+
+                    order.deliveryPartner =
+                        null;
+
+                    if (
+                        order.delivery_partner_id
+                    ) {
+
+                        const [deliveryRows] =
+                            await db.promise().query(
+                                `
+                                SELECT *
+                                FROM delivery_partners
+                                WHERE id=?
+                                LIMIT 1
+                                `,
+                                [
+                                    order.delivery_partner_id
+                                ]
+                            );
+
+                        if (
+                            deliveryRows.length > 0
+                        ) {
+
+                            order.deliveryPartner =
+                                deliveryRows[0];
+
+                        }
+
+                    }
+                    
+
+ // =========================================
+// PAYMENT DETAILS
+// =========================================
+
+const paymentStatus =
+    order.payment_status ||
+    order.paymentStatus ||
+    order.transaction_status ||
+    order.transactionStatus ||
+    (
+        order.payment_id
+            ? "Paid"
+            : (
+                String(order.payment || "")
+                    .trim()
+                    .toUpperCase() === "COD"
+                    ? "Cash on Delivery"
+                    : "Not stored"
+            )
+    );
+
+order.paymentDetails = {
+
+    method:
+        order.payment || null,
+
+    status:
+        paymentStatus,
+
+    transaction_id:
+        order.payment_id || null,
+
+    payment_id:
+        order.payment_id || null,
+
+    payment_order_id:
+        order.payment_order_id || null
+
+};
+
+                    // =========================================
+                    // SUPPORT HISTORY FOR THIS ORDER
+                    // =========================================
+
+                    const [supportChats] =
+                        await db.promise().query(
+                            `
+                            SELECT
+                                chat_id,
+                                order_id,
+                                customer_id,
+                                customer_name,
+                                status,
+                                support_joined_at,
+                                created_at,
+                                updated_at
+                            FROM support_chats
+                            WHERE order_id=?
+                            ORDER BY created_at DESC
+                            `,
+                            [order.id]
+                        );
+
+                    for (
+                        const chat
+                        of supportChats
+                    ) {
+
+                        const [messages] =
+                            await db.promise().query(
+                                `
+                                SELECT
+                                    id,
+                                    sender,
+                                    message,
+                                    created_at
+                                FROM support_messages
+                                WHERE chat_id=?
+                                ORDER BY created_at ASC
+                                `,
+                                [chat.chat_id]
+                            );
+
+                        chat.messages =
+                            messages;
+
+                    }
+
+                    order.supportChats =
+                        supportChats;
+
+                }
+
+                customerResults.push({
+
+                    customer,
+
+                    orders
+
+                });
+
+            }
+
+            return res.json({
+
+                success: true,
+
+                searchType: "mobile",
+
+                results:
+                    customerResults
+
+            });
+
+        } catch (err) {
+
+            console.error(
+                "CUSTOMER / ORDER LOOKUP ERROR:",
+                err
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to perform customer/order lookup."
+
+            });
+
+        }
+
+    }
+);
+
+// =====================================================
 // UPDATE ORDER STATUS + WALLET CREDIT / CANCELLATION
 // =====================================================
 

@@ -2165,7 +2165,26 @@
 
         </div>
 
+<!-- =====================================================
+     PREVIOUS SUPPORT CHATS
+===================================================== -->
 
+<section
+    class="section"
+    id="supportHistorySection"
+    style="display:none;"
+>
+
+    <div class="section-title">
+        Previous Support Chats
+    </div>
+
+    <div
+        class="quick-card"
+        id="supportHistoryList"
+    ></div>
+
+</section>
 
         <!-- =====================================================
                     ORDER DETAILS
@@ -2539,26 +2558,46 @@ async function loadOrder(){
 
         currentOrder =
             order;
+/*
+   Load support history for this order
+   after the real order data is available.
+*/
 
+if (
+    typeof loadSupportHistory === "function"
+) {
+    loadSupportHistory();
+}
 
 
         /* =============================================
            JOIN CUSTOMER ROOM
         ============================================= */
 
-        if(order.customer_id){
+        
+if(order.customer_id){
 
-            customerId =
-                order.customer_id;
+    customerId =
+        order.customer_id;
 
 
-            socket.emit(
-                "joinCustomer",
-                customerId
-            );
+    /*
+       Keep helpBot.js synchronized
+       with the current customer.
+    */
 
-        }
+    localStorage.setItem(
+        "customerId",
+        String(order.customer_id)
+    );
 
+
+    socket.emit(
+        "joinCustomer",
+        customerId
+    );
+
+}
 
 
         /* =============================================
@@ -5793,6 +5832,58 @@ function escapeBillHTML(text){
 </script>
 <script src="helpBot.js"></script>
 
+<script>
 
+document.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "[data-history-chat-id]"
+            );
+
+        if (!button) {
+            return;
+        }
+
+
+        const chatId =
+            button.dataset.historyChatId;
+
+
+        if (!chatId) {
+            return;
+        }
+
+
+        /*
+           Tell helpBot.js that the customer
+           wants to VIEW an old conversation.
+
+           IMPORTANT:
+           This does NOT create a new chat.
+        */
+
+        window.darvozViewingHistoryChatId =
+            chatId;
+
+
+        const helpButton =
+            document.getElementById(
+                "darvozHelpBtn"
+            );
+
+
+        if (helpButton) {
+
+            helpButton.click();
+
+        }
+
+    }
+);
+
+</script>
 </body>
 </html>

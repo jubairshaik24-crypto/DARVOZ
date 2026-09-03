@@ -1,298 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta charset="UTF-8">
 
-    <title>DARVOZ Support</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    >
+<title>DARVOZ Support</title>
 
-    <style>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
 
-        *{
-            box-sizing:border-box;
-            margin:0;
-            padding:0;
-        }
+<style>
 
-        body{
-            font-family:Arial,sans-serif;
-            background:#f5f6f7;
-            color:#20252b;
-        }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-        .support-page{
-            width:100%;
-            max-width:750px;
-            min-height:100vh;
-            margin:auto;
-            background:#fff;
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f6f7;
+    color:#20252b;
+}
 
-            display:flex;
-            flex-direction:column;
-        }
+.support-page{
+    width:100%;
+    max-width:750px;
+    min-height:100vh;
+    margin:auto;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+}
 
+/* ==========================================
+   HEADER
+========================================== */
 
-        /* HEADER */
+.support-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-        .support-header{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
+    padding:15px 18px;
 
-            padding:15px 18px;
+    border-bottom:1px solid #eceef0;
 
-            border-bottom:1px solid #eceef0;
-            background:#fff;
+    background:#fff;
 
-            position:sticky;
-            top:0;
-            z-index:10;
-        }
+    position:sticky;
+    top:0;
 
-        .support-profile{
-            display:flex;
-            align-items:center;
-            gap:12px;
-        }
+    z-index:10;
+}
 
-        .support-avatar{
-            width:46px;
-            height:46px;
+.support-profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
 
-            border-radius:50%;
+.support-avatar{
+    width:46px;
+    height:46px;
 
-            background:#ff5a00;
-            color:#fff;
+    border-radius:50%;
 
-            display:flex;
-            align-items:center;
-            justify-content:center;
+    background:#ff5a00;
+    color:#fff;
 
-            font-size:19px;
-        }
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-        .support-info h2{
-            font-size:16px;
-            margin-bottom:4px;
-        }
+    font-size:19px;
+}
 
-        .support-info p{
-            font-size:12px;
-            color:#6d747c;
-        }
+.support-info h2{
+    font-size:16px;
+    margin-bottom:4px;
+}
 
-        .online-dot{
-            display:inline-block;
+.support-info p{
+    font-size:12px;
+    color:#6d747c;
+}
 
-            width:7px;
-            height:7px;
+.online-dot{
+    display:inline-block;
 
-            background:#22b35c;
-            border-radius:50%;
+    width:7px;
+    height:7px;
 
-            margin-right:4px;
-        }
+    background:#22b35c;
 
-        .order-badge{
-            background:#fff4ed;
-            color:#ff5a00;
+    border-radius:50%;
 
-            border:1px solid #ffd5bd;
+    margin-right:4px;
+}
 
-            padding:7px 10px;
-            border-radius:10px;
+/* ==========================================
+   ORDER / GENERAL BADGE
+========================================== */
 
-            font-size:11px;
-            font-weight:600;
-        }
+.order-badge{
+    background:#fff4ed;
 
+    color:#ff5a00;
 
-        /* ORDER INFO */
+    border:1px solid #ffd5bd;
 
-        .order-info{
-            margin:14px;
+    padding:7px 10px;
 
-            padding:13px 15px;
+    border-radius:10px;
 
-            background:#fff8f4;
-            border:1px solid #ffe1d0;
+    font-size:11px;
 
-            border-radius:15px;
+    font-weight:600;
 
-            font-size:13px;
-            line-height:1.6;
-        }
+    white-space:nowrap;
+}
 
-        .order-info strong{
-            color:#ff5a00;
-        }
+/* ==========================================
+   CUSTOMER INFO
+========================================== */
 
+.order-info{
+    margin:14px;
 
-        /* CHAT */
+    padding:13px 15px;
 
-        .support-chat{
-            flex:1;
+    background:#fff8f4;
 
-            padding:18px 15px 100px;
+    border:1px solid #ffe1d0;
 
-            display:flex;
-            flex-direction:column;
-            gap:14px;
+    border-radius:15px;
 
-            overflow-y:auto;
-        }
+    font-size:13px;
 
-        .message{
-            display:flex;
-            width:100%;
-        }
+    line-height:1.6;
+}
 
-        .message.customer{
-            justify-content:flex-start;
-        }
+.order-info strong{
+    color:#ff5a00;
+}
 
-        .message.support{
-            justify-content:flex-end;
-        }
+/* ==========================================
+   CHAT
+========================================== */
 
-        .bubble{
-            max-width:80%;
+.support-chat{
+    flex:1;
 
-            padding:11px 14px;
+    padding:18px 15px 100px;
 
-            font-size:13px;
-            line-height:1.5;
+    display:flex;
+    flex-direction:column;
 
-            border-radius:17px;
-        }
+    gap:14px;
 
-        .customer .bubble{
-            background:#f1f3f4;
-            color:#252a30;
+    overflow-y:auto;
+}
 
-            border-bottom-left-radius:4px;
-        }
+.message{
+    display:flex;
 
-        .support .bubble{
-            background:#ff5a00;
-            color:#fff;
+    width:100%;
+}
 
-            border-bottom-right-radius:4px;
-        }
+.message.customer{
+    justify-content:flex-start;
+}
 
+.message.support{
+    justify-content:flex-end;
+}
 
-        /* INPUT */
+.bubble{
+    max-width:80%;
 
-        .chat-input-area{
-            position:fixed;
+    padding:11px 14px;
 
-            bottom:0;
-            left:50%;
+    font-size:13px;
 
-            transform:translateX(-50%);
+    line-height:1.5;
 
-            width:100%;
-            max-width:750px;
+    border-radius:17px;
 
-            background:#fff;
+    white-space:pre-wrap;
 
-            border-top:1px solid #eceef0;
+    word-break:break-word;
+}
 
-            padding:11px 13px;
+.customer .bubble{
+    background:#f1f3f4;
 
-            display:flex;
-            align-items:center;
-            gap:10px;
-        }
+    color:#252a30;
 
-        .chat-input{
-            flex:1;
+    border-bottom-left-radius:4px;
+}
 
-            border:1px solid #e1e4e6;
-            outline:none;
+.support .bubble{
+    background:#ff5a00;
 
-            padding:12px 14px;
+    color:#fff;
 
-            border-radius:22px;
+    border-bottom-right-radius:4px;
+}
 
-            font-size:13px;
-        }
+/* ==========================================
+   INPUT
+========================================== */
 
-        .chat-input:focus{
-            border-color:#ff5a00;
-        }
+.chat-input-area{
+    position:fixed;
 
-        .send-btn{
-            width:44px;
-            height:44px;
+    bottom:0;
 
-            border:none;
-            border-radius:50%;
+    left:50%;
 
-            background:#ff5a00;
-            color:#fff;
+    transform:translateX(-50%);
 
-            cursor:pointer;
+    width:100%;
 
-            font-size:16px;
-        }
+    max-width:750px;
 
+    background:#fff;
 
-        /* MOBILE */
+    border-top:1px solid #eceef0;
 
-        @media(max-width:600px){
+    padding:11px 13px;
 
-            .support-page{
-                max-width:none;
-            }
+    display:flex;
 
-            .support-header{
-                padding:13px;
-            }
+    align-items:center;
 
-            .order-info{
-                margin:10px 12px;
-            }
+    gap:10px;
+}
 
-            .support-chat{
-                padding:15px 12px 90px;
-            }
+.chat-input{
+    flex:1;
 
-        }
+    border:1px solid #e1e4e6;
 
-    </style>
+    outline:none;
+
+    padding:12px 14px;
+
+    border-radius:22px;
+
+    font-size:13px;
+}
+
+.chat-input:focus{
+    border-color:#ff5a00;
+}
+
+.send-btn{
+    width:44px;
+    height:44px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#ff5a00;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-size:16px;
+}
+
+.send-btn:disabled{
+    opacity:.6;
+
+    cursor:not-allowed;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:600px){
+
+    .support-page{
+        max-width:none;
+    }
+
+    .support-header{
+        padding:13px;
+    }
+
+    .order-info{
+        margin:10px 12px;
+    }
+
+    .support-chat{
+        padding:15px 12px 90px;
+    }
+
+}
+
+</style>
+
 </head>
 
+
 <body>
+
 
 <div class="support-page">
 
 
-    <!-- HEADER -->
+    <!-- =====================================
+         HEADER
+    ====================================== -->
 
     <div class="support-header">
 
         <div class="support-profile">
 
-            <!-- YOUR PROFILE ICON -->
-
             <div class="support-avatar">
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-headset"></i>
             </div>
-
 
             <div class="support-info">
 
-                <h2>DARVOZ Support</h2>
+                <h2>
+                    DARVOZ Support
+                </h2>
 
                 <p>
                     <span class="online-dot"></span>
@@ -304,17 +350,42 @@
         </div>
 
 
-        <div
-            class="order-badge"
-            id="orderBadge"
-        >
-            Loading...
-        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+
+    <div
+        class="order-badge"
+        id="orderBadge"
+    >
+        Loading...
+    </div>
+
+    <button
+        id="closeChatBtn"
+        style="
+            border:1px solid #ffd5bd;
+            background:#fff4ed;
+            color:#ff5a00;
+            width:36px;
+            height:36px;
+            border-radius:10px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        "
+        title="Close conversation"
+    >
+        <i class="fa-solid fa-check"></i>
+    </button>
+
+</div>
 
     </div>
 
 
-    <!-- ORDER INFORMATION -->
+    <!-- =====================================
+         CUSTOMER / ORDER INFORMATION
+    ====================================== -->
 
     <div
         class="order-info"
@@ -324,7 +395,9 @@
     </div>
 
 
-    <!-- CHAT -->
+    <!-- =====================================
+         CHAT
+    ====================================== -->
 
     <div
         class="support-chat"
@@ -332,7 +405,9 @@
     ></div>
 
 
-    <!-- INPUT -->
+    <!-- =====================================
+         MESSAGE INPUT
+    ====================================== -->
 
     <div class="chat-input-area">
 
@@ -341,6 +416,7 @@
             id="messageInput"
             class="chat-input"
             placeholder="Reply to customer..."
+            autocomplete="off"
         >
 
         <button
@@ -352,112 +428,195 @@
 
     </div>
 
+
 </div>
 
 
 <script>
 
-const params = new URLSearchParams(window.location.search);
+const API = window.location.origin;
 
-const chatId = params.get("chatId");
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const chatId =
+    params.get("chatId");
+
 
 const supportChat =
-    document.getElementById("supportChat");
+    document.getElementById(
+        "supportChat"
+    );
 
 const orderBadge =
-    document.getElementById("orderBadge");
+    document.getElementById(
+        "orderBadge"
+    );
 
 const orderInfo =
-    document.getElementById("orderInfo");
+    document.getElementById(
+        "orderInfo"
+    );
 
 const messageInput =
-    document.getElementById("messageInput");
+    document.getElementById(
+        "messageInput"
+    );
 
 const sendBtn =
-    document.getElementById("sendBtn");
+    document.getElementById(
+        "sendBtn"
+    );
 
 
-/* =========================================
-   CHECK CHAT ID
-========================================= */
-/* =========================================
-   LOAD REAL SUPPORT CHAT
-========================================= */
+// =====================================================
+// ESCAPE HTML
+// =====================================================
 
-async function loadSupportChat() {
+function escapeHTML(value){
 
-    if (!chatId) {
+    const div =
+        document.createElement("div");
 
-        orderInfo.innerHTML =
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+}
+
+
+// =====================================================
+// LOAD SUPPORT CHAT
+// =====================================================
+
+async function loadSupportChat(){
+
+    if(!chatId){
+
+        orderBadge.innerText =
+            "Invalid";
+
+        orderInfo.innerText =
             "Invalid DARVOZ Support link.";
 
         return;
-
     }
 
 
-    try {
+    try{
 
         const response =
             await fetch(
-                `/api/support/${chatId}`
+                `${API}/api/support/${encodeURIComponent(chatId)}`
             );
+
 
         const data =
             await response.json();
 
 
-        if (!response.ok || !data.success) {
+        if(
+            !response.ok ||
+            !data.success
+        ){
 
             throw new Error(
                 data.message ||
                 "Support chat not found"
             );
-
         }
 
 
-        const chat = data.chat;
+        const chat =
+            data.chat;
 
 
-        /* ORDER BADGE */
+        // ==========================================
+        // ORDER OR GENERAL SUPPORT
+        // ==========================================
 
-        orderBadge.innerText =
-            `Order #${chat.orderId}`;
+        if(chat.order_id){
 
-
-        /* ORDER INFO */
-
-        orderInfo.innerHTML = `
-            <strong>${chat.customerName || "DARVOZ Customer"}</strong>
-            needs your help regarding
-            <strong>Order #${chat.orderId}</strong>.
-        `;
+            orderBadge.innerText =
+                `Order #${chat.order_id}`;
 
 
-        /* LOAD ALL MESSAGES */
+            orderInfo.innerHTML = `
+                <strong>
+                    ${escapeHTML(
+                        chat.customer_name ||
+                        "DARVOZ Customer"
+                    )}
+                </strong>
+
+                needs your help regarding
+
+                <strong>
+                    Order #${chat.order_id}
+                </strong>.
+            `;
+
+        }else{
+
+            orderBadge.innerText =
+                "General Support";
+
+
+            orderInfo.innerHTML = `
+                <strong>
+                    ${escapeHTML(
+                        chat.customer_name ||
+                        "DARVOZ Customer"
+                    )}
+                </strong>
+
+                requested
+
+                <strong>
+                    DARVOZ General Support
+                </strong>.
+            `;
+        }
+
+
+        // ==========================================
+        // RENDER MESSAGES
+        // ==========================================
 
         supportChat.innerHTML = "";
 
 
-        chat.messages.forEach((item) => {
+        if(
+            Array.isArray(chat.messages)
+        ){
 
-            // AI/customer messages appear on left
-            const sender =
-                item.sender === "support"
-                    ? "support"
-                    : "customer";
+            chat.messages.forEach(
+                item => {
+
+                    const sender =
+                        item.sender === "support"
+                            ? "support"
+                            : "customer";
 
 
-            addMessage(
-                sender,
-                item.message
+                    addMessage(
+                        sender,
+                        item.message
+                    );
+
+                }
             );
 
-        });
+        }
 
-
-    } catch (error) {
+    }catch(error){
 
         console.error(
             "Load support chat error:",
@@ -465,73 +624,102 @@ async function loadSupportChat() {
         );
 
 
-        orderInfo.innerHTML = `
-            Unable to load this support conversation.
-        `;
+        orderBadge.innerText =
+            "Error";
+
+        orderInfo.innerText =
+            "Unable to load this support conversation.";
 
     }
 
 }
 
-loadSupportChat();
 
-/* =========================================
-   ADD MESSAGE
-========================================= */
+// =====================================================
+// ADD MESSAGE
+// =====================================================
 
-function addMessage(sender, text) {
+function addMessage(
+    sender,
+    text
+){
 
     const message =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     message.className =
         `message ${sender}`;
 
-    message.innerHTML = `
-        <div class="bubble">
-            ${text}
-        </div>
-    `;
 
-    supportChat.appendChild(message);
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+    bubble.className =
+        "bubble";
+
+
+    // SAFE TEXT
+    bubble.textContent =
+        text ?? "";
+
+
+    message.appendChild(
+        bubble
+    );
+
+
+    supportChat.appendChild(
+        message
+    );
+
 
     supportChat.scrollTop =
         supportChat.scrollHeight;
-
 }
 
 
-/* =========================================
-   SEND MESSAGE
-========================================= */
-async function sendMessage() {
+// =====================================================
+// SEND SUPPORT MESSAGE
+// =====================================================
+
+async function sendMessage(){
 
     const text =
         messageInput.value.trim();
 
-    if (!text || !chatId) return;
+
+    if(
+        !text ||
+        !chatId
+    ){
+
+        return;
+    }
 
 
-    /* Disable while sending */
+    sendBtn.disabled =
+        true;
 
-    sendBtn.disabled = true;
 
-
-    try {
+    try{
 
         const response =
             await fetch(
-                `/api/support/${chatId}/message`,
+                `${API}/api/support/${encodeURIComponent(chatId)}/message`,
                 {
-                    method: "POST",
+                    method:"POST",
 
-                    headers: {
+                    headers:{
                         "Content-Type":
                             "application/json"
                     },
 
-                    body: JSON.stringify({
-                        message: text
+                    body:JSON.stringify({
+                        message:text
                     })
                 }
             );
@@ -541,17 +729,17 @@ async function sendMessage() {
             await response.json();
 
 
-        if (!response.ok || !data.success) {
+        if(
+            !response.ok ||
+            !data.success
+        ){
 
             throw new Error(
                 data.message ||
                 "Failed to send reply"
             );
-
         }
 
-
-        /* Show after successful save */
 
         addMessage(
             "support",
@@ -559,27 +747,38 @@ async function sendMessage() {
         );
 
 
-        messageInput.value = "";
+        messageInput.value =
+            "";
 
 
-    } catch (error) {
+        messageInput.focus();
+
+
+    }catch(error){
 
         console.error(
             "Send message error:",
             error
         );
 
+
         alert(
-            "Unable to send message. Please try again."
+            "Unable to send reply. Please try again."
         );
 
-    } finally {
+    }finally{
 
-        sendBtn.disabled = false;
+        sendBtn.disabled =
+            false;
 
     }
 
 }
+
+
+// =====================================================
+// EVENTS
+// =====================================================
 
 sendBtn.addEventListener(
     "click",
@@ -589,16 +788,31 @@ sendBtn.addEventListener(
 
 messageInput.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
-        if (event.key === "Enter") {
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
             sendMessage();
         }
 
     }
 );
 
+
+// =====================================================
+// START
+// =====================================================
+
+loadSupportChat();
+
 </script>
 
+
 </body>
+
 </html>
