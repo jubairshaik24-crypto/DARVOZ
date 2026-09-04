@@ -568,4 +568,191 @@ router.put("/withdrawal/reject/:id", async (req, res) => {
     }
 
 });
+
+// ==========================================
+// ADMIN ASSIGN DELIVERY PARTNER
+// ==========================================
+
+router.put("/order/assign", async (req, res) => {
+
+    const { orderId, partnerId } = req.body;
+
+    if (!orderId || !partnerId) {
+        return res.status(400).json({
+            success: false,
+            message: "Order ID and Delivery Partner ID are required."
+        });
+    }
+
+    try {
+
+        // ======================================
+        // CHECK ORDER
+        // ======================================
+
+        const [orders] = await db.promise().query(
+            `SELECT
+                id,
+                customer_id,
+                status,
+                delivery_partner_id
+             FROM orders
+             WHERE id=?
+             LIMIT 1`,
+            [orderId]
+        );
+
+        if (orders.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found."
+            });
+        }
+
+        const order = orders[0];
+
+        // ======================================
+        // CHECK ORDER STATUS
+        // ======================================
+
+        if (order.status !== "Accepted") {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "This order cannot be assigned. Current status: " +
+                    order.status
+            });
+        }
+
+        // ======================================
+        // PREVENT DOUBLE ASSIGNMENT
+        // ======================================
+
+        if (order.delivery_partner_id) {
+            return res.status(400).json({
+                success: false,
+                message: "A delivery partner is already assigned."
+            });
+        }
+
+        // ======================================
+        // CHECK DELIVERY PARTNER
+        // ======================================
+
+        const [partners] = await db.promise().query(
+            `SELECT
+                id,
+                name,
+                mobile
+             FROM delivery_partners
+             WHERE id=?
+             LIMIT 1`,
+            [partnerId]
+        );
+
+        if (partners.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Delivery partner not found."
+            });
+        }
+
+        const partner = partners[0];
+
+        // ======================================
+        // ASSIGN DELIVERY PARTNER
+        // ======================================
+
+        const [result] = await db.promise().query(
+            `UPDATE orders
+             SET
+                delivery_partner_id=?,
+                status='Delivery Assigned'
+             WHERE
+                id=?
+                AND delivery_partner_id IS NULL
+                AND status='Accepted'`,
+            [
+                partnerId,
+                orderId
+            ]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Order was already assigned or is no longer available."
+            });
+        }
+
+        // ======================================
+        // SOCKET.IO
+        // ======================================
+
+        const io = req.app.get("io");
+
+        if (io) {
+
+            // CUSTOMER
+            io.to(
+                `customer_${order.customer_id}`
+            ).emit(
+                "orderStatusUpdated",
+                {
+                    orderId,
+                    status: "Delivery Assigned"
+                }
+            );
+
+            // DELIVERY PARTNER
+            io.to(
+                `delivery_${partnerId}`
+            ).emit(
+                "newDeliveryOrder",
+                {
+                    orderId,
+                    partnerId,
+                    status: "Delivery Assigned"
+                }
+            );
+
+        }
+
+        // ======================================
+        // SUCCESS
+        // ======================================
+
+        return res.json({
+
+            success: true,
+
+            message:
+                `Order #${orderId} assigned to ${partner.name}.`,
+
+            orderId,
+            partnerId
+
+        });
+
+    }
+    catch (err) {
+
+        console.error(
+            "ADMIN ASSIGN DELIVERY ERROR:",
+            err
+        );
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to assign delivery partner."
+
+        });
+
+    }
+
+});
 module.exports = router;

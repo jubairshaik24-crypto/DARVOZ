@@ -214,6 +214,9 @@ const deliveryPartnerRoutes =
 const adminDeliveryRoutes =
     require("./routes/adminDelivery");
 
+    const deliveryOrdersRoutes =
+    require("./routes/deliveryOrders");
+
 const partnerOrderRoutes =
     require("./routes/partnerOrders");
 
@@ -269,6 +272,11 @@ console.log(
 app.use(
     "/api/whatsapp",
     whatsappRoutes
+);
+
+app.use(
+    "/delivery-orders",
+    deliveryOrdersRoutes
 );
 
 

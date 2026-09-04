@@ -1876,9 +1876,17 @@ async function editRestaurant(id){
 
     try{
 
-        const res = await fetch("/admin/restaurant/" + id);
+        const res = await fetch("/admin/restaurants");
+const restaurants = await res.json();
 
-        const r = await res.json();
+const r = restaurants.find(
+  restaurant => Number(restaurant.id) === Number(id)
+);
+
+if (!r) {
+  alert("Restaurant not found.");
+  return;
+}
 
         document.getElementById("editId").value = r.id;
 
@@ -2328,7 +2336,7 @@ function renderRestaurants(data) {
             <td>
 
                 <img
-                    src="${r.logo || '/images/default-restaurant.png'}"
+                    src="${r.logo || 'admin/images/default-restaurant.png'}"
                     width="45"
                     height="45"
                     style="border-radius:50%;object-fit:cover;">
@@ -3092,27 +3100,19 @@ async function updateOrderStatus(id,status){
 
     try{
 
-        const res = await fetch("/admin/order/status",{
-
+        const res = await fetch("/admin/update-order/" + id,{
             method:"PUT",
 
             headers:{
-
                 "Content-Type":"application/json"
-
             },
 
             body:JSON.stringify({
-
-                id,
-
                 status
-
             })
-
         });
 
-        const data=await res.json();
+        const data = await res.json();
 
         alert(data.message);
 
@@ -3131,7 +3131,6 @@ async function updateOrderStatus(id,status){
     }
 
 }
-
 
 
 // =======================================
@@ -4507,9 +4506,18 @@ async function viewPartner(id) {
 
     try {
 
-        const res = await fetch("/admin/restaurant/" + id);
+        const res = await fetch("/admin/restaurants");
 
-        const data = await res.json();
+        const restaurants = await res.json();
+
+        const data = restaurants.find(
+            r => Number(r.id) === Number(id)
+        );
+
+        if (!data) {
+            alert("Partner details not found.");
+            return;
+        }
 
         console.log("VIEW PARTNER RESPONSE:", data);
 
@@ -4544,11 +4552,11 @@ async function viewPartner(id) {
 
         const logo =
             p.logo ||
-            "/images/default-restaurant.png";
+            "/admin/images/default-restaurant.png";
 
         const storePhoto =
             p.storePhoto ||
-            "/images/default-restaurant.png";
+            "/admin/images/default-restaurant.png";
 
 
         document.getElementById(
@@ -4668,7 +4676,7 @@ async function viewPartner(id) {
                             background:#fff;
                         "
                         onerror="
-                            this.src='/images/default-restaurant.png'
+                            this.src='admin/images/default-restaurant.png'
                         "
                     >
 

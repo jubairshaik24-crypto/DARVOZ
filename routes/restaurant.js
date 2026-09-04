@@ -462,7 +462,7 @@ gc.image AS category_image,
                     image:
                         product.image ||
                         product.default_image ||
-                        "/images/other.jpg",
+                        "/customer/images/other.jpg",
 
                     product_type: product.product_type,
                     status: product.status,
