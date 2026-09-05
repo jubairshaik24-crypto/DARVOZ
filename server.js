@@ -1100,6 +1100,32 @@ app.post(
     }
 );
 
+// ==============================
+// REFERRAL LINK
+// ==============================
+
+app.get(
+    "/ref/:referralCode",
+    (req, res) => {
+
+        const referralCode =
+            String(req.params.referralCode || "")
+                .trim()
+                .toUpperCase();
+
+        if (!referralCode) {
+            return res.redirect(
+                "/customer/customer-login.html"
+            );
+        }
+
+        res.redirect(
+            "/customer/customer-login.html?ref=" +
+            encodeURIComponent(referralCode)
+        );
+    }
+);
+
 
 // ==============================
 // 404

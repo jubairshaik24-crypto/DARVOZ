@@ -5763,13 +5763,26 @@ async function startDarvoz(){
     }
 
     /* Only when there is NO saved/manual location may GPS run. */
-   if(!locationState){
+if(!locationState){
 
     console.warn(
         "⚠️ NO SAVED LOCATION FOUND"
     );
 
+    const locationElement =
+        document.getElementById(
+            "currentLocation"
+        );
+
+    if(locationElement){
+
+        locationElement.textContent =
+            "Select Location";
+
+    }
+
     showOutOfServiceMessage();
+
     return;
 
 }
