@@ -1761,6 +1761,13 @@ document
 
 async function register() {
 
+    console.log("📍 LOCATION BEFORE REGISTER:", {
+    latitude: localStorage.getItem("latitude"),
+    longitude: localStorage.getItem("longitude"),
+    locationName: localStorage.getItem("locationName"),
+    splashLocationReady: localStorage.getItem("splashLocationReady")
+});
+
 
     const button =
         document.getElementById(
@@ -2144,8 +2151,15 @@ async function register() {
         );
 
 
-        window.location.href =
-            "index.html";
+        console.log("📍 LOCATION AFTER REGISTER:", {
+    latitude: localStorage.getItem("latitude"),
+    longitude: localStorage.getItem("longitude"),
+    locationName: localStorage.getItem("locationName"),
+    splashLocationReady: localStorage.getItem("splashLocationReady")
+});
+
+window.location.href =
+    "index.html";
 
 
     }

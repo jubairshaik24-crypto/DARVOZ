@@ -603,6 +603,20 @@ async function verifyOTP() {
                 )
             );
 
+            console.log("📍 LOCATION BEFORE INDEX:");
+console.log(
+    "Latitude:",
+    localStorage.getItem("latitude")
+);
+console.log(
+    "Longitude:",
+    localStorage.getItem("longitude")
+);
+console.log(
+    "Location Name:",
+    localStorage.getItem("locationName")
+);
+
             // Remove temporary OTP data
             localStorage.removeItem(
                 "otpMobile"
@@ -612,6 +626,7 @@ async function verifyOTP() {
                 "otpExistingCustomer"
             );
 
+            
             // Go to home
             window.location.href =
                 "index.html";
@@ -662,7 +677,19 @@ console.log(
 // ==========================================
 // GO TO REGISTRATION
 // ==========================================
-
+console.log("📍 LOCATION BEFORE REGISTRATION:");
+console.log(
+    "Latitude:",
+    localStorage.getItem("latitude")
+);
+console.log(
+    "Longitude:",
+    localStorage.getItem("longitude")
+);
+console.log(
+    "Location Name:",
+    localStorage.getItem("locationName")
+);
 if (referralCode) {
 
     window.location.href =

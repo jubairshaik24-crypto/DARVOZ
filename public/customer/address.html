@@ -1485,27 +1485,30 @@ function geocodeAddress(
                 status
             ) {
 
-                if (
-                    status !== "OK" ||
-                    !results ||
-                    !results[0] ||
-                    !results[0].geometry
-                ) {
+               console.log("📍 GOOGLE GEOCODER STATUS:", status);
+console.log("📍 GOOGLE GEOCODER RESULTS:", results);
 
-                    console.error(
-                        "GEOCODING FAILED:",
-                        status,
-                        addressText
-                    );
+if (
+    status !== "OK" ||
+    !results ||
+    !results[0] ||
+    !results[0].geometry
+) {
 
-                    reject(
-                        new Error(
-                            "Unable to find this address on the map."
-                        )
-                    );
+    console.error(
+        "❌ GEOCODING FAILED:",
+        status,
+        addressText
+    );
 
-                    return;
-                }
+    reject(
+        new Error(
+            "Unable to find this address on the map."
+        )
+    );
+
+    return;
+}
 
                 const location =
                     results[0].geometry.location;

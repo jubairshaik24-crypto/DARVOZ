@@ -117,6 +117,37 @@
 
 <script>
 
+    function saveSplashLocation(latitude, longitude, locationName) {
+
+    localStorage.setItem(
+        "latitude",
+        String(latitude)
+    );
+
+    localStorage.setItem(
+        "longitude",
+        String(longitude)
+    );
+
+    localStorage.setItem(
+        "locationName",
+        String(locationName || "your location")
+    );
+
+    // Tell the rest of DARVOZ that splash already detected GPS
+    localStorage.setItem(
+        "splashLocationReady",
+        "true"
+    );
+
+    console.log("==================================");
+    console.log("✅ SPLASH LOCATION SAVED");
+    console.log("Latitude:", latitude);
+    console.log("Longitude:", longitude);
+    console.log("Location:", locationName);
+    console.log("==================================");
+}
+
 const locationStatus =
     document.getElementById("locationStatus");
 
@@ -139,6 +170,38 @@ if (isLoggedIn) {
 
 }
 
+function saveSplashLocation(latitude, longitude, locationName) {
+
+    localStorage.setItem(
+        "latitude",
+        String(latitude)
+    );
+
+    localStorage.setItem(
+        "longitude",
+        String(longitude)
+    );
+
+    localStorage.setItem(
+        "locationName",
+        String(locationName || "your location")
+    );
+
+    // Tell the rest of DARVOZ that splash already detected GPS
+
+    localStorage.setItem(
+        "splashLocationReady",
+        "true"
+    );
+
+    console.log("==================================");
+    console.log("✅ SPLASH LOCATION SAVED");
+    console.log("Latitude:", latitude);
+    console.log("Longitude:", longitude);
+    console.log("Location:", locationName);
+    console.log("==================================");
+}
+
 
 function getLocation(){
 
@@ -154,88 +217,104 @@ function getLocation(){
 
     navigator.geolocation.getCurrentPosition(
 
-       function(position){
+        function(position){
 
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+            const latitude =
+                position.coords.latitude;
 
-
-    // SAVE COORDINATES
-
-   localStorage.setItem(
-    "latitude",
-    String(latitude)
-);
-
-localStorage.setItem(
-    "longitude",
-    String(longitude)
-);
+            const longitude =
+                position.coords.longitude;
 
 
-    // SHOW FINDING LOCATION
+            // SHOW FINDING LOCATION
 
-    locationStatus.innerText =
-        "Finding your delivery location...";
-
-
-    // GET LOCATION NAME
-
-    fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
-    )
-    .then(response => response.json())
-    .then(data => {
-
-        const address = data.address || {};
+            locationStatus.innerText =
+                "Finding your delivery location...";
 
 
-        // GET LOCATION NAME
+            // GET LOCATION NAME
 
-        const locationName =
-            address.village ||
-            address.town ||
-            address.city ||
-            address.suburb ||
-            address.county ||
-            "your location";
+            fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+            )
+            .then(response => response.json())
 
+            .then(data => {
 
-        // SAVE LOCATION NAME
-         localStorage.setItem(
-    "locationName",
-    locationName
-);
-
-        // SHOW RESULT
-
-        locationStatus.innerText =
-            `📍 Delivering to ${locationName}...`;
+                const address =
+                    data.address || {};
 
 
-      
-        // GO TO LOGIN / HOME
-s
-goToLogin();
+                // GET LOCATION NAME
 
-    })
-    .catch(error => {
+                const locationName =
+                    address.village ||
+                    address.town ||
+                    address.city ||
+                    address.suburb ||
+                    address.county ||
+                    "your location";
 
-        console.log("Location name error:", error);
 
-        locationStatus.innerText =
-            "📍 Location detected";
+                // =====================================
+                // SAVE COMPLETE SPLASH LOCATION
+                // =====================================
 
-        goToLogin();
+                saveSplashLocation(
+                    latitude,
+                    longitude,
+                    locationName
+                );
 
-    });
 
-},
+                // SHOW RESULT
+
+                locationStatus.innerText =
+                    `📍 Delivering to ${locationName}...`;
+
+
+                // GO TO LOGIN / HOME
+
+                goToLogin();
+
+            })
+
+            .catch(error => {
+
+                console.log(
+                    "Location name error:",
+                    error
+                );
+
+
+                // Even if location name fails,
+                // SAVE GPS coordinates
+
+                saveSplashLocation(
+                    latitude,
+                    longitude,
+                    "your location"
+                );
+
+
+                locationStatus.innerText =
+                    "📍 Location detected";
+
+
+                goToLogin();
+
+            });
+
+        },
 
 
         function(error){
 
-            // USER DENIED OR ERROR
+            console.log(
+                "GPS ERROR:",
+                error
+            );
+
 
             locationStatus.innerText =
                 "Continuing without location...";
@@ -255,7 +334,6 @@ goToLogin();
     );
 
 }
-
 
 // START LOCATION DETECTION
 
