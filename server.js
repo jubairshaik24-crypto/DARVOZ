@@ -405,11 +405,7 @@ app.use(
 // ==============================
 
 app.get("/", (req, res) => {
-
-    res.send(
-        "🚀 DARVOZ Server Running"
-    );
-
+    res.sendFile(path.join(__dirname, "public/customer/splash.html"));
 });
 
 

@@ -2014,11 +2014,11 @@ async function loadReferral(){
            CREATE REAL REFERRAL LINK
         ================================= */
 
-        const referralLink =
-            window.location.origin +
-            "/customer-register.html?ref=" +
-            encodeURIComponent(code);
-
+       
+const referralLink =
+    window.location.origin +
+    "/customer-login.html?ref=" +
+    encodeURIComponent(code);
 
         linkElement.textContent =
             referralLink;

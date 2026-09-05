@@ -644,8 +644,38 @@ async function verifyOTP() {
         );
 
         // Go to registration page
-        window.location.href =
-            "customer-register.html";
+        // ==========================================
+// GET PENDING REFERRAL CODE
+// ==========================================
+
+const referralCode =
+    localStorage.getItem(
+        "pendingReferralCode"
+    );
+
+console.log(
+    "🎁 REFERRAL CODE FOR REGISTRATION:",
+    referralCode || "NONE"
+);
+
+
+// ==========================================
+// GO TO REGISTRATION
+// ==========================================
+
+if (referralCode) {
+
+    window.location.href =
+        "customer-register.html?ref=" +
+        encodeURIComponent(
+            referralCode
+        );
+
+} else {
+
+    window.location.href =
+        "customer-register.html";
+}
 
 
     } catch (error) {

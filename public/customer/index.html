@@ -2282,7 +2282,7 @@ body{
                     class="darvoz-coin-balance"
                     id="headerCoins"
                 >
-                    500
+                    0
                 </span>
 
                 <div class="darvoz-mini-coin">
@@ -2979,46 +2979,116 @@ localStorage.getItem("customerId");
    DARVOZ COINS
 ========================================= */
 
-function loadHeaderCoins() {
+/* =========================================
+   DARVOZ REAL COINS
+   DATABASE SOURCE OF TRUTH
+========================================= */
+
+async function loadHeaderCoins(){
 
     const coinsElement =
         document.getElementById("headerCoins");
 
-    if (!coinsElement) {
+    if(!coinsElement){
         return;
     }
 
+    if(!customerId){
 
-    /*
-       First use locally saved balance.
-    */
+        console.log(
+            "❌ No customerId found for coins"
+        );
 
-    const savedCoins =
-        localStorage.getItem("darvozCoins");
+        coinsElement.textContent = "0";
+        return;
+    }
 
+    try{
 
-    if (savedCoins !== null) {
+        const response =
+            await fetch(
+                `${API}/customer/profile/${encodeURIComponent(customerId)}`
+            );
 
-        const coins =
-            parseInt(savedCoins, 10);
+        if(!response.ok){
+
+            throw new Error(
+                `Profile API failed: ${response.status}`
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        console.log(
+            "💰 CUSTOMER PROFILE FOR COINS:",
+            data
+        );
+
+        if(
+            !data.success ||
+            !data.customer
+        ){
+
+            throw new Error(
+                "Customer profile not found"
+            );
+
+        }
+
+        const realCoins =
+            Number(
+                data.customer.coins ?? 0
+            );
+
+        if(!Number.isFinite(realCoins)){
+
+            throw new Error(
+                "Invalid coins value"
+            );
+
+        }
+
+        /* =====================================
+           SHOW REAL DATABASE BALANCE
+        ===================================== */
 
         coinsElement.textContent =
-            Number.isFinite(coins)
-                ? coins
-                : 0;
+            realCoins;
 
-        return;
+        /* =====================================
+           UPDATE LOCAL CACHE
+           REAL VALUE ONLY
+        ===================================== */
+
+        localStorage.setItem(
+            "darvozCoins",
+            String(realCoins)
+        );
+
+        console.log(
+            "💰 DARVOZ REAL COINS:",
+            realCoins
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "❌ DARVOZ COINS ERROR:",
+            error
+        );
+
+        /*
+         * NEVER show fake coins.
+         */
+
+        coinsElement.textContent = "0";
     }
 
-
-    /*
-       New registered customer starts
-       with 500 coins.
-    */
-
-    coinsElement.textContent = "500";
-
 }
+
 
 document.addEventListener(
     "DOMContentLoaded",

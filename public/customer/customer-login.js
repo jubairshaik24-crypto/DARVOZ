@@ -1,4 +1,53 @@
 const API = window.location.origin;
+/* =====================================================
+   REFERRAL CODE FROM SHARED LINK
+===================================================== */
+
+function captureReferralCode(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const referralCode =
+        params.get("ref") ||
+        params.get("referral") ||
+        params.get("referralCode");
+
+    if(
+        referralCode &&
+        referralCode.trim()
+    ){
+
+        const code =
+            referralCode
+                .trim()
+                .toUpperCase();
+
+        localStorage.setItem(
+            "pendingReferralCode",
+            code
+        );
+
+        localStorage.setItem(
+            "darvozReferralCode",
+            code
+        );
+
+        console.log(
+            "🎁 REFERRAL CODE CAPTURED:",
+            code
+        );
+    }
+}
+
+
+/* =====================================================
+   CAPTURE REFERRAL ON LOGIN PAGE
+===================================================== */
+
+captureReferralCode();
 
 /* =====================================================
    SEND OTP
@@ -143,6 +192,28 @@ async function sendOTP() {
             "otpMobile",
             mobile
         );
+
+        /* =====================================================
+   KEEP REFERRAL THROUGH OTP FLOW
+===================================================== */
+
+const pendingReferralCode =
+    localStorage.getItem(
+        "pendingReferralCode"
+    );
+
+if(pendingReferralCode){
+
+    localStorage.setItem(
+        "pendingReferralCode",
+        pendingReferralCode
+    );
+
+    console.log(
+        "🎁 REFERRAL SAVED FOR OTP:",
+        pendingReferralCode
+    );
+}
 
         // Remember whether customer already exists
         localStorage.setItem(
