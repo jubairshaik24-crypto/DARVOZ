@@ -2259,10 +2259,9 @@ body{
                     Deliver to
                 </small>
 
-                <strong id="currentLocation">
-                    Detecting location...
-                </strong>
-
+               <strong id="currentLocation">
+    Loading location...
+</strong>
             </div>
 
             <i class="fa-solid fa-chevron-down"></i>
@@ -3946,178 +3945,6 @@ function loadSavedDeliveryAddress(){
 }
 
 
-/* =====================================================
-   DEVICE GPS
-   ONLY USED WHEN THERE IS NO MANUAL LOCATION
-===================================================== */
-
-function detectCustomerLocation(){
-
-    return new Promise((resolve) => {
-
-        const locationElement =
-            document.getElementById("currentLocation");
-
-        if(!locationElement){
-            resolve(false);
-            return;
-        }
-
-        /* Manual location always has priority over device GPS. */
-        const manualSelected =
-            localStorage.getItem("manualLocationSelected") === "true";
-
-        if(manualSelected){
-
-            const manualAddress =
-                localStorage.getItem("selectedAddress") ||
-                localStorage.getItem("locationName");
-
-            const manualLatitude =
-                localStorage.getItem("latitude");
-
-            const manualLongitude =
-                localStorage.getItem("longitude");
-
-            if(manualAddress){
-                locationElement.textContent = manualAddress;
-            }
-
-            console.log("🛑 MANUAL LOCATION ACTIVE");
-            console.log("Delivery Address:", manualAddress);
-            console.log("Delivery Latitude:", manualLatitude);
-            console.log("Delivery Longitude:", manualLongitude);
-
-            /* Never fall back to device GPS. */
-            resolve(
-                !!(
-                    manualAddress &&
-                    manualLatitude !== null &&
-                    manualLatitude !== "" &&
-                    manualLongitude !== null &&
-                    manualLongitude !== ""
-                )
-            );
-            return;
-        }
-
-        /* No manual location: device GPS is allowed. */
-        locationElement.textContent = "Detecting location...";
-
-        if(!navigator.geolocation){
-            locationElement.textContent = "Location unavailable";
-            resolve(false);
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-
-            function(position){
-
-                /* Manual selection may have happened while GPS was running. */
-                if(
-                    localStorage.getItem("manualLocationSelected") === "true"
-                ){
-                    console.log("🛑 GPS IGNORED — MANUAL LOCATION SELECTED");
-                    resolve(true);
-                    return;
-                }
-
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                localStorage.setItem("latitude", String(latitude));
-                localStorage.setItem("longitude", String(longitude));
-
-                console.log("📍 DEVICE GPS:", latitude, longitude);
-
-                try{
-
-                    if(
-                        typeof google === "undefined" ||
-                        !google.maps
-                    ){
-                        locationElement.textContent = "Current Location";
-                        localStorage.setItem("locationName", "Current Location");
-                        resolve(true);
-                        return;
-                    }
-
-                    const geocoder = new google.maps.Geocoder();
-
-                    geocoder.geocode(
-                        {
-                            location:{
-                                lat:latitude,
-                                lng:longitude
-                            }
-                        },
-                        function(results,status){
-
-                            /* Manual selection wins if geocoding finishes later. */
-                            if(
-                                localStorage.getItem("manualLocationSelected") === "true"
-                            ){
-                                console.log("🛑 GPS ADDRESS IGNORED — MANUAL LOCATION ACTIVE");
-                                resolve(true);
-                                return;
-                            }
-
-                            if(
-                                status === "OK" &&
-                                results &&
-                                results[0]
-                            ){
-                                const displayLocation =
-                                    results[0].formatted_address;
-
-                                locationElement.textContent = displayLocation;
-                                localStorage.setItem("locationName", displayLocation);
-                                localStorage.setItem("detectedAddress", displayLocation);
-                            }
-                            else{
-                                locationElement.textContent = "Current Location";
-                                localStorage.setItem("locationName", "Current Location");
-                            }
-
-                            resolve(true);
-                        }
-                    );
-
-                }
-                catch(error){
-                    console.error("GEOCODING ERROR:", error);
-                    locationElement.textContent = "Current Location";
-                    resolve(true);
-                }
-            },
-
-            function(error){
-
-                if(
-                    localStorage.getItem("manualLocationSelected") === "true"
-                ){
-                    resolve(true);
-                    return;
-                }
-
-                console.error("LOCATION ERROR:", error);
-                locationElement.textContent = "Select Location";
-                resolve(false);
-            },
-
-            {
-                enableHighAccuracy:true,
-                timeout:10000,
-                maximumAge:300000
-            }
-        );
-    });
-}
-
-/* =====================================================
-   LOCATION
-===================================================== */
 
 /* =====================================================
    DARVOZ PICKS
@@ -5866,25 +5693,27 @@ async function startDarvoz(){
     }
 
     /* Only when there is NO saved/manual location may GPS run. */
-    if(!locationState){
+   if(!locationState){
 
-        console.log(
-            "NO SAVED LOCATION → DETECTING GPS"
-        );
+    console.warn(
+        "⚠️ NO SAVED LOCATION FOUND"
+    );
 
-        const gpsResult = await detectCustomerLocation();
+    showOutOfServiceMessage();
+    return;
 
-        if(!gpsResult){
-            console.warn("⚠️ NO LOCATION AVAILABLE");
-            return;
-        }
-    }
-    else{
+}
+else{
 
-        console.log("✅ USING MANUAL/SAVED DELIVERY LOCATION");
-        console.log("GPS NOT USED");
-    }
+    console.log(
+        "✅ USING SAVED DELIVERY LOCATION"
+    );
 
+    console.log(
+        "📍 GPS WILL NOT RUN FROM INDEX.HTML"
+    );
+
+}
     /* =========================================
        CHECK LOCATION BEFORE LOADING
     ========================================= */

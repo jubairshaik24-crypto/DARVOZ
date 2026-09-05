@@ -162,15 +162,15 @@ function getLocation(){
 
     // SAVE COORDINATES
 
-    localStorage.setItem(
-        "darvoz_latitude",
-        latitude
-    );
+   localStorage.setItem(
+    "latitude",
+    String(latitude)
+);
 
-    localStorage.setItem(
-        "darvoz_longitude",
-        longitude
-    );
+localStorage.setItem(
+    "longitude",
+    String(longitude)
+);
 
 
     // SHOW FINDING LOCATION
@@ -202,12 +202,10 @@ function getLocation(){
 
 
         // SAVE LOCATION NAME
-
-        localStorage.setItem(
-            "darvoz_location_name",
-            locationName
-        );
-
+         localStorage.setItem(
+    "locationName",
+    locationName
+);
 
         // SHOW RESULT
 
@@ -215,14 +213,10 @@ function getLocation(){
             `📍 Delivering to ${locationName}...`;
 
 
-        // GO TO LOGIN AFTER 2 SECONDS
-
-        setTimeout(() => {
-
-            window.location.href =
-                "customer-login.html";
-
-        }, 2000);
+      
+        // GO TO LOGIN / HOME
+s
+goToLogin();
 
     })
     .catch(error => {
