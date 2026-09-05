@@ -1101,31 +1101,25 @@ app.post(
 );
 
 // ==============================
-// REFERRAL LINK
+// DARVOZ REFERRAL LINK
 // ==============================
 
-app.get(
-    "/ref/:referralCode",
-    (req, res) => {
+app.get("/:referralCode", (req, res, next) => {
+    const referralCode =
+        String(req.params.referralCode || "")
+            .trim()
+            .toUpperCase();
 
-        const referralCode =
-            String(req.params.referralCode || "")
-                .trim()
-                .toUpperCase();
-
-        if (!referralCode) {
-            return res.redirect(
-                "/customer/customer-login.html"
-            );
-        }
-
-        res.redirect(
-            "/customer/customer-login.html?ref=" +
-            encodeURIComponent(referralCode)
-        );
+    // Only accept 8-character hexadecimal referral codes
+    if (!/^[A-F0-9]{8}$/.test(referralCode)) {
+        return next();
     }
-);
 
+    res.redirect(
+        "/customer/splash.html?ref=" +
+        encodeURIComponent(referralCode)
+    );
+});
 
 // ==============================
 // 404
