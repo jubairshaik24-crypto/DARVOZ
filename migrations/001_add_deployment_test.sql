@@ -1,0 +1,2 @@
+ALTER TABLE customers
+ADD COLUMN deployment_test VARCHAR(50) DEFAULT NULL;
