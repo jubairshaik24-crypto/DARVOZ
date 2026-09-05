@@ -125,8 +125,15 @@ function goToLogin(){
 
     setTimeout(() => {
 
-        window.location.href =
-            "customer-login.html";
+
+const isLoggedIn =
+    localStorage.getItem("customerLoggedIn") === "true";
+
+if (isLoggedIn) {
+    window.location.href = "index.html";
+} else {
+    window.location.href = "customer-login.html";
+}
 
     }, 1200);
 
