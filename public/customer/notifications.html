@@ -79,12 +79,7 @@
 
             position:relative;
 
-            background:
-                linear-gradient(
-                    145deg,
-                    #ff5b00,
-                    #ff7800
-                );
+            background:#015525;
 
             color:#fff;
 
@@ -113,7 +108,7 @@
 
             border-radius:50%;
 
-            background:rgba(255,255,255,.07);
+            background:rgba(204, 201, 201, 0.07);
 
             right:-90px;
             top:-80px;
@@ -312,9 +307,9 @@
 
         .notification-tab.active{
 
-            background:#fff;
+            background:#f5f6f6;
 
-            color:var(--orange);
+            color:var(--gray);
 
             border-color:#fff;
         }
@@ -651,7 +646,7 @@
 
             font-size:28px;
 
-            color:#ff5b00;
+            color:#015525;
 
             margin-bottom:10px;
         }
@@ -1608,80 +1603,47 @@ const response =
        MARK ONE NOTIFICATION READ
     ===================================================== */
 
-    async function markNotificationRead(
-        notification,
-        card
-    ){
+    async function markNotificationRead(notification, card){
 
-        if(
-            !notification.id
-        ){
-
-            return;
-
-        }
-
-
-        if(
-            isNotificationRead(
-                notification
-            )
-        ){
-
-            return;
-
-        }
-
-
-        /* UPDATE UI IMMEDIATELY */
-
-        card.classList.remove(
-            "unread"
-        );
-
-
-        notification.is_read =
-            true;
-
-
-        try{
-
-            const response =
-                await fetch(
-                    `/api/customer/notifications/${encodeURIComponent(notification.id)}/read`,
-                    {
-                        method:"PUT",
-
-                        credentials:"include",
-
-                        headers:{
-                            "Accept":
-                                "application/json"
-                        }
-                    }
-                );
-
-
-            if(!response.ok){
-
-                throw new Error(
-                    `HTTP ${response.status}`
-                );
-
-            }
-
-
-        }catch(error){
-
-            console.error(
-                "DARVOZ MARK READ ERROR:",
-                error
-            );
-
-        }
-
+    if (!notification.id) {
+        return;
     }
 
+    if (isNotificationRead(notification)) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/api/customer/notifications/${encodeURIComponent(notification.id)}/read`,
+            {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        // Server successfully marked it as read
+        notification.is_read = true;
+
+        card.classList.remove("unread");
+
+    } catch (error) {
+
+        console.error(
+            "DARVOZ MARK READ ERROR:",
+            error
+        );
+
+    }
+}
 
     /* =====================================================
        MARK ALL AS READ
@@ -1700,9 +1662,12 @@ const response =
                         credentials:"include",
 
                         headers:{
-                            "Accept":
-                                "application/json"
-                        }
+    "Accept":"application/json",
+    "Content-Type":"application/json"
+},
+body: JSON.stringify({
+    customerId: localStorage.getItem("customerId")
+})
                     }
                 );
 

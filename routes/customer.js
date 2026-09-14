@@ -1521,6 +1521,121 @@ router.get(
         );
     }
 );
+
+// ==========================================
+// MARK ONE CUSTOMER NOTIFICATION AS READ
+// ==========================================
+
+router.put(
+    "/notifications/:id/read",
+    (req, res) => {
+
+        const notificationId =
+            req.params.id;
+
+        if (!notificationId) {
+            return res.status(400).json({
+                success: false,
+                message: "Notification ID is required"
+            });
+        }
+
+        const sql = `
+            UPDATE customer_notifications
+            SET is_read = 1
+            WHERE id = ?
+        `;
+
+        db.query(
+            sql,
+            [notificationId],
+            (err, result) => {
+
+                if (err) {
+
+                    console.error(
+                        "MARK NOTIFICATION READ ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message: "Unable to mark notification as read"
+                    });
+                }
+
+                if (result.affectedRows === 0) {
+
+                    return res.status(404).json({
+                        success: false,
+                        message: "Notification not found"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message: "Notification marked as read"
+                });
+
+            }
+        );
+    }
+);
+
+
+// ==========================================
+// MARK ALL CUSTOMER NOTIFICATIONS AS READ
+// ==========================================
+
+router.put(
+    "/notifications/read-all",
+    (req, res) => {
+
+        const customerId =
+            req.body.customerId ||
+            req.query.customerId ||
+            req.headers["x-customer-id"];
+
+        if (!customerId) {
+            return res.status(400).json({
+                success: false,
+                message: "Customer ID is required"
+            });
+        }
+
+        const sql = `
+            UPDATE customer_notifications
+            SET is_read = 1
+            WHERE customer_id = ?
+        `;
+
+        db.query(
+            sql,
+            [customerId],
+            (err, result) => {
+
+                if (err) {
+
+                    console.error(
+                        "MARK ALL NOTIFICATIONS READ ERROR:",
+                        err
+                    );
+
+                    return res.status(500).json({
+                        success: false,
+                        message: "Unable to mark notifications as read"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message: "All notifications marked as read"
+                });
+
+            }
+        );
+    }
+);
 // ==========================================
 // SAVE FCM TOKEN
 // ==========================================

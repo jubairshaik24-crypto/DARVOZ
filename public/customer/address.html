@@ -550,7 +550,7 @@
                 class="locationBtn"
                 onclick="currentLocation()"
             >
-                📍 Use Current Location
+                ◎ Use Current Location
             </button>
 
 
@@ -1131,7 +1131,7 @@
 
 
                     console.log(
-                        "📍 CURRENT GPS LOCATION"
+                        " CURRENT GPS LOCATION"
                     );
 
                     console.log(
@@ -1467,7 +1467,7 @@ function geocodeAddress(
         }
 
         console.log(
-            "📍 GEOCODING ADDRESS:",
+            "◎ GEOCODING ADDRESS:",
             addressText
         );
 
@@ -1485,8 +1485,8 @@ function geocodeAddress(
                 status
             ) {
 
-               console.log("📍 GOOGLE GEOCODER STATUS:", status);
-console.log("📍 GOOGLE GEOCODER RESULTS:", results);
+               console.log("◎ GOOGLE GEOCODER STATUS:", status);
+console.log("◎ GOOGLE GEOCODER RESULTS:", results);
 
 if (
     status !== "OK" ||
@@ -1642,7 +1642,7 @@ async function saveAddress() {
             );
 
             console.log(
-                "📍 Finding address coordinates..."
+                "◎ Finding address coordinates..."
             );
 
             const coordinates =
@@ -2453,7 +2453,7 @@ async function deliverHere(
             );
 
             console.log(
-                "📍 Finding real coordinates..."
+                "◎ Finding real coordinates..."
             );
 
             const coordinates =
@@ -2964,7 +2964,7 @@ async function deliverHere(
     longitude =
         place.geometry.location.lng();
 
-    console.log("📍 GOOGLE PLACE SELECTED");
+    console.log("◎ GOOGLE PLACE SELECTED");
     console.log("Latitude:", latitude);
     console.log("Longitude:", longitude);
 

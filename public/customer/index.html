@@ -79,12 +79,7 @@ body{
 .top-header{
     position:relative;
 
-    background:
-        linear-gradient(
-            145deg,
-            #ff5b00,
-            #ff7800
-        );
+    background: #015525;
 
     color:#fff;
 
@@ -321,6 +316,8 @@ body{
 
     top:6px;
     right:5px;
+
+       display:none;
 }
 
 
@@ -520,11 +517,11 @@ body{
 }
 
 .section-header a{
-    color:var(--orange);
+    color:#013316;
 
-    font-size:11px;
+    font-size:12px;
 
-    font-weight:600;
+    font-weight:700;
 
     text-decoration:none;
 }
@@ -2223,7 +2220,61 @@ body{
         height:38px;
     }
 }
+/* =====================================================
+   SEARCH INPUT - REMOVE BLUE BROWSER BACKGROUND
+===================================================== */
 
+.search-box {
+    background: #fff !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,.12) !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.search-box input#searchInput {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+
+    background: #fff !important;
+    background-color: #fff !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+
+    color: #171717 !important;
+    -webkit-text-fill-color: #171717 !important;
+
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* When clicked / focused */
+.search-box input#searchInput:focus,
+.search-box input#searchInput:active {
+    background: #fff !important;
+    background-color: #fff !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Chrome / Brave autofill */
+.search-box input#searchInput:-webkit-autofill,
+.search-box input#searchInput:-webkit-autofill:hover,
+.search-box input#searchInput:-webkit-autofill:focus,
+.search-box input#searchInput:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+    box-shadow: 0 0 0 1000px #fff inset !important;
+
+    background-color: #fff !important;
+    -webkit-text-fill-color: #171717 !important;
+}
+
+/* Text selection */
+.search-box input#searchInput::selection {
+    background: transparent !important;
+    color: #171717 !important;
+}
 
 </style>
 
@@ -2334,10 +2385,11 @@ body{
         <i class="fa-solid fa-magnifying-glass"></i>
 
         <input
-            type="text"
-            id="searchInput"
-            placeholder="Search food, groceries, meat..."
-        >
+    type="text"
+    id="searchInput"
+    placeholder="Search Darvoz..."
+    readonly
+>
 
         <button class="filter-btn">
 
@@ -2678,9 +2730,7 @@ Sandwich
             Offers for You 🔥
         </h2>
 
-        <a href="offers.html">
-            See All
-        </a>
+        
 
     </div>
 
@@ -2714,12 +2764,10 @@ Sandwich
     <div class="section-header">
 
         <h2>
-            DARVOZ Picks ✨
+            DARVOZ Picks 
         </h2>
 
-        <a href="search.html">
-            See All
-        </a>
+       
 
     </div>
 
@@ -2949,8 +2997,8 @@ Track
 
     <!-- Cart -->
     <a href="customer-orders.html">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span>Cart</span>
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Orders</span>
     </a>
 
     <!-- Profile -->
@@ -3829,32 +3877,22 @@ function openCategory(category){
 
 
 /* =====================================================
-   SEARCH
+   HOME SEARCH
+   CLICK → OPEN SEARCH PAGE
 ===================================================== */
 
 const searchInput =
-document.getElementById("searchInput");
+    document.getElementById("searchInput");
 
-searchInput.addEventListener(
-"keydown",
-function(event){
+if(searchInput){
 
-    if(event.key === "Enter"){
+    searchInput.addEventListener("click", function(){
 
-        const value =
-            searchInput.value.trim();
+        window.location.href = "search.html";
 
-        if(value){
+    });
 
-            window.location.href =
-                "search.html?q=" +
-                encodeURIComponent(value);
-
-        }
-
-    }
-
-});
+}
 
 
 /* =====================================================
@@ -6179,6 +6217,75 @@ onMessage(
 console.log(
     "🚀 DARVOZ NOTIFICATION SYSTEM READY"
 );
+
+async function checkNotificationDot(){
+
+    const dot = document.querySelector(".notification-dot");
+
+    if(!dot) return;
+
+    const customerId =
+        localStorage.getItem("customerId");
+
+    if(!customerId){
+        dot.style.display = "none";
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            `/api/customer/notifications?customerId=${encodeURIComponent(customerId)}`,
+            {
+                method:"GET",
+                credentials:"include",
+                headers:{
+                    "Accept":"application/json"
+                }
+            }
+        );
+
+        if(!response.ok){
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const notifications =
+            Array.isArray(data)
+                ? data
+                : Array.isArray(data.notifications)
+                    ? data.notifications
+                    : [];
+
+        const hasUnread =
+            notifications.some(notification =>
+                !(
+                    notification.is_read === true ||
+                    notification.is_read === 1 ||
+                    notification.isRead === true ||
+                    notification.read === true ||
+                    notification.read_status === "read"
+                )
+            );
+
+        dot.style.display =
+            hasUnread ? "block" : "none";
+
+    }catch(error){
+
+        console.error(
+            "DARVOZ NOTIFICATION DOT ERROR:",
+            error
+        );
+
+        dot.style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    checkNotificationDot();
+});
 
 </script>
 

@@ -31,7 +31,7 @@ rel="stylesheet">
     --orange:#ff6200;
     --orange-dark:#ff4300;
     --orange-light:#fff3eb;
-
+--green:#20b64b;
     --bg:#f5f6f8;
     --white:#fff;
 
@@ -847,38 +847,40 @@ body{
 ===================================================== */
 
 .bottom-nav{
-
     position:fixed;
 
-    left:0;
+    left:50%;
+
+    transform:translateX(-50%);
+
     bottom:0;
 
     width:100%;
 
-    height:78px;
+    max-width:600px;
+
+    height:70px;
 
     background:#fff;
 
-    display:flex;
+    border-top:1px solid #eee;
 
-    align-items:center;
+    box-shadow:
+        0 -5px 20px rgba(0,0,0,.08);
+
+    display:flex;
 
     justify-content:space-around;
 
-    box-shadow:
-        0 -5px 25px rgba(0,0,0,.08);
-
-    border-top:1px solid #eeeeee;
+    align-items:center;
 
     z-index:9999;
-
 }
 
 .bottom-nav a{
+    text-decoration:none;
 
-    flex:1;
-
-    height:100%;
+    color:#777;
 
     display:flex;
 
@@ -886,38 +888,65 @@ body{
 
     align-items:center;
 
-    justify-content:center;
+    gap:4px;
 
-    gap:5px;
-
-    text-decoration:none;
-
-    color:#6c7076;
-
-    font-size:12px;
+    font-size:9px;
 
     font-weight:600;
 
-    transition:.2s;
-
+    width:20%;
 }
 
-.bottom-nav a i{
-
-    font-size:22px;
-
+.bottom-nav i{
+    font-size:19px;
 }
 
 .bottom-nav a.active{
-
     color:var(--orange);
-
 }
 
-.bottom-nav a.active i{
 
-    transform:scale(1.08);
+/* =====================================================
+   SPECIAL GROCERY BOTTOM NAV BUTTON
+===================================================== */
 
+.bottom-nav .grocery-nav{
+    position:relative;
+
+    transform:translateY(-8px);
+}
+
+.bottom-nav .grocery-icon{
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    margin:0 auto 2px;
+
+    box-shadow:
+        0 4px 12px rgba(32,182,75,0.35);
+
+    border:3px solid #fff;
+}
+
+.bottom-nav .grocery-icon i{
+    font-size:20px;
+
+    color:#fff;
+}
+
+.bottom-nav .grocery-nav span{
+    font-size:10px;
+
+    font-weight:700;
 }
 
 
@@ -1189,39 +1218,18 @@ body{
 /* =====================================================
    DESKTOP
 ===================================================== */
-
 @media(min-width:900px){
 
     .profile-card,
     .menu-card,
     .logout{
-
         max-width:850px;
-
         margin-left:auto;
-
         margin-right:auto;
-
     }
-
 
     .profile-card{
-
         margin-top:-38px;
-
-    }
-
-
-    .bottom-nav{
-
-        width:500px;
-
-        left:50%;
-
-        transform:translateX(-50%);
-
-        border-radius:24px 24px 0 0;
-
     }
 
 }
@@ -1678,69 +1686,45 @@ body{
 </div>
 
 
+
+
 <!-- =====================================================
-     BOTTOM NAVIGATION
+    BOTTOM NAV
 ===================================================== -->
 
 <nav class="bottom-nav">
 
-
-    <a href="index.html">
-
+    <!-- Home -->
+    <a href="index.html" class="active">
         <i class="fa-solid fa-house"></i>
-
-        <span>
-            Home
-        </span>
-
+        <span>Home</span>
     </a>
 
-
+    <!-- Categories -->
     <a href="categories.html">
-
-        <i class="fa-solid fa-layer-group"></i>
-
-        <span>
-            Categories
-        </span>
-
+        <i class="fa-solid fa-grip"></i>
+        <span>Categories</span>
     </a>
 
+   <!-- Special Grocery Button -->
+<a href="grocery-categories.html" class="grocery-nav">
+<div class="grocery-icon">
+     <i class="fa-solid fa-basket-shopping"></i>
+</div>
+    <span>Grocery</span>
+</a>
 
-    <a href="cart.html">
-
-        <i class="fa-solid fa-cart-shopping"></i>
-
-        <span>
-            Cart
-        </span>
-
+    <!-- Cart -->
+    <a href="customer-orders.html">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Orders</span>
     </a>
 
-
-    <a href="orders.html">
-
-        <i class="fa-solid fa-box"></i>
-
-        <span>
-            Orders
-        </span>
-
-    </a>
-
-
-    <a
-        href="profile.html"
-        class="active">
-
+    <!-- Profile -->
+    <a href="profile.html">
         <i class="fa-solid fa-user"></i>
-
-        <span>
-            Profile
-        </span>
-
+        <span>Profile</span>
     </a>
-
 
 </nav>
 

@@ -200,64 +200,115 @@
            BOTTOM NAV
         ===================================== */
 
-        .bottom-nav{
+.bottom-nav{
+    position:fixed;
 
-            position:fixed;
+    left:50%;
 
-            bottom:0;
-            left:0;
+    transform:translateX(-50%);
 
-            width:100%;
-            height:70px;
+    bottom:0;
 
-            background:#fff;
+    width:100%;
 
-            display:flex;
+    max-width:600px;
 
-            align-items:center;
-            justify-content:space-around;
+    height:70px;
 
-            border-top:
-                1px solid #eee;
+    background:#fff;
 
-            z-index:1000;
+    border-top:1px solid #eee;
 
-        }
+    box-shadow:
+        0 -5px 20px rgba(0,0,0,.08);
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    z-index:9999;
+}
+
+.bottom-nav a{
+    text-decoration:none;
+
+    color:#777;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:4px;
+
+    font-size:9px;
+
+    font-weight:600;
+
+    width:20%;
+}
+
+.bottom-nav i{
+    font-size:19px;
+}
+
+.bottom-nav a.active{
+    color:var(--orange);
+}
 
 
-        .bottom-nav a{
+/* =====================================================
+   SPECIAL GROCERY BOTTOM NAV BUTTON
+===================================================== */
 
-            text-decoration:none;
+.bottom-nav .grocery-nav{
+    position:relative;
 
-            color:#777;
+    transform:translateY(-8px);
+}
 
-            display:flex;
-            flex-direction:column;
+.bottom-nav .grocery-icon{
+    width:48px;
+    height:48px;
 
-            align-items:center;
-            justify-content:center;
+    border-radius:50%;
 
-            gap:5px;
+    background:#20b64b !important;
 
-            font-size:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-            min-width:55px;
+    margin:0 auto 2px;
 
-        }
+    box-shadow:
+        0 4px 12px rgba(32,182,75,0.35);
 
+    border:3px solid #fff;
+}
 
-        .bottom-nav a i{
+.bottom-nav .grocery-icon i{
+    font-size:20px;
+    color:#fff !important;
+    display:block !important;
+    opacity:1 !important;
+    visibility:visible !important;
+}
 
-            font-size:19px;
+.bottom-nav .grocery-icon i{
+    font-size:20px;
 
-        }
+    color:#fff;
+}
 
+.bottom-nav .grocery-nav span{
+    font-size:10px;
 
-        .bottom-nav a.active{
-
-            color:#ff4d4d;
-
-        }
+    font-weight:700;
+}
 
 
         /* =====================================
@@ -622,76 +673,46 @@
 
 
 
-<!-- =====================================
-     BOTTOM NAV
-===================================== -->
+<!-- =====================================================
+    BOTTOM NAV
+===================================================== -->
 
 <nav class="bottom-nav">
 
-
-    <a href="index.html">
-
+    <!-- Home -->
+    <a href="index.html" class="active">
         <i class="fa-solid fa-house"></i>
-
-        <span>
-            Home
-        </span>
-
+        <span>Home</span>
     </a>
 
-
-
-    <a
-        href="categories.html"
-        class="active"
-    >
-
+    <!-- Categories -->
+    <a href="categories.html">
         <i class="fa-solid fa-grip"></i>
-
-        <span>
-            Categories
-        </span>
-
+        <span>Categories</span>
     </a>
 
+   <!-- Special Grocery Button -->
+<a href="grocery-categories.html" class="grocery-nav">
+<div class="grocery-icon">
+     <i class="fa-solid fa-basket-shopping"></i>
+</div>
+    <span>Grocery</span>
+</a>
 
-
-    <a href="raider.html">
-
-        <i class="fa-solid fa-motorcycle"></i>
-
-        <span>
-            Rider
-        </span>
-
+    <!-- Cart -->
+    <a href="customer-orders.html">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Orders</span>
     </a>
 
-
-
-    <a href="cart.html">
-
-        <i class="fa-solid fa-cart-shopping"></i>
-
-        <span>
-            Cart
-        </span>
-
-    </a>
-
-
-
+    <!-- Profile -->
     <a href="profile.html">
-
         <i class="fa-solid fa-user"></i>
-
-        <span>
-            Profile
-        </span>
-
+        <span>Profile</span>
     </a>
-
 
 </nav>
+
 
 
 

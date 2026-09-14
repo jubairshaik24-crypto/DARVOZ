@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <title>Search | DARVOZ</title>
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial,sans-serif;
+            background:#fff;
+            color:#171717;
+            padding-bottom:80px;
+            -webkit-tap-highlight-color:transparent;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header{
+            position:sticky;
+            top:0;
+            z-index:100;
+            background:#fff;
+            padding:12px 14px;
+            border-bottom:1px solid #eee;
+        }
+
+        .top-row{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .back-btn{
+            width:40px;
+            height:40px;
+            border:0;
+            border-radius:50%;
+            background:#f1f2f4;
+            font-size:24px;
+            line-height:40px;
+            cursor:pointer;
+            flex:none;
+        }
+
+        /* =====================================================
+           SEARCH BOX
+        ===================================================== */
+
+        .search-box{
+            height:46px;
+            flex:1;
+            display:flex;
+            align-items:center;
+            background:#f1f2f4;
+            border-radius:15px;
+            padding:0 12px;
+            min-width:0;
+        }
+
+        .search-icon{
+            font-size:18px;
+            color:#697386;
+            margin-right:9px;
+            flex:none;
+        }
+
+        #searchInput{
+            flex:1;
+            width:100%;
+            min-width:0;
+            border:0 !important;
+            outline:0 !important;
+            background:transparent !important;
+            font-size:16px;
+            color:#171717 !important;
+            -webkit-appearance:none;
+            appearance:none;
+            box-shadow:none !important;
+        }
+
+        #searchInput::placeholder{
+            color:#777;
+            opacity:1;
+        }
+
+        #searchInput:focus,
+        #searchInput:active{
+            border:0 !important;
+            outline:0 !important;
+            box-shadow:none !important;
+            background:transparent !important;
+        }
+
+        .clear-btn{
+            width:26px;
+            height:26px;
+            border:0;
+            border-radius:50%;
+            background:#7b8491;
+            color:#fff;
+            font-size:16px;
+            display:none;
+            cursor:pointer;
+            flex:none;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container{
+            max-width:700px;
+            margin:auto;
+            padding:18px 14px 90px;
+        }
+
+        /* =====================================================
+           CATEGORY / WELCOME
+        ===================================================== */
+
+        #categoryView{
+            display:block;
+        }
+
+        .welcome-area{
+            margin:8px 2px 24px;
+        }
+
+        .try-search{
+            font-size:13px;
+            color:#777;
+            margin-bottom:4px;
+        }
+
+        .search-example{
+            font-size:24px;
+            font-weight:800;
+            margin-bottom:22px;
+            min-height:29px;
+            transition:opacity .25s ease;
+        }
+
+        .welcome-title{
+            font-size:15px;
+            font-weight:800;
+            margin-bottom:6px;
+        }
+
+        .welcome-text{
+            font-size:13px;
+            color:#777;
+            margin-bottom:20px;
+        }
+
+        .section-title{
+            font-size:20px;
+            font-weight:800;
+            margin:0 2px 14px;
+        }
+
+        .category-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:20px 12px;
+        }
+
+        .category{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            cursor:pointer;
+            transition:transform .15s ease;
+        }
+
+        .category:active{
+            transform:scale(.95);
+        }
+
+        .category-image{
+            width:85px;
+            height:85px;
+            border-radius:50%;
+            overflow:hidden;
+            background:#fff;
+            box-shadow:0 2px 10px rgba(0,0,0,.08);
+        }
+
+        .category-image img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+
+        .category-name{
+            margin-top:8px;
+            text-align:center;
+            font-size:13px;
+            font-weight:600;
+            line-height:1.25;
+            min-height:32px;
+            display:flex;
+            align-items:flex-start;
+            justify-content:center;
+        }
+
+        /* =====================================================
+           RESULTS
+        ===================================================== */
+
+        #results{
+            display:none;
+            width:100%;
+            visibility:visible;
+            opacity:1;
+        }
+
+        .search-heading{
+            font-size:21px;
+            font-weight:800;
+            margin:4px 2px 16px;
+        }
+
+        .tabs{
+            display:flex;
+            gap:8px;
+            overflow-x:auto;
+            scrollbar-width:none;
+            margin-bottom:20px;
+        }
+
+        .tabs::-webkit-scrollbar{
+            display:none;
+        }
+
+        .tab{
+            border:0;
+            background:#eef0f3;
+            color:#596273;
+            padding:10px 17px;
+            border-radius:22px;
+            font-size:13px;
+            font-weight:700;
+            white-space:nowrap;
+            cursor:pointer;
+        }
+
+        .tab.active{
+            background:#ff6500;
+            color:#fff;
+        }
+
+        .tab.grocery-active{
+            background:#20b64b;
+            color:#fff;
+        }
+
+        .section-head{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin:0 2px 11px;
+        }
+
+        .section-title-result{
+            font-size:19px;
+            font-weight:800;
+        }
+
+        .see-all{
+            font-size:12px;
+            font-weight:700;
+            color:#ff6500;
+            cursor:pointer;
+        }
+
+        /* =====================================================
+           RESTAURANT CARD
+        ===================================================== */
+
+        .restaurant-card{
+            background:#fff;
+            border-radius:18px;
+            margin-bottom:15px;
+            overflow:hidden;
+            box-shadow:0 2px 10px rgba(0,0,0,.055);
+            border:1px solid #f1f1f1;
+        }
+
+        .restaurant-header{
+            display:flex;
+            align-items:center;
+            padding:14px 13px 12px;
+            cursor:pointer;
+        }
+
+        .restaurant-image{
+            width:66px;
+            height:66px;
+            border-radius:50%;
+            object-fit:cover;
+            background:#eee;
+            flex:none;
+        }
+
+        .restaurant-info{
+            flex:1;
+            margin-left:12px;
+            min-width:0;
+        }
+
+        .restaurant-name{
+            font-size:17px;
+            font-weight:800;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .restaurant-category{
+            color:#687386;
+            font-size:12px;
+            margin-top:5px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .restaurant-meta{
+            color:#687386;
+            font-size:11px;
+            margin-top:7px;
+        }
+
+        .rating{
+            display:inline-flex;
+            align-items:center;
+            background:#10ad59;
+            color:#fff;
+            border-radius:7px;
+            padding:4px 7px;
+            font-size:11px;
+            font-weight:800;
+            margin-left:6px;
+        }
+
+        .open{
+            color:#129a4d;
+            font-weight:700;
+        }
+
+        .closed{
+            color:#df3030;
+            font-weight:700;
+        }
+
+        .arrow{
+            font-size:26px;
+            color:#8b929c;
+            margin-left:7px;
+        }
+
+        /* =====================================================
+           FOOD LIST
+        ===================================================== */
+
+        .food-list{
+            border-top:1px solid #eee;
+        }
+
+        .food-item{
+            display:flex;
+            align-items:center;
+            gap:11px;
+            padding:11px 13px;
+            border-bottom:1px solid #f0f0f0;
+        }
+
+        .food-item:last-child{
+            border-bottom:0;
+        }
+
+        .food-image{
+            width:82px;
+            height:82px;
+            border-radius:12px;
+            object-fit:cover;
+            background:#eee;
+            flex:none;
+        }
+
+        .food-details{
+            flex:1;
+            min-width:0;
+        }
+
+        .food-name{
+            font-size:15px;
+            font-weight:700;
+            line-height:1.25;
+            margin-bottom:7px;
+        }
+
+        .food-price{
+            font-size:16px;
+            font-weight:800;
+        }
+
+        .old-price{
+            color:#9aa0a8;
+            text-decoration:line-through;
+            font-size:12px;
+            font-weight:500;
+            margin-left:5px;
+        }
+
+        .add-food{
+            width:39px;
+            height:36px;
+            border:0;
+            border-radius:9px;
+            background:#ff6500;
+            color:#fff;
+            font-size:25px;
+            cursor:pointer;
+            flex:none;
+        }
+
+        /* =====================================================
+           GROCERY
+        ===================================================== */
+
+        .grocery-section{
+            margin-top:24px;
+        }
+
+        .grocery-card{
+            background:#fff;
+            border-radius:17px;
+            margin-bottom:11px;
+            padding:11px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            box-shadow:0 2px 9px rgba(0,0,0,.05);
+            border:1px solid #f1f1f1;
+        }
+
+        .grocery-image{
+            width:92px;
+            height:92px;
+            border-radius:12px;
+            object-fit:cover;
+            background:#f2f2f2;
+            flex:none;
+        }
+
+        .grocery-details{
+            flex:1;
+            min-width:0;
+        }
+
+        .grocery-name{
+            font-size:15px;
+            font-weight:800;
+            line-height:1.25;
+            margin-bottom:6px;
+        }
+
+        .grocery-size{
+            font-size:13px;
+            color:#687386;
+            margin-bottom:6px;
+        }
+
+        .grocery-price{
+            font-size:16px;
+            font-weight:800;
+        }
+
+        .grocery-old{
+            color:#9aa0a8;
+            text-decoration:line-through;
+            font-size:12px;
+            margin-left:5px;
+        }
+
+        .stock{
+            font-size:11px;
+            color:#10a652;
+            font-weight:700;
+            margin-top:5px;
+        }
+
+        .add-grocery{
+            width:40px;
+            height:38px;
+            border:0;
+            border-radius:9px;
+            background:#20b64b;
+            color:#fff;
+            font-size:25px;
+            cursor:pointer;
+            flex:none;
+        }
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading{
+            text-align:center;
+            padding:60px 20px;
+            color:#747b86;
+        }
+
+        .spinner{
+            width:34px;
+            height:34px;
+            border:3px solid #ddd;
+            border-top-color:#ff6500;
+            border-radius:50%;
+            animation:spin .75s linear infinite;
+            margin:0 auto 14px;
+        }
+
+        @keyframes spin{
+            to{
+                transform:rotate(360deg);
+            }
+        }
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty{
+            text-align:center;
+            padding:60px 20px;
+            color:#777;
+        }
+
+        .empty-icon{
+            font-size:45px;
+            margin-bottom:12px;
+        }
+
+        .empty-title{
+            font-size:18px;
+            font-weight:800;
+            color:#222;
+            margin-bottom:6px;
+        }
+
+        .empty-text{
+            font-size:13px;
+        }
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast{
+            position:fixed;
+            left:50%;
+            bottom:25px;
+            transform:translateX(-50%);
+            background:#222;
+            color:#fff;
+            padding:12px 18px;
+            border-radius:12px;
+            font-size:13px;
+            display:none;
+            z-index:9999;
+            max-width:90%;
+            text-align:center;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width:380px){
+
+            .category-grid{
+                gap:18px 8px;
+            }
+
+            .category-image{
+                width:78px;
+                height:78px;
+            }
+
+            .food-image{
+                width:72px;
+                height:72px;
+            }
+
+            .grocery-image{
+                width:82px;
+                height:82px;
+            }
+
+        }
+
+        @media(min-width:600px){
+
+            .category-grid{
+                grid-template-columns:repeat(4,1fr);
+            }
+
+            .container{
+                max-width:700px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="top-row">
+
+        <button
+            class="back-btn"
+            onclick="goBack()">
+            ‹
+        </button>
+
+        <div class="search-box">
+
+            <span class="search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search food, groceries..."
+                autocomplete="off"
+                autofocus
+            >
+
+            <button
+                id="clearBtn"
+                class="clear-btn"
+                onclick="clearSearch()">
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+    <!-- =================================================
+         CATEGORY VIEW
+    ================================================= -->
+
+    <div id="categoryView">
+
+        <div class="welcome-area">
+
+            <div class="try-search">
+                Try searching for
+            </div>
+
+            <div
+                class="search-example"
+                id="searchExample">
+                Biryani
+            </div>
+
+            <div class="welcome-title">
+                What do you want to order?
+            </div>
+
+            
+
+
+        <!-- CATEGORY GRID -->
+
+        <div class="category-grid">
+
+            <!-- BIRYANI -->
+            <div
+                class="category"
+                onclick="openCategory('biryani')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/biryani.png"
+                        alt="Biryani"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Biryani
+                </div>
+
+            </div>
+
+
+            <!-- GROCERIES -->
+            <div
+                class="category"
+                onclick="openCategory('grocery')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/groceries.png"
+                        alt="Groceries"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Groceries
+                </div>
+
+            </div>
+
+
+            <!-- MEAT -->
+            <div
+                class="category"
+                onclick="openCategory('meat')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/meat.png"
+                        alt="Meat"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Meat
+                </div>
+
+            </div>
+
+
+            <!-- TIFFINS -->
+            <div
+                class="category"
+                onclick="openCategory('tiffins')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/tiffins.png"
+                        alt="Tiffins"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Tiffins
+                </div>
+
+            </div>
+
+
+            <!-- ICE CREAMS -->
+            <div
+                class="category"
+                onclick="openCategory('icecreams')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/icecreams.png"
+                        alt="Icecreams"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Icecreams
+                </div>
+
+            </div>
+
+
+            <!-- CAKES -->
+            <div
+                class="category"
+                onclick="openCategory('cakes')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/cakes.png"
+                        alt="Cakes"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Cakes
+                </div>
+
+            </div>
+
+
+            <!-- PIZZAS -->
+            <div
+                class="category"
+                onclick="openCategory('pizzas')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/pizzas.png"
+                        alt="Pizzas"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Pizzas
+                </div>
+
+            </div>
+
+
+            <!-- FAST FOOD -->
+            <div
+                class="category"
+                onclick="openCategory('fastfood')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/fastfood.png"
+                        alt="Fast Food"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Fast Food
+                </div>
+
+            </div>
+
+
+            <!-- JUICE -->
+            <div
+                class="category"
+                onclick="openCategory('juice')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/juice.png"
+                        alt="Juice"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Juice
+                </div>
+
+            </div>
+
+
+            <!-- SHAWARMA -->
+            <div
+                class="category"
+                onclick="openCategory('shawarma')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/shawarma.png"
+                        alt="Shawarma"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Shawarma
+                </div>
+
+            </div>
+
+
+            <!-- PARATHA -->
+            <div
+                class="category"
+                onclick="openCategory('paratha')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/paratha.png"
+                        alt="Paratha"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Paratha
+                </div>
+
+            </div>
+
+
+            <!-- ROLLS & SANDWICH -->
+            <div
+                class="category"
+                onclick="openCategory('rolls-sandwich')">
+
+                <div class="category-image">
+                    <img
+                        src="images/categories/rolls-sandwich.png"
+                        alt="Rolls & Sandwich"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
+
+                <div class="category-name">
+                    Rolls &amp; Sandwich
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SEARCH RESULTS
+    ================================================= -->
+
+    <div id="results"></div>
+
+</main>
+
+
+<!-- TOAST -->
+
+<div id="toast" class="toast"></div>
+
+<script>
+
+    /* =====================================================
+   API
+===================================================== */
+
+const API = window.location.origin;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const clearBtn =
+    document.getElementById("clearBtn");
+
+const categoryView =
+    document.getElementById("categoryView");
+
+const results =
+    document.getElementById("results");
+
+
+/* =====================================================
+   SEARCH STATE
+===================================================== */
+
+let searchData = {
+    restaurants: [],
+    groceries: [],
+    query: ""
+};
+
+let searchTimer = null;
+
+
+/* =====================================================
+   URL QUERY
+===================================================== */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const initialKeyword =
+    (
+        params.get("q") || ""
+    ).trim();
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+if(initialKeyword){
+
+    searchInput.value =
+        initialKeyword;
+
+    updateClearButton();
+
+    performSearch(
+        initialKeyword
+    );
+
+}
+else{
+
+    categoryView.style.display =
+        "block";
+
+    results.style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   SEARCH INPUT
+===================================================== */
+
+searchInput.addEventListener(
+    "input",
+    function(){
+
+        updateClearButton();
+
+        const value =
+            searchInput.value.trim();
+
+        clearTimeout(
+            searchTimer
+        );
+
+
+        /*
+         * EMPTY SEARCH
+         */
+
+        if(!value){
+
+            categoryView.style.display =
+                "block";
+
+            results.style.display =
+                "none";
+
+            history.replaceState(
+                {},
+                "",
+                "search.html"
+            );
+
+            return;
+        }
+
+
+        /*
+         * WAIT 300ms
+         * BEFORE API REQUEST
+         */
+
+        searchTimer =
+            setTimeout(
+                function(){
+
+                    performSearch(value);
+
+                },
+                300
+            );
+
+    }
+);
+
+
+/* =====================================================
+   ENTER KEY
+===================================================== */
+
+searchInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key !== "Enter"){
+            return;
+        }
+
+        event.preventDefault();
+
+        const value =
+            searchInput.value.trim();
+
+        if(value){
+
+            clearTimeout(
+                searchTimer
+            );
+
+            performSearch(value);
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   PERFORM SEARCH
+===================================================== */
+
+async function performSearch(query){
+
+    query =
+        String(query || "").trim();
+
+
+    /*
+     * EMPTY
+     */
+
+    if(!query){
+
+        categoryView.style.display =
+            "block";
+
+        results.style.display =
+            "none";
+
+        return;
+    }
+
+
+    /*
+     * SHOW RESULTS AREA
+     */
+
+    categoryView.style.display =
+        "none";
+
+    results.style.display =
+        "block";
+
+    results.style.visibility =
+        "visible";
+
+    results.style.opacity =
+        "1";
+
+
+    /*
+     * LOADING
+     */
+
+    results.innerHTML = `
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            Searching for
+            "${escapeHtml(query)}"...
+
+        </div>
+
+    `;
+
+
+    /*
+     * SAVE URL
+     */
+
+    history.replaceState(
+        {},
+        "",
+        "search.html?q=" +
+        encodeURIComponent(query)
+    );
+
+
+    try{
+
+        console.log(
+            "DARVOZ SEARCH:",
+            query
+        );
+
+
+        /*
+         * CALL BACKEND
+         */
+
+        const response =
+            await fetch(
+                `${API}/search?q=${
+                    encodeURIComponent(query)
+                }`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Search request failed"
+            );
+
+        }
+
+
+        /*
+         * JSON
+         */
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "DARVOZ SEARCH RESPONSE:",
+            data
+        );
+
+
+        if(!data.success){
+
+            throw new Error(
+                data.message ||
+                "Search failed"
+            );
+
+        }
+
+
+        /*
+         * SAVE DATA
+         */
+
+        searchData = {
+
+            query:
+                data.query ||
+                query,
+
+            restaurants:
+                Array.isArray(
+                    data.restaurants
+                )
+                    ? data.restaurants
+                    : [],
+
+            groceries:
+                Array.isArray(
+                    data.groceries
+                )
+                    ? data.groceries
+                    : []
+
+        };
+
+
+        /*
+         * RENDER
+         */
+
+        renderResults();
+
+    }
+    catch(error){
+
+        console.error(
+            "DARVOZ SEARCH ERROR:",
+            error
+        );
+
+
+        results.style.display =
+            "block";
+
+        results.style.visibility =
+            "visible";
+
+        results.style.opacity =
+            "1";
+
+
+        results.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+
+                <div class="empty-title">
+                    Search failed
+                </div>
+
+                <div class="empty-text">
+                    Please try again.
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER RESULTS
+===================================================== */
+
+function renderResults(){
+
+    const restaurants =
+        searchData.restaurants || [];
+
+    const groceries =
+        searchData.groceries || [];
+
+
+    console.log(
+        "RENDERING:",
+        {
+            restaurants,
+            groceries
+        }
+    );
+
+
+    /*
+     * NO RESULTS
+     */
+
+    if(
+        restaurants.length === 0 &&
+        groceries.length === 0
+    ){
+
+        results.style.display =
+            "block";
+
+        results.style.visibility =
+            "visible";
+
+        results.style.opacity =
+            "1";
+
+
+        results.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="empty-title">
+                    No results for
+                    "${escapeHtml(
+                        searchData.query
+                    )}"
+                </div>
+
+                <div class="empty-text">
+                    Try another food or grocery item.
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+     * MAIN HTML
+     */
+
+    let html = `
+
+        <div class="search-heading">
+
+            Results for
+            "${escapeHtml(
+                searchData.query
+            )}"
+
+        </div>
+
+    `;
+
+
+    /*
+     * RESTAURANTS
+     */
+
+    if(restaurants.length > 0){
+
+        html += `
+
+            <section>
+
+                <div class="section-head">
+
+                    <div class="section-title-result">
+                        Restaurants
+                    </div>
+
+                </div>
+
+                ${restaurants.map(
+                    function(restaurant){
+
+                        return renderRestaurant(
+                            restaurant
+                        );
+
+                    }
+                ).join("")}
+
+            </section>
+
+        `;
+
+    }
+
+
+    /*
+     * GROCERY
+     */
+
+    if(groceries.length > 0){
+
+        html += `
+
+            <section class="grocery-section">
+
+                <div class="section-head">
+
+                    <div class="section-title-result">
+                        Grocery Products
+                    </div>
+
+                </div>
+
+                ${groceries.map(
+                    function(grocery){
+
+                        return renderGrocery(
+                            grocery
+                        );
+
+                    }
+                ).join("")}
+
+            </section>
+
+        `;
+
+    }
+
+
+    /*
+     * DISPLAY
+     */
+
+    results.style.display =
+        "block";
+
+    results.style.visibility =
+        "visible";
+
+    results.style.opacity =
+        "1";
+
+    results.innerHTML =
+        html;
+
+
+    console.log(
+        "SEARCH HTML RENDERED",
+        results.innerHTML.length
+    );
+
+}
+
+
+/* =====================================================
+   RESTAURANT CARD
+===================================================== */
+
+function renderRestaurant(
+    restaurant
+){
+
+    const items =
+        Array.isArray(
+            restaurant.items
+        )
+            ? restaurant.items
+            : [];
+
+
+    /*
+     * RESTAURANT IMAGE
+     */
+
+    const restaurantImage =
+        restaurant.restaurant_image ||
+        restaurant.logo ||
+        "";
+
+
+    /*
+     * RATING
+     */
+
+    const rating =
+        restaurant.rating != null
+            ? `
+                <span class="rating">
+
+                    ★ ${
+                        escapeHtml(
+                            restaurant.rating
+                        )
+                    }
+
+                </span>
+            `
+            : "";
+
+
+    /*
+     * OPEN STATUS
+     */
+
+    const isOpen =
+        restaurant.is_open !== undefined
+            ? Number(
+                restaurant.is_open
+              ) === 1
+
+            : String(
+                restaurant.online_status ||
+                ""
+              ).toLowerCase() === "open";
+
+
+    const openText =
+        isOpen
+
+            ? `
+                <span class="open">
+                    Open
+                </span>
+              `
+
+            : `
+                <span class="closed">
+                    Closed
+                </span>
+              `;
+
+
+    /*
+     * META
+     */
+
+    const meta = [
+
+        restaurant.business_type ||
+        "Food",
+
+        restaurant.delivery_time
+            ? `${restaurant.delivery_time} min`
+            : "",
+
+        openText
+
+    ]
+    .filter(Boolean)
+    .join(" • ");
+
+
+    /*
+     * FOOD ITEMS
+     */
+
+    const itemsHtml =
+        items.map(
+            function(item){
+
+                const price =
+                    item.offer_price != null
+                        ? item.offer_price
+                        : item.price;
+
+
+                /*
+                 * OLD PRICE
+                 */
+
+                const oldPrice =
+                    item.offer_price != null &&
+                    item.price != null &&
+                    Number(
+                        item.offer_price
+                    ) <
+                    Number(
+                        item.price
+                    )
+
+                    ? `
+                        <span class="old-price">
+
+                            ₹${
+                                Number(
+                                    item.price
+                                ).toFixed(0)
+                            }
+
+                        </span>
+                      `
+
+                    : "";
+
+
+                /*
+                 * IMAGE
+                 */
+
+                const image =
+                    item.image || "";
+
+
+                return `
+
+                    <div class="food-item">
+
+                        ${
+                            image
+                            ? `
+                                <img
+                                    class="food-image"
+                                    src="${safeUrl(image)}"
+                                    alt="${escapeHtml(
+                                        item.product_name ||
+                                        "Food"
+                                    )}"
+                                    onerror="
+                                        this.style.display='none'
+                                    "
+                                >
+                              `
+                            : ""
+                        }
+
+
+                        <div class="food-details">
+
+                            <div class="food-name">
+
+                                ${
+                                    escapeHtml(
+                                        item.product_name ||
+                                        "Food"
+                                    )
+                                }
+
+                            </div>
+
+
+                            <div class="food-price">
+
+                                ₹${
+                                    Number(
+                                        price || 0
+                                    ).toFixed(0)
+                                }
+
+                                ${oldPrice}
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="add-food"
+                            onclick="
+                                openRestaurant(
+                                    ${Number(
+                                        restaurant.restaurant_id
+                                    )},
+                                    ${Number(
+                                        item.product_id
+                                    )}
+                                )
+                            "
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+
+    /*
+     * RESTAURANT CARD
+     */
+
+    return `
+
+        <article class="restaurant-card">
+
+            <div
+                class="restaurant-header"
+                onclick="
+                    openRestaurant(
+                        ${Number(
+                            restaurant.restaurant_id
+                        )}
+                    )
+                "
+            >
+
+                ${
+                    restaurantImage
+                    ? `
+                        <img
+                            class="restaurant-image"
+                            src="${safeUrl(
+                                restaurantImage
+                            )}"
+                            alt="${escapeHtml(
+                                restaurant.restaurant_name ||
+                                "Restaurant"
+                            )}"
+                            onerror="
+                                this.style.display='none'
+                            "
+                        >
+                      `
+                    : ""
+                }
+
+
+                <div class="restaurant-info">
+
+                    <div class="restaurant-name">
+
+                        ${
+                            escapeHtml(
+                                restaurant.restaurant_name ||
+                                "Restaurant"
+                            )
+                        }
+
+                        ${rating}
+
+                    </div>
+
+
+                    <div class="restaurant-category">
+
+                        ${
+                            escapeHtml(
+                                restaurant.business_type ||
+                                "Food"
+                            )
+                        }
+
+                    </div>
+
+
+                    <div class="restaurant-meta">
+
+                        ${meta}
+
+                    </div>
+
+                </div>
+
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </div>
+
+
+            <div class="food-list">
+
+                ${itemsHtml}
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =====================================================
+   GROCERY CARD
+===================================================== */
+
+function renderGrocery(
+    grocery
+){
+
+    const price =
+        grocery.offer_price != null
+            ? grocery.offer_price
+            : grocery.price;
+
+
+    /*
+     * OLD PRICE
+     */
+
+    const oldPrice =
+        grocery.offer_price != null &&
+        grocery.price != null &&
+        Number(
+            grocery.offer_price
+        ) <
+        Number(
+            grocery.price
+        )
+
+        ? `
+            <span class="grocery-old">
+
+                ₹${
+                    Number(
+                        grocery.price
+                    ).toFixed(0)
+                }
+
+            </span>
+          `
+
+        : "";
+
+
+    /*
+     * IMAGE
+     */
+
+    const image =
+        grocery.product_image ||
+        "";
+
+
+    /*
+     * STOCK
+     */
+
+    const stockText =
+        grocery.stock != null
+            ? `${Number(
+                grocery.stock
+              )} available`
+
+            : "In Stock";
+
+
+    return `
+
+        <article class="grocery-card">
+
+            ${
+                image
+                ? `
+                    <img
+                        class="grocery-image"
+                        src="${safeUrl(image)}"
+                        alt="${escapeHtml(
+                            grocery.product_name ||
+                            "Product"
+                        )}"
+                        onerror="
+                            this.style.display='none'
+                        "
+                    >
+                  `
+                : ""
+            }
+
+
+            <div class="grocery-details">
+
+                <div class="grocery-name">
+
+                    ${
+                        escapeHtml(
+                            grocery.product_name ||
+                            "Product"
+                        )
+                    }
+
+                </div>
+
+
+                <div class="grocery-size">
+
+                    ${
+                        escapeHtml(
+                            grocery.size ||
+                            ""
+                        )
+                    }
+
+                </div>
+
+
+                <div class="grocery-price">
+
+                    ₹${
+                        Number(
+                            price || 0
+                        ).toFixed(0)
+                    }
+
+                    ${oldPrice}
+
+                </div>
+
+
+                <div class="stock">
+
+                    ${
+                        escapeHtml(
+                            stockText
+                        )
+                    }
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="add-grocery"
+                onclick="
+                    addGrocery(
+                        ${Number(
+                            grocery.product_id
+                        )},
+                        ${Number(
+                            grocery.variant_id
+                        )},
+                        '${escapeJs(
+                            grocery.product_name
+                        )}',
+                        '${escapeJs(
+                            grocery.size || ""
+                        )}'
+                    )
+                "
+            >
+                +
+            </button>
+
+        </article>
+
+    `;
+
+}
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+function openCategory(category){
+
+    localStorage.setItem(
+        "selectedCategory",
+        category
+    );
+
+    window.location.href =
+        "restaurants.html?category=" +
+        encodeURIComponent(category);
+
+}
+
+
+/* =====================================================
+   OPEN RESTAURANT
+===================================================== */
+
+function openRestaurant(
+    restaurantId,
+    productId = null
+){
+
+    if(
+        !restaurantId ||
+        Number.isNaN(
+            Number(restaurantId)
+        )
+    ){
+
+        showToast(
+            "Restaurant is unavailable"
+        );
+
+        return;
+    }
+
+
+    let url =
+        `restaurant.html?id=${
+            encodeURIComponent(
+                restaurantId
+            )
+        }`;
+
+
+    /*
+     * If a food item was clicked,
+     * also send its product ID.
+     */
+
+    if(productId){
+
+        url +=
+            `&product=${
+                encodeURIComponent(
+                    productId
+                )
+            }`;
+
+    }
+
+
+    window.location.href =
+        url;
+
+}
+
+
+/* =====================================================
+   GROCERY ADD
+===================================================== */
+
+function addGrocery(
+    productId,
+    variantId,
+    productName,
+    size
+){
+
+    showToast(
+
+        `${productName}${
+            size
+                ? " (" + size + ")"
+                : ""
+        } selected`
+
+    );
+
+}
+
+
+/* =====================================================
+   CLEAR BUTTON
+===================================================== */
+
+function updateClearButton(){
+
+    clearBtn.style.display =
+        searchInput.value
+            ? "block"
+            : "none";
+
+}
+
+
+/* =====================================================
+   CLEAR SEARCH
+===================================================== */
+
+function clearSearch(){
+
+    searchInput.value =
+        "";
+
+    updateClearButton();
+
+    clearTimeout(
+        searchTimer
+    );
+
+
+    /*
+     * SHOW CATEGORIES AGAIN
+     */
+
+    categoryView.style.display =
+        "block";
+
+    results.style.display =
+        "none";
+
+
+    /*
+     * REMOVE QUERY FROM URL
+     */
+
+    history.replaceState(
+        {},
+        "",
+        "search.html"
+    );
+
+
+    /*
+     * FOCUS SEARCH BOX
+     */
+
+    searchInput.focus();
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+function goBack(){
+
+    if(document.referrer){
+
+        history.back();
+
+    }
+    else{
+
+        window.location.href =
+            "index.html";
+
+    }
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(
+    message
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+
+    window.toastTimer =
+        setTimeout(
+            function(){
+
+                toast.style.display =
+                    "none";
+
+            },
+            2000
+        );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE JAVASCRIPT
+===================================================== */
+
+function escapeJs(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    );
+
+}
+
+
+/* =====================================================
+   IMAGE URL
+===================================================== */
+
+function safeUrl(
+    value
+){
+
+    const url =
+        String(
+            value || ""
+        );
+
+
+    /*
+     * Already a complete URL
+     */
+
+    if(
+        url.startsWith("http://") ||
+        url.startsWith("https://") ||
+        url.startsWith("/") ||
+        url.startsWith("./")
+    ){
+
+        return url;
+
+    }
+
+
+    /*
+     * Relative image path
+     */
+
+    return url
+        ? "/" + url
+        : "";
+
+}
+
+
+/* =====================================================
+   ROTATING SEARCH EXAMPLES
+===================================================== */
+
+const searchExamples = [
+
+    "Biryani",
+    "Noodles",
+    "Dosa",
+    "Chicken 65",
+    "Shawarma",
+    "Pizza",
+    "Burger",
+    "Fried Rice",
+    "Ice Cream",
+    "Chicken",
+    "Mutton",
+    "Cakes"
+
+];
+
+
+let exampleIndex = 0;
+
+
+const searchExample =
+    document.getElementById(
+        "searchExample"
+    );
+
+
+if(searchExample){
+
+    setInterval(
+        function(){
+
+            exampleIndex =
+                (
+                    exampleIndex + 1
+                ) %
+                searchExamples.length;
+
+
+            /*
+             * FADE OUT
+             */
+
+            searchExample.style.opacity =
+                "0";
+
+
+            /*
+             * CHANGE WORD
+             */
+
+            setTimeout(
+                function(){
+
+                    searchExample.textContent =
+                        searchExamples[
+                            exampleIndex
+                        ];
+
+
+                    /*
+                     * FADE IN
+                     */
+
+                    searchExample.style.opacity =
+                        "1";
+
+                },
+                250
+            );
+
+        },
+        1800
+    );
+
+}
+
+
+/* =====================================================
+   PAGE READY
+===================================================== */
+
+console.log(
+    "DARVOZ SEARCH PAGE READY"
+);
+
+</script>
+
+</body>
+
+</html>
