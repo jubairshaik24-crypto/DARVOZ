@@ -10,6 +10,8 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta name="theme-color" content="#004D5B">
+
     <title>Categories | DARVOZ</title>
 
     <!-- FONT AWESOME -->
@@ -20,143 +22,594 @@
 
     <style>
 
+        /* =====================================================
+           DARVOZ DEEP OCEAN
+        ===================================================== */
+
+        :root{
+            --ocean:#004D5B;
+            --ocean-dark:#003542;
+            --ocean-deep:#002A34;
+            --ocean-light:#E8F5F7;
+
+            --orange:#FF6500;
+
+            --text:#10272C;
+            --muted:#718084;
+
+            --white:#FFFFFF;
+            --bg:#F6FAFA;
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
         *{
             margin:0;
             padding:0;
             box-sizing:border-box;
+            -webkit-tap-highlight-color:transparent;
         }
 
 
         body{
-            font-family:Arial,sans-serif;
-            background:#f7f7f7;
-            color:#222;
-
-            padding-bottom:90px;
+            font-family:Arial, Helvetica, sans-serif;
+            background:var(--bg);
+            color:var(--text);
+            padding-bottom:100px;
         }
 
 
-        /* =====================================
+        .app{
+            width:100%;
+            max-width:600px;
+            min-height:100vh;
+            margin:auto;
+            background:#fff;
+            overflow:hidden;
+        }
+
+
+        /* =====================================================
            HEADER
-        ===================================== */
+        ===================================================== */
 
-        .top-header{
-            position:sticky;
-            top:0;
-            z-index:100;
+        .hero{
 
-            height:65px;
+            position:relative;
+
+            min-height:275px;
+
+            padding:18px 17px 32px;
+
+            color:#fff;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--ocean-deep),
+                    var(--ocean),
+                    #006878
+                );
+
+            border-radius:
+                0 0 36px 36px;
+
+            overflow:hidden;
+        }
+
+
+        .hero::before{
+
+            content:"";
+
+            position:absolute;
+
+            width:290px;
+            height:290px;
+
+            right:-145px;
+            top:-150px;
+
+            border-radius:50%;
+
+            border:
+                45px solid
+                rgba(255,255,255,.055);
+        }
+
+
+        .hero::after{
+
+            content:"";
+
+            position:absolute;
+
+            width:220px;
+            height:220px;
+
+            left:-145px;
+            bottom:-155px;
+
+            border-radius:50%;
+
+            background:
+                rgba(255,255,255,.045);
+        }
+
+
+        /* =====================================================
+           TOP ROW
+        ===================================================== */
+
+        .top-row{
+
+            position:relative;
+            z-index:5;
 
             display:flex;
             align-items:center;
 
-            gap:15px;
-
-            padding:0 18px;
-
-            background:#fff;
-
-            border-bottom:1px solid #eee;
+            gap:10px;
         }
 
 
         .back-btn{
-            width:40px;
-            height:40px;
+
+            width:44px;
+            height:44px;
+
+            flex-shrink:0;
 
             border:none;
             border-radius:50%;
 
-            background:#f5f5f5;
+            background:
+                rgba(255,255,255,.13);
+
+            color:#fff;
 
             display:flex;
             align-items:center;
             justify-content:center;
 
+            font-size:17px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.18);
+
             cursor:pointer;
+        }
+
+
+        .location{
+
+            flex:1;
+            min-width:0;
+
+            height:44px;
+
+            padding:0 13px;
+
+            display:flex;
+            align-items:center;
+
+            gap:8px;
+
+            border-radius:24px;
+
+            background:
+                rgba(255,255,255,.12);
+
+            border:
+                1px solid
+                rgba(255,255,255,.18);
+
+            backdrop-filter:blur(10px);
+        }
+
+
+        .location > i:first-child{
+            font-size:16px;
+        }
+
+
+        .location-text{
+
+            flex:1;
+            min-width:0;
+
+            overflow:hidden;
+
+            white-space:nowrap;
+
+            text-overflow:ellipsis;
+
+            font-size:13px;
+
+            font-weight:700;
+        }
+
+
+        .location > i:last-child{
+            font-size:10px;
+            opacity:.8;
+        }
+
+
+        .cart-btn{
+
+            width:44px;
+            height:44px;
+
+            flex-shrink:0;
+
+            border-radius:50%;
+
+            background:#fff;
+
+            color:var(--ocean);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            position:relative;
 
             font-size:18px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(0,0,0,.15);
         }
 
 
-        .top-header h2{
-            font-size:20px;
-            font-weight:700;
+        .cart-number{
+
+            position:absolute;
+
+            top:-3px;
+            right:-2px;
+
+            min-width:19px;
+            height:19px;
+
+            padding:0 5px;
+
+            border-radius:20px;
+
+            background:var(--orange);
+
+            color:#fff;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:9px;
+
+            font-weight:900;
+
+            border:
+                2px solid
+                var(--ocean);
         }
 
 
-        /* =====================================
-           PAGE CONTENT
-        ===================================== */
+        /* =====================================================
+           HERO CONTENT
+        ===================================================== */
 
-        .page-content{
-            padding:20px 16px;
+        .hero-content{
+
+            position:relative;
+            z-index:5;
+
+            margin-top:30px;
+
+            display:flex;
+
+            align-items:flex-end;
+
+            justify-content:space-between;
         }
 
 
-        .page-title{
-            font-size:24px;
-            font-weight:700;
+        .hero-title{
 
-            margin-bottom:20px;
+            font-size:30px;
+
+            line-height:1.03;
+
+            font-weight:900;
+
+            letter-spacing:-.8px;
         }
 
 
-        /* =====================================
+        .hero-description{
+
+            max-width:260px;
+
+            margin-top:9px;
+
+            font-size:13px;
+
+            line-height:1.5;
+
+            color:
+                rgba(255,255,255,.76);
+        }
+
+
+        .fresh-icon{
+
+            width:74px;
+            height:74px;
+
+            flex-shrink:0;
+
+            border-radius:23px;
+
+            background:
+                rgba(255,255,255,.10);
+
+            border:
+                1px solid
+                rgba(255,255,255,.18);
+
+            display:flex;
+
+            flex-direction:column;
+
+            align-items:center;
+
+            justify-content:center;
+
+            backdrop-filter:blur(10px);
+        }
+
+
+        .fresh-icon i{
+
+            color:#B9E5D0;
+
+            font-size:27px;
+
+            margin-bottom:5px;
+        }
+
+
+        .fresh-icon span{
+
+            font-size:8px;
+
+            font-weight:900;
+
+            text-transform:uppercase;
+
+            letter-spacing:1px;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .search-wrapper{
+
+            position:relative;
+
+            z-index:20;
+
+            margin:
+                -26px
+                16px
+                0;
+        }
+
+
+        .search-box{
+
+            height:58px;
+
+            padding:
+                0 15px;
+
+            display:flex;
+
+            align-items:center;
+
+            gap:11px;
+
+            background:#fff;
+
+            border:
+                1px solid
+                #E4EFF0;
+
+            border-radius:18px;
+
+            box-shadow:
+                0 10px 28px
+                rgba(0,55,65,.13);
+        }
+
+
+        .search-box > i{
+
+            color:var(--ocean);
+
+            font-size:19px;
+        }
+
+
+        .search-text{
+
+            flex:1;
+
+            color:#879497;
+
+            font-size:14px;
+        }
+
+
+        .filter{
+
+            width:38px;
+            height:38px;
+
+            border:none;
+
+            border-radius:12px;
+
+            background:var(--ocean-light);
+
+            color:var(--ocean);
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content{
+
+            padding:
+                30px
+                16px
+                20px;
+        }
+
+
+        .section-header{
+
+            display:flex;
+
+            align-items:flex-end;
+
+            justify-content:space-between;
+
+            margin-bottom:17px;
+        }
+
+
+        .section-title{
+
+            font-size:22px;
+
+            font-weight:900;
+
+            letter-spacing:-.5px;
+        }
+
+
+        .section-subtitle{
+
+            margin-top:5px;
+
+            color:var(--muted);
+
+            font-size:12px;
+        }
+
+
+        .view-all{
+
+            color:var(--ocean);
+
+            text-decoration:none;
+
+            font-size:12px;
+
+            font-weight:900;
+        }
+
+
+        /* =====================================================
            CATEGORY GRID
-        ===================================== */
+        ===================================================== */
 
         .category-grid{
 
             display:grid;
 
             grid-template-columns:
-                repeat(3, 1fr);
+                repeat(3,1fr);
 
-            gap:18px 12px;
-
+            gap:14px 10px;
         }
 
 
         .category{
 
-            display:flex;
-            flex-direction:column;
+            background:#fff;
 
-            align-items:center;
+            border:
+                1px solid
+                #E7EFF0;
+
+            border-radius:20px;
+
+            padding:
+                9px
+                6px
+                12px;
+
+            text-align:center;
 
             cursor:pointer;
 
-            transition:transform .2s ease;
+            box-shadow:
+                0 5px 16px
+                rgba(0,55,65,.06);
 
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease;
         }
 
 
         .category:active{
+
             transform:scale(.95);
+
+            box-shadow:
+                0 3px 9px
+                rgba(0,55,65,.12);
         }
 
 
-        /* =====================================
+        /* =====================================================
            CATEGORY IMAGE
-        ===================================== */
+        ===================================================== */
 
         .category-image{
 
-    width:85px;
-    height:85px;
+            width:84px;
+            height:84px;
 
-    border-radius:50%;
+            margin:auto;
 
-    overflow:hidden;
+            border-radius:50%;
 
-    background:#fff;
+            overflow:hidden;
 
-    box-shadow:
-        0 2px 10px
-        rgba(0,0,0,.08);
+            background:#F3F7F7;
 
-}
+            box-shadow:
+                0 4px 12px
+                rgba(0,0,0,.08);
+        }
 
 
         .category-image img{
@@ -167,167 +620,370 @@
             object-fit:cover;
 
             display:block;
-
         }
 
 
-        /* =====================================
+        /* =====================================================
            CATEGORY NAME
-        ===================================== */
+        ===================================================== */
 
         .category-name{
 
-            margin-top:8px;
+            min-height:31px;
 
-            text-align:center;
-
-            font-size:14px;
-
-            font-weight:600;
-
-            line-height:1.25;
-
-            min-height:35px;
+            margin-top:9px;
 
             display:flex;
-            align-items:flex-start;
+
+            align-items:center;
+
             justify-content:center;
 
+            color:var(--text);
+
+            font-size:13px;
+
+            line-height:1.2;
+
+            font-weight:800;
         }
 
 
-        /* =====================================
-           BOTTOM NAV
-        ===================================== */
+        /* =====================================================
+           HARDCORE BANNER
+        ===================================================== */
 
-.bottom-nav{
-    position:fixed;
+        .hardcore-banner{
 
-    left:50%;
+            position:relative;
 
-    transform:translateX(-50%);
+            min-height:158px;
 
-    bottom:0;
+            margin-top:25px;
 
-    width:100%;
+            padding:
+                20px
+                17px;
 
-    max-width:600px;
+            overflow:hidden;
 
-    height:70px;
+            border-radius:25px;
 
-    background:#fff;
+            color:#fff;
 
-    border-top:1px solid #eee;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--ocean-deep),
+                    var(--ocean)
+                );
 
-    box-shadow:
-        0 -5px 20px rgba(0,0,0,.08);
-
-    display:flex;
-
-    justify-content:space-around;
-
-    align-items:center;
-
-    z-index:9999;
-}
-
-.bottom-nav a{
-    text-decoration:none;
-
-    color:#777;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    gap:4px;
-
-    font-size:9px;
-
-    font-weight:600;
-
-    width:20%;
-}
-
-.bottom-nav i{
-    font-size:19px;
-}
-
-.bottom-nav a.active{
-    color:var(--orange);
-}
+            box-shadow:
+                0 12px 28px
+                rgba(0,55,65,.18);
+        }
 
 
-/* =====================================================
-   SPECIAL GROCERY BOTTOM NAV BUTTON
-===================================================== */
+        .hardcore-banner::before{
 
-.bottom-nav .grocery-nav{
-    position:relative;
+            content:"";
 
-    transform:translateY(-8px);
-}
+            position:absolute;
 
-.bottom-nav .grocery-icon{
-    width:48px;
-    height:48px;
+            width:170px;
+            height:170px;
 
-    border-radius:50%;
+            right:-70px;
+            top:-60px;
 
-    background:#20b64b !important;
+            border-radius:50%;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    margin:0 auto 2px;
-
-    box-shadow:
-        0 4px 12px rgba(32,182,75,0.35);
-
-    border:3px solid #fff;
-}
-
-.bottom-nav .grocery-icon i{
-    font-size:20px;
-    color:#fff !important;
-    display:block !important;
-    opacity:1 !important;
-    visibility:visible !important;
-}
-
-.bottom-nav .grocery-icon i{
-    font-size:20px;
-
-    color:#fff;
-}
-
-.bottom-nav .grocery-nav span{
-    font-size:10px;
-
-    font-weight:700;
-}
+            border:
+                25px solid
+                rgba(255,255,255,.055);
+        }
 
 
-        /* =====================================
+        .banner-content{
+
+            position:relative;
+
+            z-index:5;
+
+            max-width:68%;
+        }
+
+
+        .banner-tag{
+
+            display:flex;
+
+            align-items:center;
+
+            gap:5px;
+
+            color:#B9E8EB;
+
+            font-size:9px;
+
+            font-weight:900;
+
+            letter-spacing:1px;
+
+            margin-bottom:8px;
+        }
+
+
+        .banner-title{
+
+            font-size:23px;
+
+            line-height:1;
+
+            font-weight:900;
+
+            letter-spacing:-.6px;
+        }
+
+
+        .banner-text{
+
+            margin-top:7px;
+
+            color:
+                rgba(255,255,255,.75);
+
+            font-size:11px;
+
+            line-height:1.4;
+        }
+
+
+        .order-now{
+
+            display:inline-flex;
+
+            align-items:center;
+
+            gap:7px;
+
+            margin-top:12px;
+
+            padding:
+                9px
+                14px;
+
+            border-radius:20px;
+
+            background:#fff;
+
+            color:var(--ocean);
+
+            text-decoration:none;
+
+            font-size:10px;
+
+            font-weight:900;
+        }
+
+
+        .banner-food{
+
+            position:absolute;
+
+            right:13px;
+            bottom:14px;
+
+            width:90px;
+            height:90px;
+
+            border-radius:50%;
+
+            background:
+                rgba(255,255,255,.09);
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            font-size:52px;
+        }
+
+
+        /* =====================================================
+           BOTTOM NAVIGATION
+        ===================================================== */
+
+        .bottom-nav{
+
+            position:fixed;
+
+            left:50%;
+
+            bottom:0;
+
+            transform:
+                translateX(-50%);
+
+            width:100%;
+
+            max-width:600px;
+
+            height:76px;
+
+            background:#fff;
+
+            border-top:
+                1px solid
+                #E5ECEE;
+
+            box-shadow:
+                0 -8px 28px
+                rgba(0,55,65,.10);
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:space-around;
+
+            z-index:9999;
+        }
+
+
+        .bottom-nav a{
+
+            width:20%;
+
+            color:#899396;
+
+            text-decoration:none;
+
+            display:flex;
+
+            flex-direction:column;
+
+            align-items:center;
+
+            justify-content:center;
+
+            gap:5px;
+
+            font-size:10px;
+
+            font-weight:700;
+        }
+
+
+        .bottom-nav a i{
+
+            font-size:19px;
+        }
+
+
+        .bottom-nav a.active{
+
+            color:var(--ocean);
+        }
+
+
+        /* =====================================================
+           GROCERY BUTTON
+        ===================================================== */
+
+        .grocery-nav{
+
+            position:relative;
+
+            transform:
+                translateY(-10px);
+        }
+
+
+        .grocery-icon{
+
+            width:54px;
+            height:54px;
+
+            border-radius:50%;
+
+            background:
+                var(--ocean) !important;
+
+            border:
+                4px solid
+                #fff;
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            box-shadow:
+                0 7px 20px
+                rgba(0,77,91,.35);
+        }
+
+
+        .grocery-icon i{
+
+            color:#fff !important;
+
+            font-size:21px !important;
+
+            display:block !important;
+
+            opacity:1 !important;
+
+            visibility:visible !important;
+        }
+
+
+        .grocery-nav span{
+
+            color:var(--ocean);
+
+            font-size:10px;
+
+            font-weight:900;
+        }
+
+
+        /* =====================================================
            RESPONSIVE
-        ===================================== */
+        ===================================================== */
 
         @media(min-width:600px){
 
-            .page-content{
-                max-width:700px;
-                margin:auto;
-            }
-
             .category-grid{
+
                 grid-template-columns:
                     repeat(4,1fr);
             }
 
+
+            .category-image{
+
+                width:90px;
+                height:90px;
+            }
         }
+        .bottom-image {
+    width: 100%;
+    padding: 10px 16px 20px;
+    text-align: center;
+}
+
+.bottom-image img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    display: block;
+    margin: auto;
+}
 
     </style>
 
@@ -337,388 +993,605 @@
 <body>
 
 
-<!-- =====================================
-     HEADER
-===================================== -->
-
-<div class="top-header">
-
-    <button
-        class="back-btn"
-        onclick="goBack()"
-    >
-        <i class="fa-solid fa-arrow-left"></i>
-    </button>
+<div class="app">
 
 
-    <h2>
-        Categories
-    </h2>
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
 
-</div>
-
-
-
-<!-- =====================================
-     PAGE CONTENT
-===================================== -->
-
-<div class="page-content">
+    <section class="hero">
 
 
-    <h1 class="page-title">
-        Explore Categories
-    </h1>
+        <div class="top-row">
 
 
+            <!-- BACK BUTTON -->
 
-    <!-- =====================================
-         CATEGORY GRID
-    ===================================== -->
+            <button
+                class="back-btn"
+                onclick="goBack()"
+            >
 
-    <div class="category-grid">
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </button>
 
 
-        <!-- BIRYANI -->
+            <!-- LOCATION -->
+<!-- 
+            <div class="location">
 
-        <div
-            class="category"
-            onclick="openCategory('biryani')"
-        >
+                <i class="fa-solid fa-location-dot"></i>
 
-            <div class="category-image">
+                <span class="location-text">
+                    Medchal mandal
+                </span>
 
-                <img
-                    src="images/categories/biryani.png"
-                    alt="Biryani"
-                >
+                <i class="fa-solid fa-chevron-down"></i>
 
-            </div>
+            </div> -->
 
-            <div class="category-name">
-                Biryani
-            </div>
+
+            <!-- CART -->
+<!-- 
+            <div class="cart-btn">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+                <span class="cart-number">
+                    0
+                </span>
+
+            </div> -->
+
 
         </div>
 
 
+        <!-- HERO CONTENT -->
 
-        <!-- GROCERIES -->
+        <div class="hero-content">
 
-        <div
-            class="category"
-            onclick="openCategory('grocery')"
-        >
 
-            <div class="category-image">
+            <div>
 
-                <img
-                    src="images/categories/groceries.png"
-                    alt="Groceries"
-                >
+                <h1 class="hero-title">
+                    Explore<br>
+                    Categories
+                </h1>
+
+                <p class="hero-description">
+                    Find your favourites and
+                    order them fresh to your doorstep.
+                </p>
 
             </div>
 
-            <div class="category-name">
-                Groceries
+
+            <div class="fresh-icon">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                <span>
+                    Fresh
+                </span>
+
             </div>
+
 
         </div>
 
 
-
-        <!-- MEAT -->
-
-        <div
-            class="category"
-            onclick="openCategory('meat')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/meat.png"
-                    alt="Meat"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Meat
-            </div>
-
-        </div>
+    </section>
 
 
 
-        <!-- TIFFINS -->
+    <!-- =====================================================
+         SEARCH
+    ===================================================== -->
 
-        <div
-            class="category"
-            onclick="openCategory('tiffins')"
-        >
+    <div class="search-wrapper">
 
-            <div class="category-image">
+        <div class="search-box">
 
-                <img
-                    src="images/categories/tiffins.png"
-                    alt="Tiffins"
-                >
+            <i class="fa-solid fa-magnifying-glass"></i>
 
-            </div>
+            <span class="search-text">
+                Search food, groceries, meat...
+            </span>
 
-            <div class="category-name">
-                Tiffins
-            </div>
+            <button
+                class="filter"
+                type="button"
+            >
+
+                <i class="fa-solid fa-sliders"></i>
+
+            </button>
 
         </div>
-
-
-
-        <!-- ICECREAMS -->
-
-        <div
-            class="category"
-            onclick="openCategory('icecreams')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/icecreams.png"
-                    alt="Icecreams"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Icecreams
-            </div>
-
-        </div>
-
-
-
-        <!-- CAKES -->
-
-        <div
-            class="category"
-            onclick="openCategory('cakes')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/cakes.png"
-                    alt="Cakes"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Cakes
-            </div>
-
-        </div>
-
-
-
-        <!-- PIZZAS -->
-
-        <div
-            class="category"
-            onclick="openCategory('pizzas')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/pizzas.png"
-                    alt="Pizzas"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Pizzas
-            </div>
-
-        </div>
-
-
-
-        <!-- FAST FOOD -->
-
-        <div
-            class="category"
-            onclick="openCategory('fastfood')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/fastfood.png"
-                    alt="Fast Food"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Fast Food
-            </div>
-
-        </div>
-
-
-
-        <!-- JUICE -->
-
-        <div
-            class="category"
-            onclick="openCategory('juice')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/juice.png"
-                    alt="Juice"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Juice
-            </div>
-
-        </div>
-
-
-
-        <!-- SHAWARMA -->
-
-        <div
-            class="category"
-            onclick="openCategory('shawarma')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/shawarma.png"
-                    alt="Shawarma"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Shawarma
-            </div>
-
-        </div>
-
-
-
-        <!-- PARATHA -->
-
-        <div
-            class="category"
-            onclick="openCategory('paratha')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/paratha.png"
-                    alt="Paratha"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Paratha
-            </div>
-
-        </div>
-
-
-
-        <!-- ROLLS & SANDWICH -->
-
-        <div
-            class="category"
-            onclick="openCategory('rolls-sandwich')"
-        >
-
-            <div class="category-image">
-
-                <img
-                    src="images/categories/rolls-sandwich.png"
-                    alt="Rolls and Sandwich"
-                >
-
-            </div>
-
-            <div class="category-name">
-                Rolls &<br>
-                Sandwich
-            </div>
-
-        </div>
-
 
     </div>
 
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <main class="content">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    What are you craving?
+                </h2>
+
+                <p class="section-subtitle">
+                    Choose a category to start ordering
+                </p>
+
+            </div>
+
+
+            <a
+                href="#"
+                class="view-all"
+            >
+                View All
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CATEGORY GRID
+        ================================================= -->
+
+        <div class="category-grid">
+
+
+            <!-- BIRYANI -->
+
+            <div
+                class="category"
+                onclick="openCategory('biryani')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/biryani.png"
+                        alt="Biryani"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Biryani
+                </div>
+
+            </div>
+
+
+            <!-- GROCERIES -->
+
+            <div
+                class="category"
+                onclick="openCategory('grocery')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/groceries.png"
+                        alt="Groceries"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Groceries
+                </div>
+
+            </div>
+
+
+            <!-- MEAT -->
+
+            <div
+                class="category"
+                onclick="openCategory('meat')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/meat.png"
+                        alt="Meat"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Meat
+                </div>
+
+            </div>
+
+
+            <!-- TIFFINS -->
+
+            <div
+                class="category"
+                onclick="openCategory('tiffins')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/tiffins.png"
+                        alt="Tiffins"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Tiffins
+                </div>
+
+            </div>
+
+
+            <!-- ICECREAMS -->
+
+            <div
+                class="category"
+                onclick="openCategory('icecreams')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/icecreams.png"
+                        alt="Icecreams"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Icecreams
+                </div>
+
+            </div>
+
+
+            <!-- CAKES -->
+
+            <div
+                class="category"
+                onclick="openCategory('cakes')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/cakes.png"
+                        alt="Cakes"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Cakes
+                </div>
+
+            </div>
+
+
+            <!-- PIZZAS -->
+
+            <div
+                class="category"
+                onclick="openCategory('pizzas')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/pizzas.png"
+                        alt="Pizzas"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Pizzas
+                </div>
+
+            </div>
+
+
+            <!-- FAST FOOD -->
+
+            <div
+                class="category"
+                onclick="openCategory('fastfood')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/fastfood.png"
+                        alt="Fast Food"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Fast Food
+                </div>
+
+            </div>
+
+
+            <!-- JUICE -->
+
+            <div
+                class="category"
+                onclick="openCategory('juice')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/juice.png"
+                        alt="Juice"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Juice
+                </div>
+
+            </div>
+
+
+            <!-- SHAWARMA -->
+
+            <div
+                class="category"
+                onclick="openCategory('shawarma')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/shawarma.png"
+                        alt="Shawarma"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Shawarma
+                </div>
+
+            </div>
+
+
+            <!-- PARATHA -->
+
+            <div
+                class="category"
+                onclick="openCategory('paratha')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/paratha.png"
+                        alt="Paratha"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Paratha
+                </div>
+
+            </div>
+
+
+            <!-- ROLLS & SANDWICH -->
+
+            <div
+                class="category"
+                onclick="openCategory('rolls-sandwich')"
+            >
+
+                <div class="category-image">
+
+                    <img
+                        src="images/categories/rolls-sandwich.png"
+                        alt="Rolls and Sandwich"
+                    >
+
+                </div>
+
+                <div class="category-name">
+                    Rolls &<br>
+                    Sandwich
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             HARDCORE BANNER
+        ================================================= -->
+
+        <div class="hardcore-banner">
+
+
+            <div class="banner-content">
+
+
+                <div class="banner-tag">
+
+                    <i class="fa-solid fa-fire"></i>
+
+                    DARVOZ DELIVERY
+
+                </div>
+
+
+                <div class="banner-title">
+
+                    HARDCORE<br>
+                    HUNGER?
+
+                </div>
+
+
+                <div class="banner-text">
+
+                    Hot food, fresh groceries
+                    and more at your doorstep.
+
+                </div>
+
+
+                <a
+                    href="restaurants.html"
+                    class="order-now"
+                >
+
+                    ORDER NOW
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+
+            </div>
+
+
+            <div class="banner-food">
+                🍔
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+    <!-- BOTTOM IMAGE -->
+    <!-- <div class="bottom-image">
+        <img src="images/your-image.png" alt="DARVOZ">
+    </div> -->
+
 </div>
-
-
 
 <!-- =====================================================
-    BOTTOM NAV
+     BOTTOM NAVIGATION
 ===================================================== -->
-
 <nav class="bottom-nav">
 
-    <!-- Home -->
-    <a href="index.html" class="active">
+
+    <!-- HOME -->
+
+    <a href="index.html">
+
         <i class="fa-solid fa-house"></i>
-        <span>Home</span>
+
+        <span>
+            Home
+        </span>
+
     </a>
 
-    <!-- Categories -->
-    <a href="categories.html">
+
+    <!-- CATEGORIES -->
+
+    <a
+        href="categories.html"
+        class="active"
+    >
+
         <i class="fa-solid fa-grip"></i>
-        <span>Categories</span>
+
+        <span>
+            Categories
+        </span>
+
     </a>
 
-   <!-- Special Grocery Button -->
-<a href="grocery-categories.html" class="grocery-nav">
-<div class="grocery-icon">
-     <i class="fa-solid fa-basket-shopping"></i>
-</div>
-    <span>Grocery</span>
-</a>
 
-    <!-- Cart -->
+    <!-- GROCERY -->
+
+    <a
+        href="grocery-categories.html"
+        class="grocery-nav"
+    >
+
+        <div class="grocery-icon">
+
+            <i class="fa-solid fa-basket-shopping"></i>
+
+        </div>
+
+        <span>
+            Grocery
+        </span>
+
+    </a>
+
+
+    <!-- ORDERS -->
+
     <a href="customer-orders.html">
+
         <i class="fa-solid fa-bag-shopping"></i>
-        <span>Orders</span>
+
+        <span>
+            Orders
+        </span>
+
     </a>
 
-    <!-- Profile -->
+
+    <!-- PROFILE -->
+
     <a href="profile.html">
+
         <i class="fa-solid fa-user"></i>
-        <span>Profile</span>
+
+        <span>
+            Profile
+        </span>
+
     </a>
+
 
 </nav>
 
 
 
-
-<!-- =====================================
-     JAVASCRIPT
-===================================== -->
+<!-- =====================================================
+     ORIGINAL JAVASCRIPT — UNCHANGED
+===================================================== -->
 
 <script>
 
