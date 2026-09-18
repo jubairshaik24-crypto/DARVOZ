@@ -13,7 +13,7 @@
 <title>DARVOZ Grocery Categories</title>
 
 <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet"
 >
 
@@ -24,16 +24,47 @@
 
 <style>
 
+/* =====================================================
+   GLOBAL
+===================================================== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+:root{
+
+    --ocean:#004D5B;
+    --ocean-dark:#003542;
+    --ocean-deep:#002A34;
+    --ocean-light:#E8F5F7;
+
+    --orange:#FF6500;
+
+    --white:#ffffff;
+    --text:#18252a;
+    --muted:#718087;
+
+    --border:#e4ecef;
+
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
+
     font-family:'Poppins',sans-serif;
-    background:#f7f8f7;
-    color:#222;
+
+    background:#f5f8f9;
+
+    color:var(--text);
+
+    min-height:100vh;
+
 }
 
 button,
@@ -50,9 +81,17 @@ img{
     max-width:100%;
 }
 
+
+/* =====================================================
+   PAGE
+===================================================== */
+
 .page{
+
     min-height:100vh;
-    padding-bottom:90px;
+
+    padding-bottom:100px;
+
 }
 
 
@@ -62,111 +101,265 @@ img{
 
 .grocery-header{
 
-    background:
-        linear-gradient(
-            135deg,
-            #159447,
-            #0f7f38
-        );
+    position:relative;
+
+    overflow:hidden;
 
     color:#fff;
 
     padding:
         20px
-        max(20px,5vw)
-        30px;
+        max(18px,5vw)
+        45px;
 
     border-radius:
         0
         0
-        28px
-        28px;
+        30px
+        30px;
+
+    background:
+
+        radial-gradient(
+            circle at 90% 0%,
+            rgba(255,255,255,.13),
+            transparent 28%
+        ),
+
+        linear-gradient(
+            135deg,
+            var(--ocean-deep),
+            var(--ocean),
+            var(--ocean-dark)
+        );
+
+    box-shadow:
+        0 8px 30px rgba(0,53,66,.18);
+
 }
+
+
+/* Decorative circles */
+
+.grocery-header::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:190px;
+    height:190px;
+
+    border-radius:50%;
+
+    right:-75px;
+    top:-105px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+}
+
+.grocery-header::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:100px;
+    height:100px;
+
+    border-radius:50%;
+
+    left:-50px;
+    bottom:-60px;
+
+    background:
+        rgba(255,101,0,.10);
+
+}
+
+
+/* =====================================================
+   HEADER TOP
+===================================================== */
 
 .header-top{
 
+    position:relative;
+
+    z-index:2;
+
     display:flex;
+
     align-items:center;
-    gap:15px;
+
+    gap:14px;
+
 }
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
 
 .back-button{
 
-    width:48px;
-    height:48px;
+    width:46px;
+    height:46px;
+
+    flex-shrink:0;
 
     border:none;
+
     border-radius:15px;
 
     background:
-        rgba(255,255,255,.15);
+        rgba(255,255,255,.12);
 
     color:#fff;
 
-    font-size:20px;
+    font-size:18px;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
+    transition:.2s;
+
 }
 
+.back-button:hover{
+
+    background:
+        rgba(255,255,255,.20);
+
+}
+
+.back-button:active{
+
+    transform:scale(.93);
+
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
 .header-title{
+
     flex:1;
+
 }
 
 .header-title h1{
-    font-size:28px;
+
+    font-size:27px;
+
     font-weight:800;
+
+    line-height:1.1;
+
+    letter-spacing:-.5px;
+
 }
 
 .header-title p{
-    margin-top:2px;
-    font-size:11px;
-    opacity:.9;
+
+    margin-top:5px;
+
+    font-size:10px;
+
+    color:
+        rgba(255,255,255,.75);
+
+    font-weight:500;
+
 }
+
+
+/* =====================================================
+   CART BUTTON
+===================================================== */
 
 .cart-button{
 
-    width:48px;
-    height:48px;
+    width:46px;
+    height:46px;
+
+    flex-shrink:0;
 
     border:none;
+
     border-radius:15px;
 
     background:
-        rgba(255,255,255,.15);
+        rgba(255,255,255,.12);
 
     color:#fff;
 
-    font-size:20px;
+    font-size:18px;
 
     position:relative;
+
+    transition:.2s;
+
 }
+
+.cart-button:hover{
+
+    background:
+        rgba(255,255,255,.20);
+
+}
+
+.cart-button:active{
+
+    transform:scale(.93);
+
+}
+
+
+/* =====================================================
+   CART BADGE
+===================================================== */
 
 .cart-badge{
 
     position:absolute;
 
-    right:-4px;
+    right:-5px;
     top:-5px;
 
-    min-width:19px;
-    height:19px;
+    min-width:20px;
+    height:20px;
 
     padding:0 5px;
 
-    border-radius:50%;
+    border-radius:20px;
 
-    background:#ef4444;
+    background:var(--orange);
 
     color:#fff;
 
     font-size:9px;
+
     font-weight:800;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
+    border:
+        2px solid
+        var(--ocean);
+
 }
 
 
@@ -176,12 +369,9 @@ img{
 
 .search-section{
 
-    max-width:1200px;
+    width:min(1100px,100%);
 
-    margin:
-        -18px
-        auto
-        0;
+    margin:-27px auto 0;
 
     padding:
         0
@@ -190,6 +380,7 @@ img{
     position:relative;
 
     z-index:5;
+
 }
 
 .search-box{
@@ -198,7 +389,7 @@ img{
 
     background:#fff;
 
-    border-radius:17px;
+    border-radius:18px;
 
     display:flex;
 
@@ -208,18 +399,22 @@ img{
 
     padding:0 18px;
 
-    border:1px solid #eee;
+    border:
+        1px solid
+        var(--border);
 
     box-shadow:
-        0 8px 25px
-        rgba(0,0,0,.10);
+        0 10px 30px
+        rgba(0,53,66,.12);
+
 }
 
 .search-box i{
 
-    color:#777;
+    color:var(--ocean);
 
-    font-size:19px;
+    font-size:18px;
+
 }
 
 .search-box input{
@@ -232,13 +427,18 @@ img{
 
     outline:none;
 
-    font-size:14px;
+    font-size:13px;
+
+    color:var(--text);
 
     background:transparent;
+
 }
 
 .search-box input::placeholder{
-    color:#999;
+
+    color:#9aa5aa;
+
 }
 
 
@@ -254,10 +454,16 @@ img{
     margin:auto;
 
     padding:
-        28px
-        max(20px,4vw)
+        30px
+        max(18px,4vw)
         30px;
+
 }
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
 
 .section-header{
 
@@ -268,6 +474,7 @@ img{
     justify-content:space-between;
 
     margin-bottom:18px;
+
 }
 
 .section-header h2{
@@ -275,15 +482,29 @@ img{
     font-size:23px;
 
     font-weight:800;
+
+    color:var(--ocean-deep);
+
+    letter-spacing:-.3px;
+
 }
 
 .category-count{
 
-    color:#159447;
+    color:var(--ocean);
 
-    font-size:11px;
+    background:var(--ocean-light);
+
+    padding:
+        6px
+        11px;
+
+    border-radius:20px;
+
+    font-size:10px;
 
     font-weight:700;
+
 }
 
 
@@ -299,6 +520,7 @@ img{
         repeat(4,minmax(0,1fr));
 
     gap:16px;
+
 }
 
 
@@ -308,36 +530,57 @@ img{
 
 .category-card{
 
-    border:none;
+    border:
+        1px solid
+        var(--border);
 
     background:#fff;
 
-    border-radius:18px;
+    border-radius:20px;
 
-    padding:16px;
+    padding:15px;
 
-    min-height:220px;
-
-    border:1px solid #e9ece9;
+    min-height:215px;
 
     box-shadow:
-        0 5px 18px
-        rgba(0,0,0,.045);
+        0 5px 20px
+        rgba(0,53,66,.045);
 
     transition:
-        transform .18s ease,
-        box-shadow .18s ease;
+
+        transform .2s ease,
+
+        box-shadow .2s ease,
+
+        border-color .2s ease;
 
     text-align:center;
+
+    appearance:none;
+
+    -webkit-tap-highlight-color:transparent;
+
 }
 
 .category-card:hover{
 
-    transform:translateY(-3px);
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(0,77,91,.30);
 
     box-shadow:
-        0 10px 25px
-        rgba(0,0,0,.09);
+        0 14px 30px
+        rgba(0,53,66,.11);
+
+}
+
+.category-card:active{
+
+    transform:
+        scale(.97);
+
 }
 
 
@@ -347,14 +590,23 @@ img{
 
 .category-image{
 
-    width:150px;
-    height:150px;
+    width:145px;
+    height:145px;
 
-    margin:0 auto 8px;
+    margin:
+        0
+        auto
+        10px;
 
     border-radius:50%;
 
-    background:#f2f8ec;
+    background:
+
+        radial-gradient(
+            circle,
+            #ffffff 0%,
+            #E8F5F7 100%
+        );
 
     display:flex;
 
@@ -363,6 +615,11 @@ img{
     justify-content:center;
 
     overflow:hidden;
+
+    border:
+        5px solid
+        #f4f8f9;
+
 }
 
 .category-image img{
@@ -371,13 +628,17 @@ img{
     height:100%;
 
     object-fit:contain;
+
+    padding:5px;
+
 }
 
 .category-placeholder{
 
-    font-size:45px;
+    font-size:42px;
 
-    color:#159447;
+    color:var(--ocean);
+
 }
 
 
@@ -387,29 +648,45 @@ img{
 
 .category-name{
 
-    font-size:15px;
+    font-size:14px;
 
     font-weight:800;
 
     line-height:1.25;
 
-    color:#222;
+    color:var(--ocean-deep);
+
 }
 
 
 /* =====================================================
-   CATEGORY ACTION
+   SHOP NOW
 ===================================================== */
 
 .category-items{
 
-    margin-top:4px;
+    margin-top:6px;
 
-    font-size:11px;
+    display:inline-flex;
 
-    color:#159447;
+    align-items:center;
 
-    font-weight:700;
+    justify-content:center;
+
+    padding:
+        5px
+        11px;
+
+    border-radius:20px;
+
+    background:var(--ocean-light);
+
+    color:var(--ocean);
+
+    font-size:9px;
+
+    font-weight:800;
+
 }
 
 
@@ -431,16 +708,18 @@ img{
 
     justify-content:center;
 
-    color:#777;
+    color:var(--muted);
+
 }
 
 .loading i{
 
     font-size:30px;
 
-    color:#159447;
+    color:var(--ocean);
 
-    margin-bottom:10px;
+    margin-bottom:12px;
+
 }
 
 
@@ -456,16 +735,18 @@ img{
 
     padding:70px 20px;
 
-    color:#777;
+    color:var(--muted);
+
 }
 
 .empty i{
 
-    font-size:40px;
+    font-size:42px;
 
-    color:#159447;
+    color:var(--ocean);
 
     margin-bottom:12px;
+
 }
 
 
@@ -482,6 +763,7 @@ img{
     padding:60px 20px;
 
     color:#dc2626;
+
 }
 
 .error i{
@@ -489,6 +771,7 @@ img{
     font-size:35px;
 
     margin-bottom:12px;
+
 }
 
 
@@ -504,23 +787,31 @@ img{
 
     bottom:0;
 
-    transform:translateX(-50%);
+    transform:
+        translateX(-50%);
 
     width:min(700px,100%);
 
-    height:70px;
+    height:74px;
 
-    background:#fff;
+    background:
+        rgba(255,255,255,.97);
+
+    backdrop-filter:
+        blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
 
     border-radius:
-        22px
-        22px
+        24px
+        24px
         0
         0;
 
     box-shadow:
-        0 -5px 25px
-        rgba(0,0,0,.10);
+        0 -8px 30px
+        rgba(0,53,66,.13);
 
     display:flex;
 
@@ -528,16 +819,27 @@ img{
 
     justify-content:space-around;
 
+    padding:0 5px;
+
     z-index:1000;
+
+    border-top:
+        1px solid
+        #e6edef;
+
 }
 
 .nav-item{
+
+    width:20%;
+
+    height:100%;
 
     border:none;
 
     background:none;
 
-    color:#777;
+    color:#7d898e;
 
     display:flex;
 
@@ -545,214 +847,117 @@ img{
 
     align-items:center;
 
+    justify-content:center;
+
     gap:4px;
 
     font-size:9px;
 
     font-weight:600;
+
+    position:relative;
+
+    transition:.2s;
+
 }
 
 .nav-item i{
 
     font-size:19px;
+
+    transition:.2s;
+
 }
 
 .nav-item.active{
 
-    color:#159447;
+    color:var(--ocean);
+
+    font-weight:800;
+
 }
 
 .nav-item.active i{
 
-    color:#159447;
+    color:var(--ocean);
+
 }
 
 
 /* =====================================================
-   TABLET
+   CENTER GROCERY BUTTON
 ===================================================== */
 
-@media(max-width:1000px){
+.nav-item:nth-child(3){
 
-    .category-grid{
+    transform:
+        translateY(-10px);
 
-        grid-template-columns:
-            repeat(3,minmax(0,1fr));
-    }
+}
+
+.nav-item:nth-child(3)::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:3px;
+
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--ocean),
+            var(--ocean-dark)
+        );
+
+    box-shadow:
+
+        0 6px 16px
+        rgba(0,77,91,.30),
+
+        0 0 0 4px #fff;
+
+    z-index:-1;
+
+}
+
+.nav-item:nth-child(3) i{
+
+    width:52px;
+    height:52px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff !important;
+
+    font-size:21px;
+
+    margin-bottom:-34px;
+
+}
+
+.nav-item:nth-child(3) span{
+
+    margin-top:36px;
+
+    color:var(--ocean);
+
+    font-weight:800;
 
 }
 
 
 /* =====================================================
-   MOBILE
-===================================================== */
-
-@media(max-width:768px){
-
-    .grocery-header{
-
-        padding:
-            14px
-            14px
-            25px;
-
-        border-radius:
-            0
-            0
-            24px
-            24px;
-    }
-
-    .back-button,
-    .cart-button{
-
-        width:42px;
-        height:42px;
-
-        border-radius:13px;
-    }
-
-    .header-title h1{
-
-        font-size:21px;
-    }
-
-    .header-title p{
-
-        font-size:9px;
-    }
-
-    .search-section{
-
-        margin-top:-17px;
-
-        padding:
-            0
-            14px;
-    }
-
-    .search-box{
-
-        height:53px;
-
-        border-radius:16px;
-
-        padding:
-            0
-            15px;
-    }
-
-    .search-box input{
-
-        font-size:12px;
-    }
-
-    .main{
-
-        padding:
-            25px
-            12px
-            95px;
-    }
-
-    .section-header{
-
-        margin-bottom:13px;
-    }
-
-    .section-header h2{
-
-        font-size:19px;
-    }
-
-    .category-count{
-
-        font-size:9px;
-    }
-
-    .category-grid{
-
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-        gap:10px;
-    }
-
-    .category-card{
-
-        min-height:190px;
-
-        padding:10px;
-
-        border-radius:15px;
-    }
-
-    .category-image{
-
-        width:125px;
-        height:125px;
-
-        margin-bottom:7px;
-    }
-
-    .category-name{
-
-        font-size:12px;
-    }
-
-    .category-items{
-
-        font-size:9px;
-    }
-
-    .bottom-nav{
-
-        height:65px;
-
-        border-radius:
-            18px
-            18px
-            0
-            0;
-    }
-
-}
-
-
-/* =====================================================
-   SMALL PHONE
-===================================================== */
-
-@media(max-width:380px){
-
-    .category-grid{
-
-        gap:8px;
-    }
-
-    .category-card{
-
-        min-height:175px;
-
-        padding:8px;
-    }
-
-    .category-image{
-
-        width:108px;
-        height:108px;
-    }
-
-    .category-name{
-
-        font-size:11px;
-    }
-
-}
-
-
-/* =====================================================
-   DARVOZ GROCERY SPLASH
+   SPLASH
 ===================================================== */
 
 .grocery-splash{
@@ -770,10 +975,18 @@ img{
     justify-content:center;
 
     background:
+
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(255,255,255,.08),
+            transparent 25%
+        ),
+
         linear-gradient(
-            135deg,
-            #159447,
-            #0f7f38
+            145deg,
+            var(--ocean-deep),
+            var(--ocean),
+            var(--ocean-dark)
         );
 
     opacity:1;
@@ -783,6 +996,7 @@ img{
     transition:
         opacity .35s ease,
         visibility .35s ease;
+
 }
 
 .grocery-splash.hide{
@@ -792,6 +1006,7 @@ img{
     visibility:hidden;
 
     pointer-events:none;
+
 }
 
 .grocery-splash-content{
@@ -802,6 +1017,7 @@ img{
 
     animation:
         grocerySplashEnter .45s ease;
+
 }
 
 .grocery-splash-name{
@@ -811,9 +1027,10 @@ img{
 
     font-weight:900;
 
-    letter-spacing:3px;
+    letter-spacing:4px;
 
     line-height:1;
+
 }
 
 .grocery-splash-subtitle{
@@ -826,6 +1043,10 @@ img{
     font-weight:700;
 
     letter-spacing:8px;
+
+    color:
+        rgba(255,255,255,.90);
+
 }
 
 .grocery-splash-icon{
@@ -833,6 +1054,9 @@ img{
     margin-top:22px;
 
     font-size:38px;
+
+    color:var(--orange);
+
 }
 
 @keyframes grocerySplashEnter{
@@ -842,7 +1066,9 @@ img{
         opacity:0;
 
         transform:
-            translateY(15px);
+            translateY(15px)
+            scale(.97);
+
     }
 
     to{
@@ -850,8 +1076,263 @@ img{
         opacity:1;
 
         transform:
-            translateY(0);
+            translateY(0)
+            scale(1);
+
     }
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:1000px){
+
+    .category-grid{
+
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px){
+
+    .page{
+
+        padding-bottom:90px;
+
+    }
+
+    .grocery-header{
+
+        padding:
+            14px
+            14px
+            38px;
+
+        border-radius:
+            0
+            0
+            25px
+            25px;
+
+    }
+
+    .back-button,
+    .cart-button{
+
+        width:42px;
+
+        height:42px;
+
+        border-radius:13px;
+
+    }
+
+    .header-title h1{
+
+        font-size:21px;
+
+    }
+
+    .header-title p{
+
+        font-size:9px;
+
+    }
+
+    .search-section{
+
+        margin-top:-19px;
+
+        padding:
+            0
+            14px;
+
+    }
+
+    .search-box{
+
+        height:53px;
+
+        border-radius:16px;
+
+        padding:
+            0
+            15px;
+
+    }
+
+    .search-box input{
+
+        font-size:12px;
+
+    }
+
+    .main{
+
+        padding:
+            25px
+            12px
+            100px;
+
+    }
+
+    .section-header{
+
+        margin-bottom:14px;
+
+    }
+
+    .section-header h2{
+
+        font-size:18px;
+
+    }
+
+    .category-count{
+
+        font-size:9px;
+
+        padding:
+            5px
+            8px;
+
+    }
+
+    .category-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+        gap:10px;
+
+    }
+
+    .category-card{
+
+        min-height:185px;
+
+        padding:9px;
+
+        border-radius:17px;
+
+    }
+
+    .category-image{
+
+        width:120px;
+
+        height:120px;
+
+        margin-bottom:8px;
+
+    }
+
+    .category-name{
+
+        font-size:12px;
+
+    }
+
+    .category-items{
+
+        font-size:8px;
+
+        padding:
+            4px
+            8px;
+
+    }
+
+    .bottom-nav{
+
+        height:68px;
+
+        border-radius:
+            20px
+            20px
+            0
+            0;
+
+    }
+
+    .nav-item{
+
+        font-size:8px;
+
+    }
+
+    .nav-item i{
+
+        font-size:18px;
+
+    }
+
+    .nav-item:nth-child(3)::before{
+
+        width:47px;
+
+        height:47px;
+
+    }
+
+    .nav-item:nth-child(3) i{
+
+        width:47px;
+
+        height:47px;
+
+        font-size:20px;
+
+    }
+
+}
+
+
+/* =====================================================
+   SMALL PHONE
+===================================================== */
+
+@media(max-width:380px){
+
+    .category-grid{
+
+        gap:8px;
+
+    }
+
+    .category-card{
+
+        min-height:170px;
+
+        padding:8px;
+
+    }
+
+    .category-image{
+
+        width:105px;
+
+        height:105px;
+
+    }
+
+    .category-name{
+
+        font-size:11px;
+
+    }
+
 }
 
 </style>
@@ -901,6 +1382,7 @@ img{
 
     <div class="header-top">
 
+
         <button
             class="back-button"
             onclick="goBack()"
@@ -940,6 +1422,7 @@ img{
 
         </button>
 
+
     </div>
 
 </header>
@@ -953,7 +1436,9 @@ img{
 
     <div class="search-box">
 
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <i
+            class="fa-solid fa-magnifying-glass"
+        ></i>
 
         <input
             type="text"
@@ -972,6 +1457,7 @@ img{
 ===================================================== -->
 
 <main class="main">
+
 
     <div class="section-header">
 
@@ -1007,6 +1493,7 @@ img{
         </div>
 
     </div>
+
 
 </main>
 
@@ -1086,6 +1573,7 @@ img{
 
     </button>
 
+
 </nav>
 
 
@@ -1094,7 +1582,13 @@ img{
 
 <script>
 
+/* =====================================================
+   API
+===================================================== */
+
 const API = window.location.origin;
+
+
 /* =====================================================
    VARIABLES
 ===================================================== */
@@ -1137,7 +1631,9 @@ function hideGrocerySplash(){
         );
 
     if(!splash){
+
         return;
+
     }
 
     splash.classList.add("hide");
@@ -1186,6 +1682,7 @@ async function loadGroceryCategories(){
          * accepts /:partnerId but does not
          * use the value.
          */
+
 
         const response =
             await fetch(
@@ -1252,6 +1749,7 @@ async function loadGroceryCategories(){
 
 
     }
+
     catch(error){
 
         console.error(
@@ -1269,10 +1767,12 @@ async function loadGroceryCategories(){
                 ></i>
 
                 <p>
+
                     ${escapeHtml(
                         error.message ||
                         "Unable to load categories."
                     )}
+
                 </p>
 
             </div>
@@ -1324,6 +1824,7 @@ function renderCategories(){
 
     filteredCategories.forEach(
         category => {
+
 
             const categoryId =
                 category.id;
@@ -1387,6 +1888,7 @@ function renderCategories(){
                 `;
 
             }
+
             else{
 
                 imageHtml = `
@@ -1461,6 +1963,7 @@ document
                 groceryCategories.filter(
                     category => {
 
+
                         const name =
                             category.category_name ||
                             category.name ||
@@ -1490,23 +1993,51 @@ document
 /* =====================================================
    OPEN GROCERY CATEGORY
 ===================================================== */
+
 function openCategory(categoryId, categoryName) {
 
-    console.log("=================================");
-    console.log("OPEN GROCERY CATEGORY");
-    console.log("CATEGORY ID:", categoryId);
-    console.log("CATEGORY NAME:", categoryName);
-    console.log("PARTNER ID: 1");
-    console.log("=================================");
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "OPEN GROCERY CATEGORY"
+    );
+
+    console.log(
+        "CATEGORY ID:",
+        categoryId
+    );
+
+    console.log(
+        "CATEGORY NAME:",
+        categoryName
+    );
+
+    console.log(
+        "PARTNER ID: 1"
+    );
+
+    console.log(
+        "================================="
+    );
+
 
     const url =
+
         `restaurant.html?id=1` +
+
         `&business=Groceries` +
+
         `&categoryId=${encodeURIComponent(categoryId)}` +
+
         `&category=${encodeURIComponent(categoryName)}`;
 
+
     window.location.href = url;
+
 }
+
 
 /* =====================================================
    NAVIGATION
@@ -1521,6 +2052,7 @@ function goBack(){
         window.history.back();
 
     }
+
     else{
 
         window.location.href =
@@ -1592,6 +2124,7 @@ document.addEventListener(
 );
 
 </script>
+
 
 </body>
 

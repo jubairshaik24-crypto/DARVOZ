@@ -13,426 +13,780 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     >
 
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: #f6f6f6;
-            font-family: Poppins, Arial, sans-serif;
-            color: #222;
-        }
-
-        /* ==========================
-           HEADER
-        ========================== */
-
-        .header {
-            height: 65px;
-            display: flex;
-            align-items: center;
-            padding: 0 18px;
-            background: #fff;
-            font-weight: 600;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
-        }
-
-        .back {
-            font-size: 24px;
-            cursor: pointer;
-            margin-right: 18px;
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        /* ==========================
-           CONTAINER
-        ========================== */
-
-        .container {
-            padding: 18px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        /* ==========================
-           SEARCH
-        ========================== */
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border-radius: 16px;
-            padding: 14px 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .05);
-        }
-
-        .search-box i {
-            font-size: 20px;
-            color: #888;
-            margin-right: 12px;
-        }
-
-        .search-box input {
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 16px;
-            background: none;
-        }
-
-        /* ==========================
-           ACTION GRID
-        ========================== */
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 25px;
-        }
-
-        .action-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 20px 15px;
-            text-align: left;
-            cursor: pointer;
-            transition: .3s;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, .05);
-        }
-
-        .action-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .action-card i {
-            font-size: 28px;
-            color: #ff6200;
-            margin-bottom: 18px;
-        }
-
-        .action-card h4 {
-            margin: 0;
-            font-size: 17px;
-            line-height: 24px;
-        }
-
-        /* ==========================
-           SAVED TITLE
-        ========================== */
-
-        .saved-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #888;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        /* ==========================
-           SAVED CARD
-        ========================== */
-
-        .saved-card {
-            display: flex;
-            align-items: flex-start;
-            background: #fff;
-            border-radius: 22px;
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, .06);
-            transition: .3s;
-        }
-
-        .saved-card:hover {
-            transform: translateY(-2px);
-        }
-
-        /* ==========================
-           LEFT ICON
-        ========================== */
-
-        .left-icon {
-            width: 70px;
-            min-width: 70px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-
-        .left-icon i {
-            font-size: 22px;
-            color: #222;
-            margin-bottom: 8px;
-        }
-
-        .left-icon span {
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        /* ==========================
-           ADDRESS INFO
-        ========================== */
-
-        .address-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .address-head {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-
-        .address-head h3 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .selected {
-            background: #d9fff0;
-            color: #17a567;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .address-info p {
-            margin: 0;
-            font-size: 18px;
-            line-height: 30px;
-            color: #555;
-        }
-
-        /* ==========================
-           MENU
-        ========================== */
-
-        .menu {
-            font-size: 22px;
-            cursor: pointer;
-            padding: 6px;
-            margin-left: 8px;
-        }
-
-        /* ==========================
-           DELIVER BUTTON
-        ========================== */
-
-        .deliverBtn {
-            margin-top: 15px;
-            background: #16a34a;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .3s;
-        }
-
-        .deliverBtn:hover {
-            background: #138a3c;
-        }
-
-        /* ==========================
-           EMPTY
-        ========================== */
-
-        .empty {
-            text-align: center;
-            padding: 80px 20px;
-            color: #888;
-            font-size: 18px;
-        }
-
-        /* ==========================
-           MODAL
-        ========================== */
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, .5);
-
-            display: none;
-            justify-content: center;
-            align-items: center;
-
-            z-index: 999;
-        }
-
-        .modal-content {
-            background: #fff;
-            width: 95%;
-            max-width: 430px;
-
-            padding: 22px;
-            border-radius: 20px;
-
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal h2 {
-            margin-top: 0;
-            margin-bottom: 18px;
-            font-size: 22px;
-        }
-
-        .locationBtn {
-            width: 100%;
-            padding: 14px;
-
-            background: #16a34a;
-            color: #fff;
-
-            border: none;
-            border-radius: 12px;
-
-            font-size: 16px;
-            cursor: pointer;
-
-            margin-bottom: 15px;
-        }
-
-        .modal input,
-        .modal select {
-            width: 100%;
-
-            padding: 14px;
-            margin-bottom: 14px;
-
-            border: 1px solid #ddd;
-            border-radius: 12px;
-
-            font-size: 15px;
-            outline: none;
-        }
-
-        .modal input:focus,
-        .modal select:focus {
-            border-color: #ff6200;
-        }
-
-        .saveBtn {
-            width: 100%;
-
-            padding: 15px;
-
-            background: #ff6200;
-            color: #fff;
-
-            border: none;
-            border-radius: 12px;
-
-            font-size: 17px;
-            cursor: pointer;
-        }
-
-        /* ==========================
-           MENU POPUP
-        ========================== */
-
-        .menu-popup {
-            position: fixed;
-
-            background: #fff;
-            border-radius: 16px;
-
-            box-shadow: 0 8px 25px rgba(0, 0, 0, .15);
-
-            display: none;
-
-            overflow: hidden;
-            z-index: 9999;
-
-            min-width: 180px;
-        }
-
-        .menu-popup button {
-            width: 100%;
-
-            border: none;
-            background: #fff;
-
-            padding: 15px;
-
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .menu-popup button:hover {
-            background: #f6f6f6;
-        }
-
-        .menu-popup button i {
-            color: #ff6200;
-            width: 20px;
-        }
-
-        /* ==========================
-           MOBILE
-        ========================== */
-
-        @media (max-width: 600px) {
-
-            .title {
-                font-size: 20px;
-            }
-
-            .action-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .saved-card {
-                padding: 15px;
-            }
-
-            .left-icon {
-                width: 55px;
-                min-width: 55px;
-                margin-right: 10px;
-            }
-
-            .address-head h3 {
-                font-size: 20px;
-            }
-
-            .address-info p {
-                font-size: 15px;
-                line-height: 24px;
-            }
-
-        }
-
-    </style>
+  <style>
+/* =========================================================
+   DARVOZ SAVED ADDRESS
+   DEEP OCEAN PREMIUM UI
+========================================================= */
+
+:root{
+    --ocean:#004D5B;
+    --ocean-dark:#003742;
+    --ocean-deep:#002A34;
+    --ocean-light:#E8F5F7;
+    --orange:#FF6500;
+    --green:#18A957;
+    --text:#092F38;
+    --muted:#687D84;
+    --white:#ffffff;
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:#F4FBFC;
+    font-family:Poppins,Arial,sans-serif;
+    color:var(--text);
+    min-height:100vh;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+    position:relative;
+    height:115px;
+    display:flex;
+    align-items:flex-end;
+    padding:0 20px 22px;
+    background:
+        radial-gradient(circle at 90% 20%,rgba(255,101,0,.16),transparent 28%),
+        linear-gradient(135deg,var(--ocean-deep),var(--ocean));
+    color:#fff;
+    box-shadow:0 8px 25px rgba(0,77,91,.20);
+    overflow:hidden;
+}
+
+/* decorative ocean shape */
+.header::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(255,255,255,.045);
+    top:-100px;
+    right:-35px;
+}
+
+.header::after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:rgba(255,255,255,.035);
+    bottom:-80px;
+    left:-35px;
+}
+
+.back{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    cursor:pointer;
+    margin-right:14px;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.15);
+    position:relative;
+    z-index:2;
+    transition:.25s;
+}
+
+.back:hover{
+    background:rgba(255,255,255,.22);
+    transform:translateX(-2px);
+}
+
+.title{
+    position:relative;
+    z-index:2;
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:-.4px;
+}
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.container{
+    width:100%;
+    max-width:850px;
+    margin:auto;
+    padding:22px 18px 45px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-box{
+    height:58px;
+    display:flex;
+    align-items:center;
+    background:#fff;
+    border:1px solid rgba(0,77,91,.06);
+    border-radius:18px;
+    padding:0 18px;
+    margin-bottom:18px;
+    box-shadow:0 6px 22px rgba(0,77,91,.08);
+    transition:.25s;
+}
+
+.search-box:focus-within{
+    border-color:rgba(0,77,91,.25);
+    box-shadow:0 8px 26px rgba(0,77,91,.12);
+}
+
+.search-box i{
+    font-size:19px;
+    color:var(--ocean);
+    margin-right:13px;
+}
+
+.search-box input{
+    border:none;
+    outline:none;
+    width:100%;
+    font-family:inherit;
+    font-size:15px;
+    color:var(--text);
+    background:transparent;
+}
+
+.search-box input::placeholder{
+    color:#91A1A6;
+}
+
+/* =========================================================
+   ACTION CARDS
+========================================================= */
+
+.action-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:28px;
+}
+
+.action-card{
+    min-height:105px;
+    background:#fff;
+    border-radius:20px;
+    padding:17px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    border:1px solid rgba(0,77,91,.055);
+    box-shadow:0 6px 22px rgba(0,77,91,.075);
+    transition:.25s;
+}
+
+.action-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 28px rgba(0,77,91,.13);
+}
+
+.action-card:active{
+    transform:scale(.98);
+}
+
+.action-card i{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    margin-bottom:12px;
+    color:var(--ocean);
+    background:var(--ocean-light);
+}
+
+/* current location */
+.action-card:first-child i{
+    color:#159653;
+    background:#E1F8EA;
+}
+
+/* add address */
+.action-card:last-child i{
+    color:var(--orange);
+    background:#FFF0E6;
+}
+
+.action-card h4{
+    margin:0;
+    font-size:15px;
+    line-height:21px;
+    font-weight:700;
+    color:var(--text);
+}
+
+/* =========================================================
+   SAVED TITLE
+========================================================= */
+
+.saved-title{
+    margin:0 0 14px;
+    font-size:14px;
+    font-weight:800;
+    color:var(--ocean);
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+
+/* =========================================================
+   SAVED ADDRESS CARD
+========================================================= */
+
+.saved-card{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    background:#fff;
+    border-radius:22px;
+    padding:18px;
+    margin-bottom:15px;
+    border:1px solid rgba(0,77,91,.055);
+    box-shadow:0 7px 24px rgba(0,77,91,.075);
+    transition:.25s;
+    overflow:hidden;
+}
+
+.saved-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 11px 30px rgba(0,77,91,.11);
+}
+
+/* subtle ocean line */
+.saved-card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:4px;
+    background:var(--ocean);
+}
+
+/* =========================================================
+   LEFT ICON
+========================================================= */
+
+.left-icon{
+    width:62px;
+    min-width:62px;
+    height:62px;
+    border-radius:18px;
+    margin-right:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:var(--ocean-light);
+}
+
+.left-icon i{
+    font-size:21px;
+    color:var(--ocean);
+    margin-bottom:4px;
+}
+
+.left-icon span{
+    font-size:9px;
+    color:var(--ocean);
+    font-weight:700;
+    white-space:nowrap;
+}
+
+/* =========================================================
+   ADDRESS INFO
+========================================================= */
+
+.address-info{
+    flex:1;
+    min-width:0;
+    padding-right:30px;
+}
+
+.address-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:7px;
+    flex-wrap:wrap;
+}
+
+.address-head h3{
+    margin:0;
+    font-size:18px;
+    line-height:24px;
+    font-weight:800;
+    color:var(--text);
+}
+
+.selected{
+    background:#DDF8EA;
+    color:#149552;
+    padding:4px 9px;
+    border-radius:20px;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.3px;
+}
+
+.address-info p{
+    margin:0;
+    font-size:13px;
+    line-height:21px;
+    color:#60777E;
+    word-break:break-word;
+}
+
+/* =========================================================
+   DELIVER HERE
+========================================================= */
+
+.deliverBtn{
+    margin-top:13px;
+    border:none;
+    background:var(--ocean);
+    color:#fff;
+    padding:9px 15px;
+    border-radius:11px;
+    font-family:inherit;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 4px 12px rgba(0,77,91,.18);
+}
+
+.deliverBtn:hover{
+    background:var(--ocean-dark);
+    transform:translateY(-1px);
+}
+
+.deliverBtn:active{
+    transform:scale(.97);
+}
+
+/* =========================================================
+   THREE DOT MENU
+========================================================= */
+
+.menu{
+    position:absolute;
+    top:17px;
+    right:14px;
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color:#668087;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.menu:hover{
+    background:var(--ocean-light);
+    color:var(--ocean);
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty{
+    background:#fff;
+    border-radius:20px;
+    padding:55px 20px;
+    text-align:center;
+    color:#829398;
+    font-size:15px;
+    box-shadow:0 6px 20px rgba(0,77,91,.06);
+}
+
+.empty::before{
+    content:"\f3c5";
+    font-family:"Font Awesome 6 Free";
+    font-weight:900;
+    display:block;
+    font-size:40px;
+    color:#BCDDE2;
+    margin-bottom:13px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,32,39,.62);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+    display:none;
+    justify-content:center;
+    align-items:flex-end;
+    z-index:9999;
+    padding:0;
+}
+
+.modal-content{
+    width:100%;
+    max-width:500px;
+    max-height:92vh;
+    overflow-y:auto;
+    background:#fff;
+    padding:24px 20px 28px;
+    border-radius:26px 26px 0 0;
+    box-shadow:0 -10px 40px rgba(0,0,0,.20);
+    animation:modalUp .28s ease;
+}
+
+@keyframes modalUp{
+    from{
+        transform:translateY(100%);
+    }
+    to{
+        transform:translateY(0);
+    }
+}
+
+.modal h2{
+    margin:0 0 20px;
+    font-size:21px;
+    font-weight:800;
+    color:var(--text);
+}
+
+/* =========================================================
+   LOCATION BUTTON
+========================================================= */
+
+.locationBtn{
+    width:100%;
+    padding:14px;
+    background:#E4F8EC;
+    color:#159653;
+    border:1px solid #C8EFD8;
+    border-radius:13px;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    margin-bottom:16px;
+    transition:.2s;
+}
+
+.locationBtn:hover{
+    background:#D7F3E2;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.modal input,
+.modal select{
+    width:100%;
+    padding:14px 15px;
+    margin-bottom:12px;
+    border:1px solid #DDE7E9;
+    border-radius:13px;
+    background:#F9FCFC;
+    color:var(--text);
+    font-family:inherit;
+    font-size:14px;
+    outline:none;
+    transition:.2s;
+}
+
+.modal input:focus,
+.modal select:focus{
+    border-color:var(--ocean);
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(0,77,91,.08);
+}
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
+.saveBtn{
+    width:100%;
+    padding:15px;
+    margin-top:5px;
+    background:var(--ocean);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 7px 18px rgba(0,77,91,.22);
+    transition:.25s;
+}
+
+.saveBtn:hover{
+    background:var(--ocean-dark);
+}
+
+.saveBtn:active{
+    transform:scale(.98);
+}
+
+/* =========================================================
+   MENU POPUP
+========================================================= */
+
+.menu-popup{
+    position:fixed;
+    background:#fff;
+    border-radius:17px;
+    box-shadow:0 12px 35px rgba(0,0,0,.18);
+    display:none;
+    overflow:hidden;
+    z-index:99999;
+    min-width:185px;
+    border:1px solid rgba(0,77,91,.07);
+}
+
+.menu-popup button{
+    width:100%;
+    border:none;
+    background:#fff;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:var(--text);
+    font-family:inherit;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    text-align:left;
+    transition:.2s;
+}
+
+.menu-popup button:hover{
+    background:#F2FAFB;
+}
+
+.menu-popup button i{
+    color:var(--ocean);
+    width:20px;
+    font-size:15px;
+}
+
+.menu-popup button:last-child i{
+    color:#E53935;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+    .header{
+        height:105px;
+        padding:0 16px 18px;
+    }
+
+    .back{
+        width:40px;
+        height:40px;
+        font-size:18px;
+        margin-right:12px;
+    }
+
+    .title{
+        font-size:20px;
+    }
+
+    .container{
+        padding:18px 14px 35px;
+    }
+
+    .search-box{
+        height:54px;
+        border-radius:17px;
+        margin-bottom:15px;
+    }
+
+    .action-grid{
+        gap:10px;
+        margin-bottom:23px;
+    }
+
+    .action-card{
+        min-height:105px;
+        padding:14px;
+        border-radius:18px;
+    }
+
+    .action-card i{
+        width:43px;
+        height:43px;
+        font-size:19px;
+        border-radius:13px;
+        margin-bottom:10px;
+    }
+
+    .action-card h4{
+        font-size:13px;
+        line-height:18px;
+    }
+
+    .saved-title{
+        font-size:13px;
+        margin-bottom:12px;
+    }
+
+    .saved-card{
+        padding:15px 14px;
+        border-radius:19px;
+        margin-bottom:12px;
+    }
+
+    .left-icon{
+        width:54px;
+        min-width:54px;
+        height:54px;
+        border-radius:15px;
+        margin-right:11px;
+    }
+
+    .left-icon i{
+        font-size:18px;
+    }
+
+    .left-icon span{
+        font-size:8px;
+    }
+
+    .address-info{
+        padding-right:26px;
+    }
+
+    .address-head{
+        gap:6px;
+        margin-bottom:5px;
+    }
+
+    .address-head h3{
+        font-size:16px;
+        line-height:21px;
+    }
+
+    .selected{
+        font-size:8px;
+        padding:3px 7px;
+    }
+
+    .address-info p{
+        font-size:12px;
+        line-height:19px;
+    }
+
+    .deliverBtn{
+        padding:8px 12px;
+        font-size:11px;
+        border-radius:9px;
+        margin-top:10px;
+    }
+
+    .menu{
+        top:12px;
+        right:8px;
+        width:30px;
+        height:30px;
+    }
+
+    .modal-content{
+        padding:21px 16px 25px;
+        border-radius:24px 24px 0 0;
+    }
+
+    .modal h2{
+        font-size:20px;
+    }
+}
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width:380px){
+
+    .action-card h4{
+        font-size:12px;
+    }
+
+    .saved-card{
+        padding:13px 12px;
+    }
+
+    .left-icon{
+        width:50px;
+        min-width:50px;
+        height:50px;
+        margin-right:9px;
+    }
+
+    .address-head h3{
+        font-size:15px;
+    }
+
+    .address-info p{
+        font-size:11.5px;
+        line-height:18px;
+    }
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:5px;
+}
+
+::-webkit-scrollbar-track{
+    background:#F4FBFC;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#B6D5DA;
+    border-radius:10px;
+}
+</style>
 
 </head>
 
@@ -851,14 +1205,25 @@
                         );
 
 
-                    const selected =
-                        Number(a.is_default) === 1
-                            ? `
-                                <span class="selected">
-                                    SELECTED
-                                </span>
-                              `
-                            : "";
+                    const selectedAddressId =
+    localStorage.getItem("selectedAddressId");
+
+const selected =
+    (
+        selectedAddressId &&
+        String(a.id) === String(selectedAddressId)
+    )
+    ||
+    (
+        !selectedAddressId &&
+        Number(a.is_default) === 1
+    )
+        ? `
+            <span class="selected">
+                SELECTED
+            </span>
+          `
+        : "";
 
 
                     list.innerHTML += `
@@ -903,6 +1268,7 @@
                                     class="deliverBtn"
                                     onclick='deliverHere(
                                         event,
+                                        ${JSON.stringify(a.id)},
                                         ${JSON.stringify(a.house || "")},
                                         ${JSON.stringify(a.street || "")},
                                         ${JSON.stringify(a.area || "")},
@@ -2395,7 +2761,7 @@ async function saveAddress() {
 async function deliverHere(
 
     event,
-
+id,
     house,
     street,
     area,
@@ -2517,7 +2883,7 @@ async function deliverHere(
      */
 
     const address = {
-
+id,
         house,
 
         street,
