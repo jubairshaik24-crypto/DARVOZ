@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>DARVOZ | Coins</title>
+
+<!-- Poppins -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<!-- Font Awesome -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Poppins",sans-serif;
+    background:#f7f7f7;
+    color:#171717;
+
+    /*
+       IMPORTANT:
+       Bottom navigation is fixed.
+       Extra bottom space prevents content
+       from being hidden behind it.
+    */
+    padding-bottom:90px;
+
+    overflow-x:hidden;
+}
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+:root{
+    --green:#004D5B;
+    --green-dark:#003d47;
+    --green-light:#eaf8f4;
+
+    --text:#172329;
+    --gray:#748187;
+    --border:#e7eceb;
+
+    --gold:#f6b000;
+    --gold-light:#ffd34d;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+.app{
+    width:100%;
+    max-width:600px;
+
+    margin:auto;
+
+    background:#fff;
+
+    min-height:100vh;
+
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.coins-header{
+
+    width:100%;
+
+    height:82px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+
+    background:#fff;
+}
+
+
+/* BACK BUTTON */
+
+.back-button{
+
+    position:absolute;
+
+    left:16px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    background:transparent;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#172329;
+
+    font-size:24px;
+
+    cursor:pointer;
+}
+
+.back-button:active{
+    transform:translateY(-50%) scale(.9);
+}
+
+
+/* HEADER LOGO */
+
+.header-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    white-space:nowrap;
+}
+
+.header-logo{
+
+    font-size:27px;
+
+    font-weight:800;
+
+    letter-spacing:-1.3px;
+
+    color:#172329;
+}
+
+.header-logo span{
+    color:#ff8204;
+}
+
+.header-title{
+
+    font-size:24px;
+
+    font-weight:600;
+
+    color:#172329;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+
+    padding:
+
+        8px
+
+        15px
+
+        35px;
+}
+
+
+/* =====================================================
+   BALANCE CARD
+===================================================== */
+
+.balance-card{
+
+    position:relative;
+
+    width:100%;
+
+    min-height:205px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    padding:23px 20px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #004f4d 0%,
+            #00645a 55%,
+            #00474a 100%
+        );
+
+    color:#fff;
+
+    box-shadow:
+        0 6px 20px rgba(0,77,91,.13);
+}
+
+
+/* decorative circles */
+
+.balance-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:235px;
+    height:235px;
+
+    border-radius:50%;
+
+    right:-65px;
+    top:-72px;
+
+    border:
+        30px solid
+        rgba(70,190,155,.10);
+
+    pointer-events:none;
+}
+
+.balance-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+    height:130px;
+
+    border-radius:50%;
+
+    right:10px;
+    top:-8px;
+
+    border:
+        24px solid
+        rgba(70,190,155,.07);
+
+    pointer-events:none;
+}
+
+
+/* CARD LABEL */
+
+.balance-label{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    margin-bottom:12px;
+}
+
+
+/* BALANCE ROW */
+
+.balance-row{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+}
+
+
+/* GOLD COIN */
+
+.coin-image{
+
+    width:78px;
+    height:78px;
+
+    min-width:78px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+
+        radial-gradient(
+            circle at 35% 30%,
+            #ffe98a 0%,
+            #ffc928 42%,
+            #e99b00 100%
+        );
+
+    border:
+        4px solid
+        #f5b91c;
+
+    box-shadow:
+
+        inset
+        0 0 0 2px
+        rgba(255,255,255,.4),
+
+        0 6px 14px
+        rgba(0,0,0,.18);
+}
+
+.coin-image span{
+
+    font-size:40px;
+
+    line-height:1;
+
+    font-weight:800;
+
+    color:#fff4c2;
+
+    text-shadow:
+        1px 2px 2px
+        rgba(100,65,0,.4);
+}
+
+
+/* NUMBER */
+
+.coin-number{
+
+    font-size:54px;
+
+    line-height:1;
+
+    font-weight:700;
+
+    letter-spacing:-2px;
+}
+
+
+/* DARVOZ COINS */
+
+.coin-name{
+
+    margin-top:4px;
+
+    font-size:17px;
+
+    font-weight:500;
+}
+
+
+/* VALUE */
+
+.coin-value{
+
+    margin-top:10px;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+    color:#d8eee9;
+}
+
+.coin-value strong{
+    color:#fff;
+}
+
+
+/* =====================================================
+   USE COINS CARD
+===================================================== */
+
+.use-coins-card{
+
+    width:100%;
+
+    min-height:102px;
+
+    margin-top:20px;
+
+    padding:15px 17px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    border-radius:22px;
+
+    background:#eff9f6;
+
+    border:1px solid #e2f0ed;
+
+    cursor:pointer;
+
+    transition:.18s ease;
+}
+
+.use-coins-card:active{
+    transform:scale(.985);
+}
+
+
+/* USE ICON */
+
+.use-icon{
+
+    width:60px;
+    height:60px;
+
+    min-width:60px;
+
+    border-radius:19px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#ddf4ed;
+
+    color:#00795e;
+
+    font-size:27px;
+}
+
+
+/* USE TEXT */
+
+.use-text{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.use-title{
+
+    font-size:20px;
+
+    font-weight:600;
+
+    color:#172329;
+}
+
+.use-description{
+
+    margin-top:3px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    color:#718087;
+}
+
+
+/* ARROW */
+
+.use-arrow{
+
+    flex:0 0 auto;
+
+    color:#172329;
+
+    font-size:27px;
+}
+
+
+/* =====================================================
+   RECENT ACTIVITY HEADER
+===================================================== */
+
+.activity-header{
+
+    margin-top:27px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.activity-title{
+
+    font-size:23px;
+
+    font-weight:700;
+
+    color:#172329;
+}
+
+.view-all{
+
+    display:none;
+
+    color:#00795e;
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+
+/* =====================================================
+   ACTIVITY BOX
+===================================================== */
+
+.activity-box{
+
+    width:100%;
+
+    background:#fff;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:21px;
+
+    overflow:hidden;
+}
+
+
+/* ACTIVITY ITEM */
+
+.activity-item{
+
+    min-height:88px;
+
+    padding:13px 14px;
+
+    display:flex;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid
+        #edf0ef;
+}
+
+.activity-item:last-child{
+    border-bottom:none;
+}
+
+
+/* ACTIVITY ICON */
+
+.activity-icon{
+
+    width:54px;
+    height:54px;
+
+    min-width:54px;
+
+    border-radius:17px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#e6f7f1;
+
+    color:#008064;
+
+    font-size:23px;
+}
+
+
+/* ACTIVITY CONTENT */
+
+.activity-info{
+
+    flex:1;
+
+    min-width:0;
+
+    margin-left:13px;
+}
+
+.activity-name{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#172329;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.activity-coins{
+
+    margin-top:3px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#00815f;
+}
+
+
+/* ACTIVITY DATE */
+
+.activity-date{
+
+    flex:0 0 auto;
+
+    margin-left:8px;
+
+    text-align:right;
+
+    color:#748187;
+
+    font-size:11px;
+
+    line-height:1.5;
+}
+
+
+/* =====================================================
+   EMPTY ACTIVITY
+===================================================== */
+
+.empty-activity{
+
+    padding:35px 20px;
+
+    text-align:center;
+
+    color:#78858a;
+
+    font-size:13px;
+}
+
+.empty-activity i{
+
+    display:block;
+
+    margin-bottom:10px;
+
+    font-size:30px;
+
+    color:#9abeb5;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+
+    padding:35px 15px;
+
+    text-align:center;
+
+    color:#78858a;
+
+    font-size:13px;
+}
+
+.loading i{
+
+    color:#00795e;
+
+    font-size:20px;
+
+    margin-bottom:8px;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error-message{
+
+    padding:30px 18px;
+
+    text-align:center;
+
+    color:#a44b4b;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+   MATCHES YOUR DARVOZ HOME PAGE
+===================================================== */
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    bottom:0;
+
+    width:100%;
+
+    max-width:600px;
+
+    height:70px;
+
+    background:#fff;
+
+    border-top:1px solid #eee;
+
+    box-shadow:
+        0 -5px 20px
+        rgba(0,0,0,.08);
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    z-index:9999;
+}
+
+
+/* NAV LINKS */
+
+.bottom-nav a{
+
+    text-decoration:none;
+
+    color:#777;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:4px;
+
+    font-size:9px;
+
+    font-weight:600;
+
+    width:20%;
+
+    height:70px;
+
+    position:relative;
+}
+
+.bottom-nav a i{
+
+    font-size:19px;
+
+    line-height:1;
+}
+
+
+/* ACTIVE NAV */
+
+.bottom-nav a.active{
+
+    color:#004D5B;
+}
+
+
+/* =====================================================
+   CENTER GROCERY BUTTON
+   EXACT STYLE FROM YOUR HOME PAGE
+===================================================== */
+
+.bottom-nav .grocery-nav{
+
+    position:relative;
+
+    transform:translateY(-8px);
+}
+
+
+/* CIRCLE */
+
+.bottom-nav .grocery-icon{
+
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    background:#004D5B;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:0 auto 2px;
+
+    border:3px solid #fff;
+
+    box-shadow:
+        0 3px 12px
+        rgba(0,77,91,.20);
+}
+
+
+/* GROCERY ICON */
+
+.bottom-nav .grocery-icon i{
+
+    font-size:20px;
+
+    color:#fff;
+}
+
+
+/* GROCERY TEXT */
+
+.bottom-nav .grocery-nav span{
+
+    font-size:10px;
+
+    font-weight:700;
+
+    color:#004D5B;
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media(min-width:901px){
+
+    body{
+        background:#f5f5f5;
+
+        padding-bottom:0;
+    }
+
+    .app{
+        max-width:600px;
+    }
+
+    .bottom-nav{
+
+        bottom:20px;
+
+        width:650px;
+
+        max-width:90%;
+
+        height:65px;
+
+        border-radius:20px;
+
+        border:1px solid #eee;
+
+        box-shadow:
+            0 8px 35px
+            rgba(0,0,0,.15);
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media(max-width:380px){
+
+    .content{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .header-logo{
+        font-size:24px;
+    }
+
+    .header-title{
+        font-size:21px;
+    }
+
+    .balance-card{
+        min-height:190px;
+
+        padding:
+            21px
+            17px;
+    }
+
+    .coin-image{
+        width:68px;
+        height:68px;
+
+        min-width:68px;
+    }
+
+    .coin-image span{
+        font-size:34px;
+    }
+
+    .coin-number{
+        font-size:46px;
+    }
+
+    .coin-name{
+        font-size:15px;
+    }
+
+    .coin-value{
+        font-size:12px;
+    }
+
+    .use-title{
+        font-size:18px;
+    }
+
+    .use-description{
+        font-size:12px;
+    }
+
+    .activity-title{
+        font-size:21px;
+    }
+
+    .activity-date{
+        font-size:10px;
+    }
+
+}
+
+
+/* =====================================================
+   SAFE AREA
+===================================================== */
+
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+
+    .bottom-nav{
+
+        padding-bottom:
+            env(safe-area-inset-bottom);
+
+        height:
+            calc(
+                70px +
+                env(safe-area-inset-bottom)
+            );
+    }
+
+    body{
+
+        padding-bottom:
+            calc(
+                90px +
+                env(safe-area-inset-bottom)
+            );
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <header class="coins-header">
+
+        <button
+            class="back-button"
+            onclick="goBack()"
+            aria-label="Go back"
+        >
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+
+        <div class="header-brand">
+
+            <div class="header-logo">
+                DARV<span>O</span>Z
+            </div>
+
+            <div class="header-title">
+                Coins
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================= -->
+
+    <main class="content">
+
+
+        <!-- =================================================
+             COIN BALANCE
+        ================================================= -->
+
+        <section class="balance-card">
+
+
+            <div class="balance-label">
+                Your Coins
+            </div>
+
+
+            <div class="balance-row">
+
+
+                <div class="coin-image">
+
+                    <span>D</span>
+
+                </div>
+
+
+                <div>
+
+                    <div
+                        class="coin-number"
+                        id="coinBalance"
+                    >
+                        —
+                    </div>
+
+
+                    <div class="coin-name">
+                        DARVOZ Coins
+                    </div>
+
+
+                    <div class="coin-value">
+
+                        100 coins = ₹1
+
+                        <br>
+
+                        <strong id="rupeeValue">
+                            ≈ ₹0.00 value
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             USE COINS
+        ================================================= -->
+
+        <section
+            class="use-coins-card"
+            onclick="useCoins()"
+        >
+
+
+            <div class="use-icon">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+            </div>
+
+
+            <div class="use-text">
+
+                <div class="use-title">
+                    Use Coins
+                </div>
+
+                <div class="use-description">
+                    Apply at checkout to get instant discount
+                </div>
+
+            </div>
+
+
+            <div class="use-arrow">
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RECENT ACTIVITY
+        ================================================= -->
+
+        <div class="activity-header">
+
+            <div class="activity-title">
+                Recent Activity
+            </div>
+
+            <div
+                class="view-all"
+                id="viewAll"
+            >
+                View All
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+
+        </div>
+
+
+        <section
+            class="activity-box"
+            id="activityBox"
+        >
+
+            <div class="loading">
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <br>
+
+                Loading coin activity...
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         BOTTOM NAV
+         SAME STRUCTURE AS YOUR DARVOZ HOME PAGE
+    ================================================= -->
+
+    <nav class="bottom-nav">
+
+
+        <!-- HOME -->
+
+        <a href="index.html">
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+
+        <!-- CATEGORIES -->
+
+        <a href="categories.html">
+
+            <i class="fa-solid fa-grip"></i>
+
+            <span>
+                Categories
+            </span>
+
+        </a>
+
+
+
+        <!-- CENTER GROCERY -->
+
+        <a
+            href="grocery-categories.html"
+            class="grocery-nav"
+        >
+
+            <div class="grocery-icon">
+
+                <i class="fa-solid fa-basket-shopping"></i>
+
+            </div>
+
+            <span>
+                Grocery
+            </span>
+
+        </a>
+
+
+
+        <!-- ORDERS -->
+
+        <a href="customer-orders.html">
+
+            <i class="fa-solid fa-bag-shopping"></i>
+
+            <span>
+                Orders
+            </span>
+
+        </a>
+
+
+
+        <!-- PROFILE -->
+
+        <a href="profile.html">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const API = window.location.origin;
+
+const customerId =
+    localStorage.getItem("customerId");
+
+
+/* =====================================================
+   LOGIN CHECK
+===================================================== */
+
+if(!customerId){
+
+    window.location.href =
+        "customer-login.html";
+
+}
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+function goBack(){
+
+    if(history.length > 1){
+
+        history.back();
+
+    }else{
+
+        window.location.href =
+            "index.html";
+
+    }
+
+}
+
+
+/* =====================================================
+   FORMAT COINS
+===================================================== */
+
+function formatCoins(value){
+
+    const number =
+        Number(value || 0);
+
+    return number.toLocaleString("en-IN");
+
+}
+
+
+/* =====================================================
+   LOAD REAL CUSTOMER COINS
+===================================================== */
+
+async function loadCoins(){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/customer/profile/${customerId}`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Unable to connect to server"
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            !result.success ||
+            !result.customer
+        ){
+
+            throw new Error(
+                result.message ||
+                "Customer information unavailable"
+            );
+
+        }
+
+
+        const customer =
+            result.customer;
+
+
+        /*
+         * REAL DATABASE BALANCE
+         *
+         * We are NOT hardcoding coins here.
+         */
+
+        const coins =
+            Number(customer.coins || 0);
+
+
+        document.getElementById(
+            "coinBalance"
+        ).textContent =
+            formatCoins(coins);
+
+
+        /*
+         * 100 coins = ₹1
+         */
+
+        const rupees =
+            coins / 100;
+
+
+        document.getElementById(
+            "rupeeValue"
+        ).textContent =
+            `≈ ₹${rupees.toFixed(2)} value`;
+
+
+        /*
+         * Load only real referral activity.
+         */
+
+        loadReferralActivity();
+
+
+    }catch(error){
+
+        console.error(
+            "COINS PAGE ERROR:",
+            error
+        );
+
+
+        document.getElementById(
+            "coinBalance"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "activityBox"
+        ).innerHTML = `
+
+            <div class="error-message">
+
+                Unable to load coin information.
+
+                <br><br>
+
+                Please try again.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD REAL REFERRAL ACTIVITY
+===================================================== */
+
+async function loadReferralActivity(){
+
+    const activityBox =
+        document.getElementById(
+            "activityBox"
+        );
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/customer/referral-history/${customerId}`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Referral history unavailable"
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            !result.success ||
+            !Array.isArray(result.referrals) ||
+            result.referrals.length === 0
+        ){
+
+            showEmptyActivity();
+
+            return;
+
+        }
+
+
+        const referrals =
+            result.referrals;
+
+
+        activityBox.innerHTML = "";
+
+
+        referrals
+            .slice(0,5)
+            .forEach(referral => {
+
+
+                const coins =
+                    Number(
+                        referral.referrer_coins || 0
+                    );
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "activity-item";
+
+
+                item.innerHTML = `
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-gift"></i>
+
+                    </div>
+
+
+                    <div class="activity-info">
+
+                        <div class="activity-name">
+
+                            Referral Bonus
+
+                        </div>
+
+
+                        <div class="activity-coins">
+
+                            +${formatCoins(coins)} Coins
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-date">
+
+                        Referral
+
+                    </div>
+
+                `;
+
+
+                activityBox.appendChild(item);
+
+            });
+
+
+    }catch(error){
+
+        console.log(
+            "REFERRAL ACTIVITY:",
+            error
+        );
+
+
+        /*
+         * IMPORTANT:
+         * Never create fake activity.
+         */
+
+        showEmptyActivity();
+
+    }
+
+}
+
+
+/* =====================================================
+   EMPTY ACTIVITY
+===================================================== */
+
+function showEmptyActivity(){
+
+    document.getElementById(
+        "activityBox"
+    ).innerHTML = `
+
+        <div class="empty-activity">
+
+            <i class="fa-solid fa-coins"></i>
+
+            No coin activity available yet.
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   USE COINS
+===================================================== */
+
+function useCoins(){
+
+    /*
+     * For now this takes the customer
+     * to the real cart page.
+     *
+     * No fake discount is applied here.
+     */
+
+    window.location.href =
+        "cart.html";
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadCoins();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,2616 +1,667 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DARVOZ Checkout</title>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
-}
-
-:root{
---primary:#ff5a00;
---bg:#f7f7f7;
---white:#fff;
---text:#222;
---light:#777;
---border:#ececec;
---green:#1ba672;
-}
-
-body{
-background:var(--bg);
-padding-bottom:110px;
-color:var(--text);
-}
-
-/* ================= HEADER ================= */
-
-header{
-position:sticky;
-top:0;
-background:#fff;
-height:65px;
-display:flex;
-align-items:center;
-padding:0 18px;
-box-shadow:0 2px 10px rgba(0,0,0,.06);
-z-index:999;
-}
-
-header i{
-font-size:22px;
-cursor:pointer;
-}
-
-header h2{
-margin-left:15px;
-font-size:22px;
-}
-
-/* ================= CONTAINER ================= */
-
-.container{
-max-width:850px;
-margin:auto;
-padding:15px;
-}
-
-/* ================= CARD ================= */
-
-.card{
-background:#fff;
-border-radius:18px;
-padding:18px;
-margin-bottom:16px;
-box-shadow:0 3px 10px rgba(0,0,0,.06);
-}
-
-/* ================= TITLE ================= */
-
-.title{
-font-size:18px;
-font-weight:700;
-margin-bottom:15px;
-}
-
-/* ================= ADDRESS ================= */
-
-.address{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-}
-
-.address-left{
-display:flex;
-gap:14px;
-}
-
-.address-left i{
-font-size:24px;
-color:var(--primary);
-}
-
-.address h3{
-font-size:17px;
-}
-
-.address p{
-margin-top:6px;
-color:#666;
-font-size:14px;
-line-height:22px;
-}
-
-.change{
-color:var(--primary);
-font-weight:600;
-cursor:pointer;
-}
-
-/* ================= RESTAURANT ================= */
-
-.restaurant{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.restaurant h2{
-font-size:20px;
-}
-
-.restaurant small{
-color:#666;
-}
-
-/* ================= ORDER ITEMS ================= */
-
-#orderItems{
-margin-top:15px;
-}
-
-.item{
-display:flex;
-justify-content:space-between;
-gap:15px;
-padding:14px 0;
-border-bottom:1px solid #eee;
-}
-
-.item:last-child{
-border-bottom:none;
-}
-
-.item-name{
-font-size:16px;
-font-weight:600;
-}
-
-.item-price{
-font-weight:700;
-white-space:nowrap;
-}
-
-.item-details{
-margin-top:5px;
-font-size:13px;
-color:#777;
-}
-
-/* ================= COUPON ================= */
-
-.coupon{
-display:flex;
-justify-content:space-between;
-align-items:center;
-cursor:pointer;
-}
-
-.coupon-left{
-display:flex;
-gap:12px;
-align-items:center;
-}
-
-.coupon-left i{
-font-size:22px;
-color:var(--primary);
-}
-
-/* ================= PAYMENT ================= */
-
-.payment-option{
-display:flex;
-align-items:center;
-gap:15px;
-padding:15px;
-border:2px solid #ececec;
-border-radius:12px;
-margin-top:12px;
-cursor:pointer;
-transition:.2s;
-}
-
-.payment-option:hover{
-border-color:var(--primary);
-}
-
-.payment-option input{
-width:20px;
-height:20px;
-accent-color:var(--primary);
-}
-
-.pay-sub{
-font-size:13px;
-color:#777;
-margin-top:4px;
-}
-
-/* ================= BILL ================= */
-
-.bill-row{
-display:flex;
-justify-content:space-between;
-margin:14px 0;
-font-size:15px;
-}
-
-.grand{
-border-top:1px dashed #ddd;
-padding-top:15px;
-font-size:20px;
-font-weight:700;
-color:var(--primary);
-}
-
-/* ================= BOTTOM ================= */
-
-.bottom{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#fff;
-padding:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 -3px 10px rgba(0,0,0,.12);
-z-index:1000;
-}
-
-.bottom h2{
-color:var(--primary);
-margin-top:3px;
-}
-
-.bottom button{
-background:var(--primary);
-border:none;
-color:#fff;
-padding:15px 35px;
-border-radius:12px;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-}
-
-.bottom button:hover{
-background:#e64d00;
-}
-
-.bottom button:disabled{
-background:#aaa;
-cursor:not-allowed;
-}
-
-/* ================= EMPTY ================= */
-
-.empty{
-text-align:center;
-padding:40px 20px;
-}
-
-.empty i{
-font-size:60px;
-color:#ddd;
-}
-
-.empty h3{
-margin-top:15px;
-}
-
-.empty p{
-margin-top:8px;
-color:#777;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:600px){
-
-.container{
-padding:12px;
-}
-
-header h2{
-font-size:20px;
-}
-
-.bottom{
-padding:12px;
-}
-
-.bottom button{
-padding:14px 24px;
-}
-
-.item{
-gap:10px;
-}
-
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073B3A">
+  <title>DARVOZ - Payment</title>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <style>
+    :root {
+      --petrol: #073B3A;
+      --orange: #FF6500;
+      --bg: #F4F7F5;
+      --text: #142A2D;
+      --muted: #6C7979;
+      --border: #E3E9E7;
+      --green: #16834B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 110px;
+    }
+
+    button { font: inherit; }
+
+    .header {
+      background: linear-gradient(135deg, #073B3A, #0B5149);
+      color: white;
+      padding: 18px 16px 23px;
+      border-radius: 0 0 22px 22px;
+    }
+
+    .header-top {
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      background: transparent;
+      border: 0;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .brand { flex: 1; text-align: center; }
+
+    .brand-name {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+
+    .brand-name span { color: var(--orange); }
+
+    .tagline {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+      color: #D6E8E3;
+    }
+
+    .secure-top {
+      font-size: 10px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .secure-top strong { display: block; font-size: 12px; }
+
+    .container {
+      max-width: 600px;
+      padding: 16px 13px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #EDF0EF;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 14px rgba(12, 42, 38, .035);
+    }
+
+    .delivery {
+      padding: 15px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .location-icon {
+      background: #E9F3EF;
+      border-radius: 12px;
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 22px;
+    }
+
+    .delivery-info { flex: 1; min-width: 0; }
+
+    .store {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 2px 0 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .muted {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .address {
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .change {
+      border: 1px solid var(--petrol);
+      border-radius: 20px;
+      background: white;
+      color: var(--petrol);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    .summary { padding: 17px 15px; }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 14px;
+      margin: 13px 0;
+    }
+
+    .summary-row span:first-child { color: #53605F; }
+
+    .summary-row span:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .discount { color: var(--green); }
+
+    .grand-total {
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
+      margin-top: 16px;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .grand-total span:first-child { color: var(--text); }
+
+    .payment-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 22px 2px 6px;
+    }
+
+    .payment-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 2px 14px;
+    }
+
+    .methods {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .method {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px;
+      min-height: 70px;
+    }
+
+    .method.primary {
+      background: #FFF6EF;
+      border: 1.5px solid var(--orange);
+    }
+
+    .method-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #EDF3F1;
+      color: var(--petrol);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .method.primary .method-icon {
+      background: #E2F2E8;
+      color: #17834A;
+    }
+
+    .method-info { flex: 1; }
+
+    .method-name {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .method-desc {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .arrow { color: var(--orange); font-size: 22px; }
+
+    .note {
+      display: flex;
+      gap: 10px;
+      padding: 13px;
+      margin-top: 17px;
+      background: #EAF4EF;
+      color: #31564A;
+      border-radius: 12px;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .message {
+      display: none;
+      margin-top: 13px;
+      padding: 13px;
+      border-radius: 10px;
+      background: #FFF0E5;
+      color: #80390C;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .bottom {
+      position: fixed;
+      z-index: 5;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 12px 14px calc(10px + env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 18px rgba(0, 0, 0, .04);
+    }
+
+    .bottom-inner { max-width: 600px; margin: auto; }
+
+    .pay {
+      width: 100%;
+      min-height: 54px;
+      background: var(--orange);
+      color: white;
+      border: 0;
+      border-radius: 13px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .pay:disabled { opacity: .6; cursor: not-allowed; }
+
+    .trust {
+      text-align: center;
+      color: #657271;
+      font-size: 10px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .container { padding-top: 22px; }
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- =====================================================
-                        HEADER
-===================================================== -->
-
-<header>
-
-<i
-class="fa fa-arrow-left"
-onclick="history.back()">
-</i>
-
-<h2>Checkout</h2>
-
-</header>
-
-
-<div class="container">
-
-
-<!-- =====================================================
-                    DELIVERY ADDRESS
-===================================================== -->
-
-<div class="card">
-
-<div class="title">
-Delivery Address
-</div>
-
-<div class="address">
-
-<div class="address-left">
-
-<i class="fa-solid fa-location-dot"></i>
-
-<div>
-
-<h3>Home</h3>
-
-<p id="address">
-Loading Address...
-</p>
-
-</div>
-
-</div>
-
-<div
-class="change"
-onclick="changeAddress()">
-
-Change
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-                       RESTAURANT
-===================================================== -->
-
-<div class="card">
-
-<div class="restaurant">
-
-<div>
-
-<h2 id="restaurantName">
-Loading...
-</h2>
-
-<small id="restaurantItems">
-0 Items
-</small>
-
-</div>
-
-<i
-class="fa-solid fa-store"
-style="
-font-size:28px;
-color:#ff5a00;
-">
-</i>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-                     ORDER SUMMARY
-===================================================== -->
-
-<div class="card">
-
-<div class="title">
-Order Summary
-</div>
-
-<div id="orderItems">
-
-Loading...
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-                         COUPON
-===================================================== -->
-
-<div
-class="card coupon"
-onclick="openCoupons()">
-
-<div class="coupon-left">
-
-<i class="fa-solid fa-tags"></i>
-
-<div>
-
-<b>Apply Coupon</b>
-
-<div
-style="
-font-size:13px;
-color:#777;
-margin-top:4px;
-">
-
-Save more on your order
-
-</div>
-
-</div>
-
-</div>
-
-<i class="fa fa-angle-right"></i>
-
-</div>
-
-
-<!-- =====================================================
-                    PAYMENT METHOD
-===================================================== -->
-
-<div class="card">
-
-<div class="title">
-Payment Method
-</div>
-
-
-<!-- UPI -->
-
-<label class="payment-option">
-
-<input
-type="radio"
-name="payment"
-value="UPI"
-checked>
-
-<div>
-
-<b>UPI</b>
-
-<div class="pay-sub">
-PhonePe • Google Pay • Paytm
-</div>
-
-</div>
-
-</label>
-
-
-<!-- COD -->
-
-<label class="payment-option">
-
-<input
-type="radio"
-name="payment"
-value="COD">
-
-<div>
-
-<b>Cash On Delivery</b>
-
-<div class="pay-sub">
-Pay after delivery
-</div>
-
-</div>
-
-</label>
-
-</div>
-
-
-<!-- =====================================================
-                      BILL DETAILS
-===================================================== -->
-
-<div class="card">
-
-<div class="title">
-Bill Details
-</div>
-
-
-<div class="bill-row">
-
-<span>
-Item Total
-</span>
-
-<span id="itemTotal">
-₹0
-</span>
-
-</div>
-
-
-<div class="bill-row">
-
-<span>
-Delivery Fee
-</span>
-
-<span id="deliveryFee">
-₹0
-</span>
-
-</div>
-
-
-<div class="bill-row">
-
-<span>
-GST
-</span>
-
-<span id="gstFee">
-₹0
-</span>
-
-</div>
-
-
-<div class="bill-row">
-
-<span>
-Discount
-</span>
-
-<span id="discount">
-₹0
-</span>
-
-</div>
-
-
-<div class="bill-row grand">
-
-<span>
-Grand Total
-</span>
-
-<span id="grandTotal">
-₹0
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-                    BOTTOM PAYMENT BAR
-===================================================== -->
-
-<div class="bottom">
-
-<div>
-
-<small
-style="color:#777;">
-
-To Pay
-
-</small>
-
-<h2 id="bottomTotal">
-₹0
-</h2>
-
-</div>
-
-<button
-id="payButton"
-onclick="payNow()">
-
-Pay Now
-
-</button>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-                    BASIC VARIABLES
-===================================================== */
-
-const API = window.location.origin;
-
-const customerId =
-    localStorage.getItem("customerId");
-
-
-let cart = [];
-
-let partnerId =
-    localStorage.getItem("partnerId") || null;
-
-let subtotal = 0;
-
-let deliveryFee = 0;
-
-let gstFee = 0;
-
-let couponDiscount = 0;
-
-let grandTotal = 0;
-
-let paymentMethod = "UPI";
-
-
-/* =====================================================
-                    PAGE LOAD
-===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function(){
-
-        console.log(
-            "================================"
-        );
-
-        console.log(
-            "DARVOZ CHECKOUT LOADED"
-        );
-
-        console.log(
-            "================================"
-        );
-
-
-        /* ---------------------------------------------
-                        LOGIN CHECK
-        --------------------------------------------- */
-
-        if(!customerId){
-
-            alert(
-                "Please login first"
-            );
-
-            window.location =
-                "customer-login.html";
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                        LOAD ADDRESS
-        --------------------------------------------- */
-
-        await loadAddress();
-
-
-        /* ---------------------------------------------
-                          LOAD CART
-        --------------------------------------------- */
-
-        await loadCart();
-
-    }
-);
-
-/* =====================================================
-                    LOAD ADDRESS
-===================================================== */
-
-async function loadAddress(){
-
-    try{
-
-        /* =============================================
-           FIRST: CHECK ADDRESS SELECTED IN address.html
-        ============================================= */
-
-        const selectedAddress =
-            localStorage.getItem(
-                "selectedAddress"
-            );
-
-        const selectedLat =
-            localStorage.getItem(
-                "latitude"
-            );
-
-        const selectedLng =
-            localStorage.getItem(
-                "longitude"
-            );
-
-
-        /*
-         * If customer clicked "Deliver Here",
-         * use that address immediately.
-         */
-
-        if(selectedAddress){
-
-            console.log(
-                "USING SELECTED DELIVERY ADDRESS:",
-                selectedAddress
-            );
-
-
-            document.getElementById(
-                "address"
-            ).innerHTML =
-                escapeHTML(
-                    selectedAddress
-                );
-
-
-            /*
-             * Save selected coordinates for order
-             */
-
-            localStorage.setItem(
-                "customer_lat",
-                selectedLat || ""
-            );
-
-            localStorage.setItem(
-                "customer_lng",
-                selectedLng || ""
-            );
-
-
-            return;
-
-        }
-
-
-        /* =============================================
-           IF NO SELECTED ADDRESS, LOAD DEFAULT ADDRESS
-        ============================================= */
-
-        const res =
-            await fetch(
-                `${API}/address/${customerId}`
-            );
-
-
-        if(!res.ok){
-
-            throw new Error(
-                "Address API failed"
-            );
-
-        }
-
-
-        const addresses =
-            await res.json();
-
-
-        console.log(
-            "CHECKOUT ADDRESSES:",
-            addresses
-        );
-
-
-        if(
-            !Array.isArray(addresses) ||
-            addresses.length === 0
-        ){
-
-            document.getElementById(
-                "address"
-            ).innerHTML =
-                "Please select address";
-
-            return;
-
-        }
-
-
-        /* =============================================
-                    GET DEFAULT ADDRESS
-        ============================================= */
-
-        const address =
-            addresses.find(
-                a => Number(a.is_default) === 1
-            ) ||
-            addresses[0];
-
-
-        /* =============================================
-                    CREATE FULL ADDRESS
-        ============================================= */
-
-        const fullAddress =
-
-            `${address.house || ""}, ` +
-            `${address.street || ""}, ` +
-            `${address.area || ""}, ` +
-            `${address.city || ""}, ` +
-            `${address.state || ""} - ` +
-            `${address.pincode || ""}`;
-
-
-        /*
-         * Save it as current selected address too.
-         */
-
-        localStorage.setItem(
-            "selectedAddress",
-            fullAddress
-        );
-
-        localStorage.setItem(
-            "latitude",
-            address.latitude || ""
-        );
-
-        localStorage.setItem(
-            "longitude",
-            address.longitude || ""
-        );
-
-
-        /*
-         * Also save for order API
-         */
-
-        localStorage.setItem(
-            "customer_lat",
-            address.latitude || ""
-        );
-
-        localStorage.setItem(
-            "customer_lng",
-            address.longitude || ""
-        );
-
-
-        /* =============================================
-                    DISPLAY ADDRESS
-        ============================================= */
-
-        document.getElementById(
-            "address"
-        ).innerHTML =
-            escapeHTML(
-                fullAddress
-            );
-
-
-        console.log(
-            "USING DEFAULT ADDRESS:",
-            fullAddress
-        );
-
-    }
-
-    catch(error){
-
-        console.log(
-            "ADDRESS ERROR:",
-            error
-        );
-
-        document.getElementById(
-            "address"
-        ).innerHTML =
-            "Unable to load address";
-
-    }
-
-}
-
-/* =====================================================
-                    LOAD LOCAL CART
-===================================================== */
-
-async function loadCart(){
-
-    try{
-
-        /* ---------------------------------------------
-                    READ LOCAL STORAGE
-        --------------------------------------------- */
-
-        const savedCart =
-            localStorage.getItem("cart");
-
-
-        console.log(
-            "RAW LOCAL CART:",
-            savedCart
-        );
-
-
-        if(!savedCart){
-
-            showCartEmpty();
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                    PARSE CART
-        --------------------------------------------- */
-
-        try{
-
-            cart =
-                JSON.parse(savedCart);
-
-        }
-
-        catch(error){
-
-            console.log(
-                "CART JSON ERROR:",
-                error
-            );
-
-            cart = [];
-
-        }
-
-
-        /* ---------------------------------------------
-                    ARRAY CHECK
-        --------------------------------------------- */
-
-        if(!Array.isArray(cart)){
-
-            cart = [];
-
-        }
-
-
-        console.log(
-            "CHECKOUT LOCAL CART:",
-            cart
-        );
-
-
-        /* ---------------------------------------------
-                    EMPTY CHECK
-        --------------------------------------------- */
-
-        if(cart.length === 0){
-
-            showCartEmpty();
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                    PARTNER ID
-        --------------------------------------------- */
-
-        partnerId =
-            localStorage.getItem(
-                "partnerId"
-            ) ||
-            cart[0].partner_id ||
-            null;
-
-
-        console.log(
-            "CHECKOUT PARTNER ID:",
-            partnerId
-        );
-
-
-        /* ---------------------------------------------
-                    RESTAURANT NAME
-        --------------------------------------------- */
-
-        const restaurantName =
-            localStorage.getItem(
-                "restaurantName"
-            ) ||
-            cart[0].restaurant_name ||
-            "DARVOZ Partner";
-
-
-        document.getElementById(
-            "restaurantName"
-        ).innerHTML =
-            escapeHTML(
-                restaurantName
-            );
-
-
-        /* ---------------------------------------------
-                    TOTAL ITEMS
-        --------------------------------------------- */
-
-        const totalItems =
-            cart.reduce(
-                function(total,item){
-
-                    return total +
-                        Number(
-                            item.quantity || 0
-                        );
-
-                },
-                0
-            );
-
-
-        document.getElementById(
-            "restaurantItems"
-        ).innerHTML =
-            totalItems +
-            (
-                totalItems === 1
-                    ? " Item"
-                    : " Items"
-            );
-
-
-        /* ---------------------------------------------
-                    RENDER ITEMS
-        --------------------------------------------- */
-
-        renderItems();
-
-
-        /* ---------------------------------------------
-                    CALCULATE BILL
-        --------------------------------------------- */
-
-        calculateBill();
-
-    }
-
-    catch(error){
-
-        console.log(
-            "CHECKOUT CART ERROR:",
-            error
-        );
-
-        showCartEmpty();
-
-    }
-
-}
-
-
-/* =====================================================
-                    RENDER ORDER ITEMS
-===================================================== */
-
-function renderItems(){
-
-    const box =
-        document.getElementById(
-            "orderItems"
-        );
-
-
-    box.innerHTML = "";
-
-    subtotal = 0;
-
-
-    cart.forEach(
-        function(item){
-
-            /* -----------------------------------------
-                            PRICE
-            ----------------------------------------- */
-
-            const offerPrice =
-                Number(
-                    item.offer_price || 0
-                );
-
-
-            const normalPrice =
-                Number(
-                    item.price || 0
-                );
-
-
-            const price =
-                offerPrice > 0
-                    ? offerPrice
-                    : normalPrice;
-
-
-            /* -----------------------------------------
-                          QUANTITY
-            ----------------------------------------- */
-
-            const quantity =
-                Number(
-                    item.quantity || 0
-                );
-
-
-            /* -----------------------------------------
-                        ITEM TOTAL
-            ----------------------------------------- */
-
-            const itemTotal =
-                price * quantity;
-
-
-            subtotal += itemTotal;
-
-
-            /* -----------------------------------------
-                          PACK SIZE
-            ----------------------------------------- */
-
-            const weightHTML =
-                item.weight
-                    ? `
-                        <div class="item-details">
-
-                            Pack:
-                            ${escapeHTML(
-                                item.weight
-                            )}
-
-                        </div>
-                      `
-                    : "";
-
-
-            /* -----------------------------------------
-                        EACH PRICE
-            ----------------------------------------- */
-
-            const eachPriceHTML = `
-
-                <div class="item-details">
-
-                    ₹${formatMoney(price)}
-                    each
-
-                </div>
-
-            `;
-
-
-            /* -----------------------------------------
-                        ADD TO HTML
-            ----------------------------------------- */
-
-            box.innerHTML += `
-
-                <div class="item">
-
-                    <div>
-
-                        <div class="item-name">
-
-                            ${escapeHTML(
-                                item.product_name ||
-                                "Product"
-                            )}
-
-                        </div>
-
-                        ${weightHTML}
-
-                        <div class="item-details">
-
-                            Qty:
-                            ${quantity}
-
-                        </div>
-
-                        ${eachPriceHTML}
-
-                    </div>
-
-
-                    <div class="item-price">
-
-                        ₹${formatMoney(
-                            itemTotal
-                        )}
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
-    );
-
-
-    console.log(
-        "CHECKOUT SUBTOTAL:",
-        subtotal
-    );
-
-}
-
-
-/* =====================================================
-                    CALCULATE BILL
-===================================================== */
-
-function calculateBill(){
-
-    /* ---------------------------------------------
-                    SUBTOTAL
-    --------------------------------------------- */
-
-    subtotal = 0;
-
-
-    cart.forEach(
-        function(item){
-
-            const offerPrice =
-                Number(
-                    item.offer_price || 0
-                );
-
-
-            const normalPrice =
-                Number(
-                    item.price || 0
-                );
-
-
-            const price =
-                offerPrice > 0
-                    ? offerPrice
-                    : normalPrice;
-
-
-            const quantity =
-                Number(
-                    item.quantity || 0
-                );
-
-
-            subtotal +=
-                price * quantity;
-
-        }
-    );
-    /* ---------------------------------------------
-            DELIVERY FEE - TESTING
---------------------------------------------- */
-
-// TEST MODE
-// Delivery is FREE for every order.
-
-deliveryFee = 0;
-
-
-    /* ---------------------------------------------
-                    DELIVERY FEE
-    --------------------------------------------- */
-
-    // if(subtotal >= 299){
-
-    //     deliveryFee = 0;
-
-    // }
-
-    // else{
-
-    //     /*
-    //      * Use the value calculated by cart.html.
-    //      * If it is missing, default to ₹20.
-    //      */
-
-    //     const savedDelivery =
-    //         Number(
-    //             localStorage.getItem(
-    //                 "deliveryFee"
-    //             )
-    //         );
-
-
-    //     if(
-    //         Number.isFinite(
-    //             savedDelivery
-    //         ) &&
-    //         savedDelivery >= 0
-    //     ){
-
-    //         deliveryFee =
-    //             savedDelivery;
-
-    //     }
-
-    //     else{
-
-    //         deliveryFee = 20;
-
-    //     }
-
-    // }
-
-
-    /* ---------------------------------------------
-                    GST 5%
-    --------------------------------------------- */
-
-    gstFee =
-        Math.round(
-            subtotal * 0.05
-        );
-
-
-    /* ---------------------------------------------
-                    COUPON
-    --------------------------------------------- */
-
-    couponDiscount =
-        Number(
-            localStorage.getItem(
-                "couponDiscount"
-            )
-        ) || 0;
-
-
-    /* ---------------------------------------------
-                    GRAND TOTAL
-    --------------------------------------------- */
-
-    grandTotal =
-        subtotal +
-        deliveryFee +
-        gstFee -
-        couponDiscount;
-
-
-    if(grandTotal < 0){
-
-        grandTotal = 0;
-
-    }
-
-
-    /* ---------------------------------------------
-                    SAVE BILL
-    --------------------------------------------- */
-
-    localStorage.setItem(
-        "cartSubtotal",
-        subtotal
-    );
-
-    localStorage.setItem(
-        "deliveryFee",
-        deliveryFee
-    );
-
-    localStorage.setItem(
-        "gstFee",
-        gstFee
-    );
-
-    localStorage.setItem(
-        "couponDiscount",
-        couponDiscount
-    );
-
-    localStorage.setItem(
-        "grandTotal",
-        grandTotal
-    );
-
-    localStorage.setItem(
-        "partnerId",
-        partnerId || ""
-    );
-
-
-    /* ---------------------------------------------
-                    DISPLAY BILL
-    --------------------------------------------- */
-
-    document.getElementById(
-        "itemTotal"
-    ).innerHTML =
-        "₹" +
-        formatMoney(subtotal);
-
-
-    document.getElementById(
-        "deliveryFee"
-    ).innerHTML =
-
-        deliveryFee === 0
-
-        ? `
-            <span style="
-                color:green;
-                font-weight:600;
-            ">
-                FREE
-            </span>
-          `
-
-        :
-        "₹" +
-        formatMoney(
-            deliveryFee
-        );
-
-
-    document.getElementById(
-        "gstFee"
-    ).innerHTML =
-        "₹" +
-        formatMoney(
-            gstFee
-        );
-
-
-    document.getElementById(
-        "discount"
-    ).innerHTML =
-        "- ₹" +
-        formatMoney(
-            couponDiscount
-        );
-
-
-    document.getElementById(
-        "grandTotal"
-    ).innerHTML =
-        "₹" +
-        formatMoney(
-            grandTotal
-        );
-
-
-    document.getElementById(
-        "bottomTotal"
-    ).innerHTML =
-        "₹" +
-        formatMoney(
-            grandTotal
-        );
-
-
-    console.log(
-        "================================"
-    );
-
-    console.log(
-        "CHECKOUT BILL"
-    );
-
-    console.log(
-        "Subtotal:",
-        subtotal
-    );
-
-    console.log(
-        "Delivery:",
-        deliveryFee
-    );
-
-    console.log(
-        "GST:",
-        gstFee
-    );
-
-    console.log(
-        "Discount:",
-        couponDiscount
-    );
-
-    console.log(
-        "Grand Total:",
-        grandTotal
-    );
-
-    console.log(
-        "================================"
-    );
-
-}
-
-
-/* =====================================================
-                    CHANGE ADDRESS
-===================================================== */
-
-function changeAddress(){
-
+  <header class="header">
+    <div class="header-top">
+      <button class="back" onclick="goBack()" aria-label="Back">‹</button>
+
+      <div class="brand">
+        <div class="brand-name">DARV<span>O</span>Z</div>
+        <div class="tagline">FOOD · GROCERIES · ESSENTIALS</div>
+      </div>
+
+      <div class="secure-top">
+        🛡️
+        <strong>Secure</strong>
+        Payments
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card delivery">
+      <div class="location-icon">📍</div>
+
+      <div class="delivery-info">
+        <div class="store" id="storeName">DARVOZ Store</div>
+        <div class="muted">Delivering to</div>
+        <div class="address" id="deliveryAddress">
+          Select your delivery address
+        </div>
+      </div>
+
+      <button class="change" onclick="changeAddress()">Change</button>
+    </section>
+
+    <section class="card summary">
+      <div class="section-title">🛒 Order Summary</div>
+
+      <div class="summary-row">
+        <span>Item Total</span>
+        <span id="itemTotal">—</span>
+      </div>
+
+      <div class="summary-row">
+        <span>GST</span>
+        <span id="gstAmount">—</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Delivery Fee</span>
+        <span id="deliveryFee">—</span>
+      </div>
+
+      <div class="summary-row discount">
+        <span>Discount</span>
+        <span id="discountAmount">—</span>
+      </div>
+
+      <div class="summary-row grand-total">
+        <span>Grand Total</span>
+        <span id="grandTotal">—</span>
+      </div>
+    </section>
+
+    <h2 class="payment-title">🔒 Choose Payment Method</h2>
+    <p class="payment-subtitle">
+      Continue to secure checkout. Compatible UPI apps may be offered
+      automatically on supported Android browsers.
+    </p>
+
+    <div class="methods">
+      <div class="method primary">
+        <div class="method-icon">UPI</div>
+        <div class="method-info">
+          <div class="method-name">UPI Apps</div>
+          <div class="method-desc">
+            Google Pay, PhonePe, Paytm and other supported apps
+          </div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="method">
+        <div class="method-icon">CARD</div>
+        <div class="method-info">
+          <div class="method-name">Credit / Debit Cards</div>
+          <div class="method-desc">Supported cards</div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="method">
+        <div class="method-icon">BANK</div>
+        <div class="method-info">
+          <div class="method-name">Net Banking</div>
+          <div class="method-desc">Participating banks</div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+
+      <div class="method">
+        <div class="method-icon">WALLET</div>
+        <div class="method-info">
+          <div class="method-name">Wallets</div>
+          <div class="method-desc">Payment methods supported by Razorpay</div>
+        </div>
+        <div class="arrow">›</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <span>🛡️</span>
+      <div>
+        <strong>Secure payment</strong><br>
+        DARVOZ must verify your payment with the backend before confirming
+        your order. Never share your UPI PIN or OTP.
+      </div>
+    </div>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer class="bottom">
+    <div class="bottom-inner">
+      <button class="pay" id="payButton" onclick="payNow()">
+        Pay Now →
+      </button>
+      <div class="trust">🔒 Secure checkout · UPI supported · Encrypted payment</div>
+    </div>
+  </footer>
+
+  <script>
     /*
-     * Tell address.html that user came
-     * from checkout page.
+     * IMPORTANT:
+     * Replace this with your Razorpay TEST Key ID first.
+     * Never put your Razorpay Key Secret in this file.
      */
+    const RAZORPAY_KEY_ID = "YOUR_RAZORPAY_KEY_ID";
 
-    localStorage.setItem(
-        "addressReturnPage",
-        "checkout.html"
-    );
+    function customerId() {
+      return localStorage.getItem("customerId");
+    }
 
+    function readFirst(keys) {
+      for (const key of keys) {
+        const value = localStorage.getItem(key);
+        if (value !== null && value !== "") return value;
+      }
+      return null;
+    }
 
-    window.location.href =
-        "address.html";
+    function rupees(value) {
+      return "₹" + Number(value).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
 
-}
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
 
-/* =====================================================
-                        COUPON
-===================================================== */
+    function loadPaymentDetails() {
+      const id = customerId();
 
-function openCoupons(){
+      const rawTotal = (id
+        ? localStorage.getItem(`grandTotal_${id}`)
+        : null) ?? readFirst([
+          "amount", "totalAmount", "checkoutTotal", "darvoz_total"
+        ]);
 
-    alert(
-        "Coupon feature coming soon."
-    );
+      const total = rawTotal !== null &&
+        Number.isFinite(Number(rawTotal)) &&
+        Number(rawTotal) > 0
+          ? Number(rawTotal)
+          : null;
 
-}
+      const store = (id
+        ? localStorage.getItem(`restaurantName_${id}`)
+        : null) || readFirst([
+          "storeName", "restaurantName", "shopName", "darvoz_store"
+        ]);
 
+      const address = (id
+        ? localStorage.getItem(`selectedAddress_${id}`)
+        : null) || readFirst([
+          "selectedAddress", "deliveryAddress", "darvoz_address"
+        ]);
 
-/* =====================================================
-                    PAY NOW
-===================================================== */
+      setText("storeName", store || "DARVOZ Store");
+      setText("deliveryAddress", address || "Please select your delivery address");
 
-async function payNow(){
+      /*
+       * Match these summary keys to the actual keys used by your cart.
+       * The grand total above uses your existing grandTotal_<customerId> key.
+       */
+      const subtotal = id ? localStorage.getItem(`subtotal_${id}`) : null;
+      const gst = id ? localStorage.getItem(`gst_${id}`) : null;
+      const delivery = id ? localStorage.getItem(`deliveryFee_${id}`) : null;
+      const discount = id ? localStorage.getItem(`discount_${id}`) : null;
 
-    console.log(
-        "================================"
-    );
+      setText("itemTotal", subtotal !== null ? rupees(subtotal) : "—");
+      setText("gstAmount", gst !== null ? rupees(gst) : "—");
+      setText("deliveryFee", delivery !== null ? rupees(delivery) : "—");
+      setText("discountAmount",
+        discount !== null ? "−" + rupees(discount) : "—");
+      setText("grandTotal", total !== null ? rupees(total) : "Amount unavailable");
 
-    console.log(
-        "DARVOZ PAY NOW"
-    );
+      const button = document.getElementById("payButton");
 
-    console.log(
-        "================================"
-    );
+      if (total === null) {
+        button.disabled = true;
+        button.textContent = "Amount unavailable";
+      } else {
+        button.disabled = false;
+        button.textContent = "Pay " + rupees(total) + " →";
+      }
+    }
 
+    function showMessage(text) {
+      const message = document.getElementById("message");
+      message.style.display = "block";
+      message.textContent = text;
+    }
 
-    /* ---------------------------------------------
-                    READ CART AGAIN
-    --------------------------------------------- */
+    function changeAddress() {
+      localStorage.setItem("addressReturnPage", "payment.html");
+      window.location.href = "address.html";
+    }
 
-    const savedCart =
-        localStorage.getItem(
-            "cart"
-        );
+    function goBack() {
+      if (history.length > 1) history.back();
+      else window.location.href = "cart.html";
+    }
 
+    async function payNow() {
+      const button = document.getElementById("payButton");
+      const id = customerId();
 
-    console.log(
-        "RAW PAYMENT CART:",
-        savedCart
-    );
+      const rawTotal = id
+        ? localStorage.getItem(`grandTotal_${id}`)
+        : null;
 
+      const total = Number(rawTotal);
 
-    if(!savedCart){
-
-        alert(
-            "Cart Empty"
-        );
-
-        window.location =
-            "cart.html";
-
+      if (!rawTotal || !Number.isFinite(total) || total <= 0) {
+        showMessage("Your cart total is missing. Return to your cart and try again.");
         return;
+      }
 
-    }
-
-
-    /* ---------------------------------------------
-                    PARSE CART
-    --------------------------------------------- */
-
-    try{
-
-        cart =
-            JSON.parse(
-                savedCart
-            );
-
-    }
-
-    catch(error){
-
-        console.log(
-            "PAYMENT CART JSON ERROR:",
-            error
-        );
-
-        alert(
-            "Cart data is corrupted."
-        );
-
-        window.location =
-            "cart.html";
-
+      if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === "YOUR_RAZORPAY_KEY_ID") {
+        showMessage("Add your Razorpay Test Mode Key ID in payment.html first.");
         return;
+      }
 
-    }
-
-
-    /* ---------------------------------------------
-                    CHECK CART
-    --------------------------------------------- */
-
-    if(
-        !Array.isArray(cart) ||
-        cart.length === 0
-    ){
-
-        alert(
-            "Cart Empty"
-        );
-
-        window.location =
-            "cart.html";
-
+      if (typeof Razorpay === "undefined") {
+        showMessage("Razorpay Checkout could not load. Check your internet connection.");
         return;
+      }
 
-    }
+      button.disabled = true;
+      button.textContent = "Starting secure checkout...";
 
+      try {
+        /*
+         * This calls your existing route.
+         * Production note: the backend must calculate the trusted total
+         * itself instead of trusting the amount supplied by the browser.
+         */
+        const response = await fetch("/payment/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: total })
+        });
 
-    console.log(
-        "PAYMENT CART:",
-        cart
-    );
+        const result = await response.json();
 
-
-    /* ---------------------------------------------
-                    PARTNER ID
-    --------------------------------------------- */
-
-    partnerId =
-        localStorage.getItem(
-            "partnerId"
-        ) ||
-        cart[0].partner_id ||
-        null;
-
-
-    if(!partnerId){
-
-        alert(
-            "Restaurant information missing."
-        );
-
-        return;
-
-    }
-
-
-    /* ---------------------------------------------
-                    PAYMENT METHOD
-    --------------------------------------------- */
-
-    const selectedPayment =
-        document.querySelector(
-            'input[name="payment"]:checked'
-        );
-
-
-    if(!selectedPayment){
-
-        alert(
-            "Please select payment method."
-        );
-
-        return;
-
-    }
-
-
-    paymentMethod =
-        selectedPayment.value;
-
-
-    /* ---------------------------------------------
-                    RECALCULATE BILL
-    --------------------------------------------- */
-
-    calculateBill();
-
-
-    if(grandTotal <= 0){
-
-        alert(
-            "Invalid order amount."
-        );
-
-        return;
-
-    }
-
-
-    console.log(
-        "PAYMENT METHOD:",
-        paymentMethod
-    );
-
-    console.log(
-        "PAYMENT AMOUNT:",
-        grandTotal
-    );
-
-
-    /* =================================================
-                    CASH ON DELIVERY
-    ================================================= */
-
-    if(paymentMethod === "COD"){
-
-        await placeOrderAfterPayment(
-            null
-        );
-
-        return;
-
-    }
-
-
-    /* =================================================
-                    UPI / RAZORPAY
-    ================================================= */
-
-    try{
-
-        const createOrder =
-            await fetch(
-
-                `${API}/payment/create-order`,
-
-                {
-
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:JSON.stringify({
-
-                        amount:
-                            grandTotal
-
-                    })
-
-                }
-
-            );
-
-
-        if(!createOrder.ok){
-
-            throw new Error(
-                "Payment API failed"
-            );
-
+        if (!response.ok || !result.success || !result.order?.id) {
+          throw new Error(result.message || "Unable to create Razorpay order.");
         }
-
-
-        const orderData =
-            await createOrder.json();
-
-
-        console.log(
-            "RAZORPAY ORDER:",
-            orderData
-        );
-
-
-        if(
-            !orderData.success ||
-            !orderData.order
-        ){
-
-            alert(
-                orderData.message ||
-                "Unable to create payment."
-            );
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                    RAZORPAY OPTIONS
-        --------------------------------------------- */
 
         const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: result.order.amount,
+          currency: result.order.currency || "INR",
+          name: "DARVOZ",
+          description: "DARVOZ order payment",
+          order_id: result.order.id,
 
-            /*
-             * Use your Razorpay TEST key while developing.
-             * Replace with your real Key ID when going live.
-             */
+          /*
+           * Razorpay Checkout handles the available payment methods.
+           * UPI Intent depends on supported browser/platform and account
+           * configuration; this page does not scan installed apps itself.
+           */
+          handler: async function (paymentResponse) {
+            button.textContent = "Verifying payment...";
 
-            key:
-                "rzp_live_TKPhleuHhHFzUn",
+            try {
+              const verifyResponse = await fetch("/payment/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(paymentResponse)
+              });
 
+              const verifyResult = await verifyResponse.json();
 
-            amount:
-                orderData.order.amount,
+              if (!verifyResponse.ok || !verifyResult.success) {
+                throw new Error("Payment verification failed.");
+              }
 
+              showMessage(
+                "Payment signature verified. The DARVOZ order is not placed yet; " +
+                "order placement and captured-status verification still need to be connected."
+              );
 
-            currency:
-                "INR",
-
-
-            name:
-                "DARVOZ",
-
-
-            description:
-                "DARVOZ Order",
-
-
-            order_id:
-                orderData.order.id,
-
-
-            handler:
-                function(response){
-
-                    console.log(
-                        "RAZORPAY RESPONSE:",
-                        response
-                    );
-
-
-                    verifyPayment(
-                        response
-                    );
-
-                },
-
-
-            modal:{
-
-                ondismiss:
-                    function(){
-
-                        console.log(
-                            "Razorpay closed."
-                        );
-
-                    }
-
-            },
-
-
-            theme:{
-
-                color:
-                    "#ff5a00"
-
+              button.textContent = "Payment verification returned";
+            } catch (error) {
+              showMessage(error.message || "Unable to verify payment. Contact support before retrying.");
+              button.disabled = false;
+              button.textContent = "Retry checkout";
             }
+          },
 
+          modal: {
+            ondismiss: function () {
+              button.disabled = false;
+              button.textContent = "Pay " + rupees(total) + " →";
+            }
+          },
+
+          theme: { color: "#FF6500" }
         };
 
+        const checkout = new Razorpay(options);
 
-        /* ---------------------------------------------
-                    OPEN RAZORPAY
-        --------------------------------------------- */
+        checkout.on("payment.failed", function (event) {
+          showMessage(
+            event.error?.description || "Payment failed. Please try again."
+          );
+          button.disabled = false;
+          button.textContent = "Pay " + rupees(total) + " →";
+        });
 
-        const rzp =
-            new Razorpay(
-                options
-            );
-
-
-        rzp.on(
-            "payment.failed",
-            function(response){
-
-                console.log(
-                    "PAYMENT FAILED:",
-                    response
-                );
-
-                alert(
-                    "Payment failed. Please try again."
-                );
-
-            }
-        );
-
-
-        rzp.open();
-
+        checkout.open();
+      } catch (error) {
+        showMessage(error.message || "Could not start payment. Please try again.");
+        button.disabled = false;
+        button.textContent = "Pay " + rupees(total) + " →";
+      }
     }
 
-    catch(error){
-
-        console.log(
-            "PAYMENT ERROR:",
-            error
-        );
-
-        alert(
-            "Unable to start payment."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-                    VERIFY PAYMENT
-===================================================== */
-
-async function verifyPayment(
-    payment
-){
-
-    try{
-
-        console.log(
-            "VERIFYING RAZORPAY PAYMENT..."
-        );
-
-
-        /* ---------------------------------------------
-                    VERIFY SIGNATURE
-        --------------------------------------------- */
-
-        const verify =
-            await fetch(
-
-                `${API}/payment/verify`,
-
-                {
-
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:JSON.stringify({
-
-                        razorpay_order_id:
-                            payment.razorpay_order_id,
-
-                        razorpay_payment_id:
-                            payment.razorpay_payment_id,
-
-                        razorpay_signature:
-                            payment.razorpay_signature
-
-                    })
-
-                }
-
-            );
-
-
-        if(!verify.ok){
-
-            throw new Error(
-                "Verification API failed"
-            );
-
-        }
-
-
-        const verifyData =
-            await verify.json();
-
-
-        console.log(
-            "PAYMENT VERIFY RESPONSE:",
-            verifyData
-        );
-
-
-        if(!verifyData.success){
-
-            alert(
-                verifyData.message ||
-                "Payment Verification Failed"
-            );
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                    PAYMENT VERIFIED
-        --------------------------------------------- */
-
-        console.log(
-            "PAYMENT VERIFIED SUCCESSFULLY"
-        );
-
-
-        /* ---------------------------------------------
-                    PLACE ORDER
-        --------------------------------------------- */
-
-        await placeOrderAfterPayment(
-            payment
-        );
-
-    }
-
-    catch(error){
-
-        console.log(
-            "VERIFY ERROR:",
-            error
-        );
-
-        alert(
-            "Payment verification failed."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-                    PLACE ORDER
-===================================================== */
-
-async function placeOrderAfterPayment(
-    payment
-){
-
-    try{
-
-        console.log(
-            "================================"
-        );
-
-        console.log(
-            "PLACING DARVOZ ORDER"
-        );
-
-        console.log(
-            "================================"
-        );
-
-
-        /* ---------------------------------------------
-                    CHECK CART
-        --------------------------------------------- */
-
-        if(
-            !Array.isArray(cart) ||
-            cart.length === 0
-        ){
-
-            alert(
-                "Cart Empty"
-            );
-
-            window.location =
-                "cart.html";
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                    RESTAURANT NAME
-        --------------------------------------------- */
-
-        const restaurantName =
-            cart[0].restaurant_name ||
-            localStorage.getItem(
-                "restaurantName"
-            ) ||
-            "DARVOZ Partner";
-
-
-        /* ---------------------------------------------
-                    CUSTOMER DATA
-        --------------------------------------------- */
-
-        const customerName =
-            localStorage.getItem(
-                "customerName"
-            ) || "";
-
-
-        const mobile =
-            localStorage.getItem(
-                "mobile"
-            ) || "";
-
-
-        const address =
-            document.getElementById(
-                "address"
-            ).innerText;
-
-
-        const customerLat =
-            localStorage.getItem(
-                "customer_lat"
-            ) || "";
-
-
-        const customerLng =
-            localStorage.getItem(
-                "customer_lng"
-            ) || "";
-
-
-        /* ---------------------------------------------
-                    ORDER DATA
-        --------------------------------------------- */
-
-        const orderPayload = {
-
-    customer_id: customerId,
-
-    partner_id: partnerId,
-
-    restaurant_name: restaurantName,
-
-    customer_name: customerName,
-
-    mobile: mobile,
-
-    address: address,
-
-    customer_lat: customerLat,
-
-    customer_lng: customerLng,
-
-    payment: paymentMethod,
-
-    amount: grandTotal,
-
-    subtotal: subtotal,
-
-    delivery_fee: deliveryFee,
-
-    gst: gstFee,
-
-    discount: couponDiscount,
-
-    // IMPORTANT: SEND ORDER ITEMS
-    items: cart.map(item => ({
-
-        product_id:
-            item.product_id ||
-            item.id ||
-            null,
-
-        product_name:
-            item.product_name ||
-            item.name ||
-            "Product",
-
-        price:
-            Number(
-                item.offer_price ||
-                item.price ||
-                0
-            ),
-
-        quantity:
-            Number(
-                item.quantity ||
-                1
-            ),
-
-        weight:
-            item.weight ||
-            ""
-
-    })),
-
-    payment_id:
-        payment
-            ? payment.razorpay_payment_id
-            : null,
-
-    payment_order_id:
-        payment
-            ? payment.razorpay_order_id
-            : null
-
-};
-
-
-        console.log(
-            "ORDER PAYLOAD:",
-            orderPayload
-        );
-
-
-        /* ---------------------------------------------
-                    SEND ORDER
-        --------------------------------------------- */
-
-        const orderResponse =
-            await fetch(
-
-                `${API}/orders/place`,
-
-                {
-
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            orderPayload
-                        )
-
-                }
-
-            );
-
-
-        console.log(
-            "ORDER HTTP STATUS:",
-            orderResponse.status
-        );
-
-
-       if(!orderResponse.ok){
-
-    const errorText =
-        await orderResponse.text();
-
-    console.error(
-        "ORDER SERVER ERROR:",
-        errorText
-    );
-
-    throw new Error(
-        `Order API failed: ${errorText}`
-    );
-
-}
-
-
-        const orderData =
-            await orderResponse.json();
-
-
-        console.log(
-            "ORDER RESPONSE:",
-            orderData
-        );
-
-
-        /* ---------------------------------------------
-                    ORDER FAILED
-        --------------------------------------------- */
-
-        if(!orderData.success){
-
-            alert(
-                orderData.message ||
-                "Order failed."
-            );
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-                    SAVE ORDER ID
-        --------------------------------------------- */
-
-        localStorage.setItem(
-    "orderId",
-    String(orderData.orderId)
-);
-
-localStorage.setItem(
-    "orderSuccess",
-    "true"
-);
-
-localStorage.setItem(
-    "paymentSuccess",
-    paymentMethod === "UPI" ? "true" : "false"
-);
-
-
-        /* ---------------------------------------------
-                    SAVE LAST ORDER
-        --------------------------------------------- */
-
-        localStorage.setItem(
-            "lastOrder",
-            JSON.stringify({
-
-                orderId:
-                    orderData.orderId,
-
-                partnerId:
-                    partnerId,
-
-                amount:
-                    grandTotal,
-
-                payment:
-                    paymentMethod
-
-            })
-        );
-
-
-        /* ---------------------------------------------
-                    CLEAR CART
-        --------------------------------------------- */
-
-        localStorage.removeItem(
-            "cart"
-        );
-
-
-        localStorage.removeItem(
-            "cartSubtotal"
-        );
-
-        localStorage.removeItem(
-            "deliveryFee"
-        );
-
-        localStorage.removeItem(
-            "gstFee"
-        );
-
-        localStorage.removeItem(
-            "couponDiscount"
-        );
-
-        localStorage.removeItem(
-            "grandTotal"
-        );
-
-
-        /* ---------------------------------------------
-                    SUCCESS PAGE
-        --------------------------------------------- */
-
-        window.location.href =
-            "order-success.html";
-
-    }
-
-   catch(error){
-
-    console.error(
-        "PLACE ORDER ERROR:",
-        error
-    );
-
-    alert(
-        "Order payment was successful, but order creation failed. Please contact support. Do not pay again."
-    );
-
-}
-
-}
-
-
-/* =====================================================
-                    EMPTY CART
-===================================================== */
-
-function showCartEmpty(){
-
-    document.getElementById(
-        "restaurantName"
-    ).innerHTML =
-        "DARVOZ";
-
-
-    document.getElementById(
-        "restaurantItems"
-    ).innerHTML =
-        "0 Items";
-
-
-    document.getElementById(
-        "orderItems"
-    ).innerHTML = `
-
-        <div class="empty">
-
-            <i class="
-                fa-solid
-                fa-cart-shopping
-            "></i>
-
-            <h3>
-                Your Cart is Empty
-            </h3>
-
-            <p>
-                Add products to continue.
-            </p>
-
-            <button
-                onclick="
-                    window.location='index.html'
-                "
-                style="
-                    margin-top:20px;
-                    background:#ff5a00;
-                    color:white;
-                    border:none;
-                    padding:12px 25px;
-                    border-radius:10px;
-                    cursor:pointer;
-                "
-            >
-                Browse DARVOZ
-            </button>
-
-        </div>
-
-    `;
-
-
-    document.getElementById(
-        "itemTotal"
-    ).innerHTML =
-        "₹0";
-
-
-    document.getElementById(
-        "deliveryFee"
-    ).innerHTML =
-        "₹0";
-
-
-    document.getElementById(
-        "gstFee"
-    ).innerHTML =
-        "₹0";
-
-
-    document.getElementById(
-        "discount"
-    ).innerHTML =
-        "₹0";
-
-
-    document.getElementById(
-        "grandTotal"
-    ).innerHTML =
-        "₹0";
-
-
-    document.getElementById(
-        "bottomTotal"
-    ).innerHTML =
-        "₹0";
-
-
-    document.getElementById(
-        "payButton"
-    ).disabled =
-        true;
-
-}
-
-
-/* =====================================================
-                    MONEY FORMAT
-===================================================== */
-
-function formatMoney(value){
-
-    return Number(
-        value || 0
-    ).toLocaleString(
-        "en-IN",
-        {
-            minimumFractionDigits:0,
-            maximumFractionDigits:2
-        }
-    );
-
-}
-
-
-/* =====================================================
-                    ESCAPE HTML
-===================================================== */
-
-function escapeHTML(text){
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.innerText =
-        text == null
-            ? ""
-            : String(text);
-
-
-    return div.innerHTML;
-
-}
-
-
-/* =====================================================
-                    END CHECKOUT
-===================================================== */
-
-console.log(
-    "DARVOZ Checkout JS Loaded Successfully"
-);
-
-</script>
-
+    loadPaymentDetails();
+  </script>
 </body>
-
 </html>

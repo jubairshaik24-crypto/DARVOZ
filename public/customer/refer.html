@@ -10,39 +10,63 @@
 
 <title>Refer & Earn - DARVOZ</title>
 
+
 <style>
 
+/* =========================================================
+   DARVOZ REFER & EARN
+   PREMIUM DEEP OCEAN UI
+   NO ORANGE / NO MONEY
+========================================================= */
+
 :root{
-    --orange:#F4530A;
-    --orange-dark:#E04600;
-    --green:#25B440;
-    --gold:#F5B830;
-    --gold-dark:#E29A0E;
-    --text-dark:#1A1A1A;
-    --gray:#6B6B6B;
-    --bg:#F7F7F8;
-    --card-border:#E9E9E9;
+    --ocean:#004D5B;
+    --ocean-dark:#003B47;
+    --ocean-deep:#002A34;
+    --ocean-mid:#006979;
+
+    --cyan:#16B7C7;
+    --cyan-dark:#0B91A0;
+    --cyan-light:#DDF7FA;
+
+    --coin:#18AFC0;
+    --coin-dark:#087D8C;
+
+    --text-dark:#102A33;
+    --text:#233E47;
+    --gray:#657980;
+    --gray-light:#8CA0A6;
+
+    --bg:#F3FAFB;
+    --white:#FFFFFF;
+
+    --card-border:#DCECEF;
+
+    --shadow:
+        0 6px 22px rgba(0,77,91,.08);
+
+    --shadow-strong:
+        0 12px 32px rgba(0,77,91,.18);
 }
 
 
-/* =========================================
+/* =========================================================
    RESET
-========================================= */
+========================================================= */
 
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
+
     -webkit-tap-highlight-color:transparent;
 }
-
 
 html,
 body{
     width:100%;
     min-height:100%;
 }
-
 
 body{
     font-family:
@@ -54,7 +78,12 @@ body{
         Arial,
         sans-serif;
 
-    background:#F7F7F8;
+    background:
+        linear-gradient(
+            180deg,
+            #F3FAFB 0%,
+            #F7FCFD 100%
+        );
 
     color:var(--text-dark);
 
@@ -65,24 +94,31 @@ body{
 }
 
 
-/* =========================================
-   PHONE
-========================================= */
+/* =========================================================
+   PHONE CONTAINER
+========================================================= */
 
 .phone{
     width:390px;
     max-width:100%;
     min-height:100vh;
 
-    background:#fff;
+    background:
+        linear-gradient(
+            180deg,
+            #F8FCFD 0%,
+            #FFFFFF 100%
+        );
 
-    padding-bottom:25px;
+    padding-bottom:30px;
+
+    position:relative;
 }
 
 
-/* =========================================
+/* =========================================================
    HEADER
-========================================= */
+========================================================= */
 
 .header{
     height:72px;
@@ -94,32 +130,54 @@ body{
     padding:14px 20px 10px;
 
     position:relative;
+
+    background:rgba(255,255,255,.96);
+
+    border-bottom:1px solid #E7F1F3;
+
+    z-index:20;
 }
 
+
+/* BACK BUTTON */
 
 .back-btn{
     width:44px;
     height:44px;
 
-    border-radius:12px;
+    border-radius:50%;
 
-    background:#F3F3F4;
+    background:
+        linear-gradient(
+            145deg,
+            #E9F7F9,
+            #D8F0F3
+        );
 
-    border:1px solid #E4E4E4;
+    border:1px solid #C9E7EB;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    color:#222;
+    color:var(--ocean);
 
     cursor:pointer;
 
     font-size:25px;
-
     line-height:1;
+
+    transition:
+        transform .18s ease,
+        background .18s ease;
 }
 
+.back-btn:active{
+    transform:scale(.92);
+}
+
+
+/* PAGE TITLE */
 
 .header h1{
     position:absolute;
@@ -130,70 +188,107 @@ body{
 
     font-size:20px;
 
-    font-weight:800;
+    font-weight:850;
 
-    color:#151515;
+    color:var(--ocean-deep);
 
     white-space:nowrap;
+
+    letter-spacing:-.3px;
 }
 
 
-.tnc-link{
-    color:var(--orange);
-
-    font-weight:800;
-
-    font-size:16px;
-
-    text-decoration:none;
-
-    cursor:pointer;
-}
+/* HEADER ACTIONS */
 
 .header-actions{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:9px;
 }
 
+
+/* HISTORY */
+
 .history-btn{
-    width:38px;
-    height:38px;
+    width:40px;
+    height:40px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    color:#222;
+    color:var(--ocean);
 
     text-decoration:none;
 
-    border-radius:10px;
+    border-radius:50%;
+
+    background:#F0FAFB;
+
+    border:1px solid #D4ECEF;
 
     cursor:pointer;
+
+    transition:
+        transform .18s ease,
+        background .18s ease;
 }
 
 .history-btn:active{
-    transform:scale(.94);
+    transform:scale(.92);
 }
 
-/* =========================================
-   HERO
-========================================= */
 
-.hero{
-    margin:12px 16px 0;
+/* T&C */
+
+.tnc-link{
+    color:var(--ocean);
+
+    font-weight:800;
+
+    font-size:13px;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    border:1px solid var(--ocean);
+
+    padding:8px 11px;
 
     border-radius:20px;
 
-    padding:27px 22px 24px;
+    background:#fff;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    margin:14px 14px 0;
+
+    border-radius:26px;
+
+    padding:28px 22px 24px;
 
     background:
+        radial-gradient(
+            circle at 88% 15%,
+            rgba(22,183,199,.34),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 10% 100%,
+            rgba(22,183,199,.15),
+            transparent 32%
+        ),
         linear-gradient(
-            150deg,
-            #FA6A16 0%,
-            #F14B06 55%,
-            #E23F00 100%
+            145deg,
+            #002A34 0%,
+            #004D5B 53%,
+            #006979 100%
         );
 
     position:relative;
@@ -202,142 +297,310 @@ body{
 
     color:#fff;
 
-    min-height:390px;
+    min-height:330px;
+
+    box-shadow:var(--shadow-strong);
 }
 
+
+/* DECORATIVE WAVE */
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    right:-145px;
+    top:-160px;
+
+    border-radius:50%;
+
+    border:55px solid rgba(22,183,199,.12);
+
+    pointer-events:none;
+}
+
+
+/* SECOND WAVE */
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:210px;
+    height:210px;
+
+    left:-130px;
+    bottom:-135px;
+
+    border-radius:50%;
+
+    border:42px solid rgba(255,255,255,.06);
+
+    pointer-events:none;
+}
+
+
+/* HERO CONTENT */
 
 .hero-content{
     position:relative;
-
-    z-index:4;
+    z-index:6;
 }
 
 
+/* BRAND */
+
 .brand{
+    font-size:30px;
+
+    font-weight:950;
+
+    letter-spacing:.5px;
+
+    line-height:1;
+
+    color:#FFFFFF;
+}
+
+
+/* BRAND SUBTITLE */
+
+.brand-sub{
+    font-size:12px;
+
+    font-weight:600;
+
+    color:#CDEEF2;
+
+    margin-top:7px;
+}
+
+
+/* REFER TITLE */
+
+.refer-title{
     font-size:31px;
 
     font-weight:900;
 
-    letter-spacing:.4px;
-
-    line-height:1;
-}
-
-
-.brand-sub{
-    font-size:13.5px;
-
-    font-weight:600;
-
-    opacity:.94;
-
-    margin-top:5px;
-}
-
-
-.refer-title{
-    font-size:32px;
-
-    font-weight:900;
-
-    margin-top:22px;
+    margin-top:23px;
 
     line-height:1.05;
+
+    letter-spacing:-.7px;
+
+    max-width:190px;
 }
 
 
+/* DESCRIPTION */
+
 .refer-desc{
-    font-size:14px;
+    font-size:13.5px;
 
     font-weight:500;
 
-    line-height:1.4;
+    line-height:1.45;
 
-    margin-top:9px;
+    margin-top:10px;
 
-    max-width:205px;
+    max-width:190px;
 
-    opacity:.96;
+    color:#D9F1F4;
 }
 
 
-/* =========================================
-   EARN PILL
-========================================= */
+/* =========================================================
+   HIDE OLD ORANGE SVG GRAPHIC
+========================================================= */
 
-.earn-pill{
+.gift-graphic{
+    display:none !important;
+}
+
+
+/* =========================================================
+   COIN VISUAL CREATED THROUGH CSS
+========================================================= */
+
+.hero .coin-visual{
     position:absolute;
 
-    left:22px;
+    right:18px;
+    top:55px;
 
-    bottom:18px;
+    width:145px;
+    height:175px;
 
-    z-index:5;
-
-    background:#fff;
-
-    color:#222;
-
-    border-radius:14px;
-
-    padding:12px 16px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    width:265px;
-
-    min-height:64px;
+    z-index:3;
 }
 
 
-.coin-icon{
-    width:40px;
-    height:40px;
+/* LARGE COIN */
 
-    min-width:40px;
+.hero .coin-visual::before{
+    content:"D";
+
+    position:absolute;
+
+    right:12px;
+    top:20px;
+
+    width:105px;
+    height:105px;
 
     border-radius:50%;
 
     background:
         radial-gradient(
-            circle at 35% 30%,
-            #FFDE7A,
-            var(--gold) 55%,
-            var(--gold-dark) 100%
+            circle at 32% 28%,
+            #A0F2F6 0%,
+            #1BC0CF 42%,
+            #087D8C 100%
         );
+
+    border:5px solid rgba(255,255,255,.75);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:45px;
+    font-weight:950;
+
+    box-shadow:
+        0 14px 25px rgba(0,0,0,.22),
+        inset 0 3px 5px rgba(255,255,255,.4);
+
+    transform:rotate(-8deg);
+}
+
+
+/* SMALL COIN 1 */
+
+.hero .coin-visual::after{
+    content:"D";
+
+    position:absolute;
+
+    left:3px;
+    top:40px;
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    background:var(--cyan);
+
+    border:3px solid rgba(255,255,255,.7);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:17px;
+    font-weight:900;
+
+    box-shadow:0 6px 14px rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   EARN COIN PILL
+========================================================= */
+
+.earn-pill{
+    position:absolute;
+
+    left:20px;
+    bottom:18px;
+
+    z-index:8;
+
+    background:#FFFFFF;
+
+    color:var(--text-dark);
+
+    border-radius:17px;
+
+    padding:11px 14px;
 
     display:flex;
 
     align-items:center;
 
-    justify-content:center;
+    gap:11px;
 
-    color:#B4700B;
+    width:245px;
 
-    font-weight:900;
-
-    font-size:20px;
+    min-height:64px;
 
     box-shadow:
-        inset 0 -2px 3px rgba(0,0,0,.15);
+        0 8px 22px rgba(0,0,0,.18);
 }
 
+
+/* COIN ICON */
+
+.coin-icon{
+    width:42px;
+    height:42px;
+
+    min-width:42px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 32% 28%,
+            #A0F2F6,
+            #18AFC0 45%,
+            #087D8C 100%
+        );
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    font-weight:950;
+    font-size:20px;
+
+    border:3px solid #DDF7FA;
+
+    box-shadow:
+        0 5px 12px rgba(0,77,91,.22),
+        inset 0 2px 3px rgba(255,255,255,.4);
+}
+
+
+/* EARN TEXT */
 
 .earn-pill-text{
     min-width:0;
 }
 
 
+/* COIN AMOUNT */
+
 .earn-amount{
-    color:var(--orange);
+    color:var(--ocean);
 
-    font-weight:900;
+    font-weight:950;
 
-    font-size:15px;
+    font-size:14px;
 
     line-height:1.2;
 
@@ -345,87 +608,75 @@ body{
 }
 
 
-.earn-label{
-    color:#3A3A3A;
+/* LABEL */
 
-    font-size:12.5px;
+.earn-label{
+    color:#5B7077;
+
+    font-size:11.5px;
 
     font-weight:600;
 
-    margin-top:3px;
+    margin-top:4px;
 
     white-space:nowrap;
 }
 
 
-/* =========================================
-   GIFT
-========================================= */
-
-.gift-graphic{
-    position:absolute;
-
-    right:2px;
-
-    top:42px;
-
-    width:180px;
-
-    z-index:2;
-
-    pointer-events:none;
-}
-
+/* =========================================================
+   SPARKLES
+========================================================= */
 
 .sparkle{
     position:absolute;
 
-    background:rgba(255,255,255,.55);
+    background:rgba(143,241,247,.7);
 
     transform:rotate(45deg);
 
     border-radius:3px;
 
-    z-index:3;
+    z-index:4;
 
     pointer-events:none;
 }
 
 
-/* =========================================
-   SECTION
-========================================= */
+/* =========================================================
+   GENERAL SECTION
+========================================================= */
 
 .section{
-    margin:20px 16px 0;
+    margin:18px 14px 0;
 
-    background:#fff;
+    background:#FFFFFF;
 
     border:1px solid var(--card-border);
 
-    border-radius:18px;
+    border-radius:20px;
 
-    padding:20px;
+    padding:18px;
 
-    box-shadow:
-        0 1px 4px rgba(0,0,0,.03);
+    box-shadow:var(--shadow);
 }
 
+
+/* SECTION TITLE */
 
 .section-title{
     font-size:18px;
 
-    font-weight:800;
+    font-weight:850;
 
-    color:#151515;
+    color:var(--ocean-deep);
 
-    margin-bottom:14px;
+    margin-bottom:13px;
 }
 
 
-/* =========================================
+/* =========================================================
    REFERRAL CODE
-========================================= */
+========================================================= */
 
 .code-box{
     width:100%;
@@ -434,15 +685,20 @@ body{
 
     border:
         1.5px dashed
-        var(--orange);
+        var(--cyan);
 
-    border-radius:12px;
+    border-radius:15px;
 
     display:flex;
 
     align-items:center;
 
-    background:#FFF8F5;
+    background:
+        linear-gradient(
+            135deg,
+            #F1FCFD,
+            #E6F8FA
+        );
 
     overflow:hidden;
 }
@@ -455,13 +711,13 @@ body{
 
     text-align:center;
 
-    font-size:21px;
+    font-size:20px;
 
-    font-weight:900;
+    font-weight:950;
 
-    letter-spacing:3px;
+    letter-spacing:2.5px;
 
-    color:var(--orange);
+    color:var(--ocean);
 
     padding:0 8px;
 
@@ -472,6 +728,8 @@ body{
     white-space:nowrap;
 }
 
+
+/* COPY BUTTON */
 
 .copy-btn{
     height:100%;
@@ -486,54 +744,57 @@ body{
 
     gap:7px;
 
-    color:var(--orange);
+    color:var(--ocean);
 
     font-weight:800;
 
-    font-size:14px;
+    font-size:13px;
 
     background:none;
 
     border:none;
 
-    border-left:1px solid #F4CDBA;
+    border-left:1px solid #CBE5E8;
 
-    padding:0 14px;
+    padding:0 13px;
 
     white-space:nowrap;
 
     cursor:pointer;
 }
 
-
 .copy-btn:active{
-    transform:scale(.97);
+    transform:scale(.96);
 }
 
 
-/* =========================================
-   SHARE LINK
-========================================= */
+/* =========================================================
+   SHARE LABEL
+========================================================= */
 
 .share-label{
-    font-size:16px;
+    font-size:15px;
 
-    font-weight:800;
+    font-weight:850;
 
-    color:#151515;
+    color:var(--ocean-deep);
 
-    margin:20px 0 10px;
+    margin:19px 0 9px;
 }
 
+
+/* =========================================================
+   LINK BOX
+========================================================= */
 
 .link-box{
     width:100%;
 
-    min-height:62px;
+    min-height:60px;
 
-    border:1px solid #E8E8E8;
+    border:1px solid #D9EAED;
 
-    border-radius:12px;
+    border-radius:14px;
 
     display:flex;
 
@@ -541,7 +802,7 @@ body{
 
     overflow:hidden;
 
-    background:#fff;
+    background:#F9FDFD;
 }
 
 
@@ -550,11 +811,11 @@ body{
 
     min-width:0;
 
-    padding:0 13px;
+    padding:0 12px;
 
-    font-size:12px;
+    font-size:11.5px;
 
-    color:#444;
+    color:#536970;
 
     overflow:hidden;
 
@@ -570,39 +831,39 @@ body{
 
 
 .link-copy{
-    min-width:82px;
+    min-width:76px;
 
-    padding:0 10px;
+    padding:0 9px;
 
-    border-left:1px solid #E8E8E8;
+    border-left:1px solid #D9EAED;
 }
 
 
-/* =========================================
+/* =========================================================
    SHARE BUTTONS
-========================================= */
+========================================================= */
 
 .btn-row{
     display:flex;
 
-    gap:12px;
+    gap:10px;
 
-    margin-top:16px;
+    margin-top:15px;
 }
 
 
 .btn{
     flex:1;
 
-    height:58px;
+    height:56px;
 
     border:none;
 
-    border-radius:12px;
+    border-radius:15px;
 
     padding:0 8px;
 
-    font-size:15px;
+    font-size:14px;
 
     font-weight:800;
 
@@ -617,43 +878,68 @@ body{
     gap:8px;
 
     cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
 }
 
 
 .btn:active{
-    transform:scale(.98);
+    transform:scale(.97);
 }
 
+
+/* WHATSAPP */
 
 .btn-whatsapp{
-    background:var(--green);
+    background:
+        linear-gradient(
+            135deg,
+            #159447,
+            #0B7D39
+        );
+
+    box-shadow:
+        0 5px 15px rgba(21,148,71,.18);
 }
 
+
+/* MORE OPTIONS */
 
 .btn-more{
-    background:var(--orange);
+    background:
+        linear-gradient(
+            135deg,
+            #004D5B,
+            #006979
+        );
+
+    box-shadow:
+        0 5px 15px rgba(0,77,91,.18);
 }
 
 
-/* =========================================
+/* =========================================================
    REWARD SECTION
-========================================= */
+========================================================= */
 
 .reward-banner{
     width:100%;
 
-    min-height:72px;
+    min-height:80px;
 
     background:
         linear-gradient(
-            90deg,
-            #F4530A,
-            #E23F00
+            135deg,
+            #003542,
+            #005D6C,
+            #007788
         );
 
-    border-radius:14px;
+    border-radius:17px;
 
-    padding:10px 12px;
+    padding:12px 10px;
 
     display:flex;
 
@@ -665,25 +951,30 @@ body{
 
     color:#fff;
 
-    font-size:14px;
+    font-size:13px;
 
     font-weight:800;
 
-    line-height:1.15;
+    line-height:1.2;
 
     text-align:center;
+
+    box-shadow:
+        0 7px 20px rgba(0,77,91,.16);
 }
 
 
+/* REWARD ICON */
+
 .reward-banner .pct-icon{
-    width:31px;
-    height:31px;
+    width:32px;
+    height:32px;
 
-    min-width:31px;
+    min-width:32px;
 
-    background:#fff;
+    background:#DDF7FA;
 
-    border-radius:9px;
+    border-radius:50%;
 
     display:flex;
 
@@ -691,29 +982,33 @@ body{
 
     justify-content:center;
 
-    color:var(--orange);
+    color:var(--ocean);
 
-    font-size:16px;
+    font-size:15px;
 
-    font-weight:900;
+    font-weight:950;
 }
 
+
+/* COIN AMOUNT */
 
 .reward-banner .amt{
-    color:#FFD84D;
+    color:#9AF0F5;
 
-    font-weight:900;
+    font-weight:950;
 
-    font-size:18px;
+    font-size:17px;
 }
 
+
+/* SEPARATOR */
 
 .reward-banner .sep{
     width:2px;
 
     height:35px;
 
-    background:rgba(255,255,255,.75);
+    background:rgba(255,255,255,.3);
 
     flex:none;
 
@@ -721,38 +1016,46 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    STEPS
-========================================= */
+========================================================= */
 
 .steps{
     margin-top:27px;
 
     position:relative;
 
-    /*
-       Space for icons.
-    */
     padding-left:58px;
 }
 
 
-/*
-   IMPORTANT:
-   Line goes exactly through
-   center of both circles.
-*/
+/* CONNECTING LINE */
+
 .step-line{
-   position:absolute;
-   left:-38px;
-   top:20px;
-   bottom:58px;
-   width:3px;
-   background:var(--orange);
-   border-radius:10px;
-   z-index:1;
+    position:absolute;
+
+    left:-38px;
+
+    top:20px;
+
+    bottom:58px;
+
+    width:3px;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--cyan),
+            var(--ocean)
+        );
+
+    border-radius:10px;
+
+    z-index:1;
 }
 
+
+/* STEP */
 
 .step{
     position:relative;
@@ -770,18 +1073,8 @@ body{
 }
 
 
-/*
-   Circle center:
-   left 0 + 17px? 
+/* STEP ICON */
 
-   Circle width 40.
-   Center = 20.
-   Line center = 18.5.
-
-   Slight overlap is intentional
-   so the line disappears behind
-   the circle.
-*/
 .step-icon{
     position:absolute;
 
@@ -795,7 +1088,12 @@ body{
 
     border-radius:50%;
 
-    background:var(--orange);
+    background:
+        linear-gradient(
+            145deg,
+            #006979,
+            #003E4A
+        );
 
     display:flex;
 
@@ -805,7 +1103,12 @@ body{
 
     color:#fff;
 
+    border:3px solid #DDF7FA;
+
     z-index:5;
+
+    box-shadow:
+        0 5px 13px rgba(0,77,91,.20);
 }
 
 
@@ -816,10 +1119,12 @@ body{
 }
 
 
-.step-text{
-    font-size:15px;
+/* STEP TEXT */
 
-    color:#222;
+.step-text{
+    font-size:14px;
+
+    color:#405A62;
 
     line-height:1.5;
 
@@ -829,15 +1134,19 @@ body{
 }
 
 
-.step-text b{
-    color:var(--orange);
+/* IMPORTANT TEXT */
 
-    font-weight:900;
+.step-text b{
+    color:var(--ocean);
+
+    font-weight:950;
 }
 
 
+/* T&C */
+
 .step-text a{
-    color:var(--orange);
+    color:var(--ocean);
 
     font-weight:800;
 
@@ -847,35 +1156,36 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    SHARE NOW
-========================================= */
+========================================================= */
 
 .share-now{
-    margin:22px 16px 0;
+    margin:20px 14px 0;
 
     background:
         linear-gradient(
             90deg,
-            #F4530A,
-            #E94706
+            #003542,
+            #005D6C,
+            #007788
         );
 
     border:none;
 
-    border-radius:14px;
+    border-radius:17px;
 
-    width:calc(100% - 32px);
+    width:calc(100% - 28px);
 
-    min-height:62px;
+    min-height:60px;
 
     padding:0 17px;
 
     color:#fff;
 
-    font-size:17px;
+    font-size:16px;
 
-    font-weight:800;
+    font-weight:850;
 
     display:flex;
 
@@ -888,7 +1198,10 @@ body{
     cursor:pointer;
 
     box-shadow:
-        0 5px 15px rgba(244,83,10,.15);
+        0 7px 20px rgba(0,77,91,.20);
+
+    transition:
+        transform .15s ease;
 }
 
 
@@ -897,32 +1210,44 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
+   WHATSAPP SVG
+========================================================= */
+
+.whatsapp-svg{
+    flex:none;
+
+    display:block;
+}
+
+
+/* =========================================================
    TOAST
-========================================= */
+========================================================= */
 
 .toast{
     position:fixed;
 
     left:50%;
 
-    bottom:30px;
+    bottom:25px;
 
     transform:
         translateX(-50%)
         translateY(20px);
 
-    background:#222;
+    background:
+        #003542;
 
     color:#fff;
 
     padding:11px 19px;
 
-    border-radius:20px;
+    border-radius:25px;
 
-    font-size:13.5px;
+    font-size:13px;
 
-    font-weight:600;
+    font-weight:700;
 
     opacity:0;
 
@@ -933,6 +1258,9 @@ body{
     z-index:9999;
 
     white-space:nowrap;
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.20);
 }
 
 
@@ -945,14 +1273,14 @@ body{
 }
 
 
-/* =========================================
+/* =========================================================
    MOBILE
-========================================= */
+========================================================= */
 
 @media(max-width:600px){
 
     body{
-        background:#fff;
+        background:#FFFFFF;
 
         padding:0;
     }
@@ -965,15 +1293,17 @@ body{
 
         min-height:100vh;
     }
-}
 
-
-@media(max-width:600px){
 
     .header{
-        padding-left:14px;
+        padding-left:13px;
 
-        padding-right:14px;
+        padding-right:13px;
+    }
+
+
+    .header h1{
+        font-size:19px;
     }
 
 
@@ -984,38 +1314,61 @@ body{
 
         padding-left:18px;
 
-        min-height:300px;
+        padding-right:18px;
+
+        min-height:320px;
+
+        border-radius:23px;
     }
 
 
     .brand{
-        font-size:28px;
+        font-size:27px;
+    }
+
+
+    .brand-sub{
+        font-size:11px;
     }
 
 
     .refer-title{
-        font-size:29px;
+        font-size:28px;
+
+        max-width:175px;
     }
 
 
     .refer-desc{
-        font-size:13px;
+        font-size:12.5px;
 
-        max-width:185px;
-    }
-
-
-    .gift-graphic{
-        width:160px;
-
-        right:-2px;
+        max-width:175px;
     }
 
 
     .earn-pill{
-        left:18px;
+        left:17px;
 
-        width:245px;
+        width:235px;
+
+        bottom:15px;
+    }
+
+
+    .coin-icon{
+        width:40px;
+        height:40px;
+        min-width:40px;
+    }
+
+
+    .earn-amount{
+        font-size:13px;
+    }
+
+
+    .earn-label{
+        font-size:10.5px;
     }
 
 
@@ -1024,7 +1377,14 @@ body{
 
         margin-right:12px;
 
-        padding:17px;
+        padding:16px;
+
+        border-radius:18px;
+    }
+
+
+    .section-title{
+        font-size:17px;
     }
 
 
@@ -1036,27 +1396,27 @@ body{
 
 
     .copy-btn{
-        min-width:72px;
+        min-width:70px;
 
-        padding:0 9px;
+        padding:0 8px;
 
-        font-size:13px;
+        font-size:12px;
     }
 
 
     .reward-banner{
-        font-size:12px;
+        font-size:11.5px;
 
         gap:4px;
 
-        padding-left:7px;
+        padding-left:6px;
 
-        padding-right:7px;
+        padding-right:6px;
     }
 
 
     .reward-banner .amt{
-        font-size:16px;
+        font-size:15px;
     }
 
 
@@ -1066,9 +1426,10 @@ body{
 
 
     .step-line{
-    left:16px;
-    bottom:59px;
-}
+        left:16px;
+
+        bottom:59px;
+    }
 
 
     .step-icon{
@@ -1081,17 +1442,146 @@ body{
 
 
     .step-text{
-        font-size:14px;
+        font-size:13.5px;
     }
 
 
     .btn{
-        font-size:14px;
+        font-size:13px;
+
+        height:54px;
+    }
+
+
+    .share-now{
+        font-size:15px;
     }
 }
-.whatsapp-svg{
-    flex:none;
-    display:block;
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media(max-width:360px){
+
+    .hero{
+        padding-left:15px;
+        padding-right:15px;
+    }
+
+
+    .refer-title{
+        font-size:25px;
+    }
+
+
+    .refer-desc{
+        font-size:12px;
+    }
+
+
+    .earn-pill{
+        width:220px;
+    }
+
+
+    .btn-row{
+        gap:7px;
+    }
+
+
+    .btn{
+        font-size:12px;
+    }
+
+
+    .reward-banner{
+        font-size:10.5px;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP PREVIEW
+========================================================= */
+
+@media(min-width:601px){
+
+    body{
+        padding:20px 0;
+    }
+
+
+    .phone{
+        border-radius:28px;
+
+        overflow:hidden;
+
+        box-shadow:
+            0 20px 60px rgba(0,77,91,.14);
+
+        border:1px solid #DCECEF;
+    }
+}
+
+
+/* =========================================================
+   DISABLE OLD ORANGE COLOR CLASSES
+========================================================= */
+
+[style*="#F4530A"],
+[style*="#F4530A"] *{
+    color:inherit !important;
+}
+
+
+/* =========================================================
+   SMOOTH INTERACTION
+========================================================= */
+
+button,
+a{
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+
+button:focus-visible,
+a:focus-visible{
+    outline:3px solid rgba(22,183,199,.35);
+
+    outline-offset:2px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:4px;
+}
+
+::-webkit-scrollbar-track{
+    background:#F3FAFB;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#B8DDE2;
+
+    border-radius:10px;
+}
+
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection{
+    background:#BDEDF1;
+
+    color:#003542;
 }
 
 </style>
@@ -1399,56 +1889,10 @@ body{
 
 
 
-    <div class="share-label">
-        Share your link
-    </div>
 
 
-    <div class="link-box">
 
-        <span
-            class="link-text"
-            id="referralLink">
-
-            Loading...
-
-        </span>
-
-
-        <button
-            class="copy-btn link-copy"
-            onclick="copyReferralLink(event)">
-
-            <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2">
-
-                <rect
-                    x="9"
-                    y="9"
-                    width="13"
-                    height="13"
-                    rx="2"/>
-
-                <path
-                    d="
-                        M5 15H4
-                        a2 2 0 0 1-2-2V4
-                        a2 2 0 0 1 2-2h9
-                        a2 2 0 0 1 2 2v1
-                    "/>
-
-            </svg>
-
-            Copy
-
-        </button>
-
-    </div>
+   
 
 
 

@@ -3,558 +3,1410 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
 
-<title>Edit Profile | DARVOZ</title>
+    <meta name="theme-color" content="#006B5B">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Edit Profile | DARVOZ</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Poppins -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
-body{
-background:#f6f6f6;
-padding-bottom:120px;
+
+html {
+    width: 100%;
+    min-height: 100%;
 }
 
-/* Header */
 
-.header{
+body {
+    width: 100%;
+    min-height: 100vh;
 
-background:#ff6b00;
+    background: #ffffff;
 
-padding:22px;
+    color: #102522;
 
-display:flex;
+    overflow-x: hidden;
 
-align-items:center;
-
-gap:18px;
-
-color:#fff;
-
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-
+    padding-bottom: 100px;
 }
 
-.header i{
 
-font-size:22px;
+/* =========================================================
+   COLORS
+========================================================= */
 
-cursor:pointer;
+:root {
 
+    --petrol: #004D5B;
+    --green: #006B5B;
+    --green-dark: #00564B;
+
+    --mint: #EAF7F3;
+    --mint-dark: #DDF1EB;
+
+    --text: #102522;
+    --gray: #74827F;
+
+    --border: #E0E7E5;
+
+    --white: #ffffff;
 }
 
-.header h2{
 
-font-size:28px;
+/* =========================================================
+   PAGE
+========================================================= */
 
-font-weight:700;
+.page {
 
+    width: 100%;
+
+    max-width: 480px;
+
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    padding-bottom: 110px;
 }
 
-/* Container */
 
-.container{
+/* =========================================================
+   HEADER
+========================================================= */
 
-max-width:700px;
+.header {
 
-margin:25px auto;
+    width: 100%;
 
-padding:0 18px;
+    height: 78px;
 
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    background: #ffffff;
+
+    padding: 0 20px;
 }
 
-/* Card */
 
-.card{
+.header h1 {
 
-background:#fff;
+    font-size: 25px;
 
-border-radius:25px;
+    font-weight: 700;
 
-padding:28px;
+    color: var(--text);
 
-box-shadow:0 10px 30px rgba(0,0,0,.08);
-
-margin-bottom:25px;
-
+    letter-spacing: -.5px;
 }
 
-/* Profile Image */
 
-.profile-box{
+.back-btn {
 
-display:flex;
+    position: absolute;
 
-flex-direction:column;
+    left: 18px;
 
-align-items:center;
+    top: 50%;
 
-margin-bottom:25px;
+    transform: translateY(-50%);
 
+    width: 45px;
+
+    height: 45px;
+
+    border: none;
+
+    background: transparent;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--text);
+
+    font-size: 25px;
+
+    cursor: pointer;
 }
 
-.profile-photo{
 
-width:130px;
+.back-btn:active {
 
-height:130px;
-
-border-radius:50%;
-
-overflow:hidden;
-
-border:5px solid #ff6b00;
-
-margin-bottom:15px;
-
-background:#fff3ea;
-
+    transform:
+        translateY(-50%)
+        scale(.9);
 }
 
-.profile-photo img{
 
-width:100%;
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
 
-height:100%;
+.container {
 
-object-fit:cover;
+    width: 100%;
 
+    padding: 0 18px;
+
+    margin: 0 auto;
 }
 
-.upload-btn{
 
-background:#ff6b00;
+/* =========================================================
+   PROFILE SECTION
+========================================================= */
 
-color:#fff;
+.profile-section {
 
-padding:10px 24px;
+    display: flex;
 
-border-radius:30px;
+    flex-direction: column;
 
-cursor:pointer;
+    align-items: center;
 
-font-size:15px;
-
-font-weight:600;
-
+    padding: 15px 0 25px;
 }
 
-.upload-btn input{
 
-display:none;
+.profile-photo-wrapper {
 
+    position: relative;
+
+    width: 130px;
+
+    height: 130px;
+
+    margin-bottom: 14px;
 }
 
-/* Form */
 
-.form-group{
+.profile-photo {
 
-margin-bottom:18px;
+    width: 130px;
 
+    height: 130px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: var(--mint);
+
+    border: 5px solid #DDF1EB;
+
+    box-shadow:
+        0 5px 20px rgba(0, 80, 70, .12);
 }
 
-.form-group label{
 
-display:block;
+.profile-photo img {
 
-font-size:15px;
+    width: 100%;
 
-font-weight:600;
+    height: 100%;
 
-margin-bottom:8px;
+    object-fit: cover;
 
-color:#333;
-
+    display: block;
 }
 
-.form-group input{
 
-width:100%;
+/* =========================================================
+   CAMERA BUTTON
+========================================================= */
 
-padding:15px;
+.camera-btn {
 
-border:1px solid #ddd;
+    position: absolute;
 
-border-radius:14px;
+    right: -2px;
 
-font-size:16px;
+    bottom: 2px;
 
-outline:none;
+    width: 46px;
 
-transition:.3s;
+    height: 46px;
 
+    border-radius: 50%;
+
+    background: var(--green);
+
+    color: #ffffff;
+
+    border: 4px solid #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.15);
 }
 
-.form-group input:focus{
 
-border-color:#ff6b00;
+.camera-btn:active {
 
-box-shadow:0 0 8px rgba(255,107,0,.2);
-
+    transform: scale(.92);
 }
 
-.readonly{
 
-background:#f2f2f2;
+.profile-photo-label {
 
-cursor:not-allowed;
+    color: var(--green);
 
+    font-size: 17px;
+
+    font-weight: 600;
+
+    cursor: pointer;
 }
 
-.section-title{
 
-font-size:22px;
+/* hide file input */
 
-font-weight:700;
+#profileImage {
 
-margin-bottom:20px;
-
-color:#333;
-
-}
- 
- /* =========================
-Address
-========================= */
-
-.location-btn{
-
-width:100%;
-
-padding:16px;
-
-background:#fff3eb;
-
-color:#ff6b00;
-
-border:2px solid #ff6b00;
-
-border-radius:15px;
-
-font-size:17px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:.3s;
-
-margin-top:10px;
-
+    display: none;
 }
 
-.location-btn:hover{
 
-background:#ff6b00;
+/* =========================================================
+   CARD
+========================================================= */
 
-color:#fff;
+.card {
 
+    width: 100%;
+
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    margin-bottom: 18px;
 }
 
-.location-btn i{
 
-margin-right:10px;
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
+.section-title {
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    color: var(--text);
+
+    margin-bottom: 18px;
 }
 
-.location-note{
 
-margin-top:15px;
+/* =========================================================
+   FORM
+========================================================= */
 
-padding:15px;
+.form-group {
 
-background:#fff8f3;
-
-border-left:4px solid #ff6b00;
-
-border-radius:12px;
-
-color:#666;
-
-font-size:14px;
-
-line-height:22px;
-
+    margin-bottom: 17px;
 }
 
-.location-note i{
 
-color:#ff6b00;
+.form-group label {
 
-margin-right:8px;
+    display: block;
 
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #344542;
 }
 
-.save-btn{
 
-width:100%;
+.input-wrapper {
 
-padding:18px;
+    position: relative;
 
-background:#ff6b00;
-
-border:none;
-
-border-radius:16px;
-
-color:#fff;
-
-font-size:19px;
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.3s;
-
+    width: 100%;
 }
 
-.save-btn:hover{
 
-background:#e65c00;
+.input-icon {
 
+    position: absolute;
+
+    left: 17px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #71817D;
+
+    font-size: 18px;
+
+    pointer-events: none;
 }
 
-.save-btn i{
 
-margin-right:10px;
+.form-group input {
 
+    width: 100%;
+
+    height: 57px;
+
+    padding: 0 16px 0 52px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: var(--text);
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    transition: .2s;
 }
+
+
+.form-group input::placeholder {
+
+    color: #9AA6A3;
+}
+
+
+.form-group input:focus {
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 3px rgba(0,107,91,.08);
+}
+
+
+/* =========================================================
+   READ ONLY
+========================================================= */
+
+.form-group input.readonly {
+
+    background: #F3F6F5;
+
+    color: #7A8784;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ADDRESS SECTION
+========================================================= */
+
+.address-title {
+
+    margin-top: 28px;
+}
+
+
+/* =========================================================
+   TWO COLUMN
+========================================================= */
+
+.two-column {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   LOCATION BUTTON
+========================================================= */
+
+.location-btn {
+
+    width: 100%;
+
+    height: 55px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: var(--mint);
+
+    color: var(--green);
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.location-btn:active {
+
+    transform: scale(.98);
+
+    background: var(--mint-dark);
+}
+
+
+.location-btn:disabled {
+
+    opacity: .65;
+
+    cursor: wait;
+}
+
+
+/* =========================================================
+   LOCATION NOTE
+========================================================= */
+
+.location-note {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin-top: 11px;
+
+    padding: 12px 14px;
+
+    border-radius: 13px;
+
+    background: #F6FAF9;
+
+    color: #74827F;
+
+    font-size: 12px;
+
+    line-height: 18px;
+}
+
+
+.location-note i {
+
+    color: var(--green);
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   SAVE BUTTON
+========================================================= */
+
+.save-container {
+
+    padding: 5px 0 20px;
+}
+
+
+.save-btn {
+
+    width: 100%;
+
+    height: 58px;
+
+    border: none;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006B5B,
+            #00564B
+        );
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    box-shadow:
+        0 5px 15px rgba(0,107,91,.18);
+
+    transition: .2s;
+}
+
+
+.save-btn:active {
+
+    transform: scale(.985);
+}
+
+
+.save-btn:disabled {
+
+    opacity: .65;
+
+    cursor: wait;
+}
+
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+.bottom-nav {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 0;
+
+    transform: translateX(-50%);
+
+    width: 100%;
+
+    max-width: 480px;
+
+    height: 78px;
+
+    background: rgba(255,255,255,.98);
+
+    border-top: 1px solid #E7ECEA;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-around;
+
+    padding: 0 7px 4px;
+
+    z-index: 9999;
+
+    box-shadow:
+        0 -3px 15px rgba(0,0,0,.05);
+}
+
+
+.bottom-nav a {
+
+    flex: 1;
+
+    height: 70px;
+
+    text-decoration: none;
+
+    color: #71807D;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    font-size: 11px;
+
+    font-weight: 500;
+}
+
+
+.bottom-nav a i {
+
+    font-size: 21px;
+}
+
+
+.bottom-nav a.active {
+
+    color: var(--green);
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CENTER CART
+========================================================= */
+
+.cart-button {
+
+    flex:
+        0 0
+        62px !important;
+
+    width: 62px;
+
+    height: 62px !important;
+
+    margin-top: -27px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    color: #ffffff !important;
+
+    border: 5px solid #ffffff;
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.18);
+}
+
+
+.cart-button i {
+
+    font-size: 24px !important;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 95px;
+
+    transform:
+        translateX(-50%)
+        translateY(20px);
+
+    width: calc(100% - 40px);
+
+    max-width: 430px;
+
+    padding: 13px 17px;
+
+    border-radius: 13px;
+
+    background: #102522;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    text-align: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: .25s;
+
+    z-index: 10000;
+}
+
+
+.toast.show {
+
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .header {
+
+        height: 72px;
+    }
+
+
+    .header h1 {
+
+        font-size: 23px;
+    }
+
+
+    .profile-photo-wrapper,
+    .profile-photo {
+
+        width: 115px;
+
+        height: 115px;
+    }
+
+
+    .camera-btn {
+
+        width: 42px;
+
+        height: 42px;
+
+        font-size: 16px;
+    }
+
+
+    .container {
+
+        padding: 0 15px;
+    }
+
+
+    .form-group input {
+
+        height: 54px;
+
+        font-size: 14px;
+    }
+
+
+    .section-title {
+
+        font-size: 20px;
+    }
+}
+
+
+@media (max-width: 340px) {
+
+    .two-column {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .activity-date {
+
+        display: none;
+    }
+}
+
 </style>
 
 </head>
 
+
 <body>
 
-<div class="header">
 
-<i class="fa-solid fa-arrow-left"
-onclick="history.back()"></i>
+<div class="page">
 
-<h2>Edit Profile</h2>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="header">
+
+        <button
+            class="back-btn"
+            onclick="goBack()"
+            aria-label="Back">
+
+            <i class="fa-solid fa-chevron-left"></i>
+
+        </button>
+
+
+        <h1>
+            Edit Profile
+        </h1>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             PROFILE PHOTO
+        ================================================== -->
+
+        <section class="profile-section">
+
+
+            <div class="profile-photo-wrapper">
+
+
+                <div class="profile-photo">
+
+                    <img
+                        id="profilePreview"
+                        src="images/default-profile.png"
+                        alt="Profile Photo"
+                    >
+
+                </div>
+
+
+                <label
+                    for="profileImage"
+                    class="camera-btn"
+                    aria-label="Change profile photo">
+
+                    <i class="fa-solid fa-camera"></i>
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="profileImage"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+            <label
+                for="profileImage"
+                class="profile-photo-label">
+
+                Change Photo
+
+            </label>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PERSONAL DETAILS
+        ================================================== -->
+
+        <section class="card">
+
+
+            <h2 class="section-title">
+                Personal Details
+            </h2>
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label>
+                    Full Name
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-regular fa-user input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter Full Name"
+                        autocomplete="name"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MOBILE -->
+
+            <div class="form-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-phone input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="mobile"
+                        class="readonly"
+                        readonly
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label>
+                    Email Address
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-regular fa-envelope input-icon"></i>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter Email"
+                        autocomplete="email"
+                    >
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ADDRESS DETAILS
+        ================================================== -->
+
+        <section class="card">
+
+
+            <h2 class="section-title">
+                Address Details
+            </h2>
+
+
+            <!-- HOUSE -->
+
+            <div class="form-group">
+
+                <label>
+                    House / Flat No.
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-house input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="house"
+                        placeholder="Flat No, House No"
+                        autocomplete="street-address"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STREET -->
+
+            <div class="form-group">
+
+                <label>
+                    Street
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-road input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="street"
+                        placeholder="Street Name"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AREA -->
+
+            <div class="form-group">
+
+                <label>
+                    Area / Landmark
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-location-dot input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="area"
+                        placeholder="Area or Landmark"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CITY + STATE -->
+
+            <div class="two-column">
+
+
+                <div class="form-group">
+
+                    <label>
+                        City
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-city input-icon"></i>
+
+                        <input
+                            type="text"
+                            id="city"
+                            placeholder="City"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        State
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-map input-icon"></i>
+
+                        <input
+                            type="text"
+                            id="state"
+                            placeholder="State"
+                        >
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PINCODE -->
+
+            <div class="form-group">
+
+                <label>
+                    Pincode
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-location-dot input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="pincode"
+                        placeholder="Pincode"
+                        inputmode="numeric"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CURRENT LOCATION -->
+
+            <button
+                class="location-btn"
+                id="locationBtn"
+                onclick="useCurrentLocation()">
+
+                <i class="fa-solid fa-location-crosshairs"></i>
+
+                Use Current Location
+
+            </button>
+
+
+            <div class="location-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Your current location will automatically
+                    fill the available address details.
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SAVE
+        ================================================== -->
+
+        <div class="save-container">
+
+            <button
+                class="save-btn"
+                id="saveBtn"
+                onclick="saveProfile()">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Save Changes
+
+            </button>
+
+        </div>
+
+
+    </main>
+
 
 </div>
 
-<div class="container">
 
-<div class="card">
 
-<div class="profile-box">
+<!-- =====================================================
+     BOTTOM NAVIGATION
+====================================================== -->
 
-<div class="profile-photo">
+<nav class="bottom-nav">
 
-<img id="profilePreview"
 
-src="images/default-profile.png">
+    <!-- HOME -->
 
+    <a href="index.html">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+
+    <!-- ORDERS -->
+
+    <a href="orders.html">
+
+        <i class="fa-solid fa-file-lines"></i>
+
+        <span>
+            Orders
+        </span>
+
+    </a>
+
+
+
+    <!-- CART -->
+
+    <a
+        href="cart.html"
+        class="cart-button"
+        aria-label="Cart">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+    </a>
+
+
+
+    <!-- COINS -->
+
+    <a href="coins.html">
+
+        <i class="fa-solid fa-coins"></i>
+
+        <span>
+            Coins
+        </span>
+
+    </a>
+
+
+
+    <!-- PROFILE -->
+
+    <a
+        href="profile.html"
+        class="active">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>
+            Profile
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+
+<!-- =====================================================
+     TOAST
+====================================================== -->
+
+<div
+    class="toast"
+    id="toast">
 </div>
 
-<label class="upload-btn">
 
-Change Photo
 
-<input
-
-type="file"
-
-id="profileImage"
-
-accept="image/*">
-
-</label>
-
-</div>
-
-<div class="section-title">
-
-Personal Details
-
-</div>
-
-<div class="form-group">
-
-<label>Full Name</label>
-
-<input
-
-type="text"
-
-id="name"
-
-placeholder="Enter Full Name">
-
-</div>
-
-<div class="form-group">
-
-<label>Mobile Number</label>
-
-<input
-
-type="text"
-
-id="mobile"
-
-class="readonly"
-
-readonly>
-
-</div>
-
-<div class="form-group">
-
-<label>Email Address</label>
-
-<input
-
-type="email"
-
-id="email"
-
-placeholder="Enter Email">
-
-</div>
-<!-- =========================
-     Address Details
-========================= -->
-
-<div class="section-title">
-
-Address Details
-
-</div>
-
-<div class="form-group">
-
-<label>House / Flat No.</label>
-
-<input
-type="text"
-id="house"
-placeholder="Flat No, House No">
-
-</div>
-
-<div class="form-group">
-
-<label>Street</label>
-
-<input
-type="text"
-id="street"
-placeholder="Street Name">
-
-</div>
-
-<div class="form-group">
-
-<label>Area / Landmark</label>
-
-<input
-type="text"
-id="area"
-placeholder="Area or Landmark">
-
-</div>
-
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
-
-<div class="form-group">
-
-<label>City</label>
-
-<input
-type="text"
-id="city"
-placeholder="City">
-
-</div>
-
-<div class="form-group">
-
-<label>State</label>
-
-<input
-type="text"
-id="state"
-placeholder="State">
-
-</div>
-
-</div>
-
-<div class="form-group">
-
-<label>Pincode</label>
-
-<input
-type="text"
-id="pincode"
-placeholder="Pincode">
-
-</div>
-
-<button class="location-btn" onclick="useCurrentLocation()">
-
-<i class="fa-solid fa-location-crosshairs"></i>
-
-Use Current Location
-
-</button>
-
-<div class="location-note">
-
-<i class="fa-solid fa-circle-info"></i>
-
-Your current location will automatically fill City, State and Address.
-
-</div>
-
-</div>
-
-<!-- Save Button -->
-
-<div class="card">
-
-<button class="save-btn" onclick="saveProfile()">
-
-<i class="fa-solid fa-floppy-disk"></i>
-
-Save Changes
-
-</button>
-
-</div>
 <script>
 
-/* =====================================================
-   API + CUSTOMER ID
-===================================================== */
+/* =========================================================
+   API
+========================================================= */
 
 const API = window.location.origin;
+
+
+/* =========================================================
+   CUSTOMER ID
+========================================================= */
 
 const customerId =
     localStorage.getItem("customerId");
 
 
-/* =====================================================
+/* =========================================================
    LOGIN CHECK
-===================================================== */
+========================================================= */
 
-if(!customerId){
+if (!customerId) {
 
     window.location.href =
         "customer-login.html";
@@ -562,13 +1414,55 @@ if(!customerId){
 }
 
 
-/* =====================================================
-   LOAD EXISTING PROFILE
-===================================================== */
+/* =========================================================
+   TOAST
+========================================================= */
 
-async function loadProfile(){
+function showToast(message) {
 
-    try{
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack() {
+
+    if (window.history.length > 1) {
+
+        window.history.back();
+
+    } else {
+
+        window.location.href =
+            "profile.html";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
+
+async function loadProfile() {
+
+    try {
 
         console.log(
             "Loading customer:",
@@ -582,7 +1476,7 @@ async function loadProfile(){
             );
 
 
-        if(!response.ok){
+        if (!response.ok) {
 
             throw new Error(
                 `HTTP ${response.status}`
@@ -601,17 +1495,15 @@ async function loadProfile(){
         );
 
 
-        if(
+        if (
             !result.success ||
             !result.customer
-        ){
+        ) {
 
-            alert(
+            throw new Error(
                 result.message ||
                 "Unable to load profile"
             );
-
-            return;
 
         }
 
@@ -634,6 +1526,7 @@ async function loadProfile(){
 
         document.getElementById("email").value =
             c.email || "";
+
 
 
         /* =================================================
@@ -664,37 +1557,38 @@ async function loadProfile(){
             c.pincode || "";
 
 
+
         /* =================================================
            PROFILE IMAGE
         ================================================= */
 
-        if(c.profile_image){
+        if (c.profile_image) {
 
             let imageUrl =
                 c.profile_image;
 
 
             /*
-             * Cloudinary / complete URL
+             * Complete URL
              */
 
-            if(
+            if (
                 imageUrl.startsWith("http://") ||
                 imageUrl.startsWith("https://")
-            ){
+            ) {
 
                 document.getElementById(
                     "profilePreview"
-                ).src =
-                    imageUrl;
+                ).src = imageUrl;
 
             }
 
+
             /*
-             * Old local upload
+             * Local upload
              */
 
-            else{
+            else {
 
                 document.getElementById(
                     "profilePreview"
@@ -710,16 +1604,17 @@ async function loadProfile(){
             "✅ Profile automatically filled"
         );
 
-
     }
-    catch(error){
+
+
+    catch (error) {
 
         console.error(
             "❌ LOAD PROFILE ERROR:",
             error
         );
 
-        alert(
+        showToast(
             "Unable to load your profile"
         );
 
@@ -728,67 +1623,65 @@ async function loadProfile(){
 }
 
 
-/* =====================================================
+/* =========================================================
    IMAGE PREVIEW
-===================================================== */
+========================================================= */
 
 document
-.getElementById("profileImage")
-.addEventListener(
-    "change",
-    function(){
+    .getElementById("profileImage")
+    .addEventListener(
+        "change",
+        function () {
 
-        const file =
-            this.files[0];
+            const file =
+                this.files[0];
 
 
-        if(!file){
+            if (!file) {
 
-            return;
+                return;
+
+            }
+
+
+            if (
+                !file.type.startsWith("image/")
+            ) {
+
+                showToast(
+                    "Please select an image"
+                );
+
+                this.value = "";
+
+                return;
+
+            }
+
+
+            const preview =
+                document.getElementById(
+                    "profilePreview"
+                );
+
+
+            preview.src =
+                URL.createObjectURL(file);
 
         }
+    );
 
 
-        if(
-            !file.type.startsWith("image/")
-        ){
+/* =========================================================
+   CURRENT LOCATION
+========================================================= */
 
-            alert(
-                "Please select an image."
-            );
+async function useCurrentLocation() {
 
-            this.value = "";
+    if (!navigator.geolocation) {
 
-            return;
-
-        }
-
-
-        const preview =
-            document.getElementById(
-                "profilePreview"
-            );
-
-
-        preview.src =
-            URL.createObjectURL(file);
-
-    }
-);
-
-
-/* =====================================================
-   USE CURRENT LOCATION
-===================================================== */
-
-async function useCurrentLocation(){
-
-    if(
-        !navigator.geolocation
-    ){
-
-        alert(
-            "Location is not supported by this browser."
+        showToast(
+            "Location is not supported by this browser"
         );
 
         return;
@@ -797,26 +1690,29 @@ async function useCurrentLocation(){
 
 
     const button =
-        document.querySelector(
-            ".location-btn"
+        document.getElementById(
+            "locationBtn"
         );
 
 
     button.disabled = true;
 
-    button.innerHTML =
-        `<i class="fa-solid fa-spinner fa-spin"></i>
-         Detecting Location...`;
+
+    button.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Detecting Location...
+    `;
 
 
     navigator.geolocation.getCurrentPosition(
 
-        async(position)=>{
+        async (position) => {
 
-            try{
+            try {
 
                 const lat =
                     position.coords.latitude;
+
 
                 const lng =
                     position.coords.longitude;
@@ -830,21 +1726,21 @@ async function useCurrentLocation(){
 
 
                 /* =========================================
-                   SAVE GPS LOCATION
+                   SAVE GPS TO YOUR BACKEND
                 ========================================= */
 
                 const locationResponse =
                     await fetch(
                         `${API}/customer/update-location`,
                         {
-                            method:"POST",
+                            method: "POST",
 
-                            headers:{
+                            headers: {
                                 "Content-Type":
                                     "application/json"
                             },
 
-                            body:JSON.stringify({
+                            body: JSON.stringify({
 
                                 customerId:
                                     customerId,
@@ -856,14 +1752,17 @@ async function useCurrentLocation(){
                                     lng
 
                             })
-
                         }
                     );
 
 
+                const locationResult =
+                    await locationResponse.json();
+
+
                 console.log(
                     "LOCATION UPDATE:",
-                    await locationResponse.json()
+                    locationResult
                 );
 
 
@@ -875,12 +1774,21 @@ async function useCurrentLocation(){
                     await fetch(
                         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`,
                         {
-                            headers:{
+                            headers: {
                                 "Accept":
                                     "application/json"
                             }
                         }
                     );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Reverse geocoding failed"
+                    );
+
+                }
 
 
                 const data =
@@ -892,51 +1800,87 @@ async function useCurrentLocation(){
 
 
                 /* =========================================
-                   AUTO FILL ADDRESS
+                   CITY
                 ========================================= */
 
                 document.getElementById(
                     "city"
                 ).value =
+
                     address.city ||
+
                     address.town ||
+
                     address.village ||
+
+                    address.municipality ||
+
                     "";
 
+
+                /* =========================================
+                   STATE
+                ========================================= */
 
                 document.getElementById(
                     "state"
                 ).value =
+
                     address.state ||
+
                     "";
 
+
+                /* =========================================
+                   STREET
+                ========================================= */
 
                 document.getElementById(
                     "street"
                 ).value =
+
                     address.road ||
+
                     "";
 
+
+                /* =========================================
+                   AREA
+                ========================================= */
 
                 document.getElementById(
                     "area"
                 ).value =
+
                     address.suburb ||
+
                     address.neighbourhood ||
+
                     address.residential ||
+
+                    address.locality ||
+
                     "";
 
+
+                /* =========================================
+                   PINCODE
+                ========================================= */
 
                 document.getElementById(
                     "pincode"
                 ).value =
+
                     address.postcode ||
+
                     "";
 
 
-                /* HOUSE NUMBER */
+                /* =========================================
+                   HOUSE
+                ========================================= */
 
-                if(address.house_number){
+                if (address.house_number) {
 
                     document.getElementById(
                         "house"
@@ -946,37 +1890,42 @@ async function useCurrentLocation(){
                 }
 
 
-                alert(
-                    "📍 Current location detected successfully!"
+                showToast(
+                    "Current location detected successfully"
                 );
 
-
             }
-            catch(error){
+
+
+            catch (error) {
 
                 console.error(
                     "LOCATION ERROR:",
                     error
                 );
 
-                alert(
-                    "Unable to fetch address."
+                showToast(
+                    "Unable to fetch address"
                 );
 
             }
-            finally{
+
+
+            finally {
 
                 button.disabled = false;
 
-                button.innerHTML =
-                    `<i class="fa-solid fa-location-crosshairs"></i>
-                     Use Current Location`;
+                button.innerHTML = `
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    Use Current Location
+                `;
 
             }
 
         },
 
-        (error)=>{
+
+        (error) => {
 
             console.error(
                 "GPS ERROR:",
@@ -986,35 +1935,51 @@ async function useCurrentLocation(){
 
             button.disabled = false;
 
-            button.innerHTML =
-                `<i class="fa-solid fa-location-crosshairs"></i>
-                 Use Current Location`;
+            button.innerHTML = `
+                <i class="fa-solid fa-location-crosshairs"></i>
+                Use Current Location
+            `;
 
 
-            if(
+            if (
                 error.code ===
                 error.PERMISSION_DENIED
-            ){
+            ) {
 
-                alert(
-                    "Please allow location permission."
+                showToast(
+                    "Please allow location permission"
                 );
 
             }
-            else{
 
-                alert(
-                    "Unable to detect your location."
+            else if (
+                error.code ===
+                error.POSITION_UNAVAILABLE
+            ) {
+
+                showToast(
+                    "Location is unavailable"
+                );
+
+            }
+
+            else {
+
+                showToast(
+                    "Unable to detect your location"
                 );
 
             }
 
         },
 
+
         {
-            enableHighAccuracy:true,
-            timeout:15000,
-            maximumAge:0
+            enableHighAccuracy: true,
+
+            timeout: 15000,
+
+            maximumAge: 0
         }
 
     );
@@ -1022,77 +1987,159 @@ async function useCurrentLocation(){
 }
 
 
-/* =====================================================
+/* =========================================================
    SAVE PROFILE
-===================================================== */
-async function saveProfile(){
+========================================================= */
 
-    try{
+async function saveProfile() {
 
-        const formData = new FormData();
+    const saveButton =
+        document.getElementById(
+            "saveBtn"
+        );
+
+
+    try {
+
+        /* ================================================
+           BASIC VALIDATION
+        ================================================ */
+
+        const name =
+            document
+                .getElementById("name")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        if (!name) {
+
+            showToast(
+                "Please enter your name"
+            );
+
+            return;
+
+        }
+
+
+        /* ================================================
+           LOADING
+        ================================================ */
+
+        saveButton.disabled = true;
+
+
+        saveButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Saving...
+        `;
+
+
+        /* ================================================
+           FORM DATA
+        ================================================ */
+
+        const formData =
+            new FormData();
+
 
         formData.append(
             "customerId",
             customerId
         );
 
+
         formData.append(
             "name",
-            document.getElementById("name").value.trim()
+            name
         );
+
 
         formData.append(
             "email",
-            document.getElementById("email").value.trim()
+            email
         );
+
 
         formData.append(
             "house",
-            document.getElementById("house").value.trim()
+            document
+                .getElementById("house")
+                .value
+                .trim()
         );
+
 
         formData.append(
             "street",
-            document.getElementById("street").value.trim()
+            document
+                .getElementById("street")
+                .value
+                .trim()
         );
+
 
         formData.append(
             "area",
-            document.getElementById("area").value.trim()
+            document
+                .getElementById("area")
+                .value
+                .trim()
         );
+
 
         formData.append(
             "city",
-            document.getElementById("city").value.trim()
+            document
+                .getElementById("city")
+                .value
+                .trim()
         );
+
 
         formData.append(
             "state",
-            document.getElementById("state").value.trim()
+            document
+                .getElementById("state")
+                .value
+                .trim()
         );
+
 
         formData.append(
             "pincode",
-            document.getElementById("pincode").value.trim()
+            document
+                .getElementById("pincode")
+                .value
+                .trim()
         );
 
 
-        /* ================================
+        /* ================================================
            PROFILE IMAGE
-        ================================ */
+        ================================================ */
 
         const imageFile =
-            document.getElementById(
-                "profileImage"
-            ).files[0];
+            document
+                .getElementById("profileImage")
+                .files[0];
 
 
-        if(imageFile){
+        if (imageFile) {
 
             /*
-             * IMPORTANT:
-             * Backend expects "profileImage"
+             * Backend expects:
+             * profileImage
              */
+
             formData.append(
                 "profileImage",
                 imageFile
@@ -1106,12 +2153,17 @@ async function saveProfile(){
         );
 
 
+        /* ================================================
+           UPDATE PROFILE API
+        ================================================ */
+
         const response =
             await fetch(
                 `${API}/customer/update-profile`,
                 {
-                    method:"POST",
-                    body:formData
+                    method: "POST",
+
+                    body: formData
                 }
             );
 
@@ -1126,10 +2178,10 @@ async function saveProfile(){
         );
 
 
-        if(
+        if (
             !response.ok ||
             !result.success
-        ){
+        ) {
 
             throw new Error(
                 result.message ||
@@ -1139,39 +2191,64 @@ async function saveProfile(){
         }
 
 
-        alert(
-            "✅ Profile updated successfully!"
+        /* ================================================
+           SUCCESS
+        ================================================ */
+
+        showToast(
+            "Profile updated successfully"
         );
 
 
-        window.location.href =
-            "profile.html";
+        setTimeout(() => {
 
+            window.location.href =
+                "profile.html";
+
+        }, 1200);
 
     }
-    catch(error){
+
+
+    catch (error) {
 
         console.error(
             "SAVE PROFILE ERROR:",
             error
         );
 
-        alert(
+
+        showToast(
             error.message ||
             "Unable to save profile"
         );
 
     }
 
+
+    finally {
+
+        saveButton.disabled = false;
+
+        saveButton.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save Changes
+        `;
+
+    }
+
 }
 
 
-/* =====================================================
+/* =========================================================
    START
-===================================================== */
+========================================================= */
 
 loadProfile();
 
 </script>
+
+
 </body>
+
 </html>

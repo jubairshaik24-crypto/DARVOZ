@@ -4,6 +4,8 @@ const db = require("../config/db");
 const crypto = require("crypto");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+const cloudinary = require("../config/cloudinary");
 
 // ==========================================
 // GENERATE REFERRAL CODE
@@ -1040,7 +1042,7 @@ const upload =
 router.post(
     "/update-profile",
     upload.single("profileImage"),
-    (req, res) => {
+    async (req, res) => {
 
         const {
             customerId,
@@ -1054,79 +1056,157 @@ router.post(
             pincode
         } = req.body;
 
-        let image = "";
+        try {
 
-        if (req.file) {
+            let image = "";
 
-            image =
-                req.file.filename;
-        }
+            // ==========================================
+            // UPLOAD PROFILE IMAGE TO CLOUDINARY
+            // ==========================================
 
-        const sql = `
+            if (req.file) {
 
-            UPDATE customers
-
-            SET
-                name = ?,
-                email = ?,
-                house = ?,
-                street = ?,
-                area = ?,
-                city = ?,
-                state = ?,
-                pincode = ?,
-
-                profile_image = IF(
-                    ? = '',
-                    profile_image,
-                    ?
-                )
-
-            WHERE id = ?
-
-        `;
-
-        db.query(
-
-            sql,
-
-            [
-                name,
-                email,
-                house,
-                street,
-                area,
-                city,
-                state,
-                pincode,
-                image,
-                image,
-                customerId
-            ],
-
-            (err) => {
-
-                if (err) {
-
-                    console.log(
-                        "UPDATE PROFILE ERROR:",
-                        err
+                const cloudinaryResult =
+                    await cloudinary.uploader.upload(
+                        req.file.path,
+                        {
+                            folder: "darvoz/customers/profile",
+                            resource_type: "image"
+                        }
                     );
 
-                    return res.status(500).json({
-                        success: false,
-                        message:
-                            "Profile update failed"
-                    });
-                }
+                // Save Cloudinary secure URL
+                image = cloudinaryResult.secure_url;
 
-                return res.json({
-                    success: true,
-                    message:
-                        "Profile Updated Successfully"
-                });
+                // Delete temporary local file
+                fs.unlink(
+                    req.file.path,
+                    (err) => {
+                        if (err) {
+                            console.log(
+                                "TEMP IMAGE DELETE ERROR:",
+                                err
+                            );
+                        }
+                    }
+                );
             }
-        );
+
+            // ==========================================
+            // UPDATE CUSTOMER
+            // ==========================================
+
+            const sql = `
+
+                UPDATE customers
+
+                SET
+                    name = ?,
+                    email = ?,
+                    house = ?,
+                    street = ?,
+                    area = ?,
+                    city = ?,
+                    state = ?,
+                    pincode = ?,
+
+                    profile_image = IF(
+                        ? = '',
+                        profile_image,
+                        ?
+                    )
+
+                WHERE id = ?
+
+            `;
+
+            db.query(
+
+                sql,
+
+                [
+                    name,
+                    email,
+                    house,
+                    street,
+                    area,
+                    city,
+                    state,
+                    pincode,
+
+                    image,
+                    image,
+
+                    customerId
+                ],
+
+                (err, result) => {
+
+                    if (err) {
+
+                        console.log(
+                            "UPDATE PROFILE ERROR:",
+                            err
+                        );
+
+                        return res.status(500).json({
+                            success: false,
+                            message:
+                                "Profile update failed"
+                        });
+                    }
+
+                    if (result.affectedRows === 0) {
+
+                        return res.status(404).json({
+                            success: false,
+                            message:
+                                "Customer not found"
+                        });
+                    }
+
+                    return res.json({
+
+                        success: true,
+
+                        message:
+                            "Profile Updated Successfully",
+
+                        profileImage:
+                            image || null
+
+                    });
+
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "CLOUDINARY PROFILE IMAGE ERROR:",
+                error
+            );
+
+            // Delete temporary file if Cloudinary failed
+            if (req.file && req.file.path) {
+
+                fs.unlink(
+                    req.file.path,
+                    () => {}
+                );
+            }
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Profile image upload failed"
+
+            });
+
+        }
+
     }
 );
 
@@ -1636,6 +1716,7 @@ router.put(
         );
     }
 );
+
 // ==========================================
 // SAVE FCM TOKEN
 // ==========================================

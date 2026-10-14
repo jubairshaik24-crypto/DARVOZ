@@ -1257,6 +1257,138 @@ body{
 
 
 /* =====================================================
+   GROCERY CATEGORY ROW
+===================================================== */
+
+.grocery-category-section{
+    margin-top:24px;
+    width:100%;
+}
+
+.grocery-category-header{
+    margin-bottom:12px;
+}
+
+.grocery-category-header h2{
+    color:#171717;
+}
+
+.grocery-category-header a{
+    color:#004D5B;
+}
+
+.grocery-category-scroll{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+
+    width:100%;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    padding:2px 15px 7px 2px;
+
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.grocery-category-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.grocery-category-item{
+    width:76px;
+    min-width:76px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.grocery-category-image{
+    width:68px;
+    height:68px;
+
+    margin:0 auto;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    background:#f6f8f8;
+
+    border:1px solid #e7eeee;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+.grocery-category-image img{
+    width:100%;
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+}
+
+.grocery-category-item:active .grocery-category-image{
+    transform:scale(.94);
+
+    box-shadow:
+        0 2px 7px rgba(0,0,0,.08);
+}
+
+.grocery-category-name{
+    margin-top:7px;
+
+    width:100%;
+
+    color:#303030;
+
+    font-size:9px;
+    line-height:12px;
+
+    font-weight:600;
+
+    text-align:center;
+}
+
+@media(min-width:768px){
+
+    .grocery-category-scroll{
+        gap:20px;
+    }
+
+    .grocery-category-item{
+        width:86px;
+        min-width:86px;
+    }
+
+    .grocery-category-image{
+        width:76px;
+        height:76px;
+    }
+
+    .grocery-category-name{
+        font-size:10px;
+        line-height:13px;
+    }
+
+}
+
+/* =====================================================
    DARVOZ PICKS
 ===================================================== */
 
@@ -1385,6 +1517,168 @@ body{
     overflow:hidden;
 
     text-overflow:ellipsis;
+}
+
+
+
+/* =====================================================
+   HOME GROCERY PRODUCTS
+===================================================== */
+
+.grocery-section{
+    margin-top:24px;
+}
+
+.grocery-scroll{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+    margin-right:-15px;
+    padding-right:15px;
+    padding-bottom:5px;
+}
+
+.grocery-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.grocery-card{
+    width:150px;
+    min-width:150px;
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 4px 14px rgba(0,0,0,.07);
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.grocery-card:active{
+    transform:scale(.98);
+}
+
+.grocery-image-wrap{
+    position:relative;
+    width:100%;
+    height:125px;
+    background:#f5f5f5;
+    overflow:hidden;
+}
+
+.grocery-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.grocery-add-btn{
+    position:absolute;
+    right:8px;
+    bottom:8px;
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:9px;
+    background:#fff;
+    color:#004D5B;
+    font-size:18px;
+    font-weight:700;
+    box-shadow:0 3px 10px rgba(0,0,0,.18);
+    cursor:pointer;
+}
+
+.grocery-info{
+    padding:9px;
+}
+
+.grocery-name{
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.grocery-price{
+    margin-top:4px;
+    color:#004D5B;
+    font-size:11px;
+    font-weight:700;
+}
+
+.grocery-category-name{
+    margin-top:3px;
+    color:#777;
+    font-size:8px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.grocery-loading,
+.grocery-empty,
+.grocery-error{
+    width:100%;
+    padding:25px 15px;
+    text-align:center;
+    color:#777;
+    font-size:11px;
+}
+
+.grocery-loading i{
+    color:#004D5B;
+    font-size:20px;
+    margin-bottom:7px;
+}
+
+.grocery-empty i,
+.grocery-error i{
+    color:#004D5B;
+    font-size:24px;
+    margin-bottom:7px;
+}
+
+@media(min-width:901px){
+
+    .grocery-section{
+        margin-top:35px;
+    }
+
+    .grocery-scroll{
+        gap:18px;
+        margin:0;
+        padding:0;
+    }
+
+    .grocery-card{
+        width:190px;
+        min-width:190px;
+        border-radius:17px;
+    }
+
+    .grocery-image-wrap{
+        height:160px;
+    }
+
+    .grocery-info{
+        padding:12px;
+    }
+
+    .grocery-name{
+        font-size:14px;
+    }
+
+    .grocery-price{
+        font-size:13px;
+    }
+
+    .grocery-category-name{
+        font-size:10px;
+    }
 }
 
 
@@ -2368,7 +2662,7 @@ body{
     <div class="welcome">
 
     <h2>
-        Hello, Welcome <span id="customerName">👋</span>
+        Hello, Welcome <span id="customerName"></span>
     </h2>
 
     <p>
@@ -2727,7 +3021,7 @@ Sandwich
     <div class="section-header">
 
         <h2>
-            Offers for You 🔥
+            Offers for You 
         </h2>
 
         
@@ -2753,6 +3047,207 @@ Sandwich
     </div>
 <div id="offerDots" class="offer-dots"></div>
 </div>
+
+
+
+
+<!-- =====================================================
+     GROCERY CATEGORIES
+===================================================== -->
+
+<section class="grocery-category-section" id="groceryCategorySection">
+
+    <div class="section-header grocery-category-header">
+
+        <h2>
+            Order Groceries 
+        </h2>
+
+        <a href="grocery-categories.html">
+            See All
+        </a>
+
+    </div>
+
+    <div
+        class="grocery-category-scroll"
+        id="groceryCategoryScroll"
+    >
+
+        <!-- Rice & Atta -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('rice-atta')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/rice-atta.png"
+                    alt="Rice & Atta"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Rice &amp; Atta
+            </div>
+        </div>
+
+        <!-- Dals & Pulses -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('dals-pulses')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/dals-pulses.png"
+                    alt="Dals & Pulses"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Dals &amp; Pulses
+            </div>
+        </div>
+
+        <!-- Oil & Ghee -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('oil-ghee')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/oil-ghee.png"
+                    alt="Oil & Ghee"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Oil &amp; Ghee
+            </div>
+        </div>
+
+        <!-- Salt & Sugar -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('salt-sugar')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/salt-sugar.png"
+                    alt="Salt & Sugar"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Salt &amp; Sugar
+            </div>
+        </div>
+
+        <!-- Spices -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('spices')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/spices.png"
+                    alt="Spices"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Spices
+            </div>
+        </div>
+
+        <!-- Biscuits & Snacks -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('biscuits-snacks')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/biscuits-snacks.png"
+                    alt="Biscuits & Snacks"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Biscuits &amp; Snacks
+            </div>
+        </div>
+
+        <!-- Beverages -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('beverages')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/beverages.png"
+                    alt="Beverages"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Beverages
+            </div>
+        </div>
+
+        <!-- Dairy -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('dairy')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/dairy.png"
+                    alt="Dairy"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Dairy
+            </div>
+        </div>
+
+        <!-- Personal Care -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('personal-care')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/personal-care.png"
+                    alt="Personal Care"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Personal Care
+            </div>
+        </div>
+
+        <!-- Home Care -->
+        <div
+            class="grocery-category-item"
+            onclick="openGroceryCategory('home-care')"
+        >
+            <div class="grocery-category-image">
+                <img
+                    src="images/categories/home-care.png"
+                    alt="Home Care"
+                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
+                >
+            </div>
+            <div class="grocery-category-name">
+                Home Care
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
 
 
 <!-- =====================================================
@@ -2804,12 +3299,12 @@ Sandwich
 </div>
 
 
+
 <!-- =====================================================
      POPULAR NEAR YOU
 ===================================================== -->
 
 <div id="restaurantsSection" style="margin-top:22px;"></div>
-
 
 <div class="section-header">
 
@@ -4799,6 +5294,458 @@ function showOutOfServiceMessage(){
 
 }
 
+
+/* =====================================================
+   HOME GROCERY PRODUCTS
+   REAL DATA ONLY
+===================================================== */
+
+async function loadGroceryProducts(){
+
+    const groceryBox =
+        document.getElementById(
+            "groceryProducts"
+        );
+
+    const grocerySection =
+        document.getElementById(
+            "grocerySection"
+        );
+
+    if(!groceryBox){
+        return;
+    }
+
+    const latitude =
+        localStorage.getItem(
+            "latitude"
+        );
+
+    const longitude =
+        localStorage.getItem(
+            "longitude"
+        );
+
+    /*
+     * Grocery availability on the home page
+     * is based on the same nearby-restaurant
+     * source already used by this page.
+     *
+     * No demo products are inserted.
+     */
+    if(!latitude || !longitude){
+
+        groceryBox.innerHTML = `
+            <div class="grocery-empty">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <div>
+                    Select your location to see groceries nearby.
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    groceryBox.innerHTML = `
+        <div class="grocery-loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <div>
+                Finding groceries near you...
+            </div>
+
+        </div>
+    `;
+
+    try{
+
+        /*
+         * Reuse the existing real nearby restaurant API.
+         */
+        const restaurantResponse =
+            await fetch(
+                `${API}/restaurants/nearby`,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        latitude:
+                            latitude,
+
+                        longitude:
+                            longitude,
+
+                        radius:10
+
+                    })
+
+                }
+            );
+
+        if(!restaurantResponse.ok){
+
+            throw new Error(
+                `Nearby API failed: ${restaurantResponse.status}`
+            );
+
+        }
+
+        const nearby =
+            await restaurantResponse.json();
+
+        if(!Array.isArray(nearby)){
+
+            throw new Error(
+                "Nearby restaurant API did not return an array"
+            );
+
+        }
+
+        /*
+         * Only real grocery partners are considered.
+         */
+        const groceryPartners =
+            nearby.filter(partner => {
+
+                const type =
+                    String(
+                        partner.business_type ||
+                        partner.businessType ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+                return (
+                    type === "grocery" ||
+                    type === "groceries" ||
+                    type.includes("grocery")
+                );
+
+            });
+
+        if(groceryPartners.length === 0){
+
+            groceryBox.innerHTML = `
+                <div class="grocery-empty">
+
+                    <i class="fa-solid fa-basket-shopping"></i>
+
+                    <div>
+                        No grocery partners available nearby.
+                    </div>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        /*
+         * Each grocery partner already exposes its
+         * grocery menu through:
+         * /restaurants/grocery/:restaurantId
+         *
+         * Load those real products and combine them
+         * for the home-page horizontal strip.
+         */
+        const requests =
+            groceryPartners
+                .slice(0,10)
+                .map(async partner => {
+
+                    try{
+
+                        const response =
+                            await fetch(
+                                `${API}/restaurants/grocery/${encodeURIComponent(partner.id)}`,
+                                {
+                                    method:"GET",
+                                    cache:"no-store"
+                                }
+                            );
+
+                        if(!response.ok){
+                            return [];
+                        }
+
+                        const result =
+                            await response.json();
+
+                        let products = [];
+
+                        if(Array.isArray(result)){
+                            products = result;
+                        }
+                        else if(
+                            result &&
+                            Array.isArray(result.products)
+                        ){
+                            products =
+                                result.products;
+                        }
+                        else if(
+                            result &&
+                            Array.isArray(result.data)
+                        ){
+                            products =
+                                result.data;
+                        }
+
+                        return products.map(
+                            product => ({
+
+                                ...product,
+
+                                __partnerId:
+                                    partner.id,
+
+                                __restaurantName:
+                                    partner.restaurant_name ||
+                                    partner.name ||
+                                    "Grocery Partner"
+
+                            })
+                        );
+
+                    }
+                    catch(error){
+
+                        console.error(
+                            "HOME GROCERY PARTNER ERROR:",
+                            partner.id,
+                            error
+                        );
+
+                        return [];
+
+                    }
+
+                });
+
+        const grouped =
+            await Promise.all(
+                requests
+            );
+
+        const products =
+            grouped
+                .flat()
+                .filter(Boolean)
+                .slice(0,10);
+
+        if(products.length === 0){
+
+            groceryBox.innerHTML = `
+                <div class="grocery-empty">
+
+                    <i class="fa-solid fa-basket-shopping"></i>
+
+                    <div>
+                        No grocery products available right now.
+                    </div>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        let html = "";
+
+        products.forEach(product => {
+
+            let image =
+                product.image ||
+                product.product_image ||
+                product.image_url ||
+                "";
+
+            if(
+                image &&
+                !image.startsWith("http://") &&
+                !image.startsWith("https://") &&
+                !image.startsWith("/")
+            ){
+
+                image =
+                    `${API}/uploads/${image}`;
+
+            }
+
+            if(!image){
+
+                image =
+                    "images/product-placeholder.png";
+
+            }
+
+            const name =
+                product.product_name ||
+                product.name ||
+                "Product";
+
+            /*
+             * Grocery products can expose their
+             * price in different fields.
+             */
+            const priceValue =
+                product.price ??
+                product.selling_price ??
+                product.sellingPrice ??
+                product.sale_price ??
+                null;
+
+            const price =
+                priceValue !== null &&
+                priceValue !== ""
+                    ? Number(priceValue)
+                    : null;
+
+            const category =
+                product.category_name ||
+                product.category ||
+                product.categoryName ||
+                "";
+
+            const partnerId =
+                product.__partnerId;
+
+            html += `
+
+                <div
+                    class="grocery-card"
+                    onclick="
+                        openHomeGrocery(
+                            '${String(partnerId).replace(/'/g,"\\'")}'
+                        )
+                    "
+                >
+
+                    <div class="grocery-image-wrap">
+
+                        <img
+                            class="grocery-image"
+                            src="${image}"
+                            alt="${String(name).replace(/"/g,"&quot;")}"
+                            onerror="
+                                this.onerror=null;
+                                this.src='images/product-placeholder.png';
+                            "
+                        >
+
+                        <button
+                            class="grocery-add-btn"
+                            type="button"
+                            onclick="
+                                event.stopPropagation();
+                                openHomeGrocery(
+                                    '${String(partnerId).replace(/'/g,"\\'")}'
+                                );
+                            "
+                            aria-label="Open grocery"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                    <div class="grocery-info">
+
+                        <div class="grocery-name">
+                            ${name}
+                        </div>
+
+                        ${
+                            price !== null &&
+                            Number.isFinite(price)
+                            ? `
+                                <div class="grocery-price">
+                                    ₹${price.toFixed(0)}
+                                </div>
+                            `
+                            : ""
+                        }
+
+                        ${
+                            category
+                            ? `
+                                <div class="grocery-category-name">
+                                    ${category}
+                                </div>
+                            `
+                            : `
+                                <div class="grocery-category-name">
+                                    ${product.__restaurantName}
+                                </div>
+                            `
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+        groceryBox.innerHTML =
+            html;
+
+    }
+    catch(error){
+
+        console.error(
+            "HOME GROCERY ERROR:",
+            error
+        );
+
+        groceryBox.innerHTML = `
+            <div class="grocery-error">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <div>
+                    Unable to load groceries right now.
+                </div>
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN GROCERY PARTNER
+===================================================== */
+
+function openHomeGrocery(
+    partnerId
+){
+
+    if(!partnerId){
+        return;
+    }
+
+    window.location.href =
+        `restaurant.html?id=${encodeURIComponent(partnerId)}&category=grocery`;
+
+}
+
+
 /* =====================================================
    LOAD REAL RESTAURANTS
 ===================================================== */
@@ -5696,6 +6643,22 @@ async function updateActiveOrderETA(
 
 }
 
+function openGroceryCategory(category){
+
+    if(!category){
+        return;
+    }
+
+    /*
+       Reuse the existing grocery category page.
+       No database changes and no fake product data.
+    */
+
+    window.location.href =
+        `grocery-categories.html?category=${encodeURIComponent(category)}`;
+}
+
+
 /* =====================================================
    INITIAL LOAD
 ===================================================== */
@@ -5870,6 +6833,7 @@ else{
     ========================================= */
     loadCustomerOffers();
     loadDarvozPicks();
+    
     loadRestaurants();
 }
 

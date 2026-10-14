@@ -2787,6 +2787,9 @@ body.is-grocery .grocery-price-line s.onwards{
 
 const API = window.location.origin;
 
+const customerId = localStorage.getItem("customerId");
+const CART_KEY = customerId ? `cart_${customerId}` : "cart";
+
 const params =
     new URLSearchParams(
         window.location.search
@@ -7044,120 +7047,160 @@ function displayGroceryMenu(
 /* =========================================================
    DIRECT GROCERY ADD
 ========================================================= */
+async function addGroceryDirectly(productId){
 
-function addGroceryDirectly(
-    productId
-){
+    console.log("🛒 GROCERY PRODUCT ID:", productId);
 
-    const product =
-        partnerGroceryMenu.find(
-            item =>
-                item.id == productId
-        );
+console.log(
+    "🛒 GROCERY PRODUCT:",
+    partnerGroceryMenu.find(
+        item => String(item.id) === String(productId)
+    )
+);
 
+    const product = partnerGroceryMenu.find(
+        item => String(item.id) === String(productId)
+    );
 
     if(!product){
-
-        console.error(
-            "Grocery product not found:",
-            productId
-        );
-
+        console.error("Grocery product not found:", productId);
         return;
     }
 
+    const variants = getWeights(product);
 
-    const variants =
-        getWeights(product);
-
-
-    /*
-     * PACK SIZE PRODUCT
-     */
+    // Products with pack sizes continue using the existing popup
     if(variants.length){
-
-        openPackPopup(
-            productId
-        );
-
+        openPackPopup(productId);
         return;
     }
 
-
-    /*
-     * CHECK RESTAURANT / PARTNER
-     */
     checkRestaurantCart(
-    restaurantId,
-    currentRestaurantName,
-    function(){
+        restaurantId,
+        currentRestaurantName,
+        async function(){
 
-            const existing =
-                cart.find(item =>
+            const existing = cart.find(item =>
+                String(item.product_id) === String(productId) &&
+                !item.cart_id &&
+                String(item.partner_id) === String(restaurantId)
+            );
 
-                    item.product_id == productId &&
-
-                    !item.cart_id &&
-
-                    String(
-                        item.partner_id
-                    ) === String(
-                        restaurantId
-                    )
-
-                );
-
+            /* =========================
+               EXISTING NORMAL GROCERY
+            ========================= */
 
             if(existing){
 
-                existing.quantity++;
+                const oldQuantity = Number(existing.quantity) || 1;
+                const newQuantity = oldQuantity + 1;
 
-            }
-            else{
+                const response = await fetch(
+                    `${API}/cart/add`,
+                    {
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+                        body:JSON.stringify({
+                            customer_id: customerId,
+                            partner_id: restaurantId,
+                            product_id: product.id,
+                            quantity: 1
+                        })
+                    }
+                );
 
-                cart.push({
+                const data = await response.json().catch(() => null);
 
-                    product_id:
-                        product.id,
-
-                    quantity:
-                        1,
-
-                    product_name:
-                        product.product_name ||
-                        product.name,
-
-                    price:
-                        getProductPrice(product),
-
-                    image:
-                        getProductImage(product),
-
-                    partner_id:
-                        restaurantId,
-
-                    restaurant_name:
-                        currentRestaurantName,
-
-                    item_type:
-                        "grocery"
-
+                console.log("GROCERY EXISTING ADD RESPONSE:", {
+                    status: response.status,
+                    data
                 });
 
+                if(!response.ok || !data || !data.success){
+                    console.error("GROCERY QUANTITY UPDATE FAILED:", data);
+                    return;
+                }
+
+                existing.quantity = newQuantity;
+
             }
 
+            /* =========================
+               NEW NORMAL GROCERY
+            ========================= */
+
+            else{
+
+                const newItem = {
+                    product_id: product.id,
+                    quantity: 1,
+                    product_name:
+                        product.product_name ||
+                        product.name ||
+                        "Grocery",
+                    price: getProductPrice(product),
+                    image: getProductImage(product),
+                    partner_id: restaurantId,
+                    restaurant_name: currentRestaurantName,
+                    item_type: "grocery"
+                };
+
+                console.log("ADDING GROCERY TO MYSQL:", {
+                    customer_id: customerId,
+                    partner_id: restaurantId,
+                    product_id: product.id,
+                    quantity: 1
+                });
+
+                const response = await fetch(
+                    `${API}/cart/add`,
+                    {
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+                        body:JSON.stringify({
+                            customer_id: customerId,
+                            partner_id: restaurantId,
+                            product_id: product.id,
+                            quantity: 1
+                        })
+                    }
+                );
+
+                const data = await response.json().catch(() => null);
+
+                console.log("GROCERY MYSQL ADD RESPONSE:", {
+                    status: response.status,
+                    data
+                });
+
+                if(!response.ok || !data || !data.success){
+
+                    console.error(
+                        "❌ GROCERY WAS NOT ADDED TO MYSQL:",
+                        data
+                    );
+
+                    return;
+                }
+
+                console.log("✅ GROCERY SAVED TO MYSQL");
+
+                cart.push(newItem);
+            }
 
             saveCart();
 
+            await loadCart();
 
             refreshCurrentView();
 
         }
-
     );
-
 }
-
 
 /* =========================================================
    OPEN PACK POPUP
@@ -7317,9 +7360,7 @@ function addPackToCart(
 
 
     if(!product){
-
         return;
-
     }
 
 
@@ -7332,9 +7373,7 @@ function addPackToCart(
 
 
     if(!selectedPack){
-
         return;
-
     }
 
 
@@ -7356,6 +7395,7 @@ function addPackToCart(
                 cart.find(
                     item =>
                         item.cart_id === cartId &&
+
                         String(
                             item.partner_id
                         ) === String(
@@ -7391,7 +7431,9 @@ function addPackToCart(
 
                     price:
                         Number(
-                            selectedPack.price || 0
+                            selectedPack.offer_price ||
+                            selectedPack.price ||
+                            0
                         ),
 
                     image:
@@ -7420,11 +7462,8 @@ function addPackToCart(
             refreshCurrentView();
 
         }
-
     );
-
 }
-
 /* =========================================================
    SORT
 ========================================================= */
@@ -7448,52 +7487,379 @@ function sortGroceryProducts(){
 
 
 /* =========================================================
-   CART LOAD
+   CUSTOMER CART LOAD / SYNC
 ========================================================= */
 
-function loadCart(){
+async function loadCart(){
+
+    if(!customerId){
+
+        cart = [];
+
+        updateCartUI();
+
+        return;
+    }
+
+
+    /*
+     * Keep locally stored grocery packs.
+     *
+     * These have cart_id because the DB
+     * has no variant_id column.
+     */
+    let localPackItems = [];
 
     try{
 
-        cart =
+        const localCart =
             JSON.parse(
                 localStorage.getItem(
-                    "cart"
+                    CART_KEY
                 )
             ) || [];
 
 
-        if(!Array.isArray(cart)){
-            cart = [];
+        if(Array.isArray(localCart)){
+
+            localPackItems =
+                localCart.filter(
+                    item =>
+                        item &&
+                        item.cart_id
+                );
         }
 
     }
     catch(error){
 
-        cart = [];
+        console.warn(
+            "LOCAL PACK CART READ ERROR:",
+            error
+        );
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/cart/${encodeURIComponent(customerId)}`
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                `Cart request failed: ${response.status}`
+            );
+        }
+
+
+        const serverCart =
+            await response.json();
+
+
+        const mysqlCart =
+            Array.isArray(serverCart)
+                ? serverCart
+                : [];
+
+
+        /*
+         * MySQL is the source for:
+         * Food + normal grocery.
+         *
+         * Local storage is only retained
+         * for grocery pack/variant items.
+         */
+        cart = [
+            ...mysqlCart,
+            ...localPackItems
+        ];
+
+
+        localStorage.setItem(
+            CART_KEY,
+            JSON.stringify(cart)
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "CUSTOMER CART LOAD ERROR:",
+            error
+        );
+
+
+        /*
+         * If server is temporarily unavailable,
+         * use the existing customer cart cache.
+         */
+        try{
+
+            const cached =
+                JSON.parse(
+                    localStorage.getItem(
+                        CART_KEY
+                    )
+                ) || [];
+
+
+            cart =
+                Array.isArray(cached)
+                    ? cached
+                    : [];
+
+        }
+        catch(_){
+
+            cart = [];
+
+        }
 
     }
 
 
     updateCartUI();
-
 }
-
-
 /* =========================================================
-   SAVE CART
+   SAVE LOCAL CUSTOMER CACHE
 ========================================================= */
 
 function saveCart(){
 
+    const customerId =
+        localStorage.getItem("customerId");
+
+    if(!customerId){
+        console.error("CUSTOMER ID NOT FOUND");
+        return;
+    }
+
+    const customerCartKey =
+        `cart_${customerId}`;
+
     localStorage.setItem(
-        "cart",
+        customerCartKey,
         JSON.stringify(cart)
     );
 
     updateCartUI();
 
+    console.log(
+        "✅ CUSTOMER CART SAVED:",
+        customerCartKey,
+        cart
+    );
 }
+
+
+/* =========================================================
+   ADD / UPDATE CUSTOMER MYSQL CART
+========================================================= */
+async function addCartItemToServer(item){
+
+    if(!customerId){
+
+        alert(
+            "Please login first."
+        );
+
+        return false;
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/cart/add`,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        customer_id:
+                            customerId,
+
+                        partner_id:
+                            item.partner_id,
+
+                        product_id:
+                            item.product_id,
+
+                        quantity:
+                            Number(
+                                item.quantity || 1
+                            )
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response
+                .json()
+                .catch(() => null);
+
+
+        if(
+            !response.ok ||
+            !data ||
+            !data.success
+        ){
+
+            console.error(
+                "MYSQL CART ADD FAILED:",
+                data
+            );
+
+            return false;
+        }
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "MYSQL CART ADD ERROR:",
+            error
+        );
+
+        return false;
+    }
+}
+
+async function clearCustomerServerCart(){
+
+    if(!customerId){
+        return false;
+    }
+
+    try{
+
+        const response = await fetch(
+            `${API}/cart/clear/${encodeURIComponent(customerId)}`,
+            { method:"DELETE" }
+        );
+
+        return response.ok;
+
+    }
+    catch(error){
+
+        console.error("MYSQL CART CLEAR ERROR:",error);
+        return false;
+
+    }
+}
+
+async function updateCustomerServerItem(item){
+
+    if(
+        !customerId ||
+        !item ||
+        !item.id
+    ){
+        return false;
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/cart/update/${encodeURIComponent(item.id)}`,
+                {
+                    method:"PUT",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        customer_id:
+                            customerId,
+
+                        quantity:
+                            Number(
+                                item.quantity || 1
+                            )
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response
+                .json()
+                .catch(() => null);
+
+
+        return (
+            response.ok &&
+            data &&
+            data.success
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "MYSQL CART UPDATE ERROR:",
+            error
+        );
+
+        return false;
+    }
+}
+
+async function removeCustomerServerItem(item){
+
+    if(!customerId || !item || !item.id){
+        return false;
+    }
+
+    try{
+
+        const response = await fetch(
+            `${API}/cart/remove/${encodeURIComponent(item.id)}`,
+            {
+                method:"DELETE",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    customer_id:customerId
+                })
+            }
+        );
+
+        return response.ok;
+
+    }
+    catch(error){
+
+        console.error("MYSQL CART REMOVE ERROR:",error);
+        return false;
+
+    }
+}
+
 
 /* =========================================================
    CART RESTAURANT CHECK
@@ -7535,36 +7901,21 @@ function checkRestaurantCart(
             );
         });
 
-    /*
-     * SAME PARTNER
-     */
     if(!differentPartner){
         action();
         return;
     }
 
-    console.log(
-        "DIFFERENT PARTNER -> SHOW REPLACE POPUP"
-    );
-
     pendingCartAction = action;
 
     const popup =
-        document.getElementById(
-            "cartReplacePopup"
-        );
+        document.getElementById("cartReplacePopup");
 
     const message =
-        document.getElementById(
-            "cartReplaceMessage"
-        );
+        document.getElementById("cartReplaceMessage");
 
     if(!popup || !message){
-
-        console.error(
-            "cartReplacePopup NOT FOUND"
-        );
-
+        console.error("cartReplacePopup NOT FOUND");
         return;
     }
 
@@ -7576,22 +7927,14 @@ function checkRestaurantCart(
     message.innerHTML = `
         Your cart contains items from
         <strong>${escapeHTML(oldName)}</strong>.
-
         <br><br>
-
         Do you want to discard your current cart
         and add items from
-        <strong>${escapeHTML(
-            partnerName || "this partner"
-        )}</strong>?
+        <strong>${escapeHTML(partnerName || "this partner")}</strong>?
     `;
 
     popup.style.display = "flex";
     popup.classList.add("show");
-
-    console.log(
-        "REPLACE POPUP DISPLAYED"
-    );
 }
 
 
@@ -7599,60 +7942,34 @@ function checkRestaurantCart(
    CONFIRM CART REPLACEMENT
 ========================================================= */
 
-function confirmCartReplacement(){
+async function confirmCartReplacement(){
 
     const popup =
-        document.getElementById(
-            "cartReplacePopup"
-        );
+        document.getElementById("cartReplacePopup");
 
+    const action = pendingCartAction;
 
-    /*
-     * CLEAR OLD CART
-     */
-    cart = [];
+    pendingCartAction = null;
 
+    const cleared = await clearCustomerServerCart();
 
-    /*
-     * CLOSE POPUP
-     */
-    if(popup){
-
-        popup.classList.remove(
-            "show"
-        );
-
+    if(!cleared && customerId){
+        alert("Unable to clear your current cart. Please try again.");
+        return;
     }
 
+    cart = [];
+    saveCart();
 
-    /*
-     * TAKE SAVED ACTION
-     */
-    const action =
-        pendingCartAction;
+    if(popup){
+        popup.classList.remove("show");
+        popup.style.display = "none";
+    }
 
-
-    pendingCartAction =
-        null;
-
-
-    /*
-     * ADD NEW ITEM
-     */
     if(typeof action === "function"){
-
-        action();
-
+        await action();
     }
 }
-
-/* =========================================================
-   CHECK DIFFERENT RESTAURANT / PARTNER
-========================================================= */
-
-
-
-
 
 
 /* =========================================================
@@ -7662,9 +7979,7 @@ function confirmCartReplacement(){
 function closeCartReplacePopup(){
 
     const popup =
-        document.getElementById(
-            "cartReplacePopup"
-        );
+        document.getElementById("cartReplacePopup");
 
     if(popup){
         popup.classList.remove("show");
@@ -7672,251 +7987,195 @@ function closeCartReplacePopup(){
     }
 
     pendingCartAction = null;
-
-    console.log(
-        "CART REPLACE: CANCELLED"
-    );
 }
 
-/* =========================================================
-   REPLACE CART
-========================================================= */
-
-function confirmCartReplacement(){
-
-    console.log(
-        "CART REPLACE: CONFIRMED"
-    );
-
-    const action =
-        pendingCartAction;
-
-    /*
-     * CLEAR OLD CART
-     */
-    cart = [];
-
-    localStorage.setItem(
-        "cart",
-        JSON.stringify([])
-    );
-
-    /*
-     * UPDATE CART UI
-     */
-    updateCartUI();
-
-    /*
-     * CLOSE POPUP
-     */
-    const popup =
-        document.getElementById(
-            "cartReplacePopup"
-        );
-
-    if(popup){
-        popup.classList.remove("show");
-        popup.style.display = "none";
-    }
-
-    /*
-     * CLEAR PENDING ACTION
-     */
-    pendingCartAction = null;
-
-    /*
-     * ADD THE NEW PRODUCT
-     */
-    if(typeof action === "function"){
-
-        console.log(
-            "CART REPLACE: ADDING NEW PRODUCT"
-        );
-
-        action();
-
-    }
-}
 
 /* =========================================================
    FOOD ADD
 ========================================================= */
 
-function addFoodToCart(
+async function addFoodToCart(
     productId
 ){
 
     const product =
         menuData.find(
-            item =>
-                item.id == productId
+            item => item.id == productId
         );
-
 
     if(!product){
-
-        console.error(
-            "Food product not found:",
-            productId
-        );
-
+        console.error("Food product not found:",productId);
         return;
     }
 
-
-    /*
-     * CHECK RESTAURANT
-     */
     checkRestaurantCart(
-    restaurantId,
-    currentRestaurantName,
-    function(){
+        restaurantId,
+        currentRestaurantName,
+        async function(){
 
-            /*
-             * FIND SAME FOOD
-             * FROM SAME PARTNER
-             */
             const existing =
                 cart.find(item =>
-
                     item.product_id == productId &&
-
                     !item.cart_id &&
-
-                    String(
-                        item.partner_id
-                    ) === String(
-                        restaurantId
-                    )
-
+                    String(item.partner_id) === String(restaurantId)
                 );
-
 
             if(existing){
 
                 existing.quantity++;
 
+                const ok = await updateCustomerServerItem(existing);
+
+                if(!ok){
+                    existing.quantity--;
+                    return;
+                }
+
             }
             else{
 
-                cart.push({
+                const newItem = {
+                    product_id:product.id,
+                    quantity:1,
+                    product_name:product.product_name || product.name,
+                    price:getProductPrice(product),
+                    image:getProductImage(product),
+                    partner_id:restaurantId,
+                    restaurant_name:currentRestaurantName,
+                    item_type:"food"
+                };
 
-                    product_id:
-                        product.id,
+                const ok = await addCartItemToServer(newItem);
 
-                    quantity:
-                        1,
+                if(!ok){
+                    return;
+                }
 
-                    product_name:
-                        product.product_name ||
-                        product.name,
-
-                    price:
-                        getProductPrice(product),
-
-                    image:
-                        getProductImage(product),
-
-                    partner_id:
-                        restaurantId,
-
-                    restaurant_name:
-                        currentRestaurantName,
-
-                    item_type:
-                        "food"
-
-                });
-
+                cart.push(newItem);
             }
 
-
-            /*
-             * SAVE
-             */
-            saveCart();
-
-
-            /*
-             * REFRESH
-             */
+            await loadCart();
             refreshCurrentView();
-
         }
-
     );
-
 }
+
 
 /* =========================================================
    QUANTITY
 ========================================================= */
+async function increaseQty(productId){
 
-function increaseQty(
-    productId
-){
+    const item = cart.find(
+        x => String(x.product_id) === String(productId)
+    );
 
-    const item =
-        cart.find(
-            x =>
-                x.product_id ==
-                productId
-        );
-
-
-    if(item){
-
-        item.quantity++;
-
-        saveCart();
-
-        refreshCurrentView();
-
+    if(!item){
+        return;
     }
 
+    // Grocery pack / variant
+    if(item.cart_id){
+
+        item.quantity =
+            (Number(item.quantity) || 1) + 1;
+
+        saveCart();
+        refreshCurrentView();
+
+        return;
+    }
+
+    // Normal Food / normal Grocery
+    item.quantity++;
+
+    const ok =
+        await updateCustomerServerItem(item);
+
+    if(!ok){
+
+        item.quantity--;
+
+        return;
+    }
+
+    saveCart();
+    refreshCurrentView();
 }
 
-
-function decreaseQty(
-    productId
-){
+async function decreaseQty(productId){
 
     const index =
         cart.findIndex(
             x =>
-                x.product_id ==
-                productId
+                String(x.product_id) ===
+                String(productId)
         );
-
 
     if(index === -1){
         return;
     }
 
+    const item =
+        cart[index];
 
-    if(
-        cart[index].quantity > 1
-    ){
 
-        cart[index].quantity--;
+    // Grocery pack / variant
+    if(item.cart_id){
+
+        if(Number(item.quantity) > 1){
+
+            item.quantity--;
+
+        }
+        else{
+
+            cart.splice(index, 1);
+
+        }
+
+        saveCart();
+        refreshCurrentView();
+
+        return;
+    }
+
+
+    // Normal Food / normal Grocery
+    if(Number(item.quantity) > 1){
+
+        item.quantity--;
+
+        const ok =
+            await updateCustomerServerItem(item);
+
+        if(!ok){
+
+            item.quantity++;
+
+            return;
+        }
 
     }
     else{
 
-        cart.splice(
-            index,
-            1
-        );
+        cart.splice(index, 1);
+
+        const ok =
+            await removeCustomerServerItem(item);
+
+        if(!ok){
+
+            cart.splice(index, 0, item);
+
+            return;
+        }
 
     }
 
-
     saveCart();
-
     refreshCurrentView();
-
 }
-
 
 /* =========================================================
    REFRESH
