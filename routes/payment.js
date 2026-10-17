@@ -30,11 +30,10 @@ router.post("/create-order", async (req, res) => {
         const order = await razorpay.orders.create(options);
 
         res.json({
-
-            success: true,
-            order
-
-        });
+  success: true,
+  key_id: process.env.RAZORPAY_KEY_ID,
+  order
+});
 
     } catch (err) {
 

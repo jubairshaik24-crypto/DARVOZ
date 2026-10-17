@@ -1,667 +1,461 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#073B3A">
-  <title>DARVOZ - Payment</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DARVOZ | Checkout</title>
+<style>
+:root{--petrol:#004d5b;--petrol2:#003b45;--soft:#e7f4f0;--bg:#f4f7f6;--ink:#172523;--muted:#71807c;--line:#e3eae7;--white:#fff;--danger:#a5323c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding-bottom:100px}button,input,textarea{font:inherit}button{cursor:pointer}.app{max-width:520px;margin:auto;min-height:100vh}.top{position:sticky;top:0;z-index:5;background:var(--petrol);color:white;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px #002c3520}.back{border:0;background:transparent;color:white;font-size:25px;padding:0 6px}.top h1{font-size:18px;margin:0}.top small{display:block;opacity:.8;font-size:12px}.main{padding:10px}.card{background:white;border-radius:14px;padding:13px;margin-bottom:9px;box-shadow:0 2px 12px #102f2910}.card h2{font-size:15px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px}.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:4px 0}.row span:first-child{min-width:0}.row strong{white-space:nowrap}.items{display:flex;flex-direction:column;gap:9px}.item{display:flex;gap:11px;align-items:center}.pic{width:58px;height:58px;flex:none;border-radius:12px;object-fit:cover;background:var(--soft)}.iteminfo{min-width:0;flex:1}.itemname{font-weight:700}.qty{font-size:12px;color:var(--muted)}.pill{display:inline-block;background:var(--soft);color:var(--petrol);font-size:11px;font-weight:700;border-radius:999px;padding:4px 8px}.address{white-space:pre-wrap;overflow-wrap:anywhere}.address-edit{width:100%;margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:75px;resize:vertical}.couponline{display:flex;gap:8px}.couponline input{min-width:0;flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;text-transform:uppercase}.btn{border:0;border-radius:10px;background:var(--petrol);color:white;padding:10px 14px;font-weight:700}.btn:disabled{opacity:.5;cursor:not-allowed}.btn-outline{border:1px solid var(--petrol);background:white;color:var(--petrol)}.coinbox{background:var(--soft);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center}.coinbox input{width:19px;height:19px;accent-color:var(--petrol)}.cointext{flex:1}.cointext strong{display:block}.small{font-size:12px;color:var(--muted)}.bill .row{padding:4px 0}.bill .total{border-top:1px dashed #c9d8d3;margin-top:7px;padding-top:13px;font-size:18px;font-weight:800}.green{color:var(--petrol);font-weight:700}.notice{background:var(--soft);border-radius:10px;padding:10px 12px;color:var(--petrol);font-size:12px;margin-top:10px}.error{display:none;background:#fff0f0;color:var(--danger);border-radius:10px;padding:10px;margin-bottom:12px;font-size:13px}.split{border-top:1px solid var(--line);margin-top:10px;padding-top:8px}.footer{position:fixed;z-index:6;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px}.footerinner{max-width:520px;width:100%;margin:auto;display:flex;align-items:center;gap:12px}.payamount{flex:1}.payamount small{display:block;color:var(--muted);font-size:11px}.payamount strong{font-size:19px}.pay{flex:1.25;padding:14px;border-radius:12px}.loading{opacity:.7;pointer-events:none}.empty{text-align:center;padding:30px 10px}.hidden{display:none!important}.coupon-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;background:transparent;padding:2px 0;color:var(--ink);text-align:left}.coupon-trigger strong{color:var(--petrol)}.coupon-meta{font-size:12px;color:var(--muted);margin-top:3px}.modal-backdrop{position:fixed;inset:0;z-index:20;background:#001f25a8;display:flex;align-items:flex-end;justify-content:center;padding:0}.modal-backdrop.hidden{display:none!important}.coupon-modal{background:#fff;width:100%;max-width:520px;max-height:78vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -10px 35px #001f2526}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.modal-head h2{font-size:18px;margin:0}.icon-btn{border:0;background:var(--soft);color:var(--petrol);width:34px;height:34px;border-radius:50%;font-size:22px}.coupon-card{border:1px solid var(--line);border-radius:13px;padding:12px;margin:9px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}.coupon-card p{margin:4px 0 0;font-size:12px;color:var(--muted)}.empty-coupons{text-align:center;padding:26px 12px;color:var(--muted);background:var(--bg);border-radius:12px}.coupon-code{font-weight:800;letter-spacing:.5px;color:var(--petrol)}.payment-options{display:grid;gap:8px}.payment-option{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff;cursor:pointer}.payment-option:has(input:checked){border-color:var(--petrol);background:#f0f8f6;box-shadow:0 0 0 1px var(--petrol) inset}.payment-option input{accent-color:var(--petrol);width:18px;height:18px;flex:none}.payment-icon{width:38px;height:38px;display:grid;place-items:center;background:var(--soft);color:var(--petrol);border-radius:10px;font-size:19px;flex:none}.payment-copy{flex:1;min-width:0}.payment-copy strong{display:block;font-size:14px}.payment-copy small{display:block;color:var(--muted);font-size:12px}.coin-applied{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;color:var(--petrol);font-weight:700}.card{padding:12px;margin-bottom:8px}.main{padding:8px}.card h2{margin-bottom:7px}.items{gap:7px}.item{gap:9px}.pic{width:50px;height:50px}.bill .total{padding-top:9px;margin-top:5px}.payment-option:active{transform:scale(.995)}@media(min-width:700px){body{padding-top:20px}.app{border-radius:18px;overflow:hidden;box-shadow:0 8px 35px #0a30271a}.top{position:relative}}
+.coins-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 13px;
+  background: #f0faf5;
+  border: 1px solid #d9eee2;
+  border-radius: 12px;
+}
 
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+.coins-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-  <style>
-    :root {
-      --petrol: #073B3A;
-      --orange: #FF6500;
-      --bg: #F4F7F5;
-      --text: #142A2D;
-      --muted: #6C7979;
-      --border: #E3E9E7;
-      --green: #16834B;
-    }
+.coins-icon {
+  font-size: 22px;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+.coins-left strong {
+  display: block;
+  color: #064c50;
+  font-size: 14px;
+}
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding-bottom: 110px;
-    }
+.coins-left p {
+  margin: 4px 0 0;
+  color: #71817c;
+  font-size: 12px;
+}
 
-    button { font: inherit; }
+.coins-card #coinsAppliedValue {
+  color: #168653;
+  font-size: 14px;
+}
+.payment-icon {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
 
-    .header {
-      background: linear-gradient(135deg, #073B3A, #0B5149);
-      color: white;
-      padding: 18px 16px 23px;
-      border-radius: 0 0 22px 22px;
-    }
-
-    .header-top {
-      max-width: 600px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .back {
-      background: transparent;
-      border: 0;
-      color: white;
-      font-size: 30px;
-      cursor: pointer;
-    }
-
-    .brand { flex: 1; text-align: center; }
-
-    .brand-name {
-      font-size: 27px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-    }
-
-    .brand-name span { color: var(--orange); }
-
-    .tagline {
-      font-size: 9px;
-      letter-spacing: 1.5px;
-      margin-top: 4px;
-      color: #D6E8E3;
-    }
-
-    .secure-top {
-      font-size: 10px;
-      line-height: 1.5;
-      text-align: right;
-    }
-
-    .secure-top strong { display: block; font-size: 12px; }
-
-    .container {
-      max-width: 600px;
-      padding: 16px 13px;
-      margin: auto;
-    }
-
-    .card {
-      background: white;
-      border: 1px solid #EDF0EF;
-      border-radius: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 3px 14px rgba(12, 42, 38, .035);
-    }
-
-    .delivery {
-      padding: 15px;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .location-icon {
-      background: #E9F3EF;
-      border-radius: 12px;
-      width: 45px;
-      height: 45px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      font-size: 22px;
-    }
-
-    .delivery-info { flex: 1; min-width: 0; }
-
-    .store {
-      font-size: 15px;
-      font-weight: 800;
-      margin: 2px 0 7px;
-      overflow-wrap: anywhere;
-    }
-
-    .muted {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 5px;
-    }
-
-    .address {
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .change {
-      border: 1px solid var(--petrol);
-      border-radius: 20px;
-      background: white;
-      color: var(--petrol);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 8px 10px;
-      cursor: pointer;
-    }
-
-    .summary { padding: 17px 15px; }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin-bottom: 15px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 14px;
-      margin: 13px 0;
-    }
-
-    .summary-row span:first-child { color: #53605F; }
-
-    .summary-row span:last-child {
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .discount { color: var(--green); }
-
-    .grand-total {
-      border-top: 1px solid var(--border);
-      padding-top: 15px;
-      margin-top: 16px;
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .grand-total span:first-child { color: var(--text); }
-
-    .payment-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin: 22px 2px 6px;
-    }
-
-    .payment-subtitle {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-      margin: 0 2px 14px;
-    }
-
-    .methods {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-
-    .method {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 13px;
-      min-height: 70px;
-    }
-
-    .method.primary {
-      background: #FFF6EF;
-      border: 1.5px solid var(--orange);
-    }
-
-    .method-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: #EDF3F1;
-      color: var(--petrol);
-      display: grid;
-      place-items: center;
-      font-size: 13px;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .method.primary .method-icon {
-      background: #E2F2E8;
-      color: #17834A;
-    }
-
-    .method-info { flex: 1; }
-
-    .method-name {
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
-
-    .method-desc {
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.4;
-    }
-
-    .arrow { color: var(--orange); font-size: 22px; }
-
-    .note {
-      display: flex;
-      gap: 10px;
-      padding: 13px;
-      margin-top: 17px;
-      background: #EAF4EF;
-      color: #31564A;
-      border-radius: 12px;
-      font-size: 11px;
-      line-height: 1.6;
-    }
-
-    .message {
-      display: none;
-      margin-top: 13px;
-      padding: 13px;
-      border-radius: 10px;
-      background: #FFF0E5;
-      color: #80390C;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .bottom {
-      position: fixed;
-      z-index: 5;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      border-top: 1px solid var(--border);
-      padding: 12px 14px calc(10px + env(safe-area-inset-bottom));
-      box-shadow: 0 -4px 18px rgba(0, 0, 0, .04);
-    }
-
-    .bottom-inner { max-width: 600px; margin: auto; }
-
-    .pay {
-      width: 100%;
-      min-height: 54px;
-      background: var(--orange);
-      color: white;
-      border: 0;
-      border-radius: 13px;
-      font-size: 17px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .pay:disabled { opacity: .6; cursor: not-allowed; }
-
-    .trust {
-      text-align: center;
-      color: #657271;
-      font-size: 10px;
-      margin-top: 10px;
-    }
-
-    @media (min-width: 600px) {
-      .container { padding-top: 22px; }
-    }
-  </style>
+</style>
 </head>
-
 <body>
-  <header class="header">
-    <div class="header-top">
-      <button class="back" onclick="goBack()" aria-label="Back">‹</button>
+<div class="app">
+<header class="top"><button class="back" aria-label="Go back" onclick="history.length>1?history.back():location.href='cart.html'">‹</button><div><h1>Checkout</h1><small>Secure checkout · DARVOZ</small></div></header>
+<main class="main">
+<div id="error" class="error" role="alert"></div>
+<section class="card"><h2>Deliver to</h2><div style="display:flex;align-items:flex-start;gap:10px"><span aria-hidden="true" style="font-size:21px;color:var(--petrol)"></span><div style="flex:1;min-width:0"><div id="address" class="address">Loading saved address…</div></div><button class="btn btn-outline" id="editAddress" type="button">Change</button></div><textarea id="addressEdit" class="address-edit hidden" placeholder="Enter complete delivery address"></textarea><div style="margin-top:8px;display:flex;gap:8px"><button class="btn btn-outline hidden" id="saveAddress" type="button">Save address</button></div></section>
+<section class="card"><h2 id="restaurant">Your order</h2><div id="items" class="items"><div class="muted">Loading cart…</div></div></section>
+<section class="card" style="
+  background:#fff;
+  border:1px solid #e8eeec;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 4px 14px rgba(0,40,45,.05);
+">
+  <h2 style="margin:0 0 12px;color:#063f49;font-size:16px;">
+    Offers & savings
+  </h2>
 
-      <div class="brand">
-        <div class="brand-name">DARV<span>O</span>Z</div>
-        <div class="tagline">FOOD · GROCERIES · ESSENTIALS</div>
-      </div>
+  <!-- Apply Coupon -->
+  <button
+    id="openCoupons"
+    type="button"
+    class="coupon-trigger"
+    style="
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px;
+      background:#fff7f0;
+      border:1px solid #ffdfc7;
+      border-radius:12px;
+      text-align:left;
+      cursor:pointer;
+    "
+  >
+    <span style="display:flex;align-items:center;gap:11px;">
+      <span style="
+        width:40px;height:40px;
+        display:flex;align-items:center;justify-content:center;
+        background:#ff6500;color:#fff;
+        border-radius:10px;font-size:20px;
+      ">%</span>
 
-      <div class="secure-top">
-        🛡️
-        <strong>Secure</strong>
-        Payments
-      </div>
+      <span>
+        <strong id="couponTitle"
+          style="display:block;color:#063f49;font-size:14px;">
+          Apply Coupon
+        </strong>
+        <span id="couponMsg"
+          class="coupon-meta"
+          style="display:block;margin-top:4px;color:#687b7d;font-size:12px;">
+          Save more on your order
+        </span>
+      </span>
+    </span>
+
+    <span style="font-size:24px;color:#ff6500;">›</span>
+  </button>
+
+<div class="coins-card">
+  <div class="coins-left">
+    
+<span class="coins-icon">
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        width="28"
+        height="28"
+        aria-label="DARVOZ Coin"
+        role="img">
+
+        <circle cx="12" cy="12" r="9.5"/>
+        <circle cx="12" cy="12" r="7.2"/>
+
+        <path
+            d="M9 7.5H12
+               C15 7.5 17 9.3 17 12
+               C17 14.7 15 16.5 12 16.5
+               H9V7.5Z"/>
+    </svg>
+</span>
+
+    <div>
+      <strong>DARVOZ Coins</strong>
+      <p>Use coins and save more</p>
     </div>
-  </header>
+  </div>
 
-  <main class="container">
-    <section class="card delivery">
-      <div class="location-icon">📍</div>
+  <strong id="coinsAppliedValue">−₹0</strong>
+</div>
 
-      <div class="delivery-info">
-        <div class="store" id="storeName">DARVOZ Store</div>
-        <div class="muted">Delivering to</div>
-        <div class="address" id="deliveryAddress">
-          Select your delivery address
-        </div>
-      </div>
+  
+</section>
 
-      <button class="change" onclick="changeAddress()">Change</button>
-    </section>
 
-    <section class="card summary">
-      <div class="section-title">🛒 Order Summary</div>
+<section class="card">
+  <h2>Payment method</h2>
 
-      <div class="summary-row">
-        <span>Item Total</span>
-        <span id="itemTotal">—</span>
-      </div>
+  <div class="payment-options">
+    <!-- UPI -->
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="upi" checked>
+      <img class="payment-icon" src="images/upi.png" alt="UPI">
+      <span class="payment-copy">
+        <strong>UPI</strong>
+        <small>Pay using UPI through Razorpay</small>
+      </span>
+    </label>
 
-      <div class="summary-row">
-        <span>GST</span>
-        <span id="gstAmount">—</span>
-      </div>
+    <!-- Credit / Debit Card -->
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="card">
+      <img class="payment-icon" src="images/card.png" alt="Card">
+      <span class="payment-copy">
+        <strong>Credit / Debit Card</strong>
+        <small>Pay securely using your card through Razorpay</small>
+      </span>
+    </label>
 
-      <div class="summary-row">
-        <span>Delivery Fee</span>
-        <span id="deliveryFee">—</span>
-      </div>
+    <!-- Net Banking -->
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="netbanking">
+      <img class="payment-icon" src="images/netbanking.png" alt="Net Banking">
+      <span class="payment-copy">
+        <strong>Net Banking</strong>
+        <small>Pay through your bank using Razorpay</small>
+      </span>
+    </label>
 
-      <div class="summary-row discount">
-        <span>Discount</span>
-        <span id="discountAmount">—</span>
-      </div>
+    <!-- Cash on Delivery -->
+    <label class="payment-option">
+      <input type="radio" name="paymentMethod" value="cod">
+      <img class="payment-icon" src="images/cod.png" alt="Cash on Delivery">
+      <span class="payment-copy">
+        <strong>Cash on Delivery</strong>
+        <small>Pay when your order arrives</small>
+      </span>
+    </label>
+  </div>
 
-      <div class="summary-row grand-total">
-        <span>Grand Total</span>
-        <span id="grandTotal">—</span>
-      </div>
-    </section>
+  <p id="paymentHint" class="small" style="margin:9px 0 0">
+    Complete your UPI payment through Razorpay.
+  </p>
+</section>
 
-    <h2 class="payment-title">🔒 Choose Payment Method</h2>
-    <p class="payment-subtitle">
-      Continue to secure checkout. Compatible UPI apps may be offered
-      automatically on supported Android browsers.
-    </p>
+<section class="card bill"><h2>Bill details</h2><div class="row"><span>Item total</span><strong id="subtotal">₹0</strong></div><div class="row"><span>GST (5%)</span><strong id="gst">₹0</strong></div><div class="row"><span>Delivery fee</span><strong id="delivery">—</strong></div><div class="row" id="couponRow" style="display:none"><span>Coupon discount</span><strong id="couponDiscount">−₹0</strong></div><div class="row" id="coinsRow" style="display:none"><span>DARVOZ Coins</span><strong id="coinsDiscount">−₹0</strong></div><div class="row total"><span>Grand total</span><strong id="total">₹0</strong></div><div id="unavailable" class="notice hidden" style="background:#fff0f0;color:var(--danger)">Delivery is not available for this address. Please choose another address.</div></section>
 
-    <div class="methods">
-      <div class="method primary">
-        <div class="method-icon">UPI</div>
-        <div class="method-info">
-          <div class="method-name">UPI Apps</div>
-          <div class="method-desc">
-            Google Pay, PhonePe, Paytm and other supported apps
-          </div>
-        </div>
-        <div class="arrow">›</div>
-      </div>
+</main>
+</div>
+<div id="couponModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle"><div class="coupon-modal"><div class="modal-head"><h2 id="couponModalTitle">Available coupons</h2><button id="closeCoupons" class="icon-btn" type="button" aria-label="Close coupons">×</button></div><div id="couponList"></div></div></div>
+<div class="footer"><div class="footerinner"><div class="payamount"><small>Amount to pay</small><strong id="footerTotal">₹0</strong></div><button id="payNow" class="btn pay" type="button">Pay now</button></div></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+'use strict';
+const API = window.location.origin;
+const customerId = localStorage.getItem('customerId');
+const key = suffix => `${suffix}_${customerId}`;
+const getLS = (k, fallback=null) => { try { const v=localStorage.getItem(k); return v===null?fallback:v; } catch { return fallback; } };
+const parse = (v, fallback) => { try { return JSON.parse(v); } catch { return fallback; } };
+const money = n => '₹' + (Number(n)||0).toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});
+let cart = [], subtotal=0, deliveryFee=0, gstFee=0, couponDiscount=0, coinDiscount=0, grandTotal=0;
+let distanceKm = Number(getLS(key('deliveryDistance'), getLS('deliveryDistance', 'NaN')));
+let riderBaseEarning=0, riderExtraEarning=0, riderTotalEarning=0, adminDeliveryShare=0, freeDeliverySubsidy=0;
+let freeDelivery=false, deliveryAvailable=true, availableCoins=0, coinsEnabled=false, partnerId=null, restaurantName='Your order', savedAddress='';
+let appliedCoupon = String(getLS(key('couponCode'), getLS('couponCode','')) || '');
+let availableCouponList = [];
+let activeCoupon = null;
+const FREE_DELIVERY_THRESHOLD=399, GST_RATE=.05, COINS_PER_RUPEE=100, MAX_COINS_PER_ORDER=1000;
+/* Exact V1 rules from the provided DARVOZ pricing source. */
+const DELIVERY_RULES = [
+{min:0.0,max:2.0,customer:25,rider:25,admin:0,cashback:0},
+{min:2.1,max:2.2,customer:30,rider:25,admin:5,cashback:0},
+{min:2.3,max:2.4,customer:32,rider:27,admin:5,cashback:0},
+{min:2.5,max:2.6,customer:34,rider:29,admin:5,cashback:0},
+{min:2.7,max:2.8,customer:36,rider:31,admin:5,cashback:0},
+{min:2.9,max:3.0,customer:38,rider:33,admin:5,cashback:0},
+{min:3.1,max:3.2,customer:40,rider:35,admin:5,cashback:0},
+{min:3.3,max:3.4,customer:42,rider:37,admin:5,cashback:0},
+{min:3.5,max:3.6,customer:44,rider:39,admin:5,cashback:0},
+{min:3.7,max:3.8,customer:46,rider:41,admin:5,cashback:0},
+{min:3.9,max:4.0,customer:48,rider:43,admin:5,cashback:0},
+{min:4.1,max:4.2,customer:50,rider:45,admin:5,cashback:0},
+{min:4.3,max:4.4,customer:51,rider:46,admin:5,cashback:0}
+];
+function getDeliveryRule(distance){if(!Number.isFinite(distance)||distance<0)return null;const km=Math.round(distance*10)/10;if(km>7)return null;if(km<=2)return DELIVERY_RULES[0];return DELIVERY_RULES.find(r=>km>=r.min&&km<=r.max)||null;}
+function showError(msg){const el=document.getElementById('error');el.textContent=msg;el.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
+function clearError(){document.getElementById('error').style.display='none';}
+function safeText(v){return String(v??'');}
+function renderItems(){
+ const el=document.getElementById('items');
+ if(!Array.isArray(cart)||!cart.length){el.innerHTML='<div class="empty"><strong>Your cart is empty</strong><p class="muted">Add products before checkout.</p><button class="btn" onclick="location.href=\'cart.html\'">Back to cart</button></div>';document.getElementById('payNow').disabled=true;return;}
+ el.innerHTML=cart.map(item=>{
+   const price=Number(item.offer_price)>0?Number(item.offer_price):Number(item.price)||0;
+   const qty=Math.max(0,Number(item.quantity)||0);
+   const image=item.image||item.image_url||item.product_image||'';
+   return `<div class="item"><img class="pic" src="${escapeAttr(image)}" alt="" onerror="this.style.visibility='hidden'"><div class="iteminfo"><div class="itemname">${escapeHtml(item.name||item.product_name||item.title||'Product')}</div><div class="qty">Qty ${qty} × ${money(price)}</div></div><strong>${money(price*qty)}</strong></div>`;
+ }).join('');
+}
+function escapeHtml(s){return safeText(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function escapeAttr(s){return escapeHtml(s).replace(/`/g,'&#96;');}
+function calculate(){
+ subtotal=cart.reduce((sum,item)=>sum+(Math.max(0,Number(Number(item.offer_price)>0?item.offer_price:item.price)||0)*Math.max(0,Number(item.quantity)||0)),0);
+ // cart.html is the source of truth for delivery and coin application; do not invent a second coin toggle here.
+ const savedDelivery=Number(getLS(key('deliveryFee'),getLS('deliveryFee','NaN')));
+ deliveryFee=Number.isFinite(savedDelivery)&&savedDelivery>=0?savedDelivery:0;
+ const savedGst=Number(getLS(key('gstFee'),getLS('gstFee','NaN')));
+ gstFee=Number.isFinite(savedGst)&&savedGst>=0?savedGst:Math.round(subtotal*GST_RATE);
+ const savedDistance=Number(getLS(key('deliveryDistance'),getLS('deliveryDistance','NaN')));
+ if(Number.isFinite(savedDistance))distanceKm=savedDistance;
+ deliveryAvailable=String(getLS(key('deliveryAvailable'),getLS('deliveryAvailable','true'))).toLowerCase()!=='false';
+ freeDelivery=String(getLS(key('freeDelivery'),getLS('freeDelivery','false'))).toLowerCase()==='true';
+ couponDiscount=appliedCoupon?Math.max(0,Number(getLS(key('couponDiscount'),getLS('couponDiscount','0')))||0):0;
+ // Use the exact coin discount saved by cart.html. It is applied only if cart actually redeemed coins.
+ const savedCoinDiscount=Math.max(0,Number(getLS(key('coinDiscount'),getLS('coinDiscount','0')))||0);
+ const savedCoinsUsed=Math.max(0,Number(getLS(key('coinsUsed'),getLS('coinsUsed','0')))||0);
+ coinDiscount=(savedCoinsUsed>0&&savedCoinDiscount>0)?Math.min(savedCoinDiscount,10,Math.max(0,subtotal+gstFee+deliveryFee-couponDiscount)):0;
+ grandTotal=Math.max(0,Math.round((subtotal+gstFee+deliveryFee-couponDiscount-coinDiscount)*100)/100);
+ document.getElementById('subtotal').textContent=money(subtotal);
+ document.getElementById('gst').textContent=money(gstFee);
+ document.getElementById('delivery').textContent=deliveryAvailable?(freeDelivery?'FREE':money(deliveryFee)):'Unavailable';
+ document.getElementById('couponRow').style.display=couponDiscount>0?'flex':'none';document.getElementById('couponDiscount').textContent='−'+money(couponDiscount);
+ document.getElementById('coinsRow').style.display=coinDiscount>0?'flex':'none';document.getElementById('coinsDiscount').textContent='−'+money(coinDiscount);
 
-      <div class="method">
-        <div class="method-icon">CARD</div>
-        <div class="method-info">
-          <div class="method-name">Credit / Debit Cards</div>
-          <div class="method-desc">Supported cards</div>
-        </div>
-        <div class="arrow">›</div>
-      </div>
+document.getElementById('coinsAppliedNotice')?.classList.toggle('hidden', coinDiscount <= 0);
 
-      <div class="method">
-        <div class="method-icon">BANK</div>
-        <div class="method-info">
-          <div class="method-name">Net Banking</div>
-          <div class="method-desc">Participating banks</div>
-        </div>
-        <div class="arrow">›</div>
-      </div>
+document.getElementById('coinsNotApplied')?.classList.toggle('hidden', coinDiscount > 0);
 
-      <div class="method">
-        <div class="method-icon">WALLET</div>
-        <div class="method-info">
-          <div class="method-name">Wallets</div>
-          <div class="method-desc">Payment methods supported by Razorpay</div>
-        </div>
-        <div class="arrow">›</div>
-      </div>
-    </div>
+ document.getElementById('coinsAppliedValue').textContent='−'+money(coinDiscount);
+ document.getElementById('total').textContent=money(grandTotal);document.getElementById('footerTotal').textContent=money(grandTotal);
+ document.getElementById('unavailable').classList.toggle('hidden',deliveryAvailable);
+ document.getElementById('payNow').disabled=!deliveryAvailable||!cart.length||!customerId;
+ saveTotals();
+}
 
-    <div class="note">
-      <span>🛡️</span>
-      <div>
-        <strong>Secure payment</strong><br>
-        DARVOZ must verify your payment with the backend before confirming
-        your order. Never share your UPI PIN or OTP.
-      </div>
-    </div>
+function saveTotals(){
+ const values={
+  cartSubtotal:subtotal,deliveryFee,gstFee,couponDiscount,coinDiscount,coinsUsed:Math.round(coinDiscount*COINS_PER_RUPEE),
+  grandTotal,deliveryDistance:Number.isFinite(distanceKm)?distanceKm:null,riderBaseEarning,riderExtraEarning,riderTotalEarning,
+  adminDeliveryShare,freeDelivery,freeDeliverySubsidy,deliveryAvailable
+ };
+ for(const [k,v] of Object.entries(values))try{localStorage.setItem(key(k),String(v));}catch{}
+}
+async function fetchJSON(url,options={}){
+ const res=await fetch(url,{credentials:'include',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});
+ const data=await res.json().catch(()=>({}));
+ if(!res.ok)throw new Error(data.message||data.error||`Request failed (${res.status})`);
+ return data;
+}
+async function loadData(){
+ if(!customerId){showError('Please sign in to your DARVOZ account before checkout.');document.getElementById('items').innerHTML='<div class="muted">Login is required.</div>';return;}
+ cart=parse(getLS(key('cart'),'[]'),[]);
+ if(!Array.isArray(cart))cart=[];
+ restaurantName=getLS(key('restaurantName'),getLS('restaurantName','Your order'))||'Your order';
+ document.getElementById('restaurant').textContent=restaurantName;
+ savedAddress=getLS(key('address'),getLS('selectedAddress',getLS('deliveryAddress',''))) || '';
+ document.getElementById('address').textContent=savedAddress||'No saved address found. Please add your delivery address.';
+ document.getElementById('addressEdit').value=savedAddress;
+ availableCoins=Math.max(0,Number(getLS(key('coins'),getLS(key('availableCoins'),getLS('availableCoins','0'))))||0);
+ 
+ const savedCouponDiscount=Number(getLS(key('couponDiscount'),getLS('couponDiscount','0')))||0;
+ if(appliedCoupon&&savedCouponDiscount>0){document.getElementById('couponTitle').textContent=`${appliedCoupon} applied`;document.getElementById('couponMsg').textContent=`You saved ${money(savedCouponDiscount)} · Tap to change`;}
+ else{appliedCoupon='';document.getElementById('couponTitle').textContent='Apply coupon';document.getElementById('couponMsg').textContent='View available offers';}
 
-    <div class="message" id="message" role="status" aria-live="polite"></div>
-  </main>
+ renderItems();calculate();
+ // Try existing account/cart APIs without blocking checkout if a project uses a different response shape.
+ try{
+  const d=await fetchJSON(`${API}/customer/${encodeURIComponent(customerId)}`);
+  const customer=d.customer||d.data||d;
+  const addr=customer.address||customer.full_address;
+  if(addr&&!savedAddress){savedAddress=addr;document.getElementById('address').textContent=addr;document.getElementById('addressEdit').value=addr;}
+  if(customer.coins!=null||customer.wallet_coins!=null){availableCoins=Math.max(0,Number(customer.coins??customer.wallet_coins)||0);calculate();}
+ }catch(e){/* Existing deployments may expose customer data through localStorage instead. */}
+}
 
-  <footer class="bottom">
-    <div class="bottom-inner">
-      <button class="pay" id="payButton" onclick="payNow()">
-        Pay Now →
-      </button>
-      <div class="trust">🔒 Secure checkout · UPI supported · Encrypted payment</div>
-    </div>
-  </footer>
 
-  <script>
-    /*
-     * IMPORTANT:
-     * Replace this with your Razorpay TEST Key ID first.
-     * Never put your Razorpay Key Secret in this file.
-     */
-    const RAZORPAY_KEY_ID = "YOUR_RAZORPAY_KEY_ID";
+document.getElementById('editAddress').addEventListener('click', () => {
+    localStorage.setItem('addressReturnPage', 'checkout.html');
+    window.location.href = 'address.html';
+});
 
-    function customerId() {
-      return localStorage.getItem("customerId");
-    }
 
-    function readFirst(keys) {
-      for (const key of keys) {
-        const value = localStorage.getItem(key);
-        if (value !== null && value !== "") return value;
-      }
-      return null;
-    }
+document.getElementById('saveAddress').addEventListener('click',()=>{const val=document.getElementById('addressEdit').value.trim();if(!val){showError('Please enter a complete delivery address.');return;}savedAddress=val;document.getElementById('address').textContent=val;document.getElementById('addressEdit').classList.add('hidden');document.getElementById('saveAddress').classList.add('hidden');document.getElementById('editAddress').classList.remove('hidden');try{localStorage.setItem(key('address'),val);localStorage.setItem('deliveryAddress',val);localStorage.setItem('selectedAddress',val);}catch{}});
+function readCouponArray(){
+ const candidates=[getLS(key('availableCoupons'),null),getLS('availableCoupons',null),getLS(key('coupons'),null),getLS('coupons',null)];
+ for(const raw of candidates){const parsed=Array.isArray(raw)?raw:parse(raw,[]);if(Array.isArray(parsed)&&parsed.length)return parsed;}
+ return [];
+}
+function couponCode(c){return String(c.code||c.coupon_code||c.couponCode||c.name||'').trim().toUpperCase();}
+function couponDiscountFor(c){
+ const raw=Number(c.discount_amount??c.discount_value??c.discount??c.value??0)||0;
+ const type=String(c.discount_type||c.type||'flat').toLowerCase();
+ let amount=(type.includes('percent')||type==='percentage')?subtotal*Math.min(raw,100)/100:raw;
+ const max=Number(c.max_discount??c.maxDiscount??0)||0;if(max>0)amount=Math.min(amount,max);
+ const minimum=Number(c.minimum_order??c.min_order??c.minOrder??0)||0;
+ if(subtotal<minimum)return 0;
+ return Math.max(0,Math.min(subtotal,Math.round(amount*100)/100));
+}
+function showCouponModal(){
+ const modal=document.getElementById('couponModal'), list=document.getElementById('couponList');
+ availableCouponList=readCouponArray().filter(c=>c&&typeof c==='object'&&couponCode(c)&&c.active!==false&&c.is_active!==0);
+ if(!availableCouponList.length){list.innerHTML='<div class="empty-coupons"><div style="font-size:28px;margin-bottom:6px">🏷️</div><strong>No available coupons</strong><p class="small">Please check again later for DARVOZ offers.</p></div>';}
+ else{list.innerHTML=availableCouponList.map((c,i)=>{const code=couponCode(c), amount=couponDiscountFor(c), description=escapeHtml(c.description||c.title||c.offer_description||(String(c.discount_type||c.type||'').toLowerCase().includes('percent')?`${Number(c.discount_amount??c.discount_value??c.discount??c.value)||0}% off`:`${money(Number(c.discount_amount??c.discount_value??c.discount??c.value)||0)} off`));const min=Number(c.minimum_order??c.min_order??c.minOrder??0)||0;return `<div class="coupon-card"><div><div class="coupon-code">${escapeHtml(code)}</div><p>${description}${min>0?` · Min order ${money(min)}`:''}</p></div><button class="btn" type="button" data-coupon-index="${i}" ${amount<=0?'disabled':''}>${appliedCoupon===code?'Applied':'Apply'}</button></div>`;}).join('');}
+ modal.classList.remove('hidden');
+}
+function applyCouponObject(c){
+ const code=couponCode(c), discount=couponDiscountFor(c);
+ if(!code||discount<=0){document.getElementById('couponMsg').textContent='This coupon is not valid for this order.';return;}
+ activeCoupon=c;appliedCoupon=code;
+ try{localStorage.setItem(key('couponCode'),code);localStorage.setItem(key('couponDiscount'),String(discount));localStorage.setItem(key('couponValidatedCode'),code);localStorage.setItem('couponCode',code);localStorage.setItem('couponDiscount',String(discount));}catch{}
+ document.getElementById('couponTitle').textContent=`${code} applied`;
+ document.getElementById('couponMsg').textContent=`You saved ${money(discount)} · Tap to change`;
+ calculate();document.getElementById('couponModal').classList.add('hidden');
+}
+document.getElementById('openCoupons').addEventListener('click',showCouponModal);
 
-    function rupees(value) {
-      return "₹" + Number(value).toLocaleString("en-IN", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
+function updatePaymentSelection() {
+  const method =
+    document.querySelector('input[name="paymentMethod"]:checked')?.value || 'upi';
 
-    function setText(id, value) {
-      document.getElementById(id).textContent = value;
-    }
+  const settings = {
+    upi: ['Pay with UPI', 'Complete your UPI payment through Razorpay.'],
+    card: ['Pay with Card', 'Complete your card payment through Razorpay.'],
+    netbanking: ['Pay with Net Banking', 'Complete your bank payment through Razorpay.'],
+    cod: ['Place order · COD', 'Pay cash to the delivery partner when your order arrives.']
+  };
 
-    function loadPaymentDetails() {
-      const id = customerId();
+  document.getElementById('payNow').textContent = settings[method][0];
+  document.getElementById('paymentHint').textContent = settings[method][1];
+}
 
-      const rawTotal = (id
-        ? localStorage.getItem(`grandTotal_${id}`)
-        : null) ?? readFirst([
-          "amount", "totalAmount", "checkoutTotal", "darvoz_total"
-        ]);
+document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+  input.addEventListener('change', updatePaymentSelection);
+});
 
-      const total = rawTotal !== null &&
-        Number.isFinite(Number(rawTotal)) &&
-        Number(rawTotal) > 0
-          ? Number(rawTotal)
-          : null;
-
-      const store = (id
-        ? localStorage.getItem(`restaurantName_${id}`)
-        : null) || readFirst([
-          "storeName", "restaurantName", "shopName", "darvoz_store"
-        ]);
-
-      const address = (id
-        ? localStorage.getItem(`selectedAddress_${id}`)
-        : null) || readFirst([
-          "selectedAddress", "deliveryAddress", "darvoz_address"
-        ]);
-
-      setText("storeName", store || "DARVOZ Store");
-      setText("deliveryAddress", address || "Please select your delivery address");
-
-      /*
-       * Match these summary keys to the actual keys used by your cart.
-       * The grand total above uses your existing grandTotal_<customerId> key.
-       */
-      const subtotal = id ? localStorage.getItem(`subtotal_${id}`) : null;
-      const gst = id ? localStorage.getItem(`gst_${id}`) : null;
-      const delivery = id ? localStorage.getItem(`deliveryFee_${id}`) : null;
-      const discount = id ? localStorage.getItem(`discount_${id}`) : null;
-
-      setText("itemTotal", subtotal !== null ? rupees(subtotal) : "—");
-      setText("gstAmount", gst !== null ? rupees(gst) : "—");
-      setText("deliveryFee", delivery !== null ? rupees(delivery) : "—");
-      setText("discountAmount",
-        discount !== null ? "−" + rupees(discount) : "—");
-      setText("grandTotal", total !== null ? rupees(total) : "Amount unavailable");
-
-      const button = document.getElementById("payButton");
-
-      if (total === null) {
-        button.disabled = true;
-        button.textContent = "Amount unavailable";
-      } else {
-        button.disabled = false;
-        button.textContent = "Pay " + rupees(total) + " →";
-      }
-    }
-
-    function showMessage(text) {
-      const message = document.getElementById("message");
-      message.style.display = "block";
-      message.textContent = text;
-    }
-
-    function changeAddress() {
-      localStorage.setItem("addressReturnPage", "payment.html");
-      window.location.href = "address.html";
-    }
-
-    function goBack() {
-      if (history.length > 1) history.back();
-      else window.location.href = "cart.html";
-    }
-
-    async function payNow() {
-      const button = document.getElementById("payButton");
-      const id = customerId();
-
-      const rawTotal = id
-        ? localStorage.getItem(`grandTotal_${id}`)
-        : null;
-
-      const total = Number(rawTotal);
-
-      if (!rawTotal || !Number.isFinite(total) || total <= 0) {
-        showMessage("Your cart total is missing. Return to your cart and try again.");
-        return;
-      }
-
-      if (!RAZORPAY_KEY_ID || RAZORPAY_KEY_ID === "YOUR_RAZORPAY_KEY_ID") {
-        showMessage("Add your Razorpay Test Mode Key ID in payment.html first.");
-        return;
-      }
-
-      if (typeof Razorpay === "undefined") {
-        showMessage("Razorpay Checkout could not load. Check your internet connection.");
-        return;
-      }
-
-      button.disabled = true;
-      button.textContent = "Starting secure checkout...";
-
-      try {
-        /*
-         * This calls your existing route.
-         * Production note: the backend must calculate the trusted total
-         * itself instead of trusting the amount supplied by the browser.
-         */
-        const response = await fetch("/payment/create-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: total })
-        });
-
-        const result = await response.json();
-
-        if (!response.ok || !result.success || !result.order?.id) {
-          throw new Error(result.message || "Unable to create Razorpay order.");
-        }
-
-        const options = {
-          key: RAZORPAY_KEY_ID,
-          amount: result.order.amount,
-          currency: result.order.currency || "INR",
-          name: "DARVOZ",
-          description: "DARVOZ order payment",
-          order_id: result.order.id,
-
-          /*
-           * Razorpay Checkout handles the available payment methods.
-           * UPI Intent depends on supported browser/platform and account
-           * configuration; this page does not scan installed apps itself.
-           */
-          handler: async function (paymentResponse) {
-            button.textContent = "Verifying payment...";
-
-            try {
-              const verifyResponse = await fetch("/payment/verify", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(paymentResponse)
-              });
-
-              const verifyResult = await verifyResponse.json();
-
-              if (!verifyResponse.ok || !verifyResult.success) {
-                throw new Error("Payment verification failed.");
-              }
-
-              showMessage(
-                "Payment signature verified. The DARVOZ order is not placed yet; " +
-                "order placement and captured-status verification still need to be connected."
-              );
-
-              button.textContent = "Payment verification returned";
-            } catch (error) {
-              showMessage(error.message || "Unable to verify payment. Contact support before retrying.");
-              button.disabled = false;
-              button.textContent = "Retry checkout";
-            }
-          },
-
-          modal: {
-            ondismiss: function () {
-              button.disabled = false;
-              button.textContent = "Pay " + rupees(total) + " →";
-            }
-          },
-
-          theme: { color: "#FF6500" }
-        };
-
-        const checkout = new Razorpay(options);
-
-        checkout.on("payment.failed", function (event) {
-          showMessage(
-            event.error?.description || "Payment failed. Please try again."
-          );
-          button.disabled = false;
-          button.textContent = "Pay " + rupees(total) + " →";
-        });
-
-        checkout.open();
-      } catch (error) {
-        showMessage(error.message || "Could not start payment. Please try again.");
-        button.disabled = false;
-        button.textContent = "Pay " + rupees(total) + " →";
-      }
-    }
-
-    loadPaymentDetails();
-  </script>
+updatePaymentSelection();
+document.querySelectorAll('input[name="paymentMethod"]').forEach(r=>r.addEventListener('change',()=>{const cod=document.querySelector('input[name="paymentMethod"]:checked')?.value==='cod';document.getElementById('payNow').textContent=cod?'Place order · COD':'Pay now securely';document.getElementById('paymentHint').textContent=cod?'Pay cash to the delivery partner when your order arrives.':'Razorpay opens after you tap Pay now.';}));
+document.getElementById('closeCoupons').addEventListener('click',()=>document.getElementById('couponModal').classList.add('hidden'));
+document.getElementById('couponModal').addEventListener('click',e=>{if(e.target.id==='couponModal')e.currentTarget.classList.add('hidden');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('couponModal').classList.add('hidden');});
+document.getElementById('couponList').addEventListener('click',e=>{const btn=e.target.closest('[data-coupon-index]');if(!btn)return;const coupon=availableCouponList[Number(btn.dataset.couponIndex)];if(coupon)applyCouponObject(coupon);});
+function getKeyId(){return String(document.querySelector('meta[name="razorpay-key-id"]')?.content||getLS('RAZORPAY_KEY_ID','')||'').trim();}
+async function payNow(){
+ clearError();
+ if(!customerId){showError('Please sign in first.');return;}
+ if(!savedAddress.trim()){showError('Please add your delivery address before paying.');return;}
+ if(!deliveryAvailable){showError('Delivery is unavailable for this address.');return;}
+ if(!cart.length){showError('Your cart is empty.');return;}
+ if(!Number.isFinite(distanceKm)){showError('Delivery distance is missing. Please select an address with a calculated delivery distance.');return;}
+ const method=document.querySelector('input[name="paymentMethod"]:checked')?.value||'upi';
+ const button=document.getElementById('payNow');button.disabled=true;
+ const orderPayload={customer_id:Number(customerId),partner_id:Number(
+  getLS(`partnerId_${customerId}`, getLS('partnerId', '0'))
+)||null,restaurant_name:restaurantName,customer_name:getLS('customerName','Customer'),mobile:getLS('customerMobile',getLS('mobile','')),address:savedAddress,customer_lat:Number(getLS(key('customerLatitude'),getLS('customer_lat',getLS('customerLatitude',''))))||null,customer_lng:Number(getLS(key('customerLongitude'),getLS('customer_lng',getLS('customerLongitude',''))))||null,payment:method==='cod'?'COD':'Razorpay',amount:grandTotal,subtotal,delivery_fee:deliveryFee,gst:gstFee,gst_fee:gstFee,discount:couponDiscount,coupon_discount:couponDiscount,coin_discount:coinDiscount,coins_used:Math.round(coinDiscount*COINS_PER_RUPEE),free_delivery:freeDelivery,delivery_distance_km:distanceKm,items:cart.map(item=>({product_id:item.product_id||item.id||null,product_name:item.product_name||item.name||item.title||'Product',price:Number(Number(item.offer_price)>0?item.offer_price:item.price)||0,quantity:Number(item.quantity)||1,weight:item.weight||''}))};
+ if(method==='cod'){
+  button.textContent='Placing order…';
+  try{
+   const placed=await fetchJSON(`${API}/orders/place`,{method:'POST',body:JSON.stringify({...orderPayload,payment_id:null,payment_order_id:null})});
+   const data=placed.order||placed.data||placed;const finalOrderId=data.order_id||data.id||placed.order_id;
+   try{if(finalOrderId!=null){localStorage.setItem('lastOrderId',String(finalOrderId));localStorage.setItem(key('lastOrderId'),String(finalOrderId));}localStorage.setItem(key('lastPaymentMethod'),'COD');}catch{}
+   location.href='order-success.html';
+  }catch(e){showError(`Cash on Delivery order failed: ${e.message}`);button.disabled=false;button.textContent='Place order · COD';}
+  return;
+ }
+ if(typeof Razorpay==='undefined'){showError('Razorpay Checkout did not load. Check your internet connection and try again.');button.disabled=false;button.textContent='Pay now securely';return;}
+ button.textContent='Preparing payment…';
+ try{
+  // Existing backend owns Razorpay order creation and secrets. Its 400 response must be checked server-side if it persists.
+  const created=await fetchJSON(`${API}/payment/create-order`,{method:'POST',body: JSON.stringify({
+  amount: Number(grandTotal.toFixed(2)),
+  customer_id: Number(customerId),
+  partner_id: Number(
+    localStorage.getItem(`partnerId_${customerId}`) ||
+    localStorage.getItem("partnerId") ||
+    0
+  )
+})});
+  const order=created.order||created.data||created;const orderId=order.id||created.id;const amount=Number(order.amount??created.amount);
+  if(!orderId||!Number.isFinite(amount)){throw new Error('Payment server did not return a valid Razorpay order.');}
+  const keyId=created.key_id||created.key||getKeyId();if(!keyId){throw new Error('Razorpay key ID is not configured. Return the public key ID from your backend response.');}
+  const options={key:keyId,amount,currency:order.currency||created.currency||'INR',name:'DARVOZ',description:'DARVOZ order payment',order_id:orderId,prefill:{name:getLS('customerName',''),contact:getLS('customerMobile',getLS('mobile',''))},theme:{color:'#004D5B'},
+   handler:async function(response){try{
+    button.textContent='Verifying payment…';
+    const verify=await fetchJSON(`${API}/payment/verify`,{method:'POST',body:JSON.stringify({razorpay_order_id:response.razorpay_order_id,razorpay_payment_id:response.razorpay_payment_id,razorpay_signature:response.razorpay_signature})});
+    if(verify.success===false||verify.verified===false)throw new Error(verify.message||'Payment could not be verified.');
+    const placed=await fetchJSON(`${API}/orders/place`,{method:'POST',body:JSON.stringify({...orderPayload,payment:'Razorpay',payment_id:response.razorpay_payment_id,payment_order_id:response.razorpay_order_id})});
+    const data=placed.order||placed.data||placed;const finalOrderId=data.order_id||data.id||placed.order_id;
+    try{localStorage.setItem(key('lastPaymentId'),response.razorpay_payment_id);if(finalOrderId!=null){localStorage.setItem('lastOrderId',String(finalOrderId));localStorage.setItem(key('lastOrderId'),String(finalOrderId));}}catch{}
+    location.href='order-success.html';
+   }catch(e){showError(`Payment was returned, but order confirmation failed: ${e.message}. Do not pay again until support checks payment ID ${response.razorpay_payment_id}.`);button.disabled=false;button.textContent='Retry confirmation';}},
+   modal:{ondismiss:()=>{button.disabled=false;button.textContent='Pay now securely';}}};
+  const rzp=new Razorpay(options);rzp.on('payment.failed',response=>{showError(response.error?.description||'Payment failed. Please try again.');button.disabled=false;button.textContent='Pay now securely';});rzp.open();
+ }catch(e){showError(e.message||'Unable to start payment.');button.disabled=false;button.textContent='Pay now securely';}
+}
+document.getElementById('payNow').addEventListener('click',payNow);
+loadData();
+</script>
 </body>
 </html>

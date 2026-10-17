@@ -2990,30 +2990,19 @@ id,
      * Return page.
      */
 
-    const returnPage =
-        localStorage.getItem(
-            "addressReturnPage"
-        );
+    
+const returnPage = localStorage.getItem("addressReturnPage");
 
+localStorage.removeItem("addressReturnPage");
 
-    localStorage.removeItem(
-        "addressReturnPage"
-    );
+if (returnPage === "checkout.html") {
+    window.location.replace("checkout.html");
+} else if (returnPage) {
+    window.location.replace(returnPage);
+} else {
+    window.location.replace("index.html");
+}
 
-
-    if (returnPage) {
-
-        window.location.href =
-            returnPage;
-
-    }
-
-    else {
-
-        window.location.href =
-            "index.html";
-
-    }
 
 }
 

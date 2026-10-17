@@ -1050,6 +1050,197 @@ svg{
 
 }
 
+/* ===== DARVOZ: COMPACT RECOMMENDATIONS ===== */
+
+.recommend-card {
+    margin-top: 12px;
+    padding: 12px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.recommend-card[hidden] {
+    display: none !important;
+}
+
+.recommend-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.recommend-heading h2 {
+    font-size: 15px;
+    line-height: 19px;
+    font-weight: 700;
+    color: #17201e;
+}
+
+.recommend-heading p {
+    margin-top: 3px;
+    font-size: 10px;
+    line-height: 14px;
+    color: #737b78;
+}
+
+.recommend-heading button {
+    flex: none;
+    color: #004D5B;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.recommend-track {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 1px 5px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.recommend-track::-webkit-scrollbar {
+    display: none;
+}
+
+.recommend-item {
+    position: relative;
+    flex: 0 0 105px;
+    width: 105px;
+    min-width: 0;
+    padding: 6px;
+    background: #fff;
+    border: 1px solid #edf0ee;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.recommend-item img {
+    display: block;
+    width: 100%;
+    height: 82px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f3f5f4;
+}
+
+.recommend-name {
+    display: -webkit-box;
+    min-height: 32px;
+    margin-top: 6px;
+    overflow: hidden;
+    color: #17201e;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 15px;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.recommend-price {
+    margin-top: 5px;
+    color: #004D5B;
+    font-size: 13px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.recommend-add {
+    display: block;
+    min-width: 36px;
+    min-height: 30px;
+    margin: 6px 0 0 auto;
+    padding: 4px 9px;
+    border: 1px solid #168568;
+    border-radius: 7px;
+    background: #fff;
+    color: #168568;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.recommend-add:disabled {
+    opacity: 0.6;
+}
+
+@media (max-width: 360px) {
+    .recommend-card {
+        padding: 10px;
+    }
+
+    .recommend-item {
+        flex-basis: 98px;
+        width: 98px;
+    }
+
+    .recommend-item img {
+        height: 76px;
+    }
+}
+
+.recommend-add {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #198754;
+    border-radius: 8px;
+    background: #fff;
+    color: #198754;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 2;
+}
+.recommend-item {
+    position: relative;
+}
+
+.recommend-item img {
+    display: block;
+    width: 100%;
+    height: 82px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.recommend-add {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #15966a;
+    border: 2px solid #dedede;
+    border-radius: 10px;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.recommend-add:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+
 </style>
 </head>
 
@@ -1194,6 +1385,19 @@ svg{
 
         </section>
 
+        <!-- COMPLETE YOUR ORDER -->
+<section class="recommend-card" id="recommendCard" hidden>
+    <div class="recommend-heading">
+        <div>
+            <h2>Complete your order</h2>
+            <p>More favourites from the same restaurant</p>
+        </div>
+
+    </div>
+
+    <div class="recommend-track" id="recommendTrack"></div>
+</section>
+
 
         <!-- =================================================
              DELIVERY
@@ -1292,68 +1496,7 @@ svg{
         </div>
 
 
-        <!-- =================================================
-             COUPON
-        ================================================== -->
-
-        <section
-            class="coupon-card"
-            onclick="openCoupons()">
-
-            <div class="coupon-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-
-                    <path
-                        d="M20 12a2 2 0 0 0 0-4V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2z"/>
-
-                    <path d="M9 9h.01"/>
-
-                    <path d="M15 15h.01"/>
-
-                    <path d="m9 15 6-6"/>
-
-                </svg>
-
-            </div>
-
-            <div class="coupon-content">
-
-                <div class="coupon-title">
-                    Apply Coupon
-                </div>
-
-                <div
-                    class="coupon-sub"
-                    id="couponSub">
-
-                    Save more with available offers
-
-                </div>
-
-            </div>
-
-            <svg
-                class="chevron"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round">
-
-                <path d="m9 18 6-6-6-6"/>
-
-            </svg>
-
-        </section>
-
+      
 
         <!-- =================================================
              DARVOZ COINS
@@ -1365,31 +1508,26 @@ svg{
 
                 <div class="coins-icon">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round">
+                    
+<svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.7"
+    stroke-linecap="round"
+    stroke-linejoin="round">
 
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="8.5"/>
+    <circle cx="12" cy="12" r="9.5"/>
 
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="5.5"/>
+    <circle cx="12" cy="12" r="7.2"/>
 
-                        <path
-                            d="M12 8.5v7"/>
+    <path
+        d="M9 7.5H12
+           C15 7.5 17 9.3 17 12
+           C17 14.7 15 16.5 12 16.5
+           H9V7.5Z"/>
 
-                        <path
-                            d="M9.8 10.2c.7-.7 1.6-1 2.4-1 1.3 0 2.2.7 2.2 1.7s-.8 1.5-2.2 1.8c-1.4.3-2.2.8-2.2 1.8s.9 1.7 2.2 1.7c.9 0 1.8-.3 2.4-1"/>
-
-                    </svg>
+</svg>
 
                 </div>
 
@@ -2053,6 +2191,8 @@ document.addEventListener(
         await loadAddress();
 
         await loadCart();
+
+        loadRecommendations();
 
     }
 );
@@ -5709,6 +5849,159 @@ console.log(
 console.log(
     "--------------------------------"
 );
+
+/* =========================================
+   DARVOZ - COMPLETE YOUR ORDER
+========================================= */
+
+async function loadRecommendations() {
+    const section = document.getElementById("recommendCard");
+    const track = document.getElementById("recommendTrack");
+
+    if (!section || !track || !currentPartnerId || !cart.length) {
+        if (section) section.hidden = true;
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `/partner/menu/${encodeURIComponent(currentPartnerId)}`,
+            { cache: "no-store" }
+        );
+
+        if (!response.ok) throw new Error("Menu loading failed");
+
+        const data = await response.json();
+        const products = Array.isArray(data.products)
+            ? data.products
+            : Array.isArray(data) ? data : [];
+
+        const cartIds = new Set(
+            cart.map(item => String(item.product_id ?? item.id ?? ""))
+        );
+
+        const recommendations = products.filter(product => {
+            const id = String(product.id ?? product.product_id ?? "");
+            const partnerId = String(
+                product.partner_id ?? product.restaurant_id ?? currentPartnerId
+            );
+
+            return id &&
+                partnerId === String(currentPartnerId) &&
+                !cartIds.has(id) &&
+                product.is_available !== false &&
+                product.available !== false;
+        }).slice(0, 7);
+
+        if (!recommendations.length) {
+            section.hidden = true;
+            track.innerHTML = "";
+            return;
+        }
+
+        track.innerHTML = recommendations.map(product => {
+            const id = String(product.id ?? product.product_id);
+            const name = product.product_name || product.name || "Food item";
+            const price = Number(
+                product.offer_price || product.price || product.selling_price || 0
+            );
+           const image = product.image_url ||
+    product.image ||
+    product.product_image ||
+    "";
+
+            return `
+                <div class="recommend-item">
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(name)}"
+                       onerror="this.style.visibility='hidden'"
+                    >
+                    <div class="recommend-name">${escapeHTML(name)}</div>
+                    <div class="recommend-price">₹${formatMoney(price)}</div>
+                    <button
+    type="button"
+    class="recommend-add"
+    onclick="addRecommendation('${escapeHTML(id)}')"
+    aria-label="Add item"
+>+</button>
+                </div>
+            `;
+        }).join("");
+
+        section.hidden = false;
+
+    } catch (error) {
+        console.error("DARVOZ recommendations:", error);
+        section.hidden = true;
+    }
+}
+
+async function addRecommendation(productId) {
+    const button = [...document.querySelectorAll(".recommend-add")]
+        .find(item => item.getAttribute("onclick")?.includes(
+            `'${String(productId).replace(/'/g, "\\'")}'`
+        ));
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "ADDING...";
+    }
+
+    try {
+        const response = await fetch(
+            `/partner/menu/${encodeURIComponent(currentPartnerId)}`,
+            { cache: "no-store" }
+        );
+
+        if (!response.ok) throw new Error("Could not reload menu");
+
+        const data = await response.json();
+        const products = Array.isArray(data.products)
+            ? data.products
+            : Array.isArray(data) ? data : [];
+
+        const product = products.find(
+            item => String(item.id ?? item.product_id) === String(productId)
+        );
+
+        if (!product) throw new Error("Product not found");
+
+        
+const responseAdd = await fetch(`${API}/cart/add`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        customer_id: customerId,
+        partner_id: currentPartnerId,
+        product_id: product.id ?? product.product_id,
+        quantity: 1
+    })
+});
+
+const resultAdd = await responseAdd.json().catch(() => null);
+
+if (!responseAdd.ok || !resultAdd || !resultAdd.success) {
+    throw new Error(resultAdd?.message || "Failed to add product");
+}
+
+await loadCart();
+await loadRecommendations();
+
+
+        
+    } catch (error) {
+        console.error("Recommendation add failed:", error);
+        alert("Couldn't add this item. Please try again.");
+    } finally {
+        if (button) {
+            button.disabled = false;
+            button.textContent = "+ ADD";
+        }
+    }
+}
 
 
 
