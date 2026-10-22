@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 
+const {
+    sendWhatsAppMessage
+} = require("../services/whatsappService");
+
 
 // =====================================================
 // CREATE SUPPORT CHAT
@@ -119,6 +123,34 @@ router.post("/create", async (req, res) => {
                 firstMessage
             ]
         );
+
+        // -------------------------------------------------
+// SEND WHATSAPP ALERT TO DARVOZ SUPPORT
+// -------------------------------------------------
+
+const notificationMessage =
+    `🔔 New DARVOZ Support Request\n` +
+    `Chat ID: ${chatId}\n` +
+    `Customer: ${cleanCustomerName}\n` +
+    `Order ID: ${cleanOrderId || "General Support"}\n` +
+    `Issue: ${firstMessage}`;
+
+void sendWhatsAppMessage(
+    process.env.WHATSAPP_SUPPORT_NUMBER,
+    notificationMessage
+).then(result => {
+    if (!result.success) {
+        console.error(
+            "DARVOZ support WhatsApp notification failed:",
+            result.error
+        );
+    }
+}).catch(error => {
+    console.error(
+        "DARVOZ support WhatsApp error:",
+        error.message
+    );
+});
 
 
         // -------------------------------------------------

@@ -354,7 +354,11 @@ router.get("/pending-partners", async (req, res) => {
                     restaurant_name,
                     owner_name,
                     mobile,
+                    email,
+                    address,
                     city,
+                    state,
+                    pincode,
                     logo,
                     status
                 FROM restaurants
@@ -541,8 +545,14 @@ router.get("/restaurants", async (req, res) => {
                     restaurant_name,
                     owner_name,
                     mobile,
+                    email,
+                    address,
                     city,
+                    state,
+                    pincode,
                     logo,
+                    fssai,
+                    gst,
                     status,
                     rating,
                     delivery_time,
@@ -799,6 +809,35 @@ router.delete(
 // ALL ORDERS
 // =====================================================
 
+router.get("/cod-collections", async (req, res) => {
+    try {
+        const [riders] = await db.promise().query(`
+            SELECT c.delivery_partner_id, COALESCE(d.name, CONCAT('Rider #', c.delivery_partner_id)) AS rider_name,
+                   SUM(CASE WHEN c.method='cash' THEN c.amount ELSE 0 END) AS cash_total,
+                   SUM(CASE WHEN c.method='razorpay_upi' THEN c.amount ELSE 0 END) AS upi_total,
+                   SUM(c.amount) AS total_collected, COUNT(*) AS order_count
+            FROM delivery_cod_collections c
+            LEFT JOIN delivery_partners d ON d.id=c.delivery_partner_id
+            WHERE c.status='collected'
+            GROUP BY c.delivery_partner_id, d.name
+            ORDER BY total_collected DESC
+        `);
+        const [collections] = await db.promise().query(`
+            SELECT c.order_id, c.delivery_partner_id, COALESCE(d.name, CONCAT('Rider #', c.delivery_partner_id)) AS rider_name,
+                   c.amount, c.method, c.razorpay_payment_id, c.collected_at, o.restaurant_name, o.customer_name
+            FROM delivery_cod_collections c
+            LEFT JOIN delivery_partners d ON d.id=c.delivery_partner_id
+            LEFT JOIN orders o ON o.id=c.order_id
+            WHERE c.status='collected'
+            ORDER BY c.collected_at DESC, c.id DESC
+        `);
+        return res.json({ success: true, riders, collections });
+    } catch (err) {
+        console.error("COD COLLECTIONS ERROR:", err);
+        return res.status(500).json({ success: false, message: "Unable to load COD collections. Apply the COD collections database update first." });
+    }
+});
+
 router.get("/orders", async (req, res) => {
 
     try {
@@ -876,9 +915,16 @@ router.get(
                     [id]
                 );
 
+            const [codCollections] = await db.promise().query(
+                `SELECT delivery_partner_id, amount, method, razorpay_payment_id, collected_at
+                 FROM delivery_cod_collections WHERE order_id=? AND status='collected' LIMIT 1`,
+                [id]
+            );
+
             const order = orders[0];
 
             order.items = items;
+            order.cod_collection = codCollections[0] || null;
 
             res.json(order);
 
@@ -1516,12 +1562,15 @@ router.put(
                         delivery_partner_id,
                         food_total,
                         delivery_fee,
+                        delivery_rider_earning,
+                        admin_delivery_fee,
                         platform_fee,
                         commission_percent,
                         status,
                         partner_wallet_credited,
                         admin_commission_credited,
-                        delivery_wallet_credited
+                        delivery_wallet_credited,
+                        admin_delivery_wallet_credited
                     FROM orders
                     WHERE id=?
                     FOR UPDATE
@@ -1541,11 +1590,40 @@ router.put(
 
             const order = orders[0];
 
+            if (
+                status !== "Cancelled" &&
+                order.status === "Cancelled"
+            ) {
+                await connection.rollback();
+                return res.status(400).json({
+                    success: false,
+                    message: "A cancelled order cannot be processed for wallet credit."
+                });
+            }
+
+            const isPartnerPickupStatus =
+                status === "Picked Up" || status === "Picked";
+
+            if (
+                isPartnerPickupStatus &&
+                Number(order.partner_wallet_credited || 0) !==
+                    Number(order.admin_commission_credited || 0)
+            ) {
+                await connection.rollback();
+                return res.status(409).json({
+                    success: false,
+                    message: "Order wallet credit flags are inconsistent; no additional credit was applied."
+                });
+            }
+
             const foodTotal =
                 Number(order.food_total || 0);
 
             const deliveryFee =
-                Number(order.delivery_fee || 0);
+                Number(order.delivery_rider_earning == null
+                    ? order.delivery_fee || 0
+                    : order.delivery_rider_earning || 0);
+            const adminDeliveryShare = Number(order.admin_delivery_fee || 0);
 
             const commissionPercent =
                 Number(
@@ -1553,13 +1631,17 @@ router.put(
                 );
 
             const commissionAmount =
-                foodTotal *
-                commissionPercent /
-                100;
+                Number(
+                    (foodTotal * commissionPercent / 100).toFixed(2)
+                );
 
             const partnerAmount =
-                foodTotal -
-                commissionAmount;
+                Number(
+                    (foodTotal - commissionAmount).toFixed(2)
+                );
+
+            const gstAmount =
+                Number(order.platform_fee || 0);
 
             // ============================================
             // CANCEL ORDER
@@ -1673,7 +1755,7 @@ router.put(
                             ?,
                             ?,
                             'Debit',
-                            'Order Cancellation'
+                            'Partner Earnings Reversal'
                         )
                     `, [
                         order.partner_id,
@@ -1768,6 +1850,73 @@ router.put(
                         commissionAmount
                     ]);
 
+                }
+
+                // Reverse GST only when this order has an actual GST credit.
+                // Older orders were marked commission-credited before GST was
+                // sent to the admin wallet, so the order flag alone is not enough.
+                const [gstCredits] = await connection.query(`
+                    SELECT amount
+                    FROM wallet_transactions
+                    WHERE user_type='admin'
+                    AND user_id=1
+                    AND order_id=?
+                    AND type='Credit'
+                    AND transaction_type='Order GST'
+                    FOR UPDATE
+                `, [orderId]);
+
+                const gstCreditedAmount = gstCredits.reduce(
+                    (sum, row) => sum + Number(row.amount || 0),
+                    0
+                );
+
+                if (gstCreditedAmount > 0) {
+
+                    const [walletRows] = await connection.query(`
+                        SELECT id, balance
+                        FROM wallets
+                        WHERE user_type='admin'
+                        AND user_id=1
+                        FOR UPDATE
+                    `);
+
+                    if (walletRows.length === 0) {
+                        await connection.rollback();
+                        return res.status(404).json({
+                            success: false,
+                            message: "Admin wallet not found."
+                        });
+                    }
+
+                    const wallet = walletRows[0];
+
+                    if (Number(wallet.balance || 0) < gstCreditedAmount) {
+                        await connection.rollback();
+                        return res.status(400).json({
+                            success: false,
+                            message: "Admin wallet does not have enough balance to reverse GST."
+                        });
+                    }
+
+                    await connection.query(`
+                        UPDATE wallets
+                        SET balance = balance - ?
+                        WHERE id=?
+                    `, [gstCreditedAmount, wallet.id]);
+
+                    await connection.query(`
+                        INSERT INTO wallet_transactions
+                        (
+                            user_type,
+                            user_id,
+                            order_id,
+                            amount,
+                            type,
+                            transaction_type
+                        )
+                        VALUES ('admin', 1, ?, ?, 'Debit', 'Order GST Reversal')
+                    `, [orderId, gstCreditedAmount]);
                 }
 
                 // ========================================
@@ -1874,12 +2023,39 @@ router.put(
 
                 }
 
+                if (
+                    Number(order.admin_delivery_wallet_credited || 0) === 1 &&
+                    adminDeliveryShare > 0
+                ) {
+                    const [adminWallets] = await connection.query(`
+                        SELECT id, balance FROM wallets
+                        WHERE user_type='admin' AND user_id=1
+                        FOR UPDATE
+                    `);
+                    if (!adminWallets.length || Number(adminWallets[0].balance || 0) < adminDeliveryShare) {
+                        await connection.rollback();
+                        return res.status(400).json({
+                            success: false,
+                            message: "Admin wallet does not have enough balance to reverse the delivery share."
+                        });
+                    }
+                    await connection.query(`
+                        UPDATE wallets SET balance=balance-? WHERE id=?
+                    `, [adminDeliveryShare, adminWallets[0].id]);
+                    await connection.query(`
+                        INSERT INTO wallet_transactions
+                            (user_type, user_id, order_id, amount, type, transaction_type)
+                        VALUES ('admin', 1, ?, ?, 'Debit', 'Delivery Fee Share Reversal')
+                    `, [orderId, adminDeliveryShare]);
+                }
+
                 await connection.query(`
                     UPDATE orders
                     SET
                         partner_wallet_credited=0,
                         admin_commission_credited=0,
                         delivery_wallet_credited=0,
+                        admin_delivery_wallet_credited=0,
                         status='Cancelled'
                     WHERE id=?
                 `, [orderId]);
@@ -1906,6 +2082,9 @@ router.put(
                 ) &&
                 Number(
                     order.partner_wallet_credited
+                ) === 0 &&
+                Number(
+                    order.admin_commission_credited
                 ) === 0
             ) {
 
@@ -1991,7 +2170,7 @@ router.put(
                             ?,
                             ?,
                             'Credit',
-                            'Order Payment'
+                            'Order Earnings'
                         )
                     `, [
                         order.partner_id,
@@ -2059,6 +2238,28 @@ router.put(
                         commissionAmount
                     ]);
 
+                }
+
+                if (gstAmount > 0) {
+
+                    await connection.query(`
+                        UPDATE wallets
+                        SET balance = balance + ?
+                        WHERE id=?
+                    `, [gstAmount, adminWallets[0].id]);
+
+                    await connection.query(`
+                        INSERT INTO wallet_transactions
+                        (
+                            user_type,
+                            user_id,
+                            order_id,
+                            amount,
+                            type,
+                            transaction_type
+                        )
+                        VALUES ('admin', 1, ?, ?, 'Credit', 'Order GST')
+                    `, [orderId, gstAmount]);
                 }
 
                 await connection.query(`
@@ -2160,11 +2361,29 @@ router.put(
 
                 }
 
+                if (adminDeliveryShare > 0 && Number(order.admin_delivery_wallet_credited || 0) === 0) {
+                    await connection.query(`
+                        INSERT INTO wallets (user_type, user_id, balance)
+                        VALUES ('admin', 1, 0)
+                        ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)
+                    `);
+                    await connection.query(`
+                        UPDATE wallets SET balance=balance+?
+                        WHERE user_type='admin' AND user_id=1
+                    `, [adminDeliveryShare]);
+                    await connection.query(`
+                        INSERT INTO wallet_transactions
+                            (user_type, user_id, order_id, amount, type, transaction_type)
+                        VALUES ('admin', 1, ?, ?, 'Credit', 'Delivery Fee Share')
+                    `, [orderId, adminDeliveryShare]);
+                }
+
                 await connection.query(`
                     UPDATE orders
-                    SET delivery_wallet_credited=1
+                    SET delivery_wallet_credited=1,
+                        admin_delivery_wallet_credited=?
                     WHERE id=?
-                `, [orderId]);
+                `, [adminDeliveryShare > 0 ? 1 : 0, orderId]);
 
             }
 

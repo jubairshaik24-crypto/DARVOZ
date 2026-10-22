@@ -798,6 +798,12 @@ svg{
     gap:5px;
 }
 
+.delivery-info-wrap{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+}
+
 .info-icon{
     width:14px;
     height:14px;
@@ -814,6 +820,57 @@ svg{
 
     font-size:8px;
     font-weight:700;
+    padding:0;
+    color:#59615e;
+    background:#fff;
+    cursor:pointer;
+}
+
+.delivery-fee-popover{
+    position:absolute;
+    z-index:100;
+    top:22px;
+    left:0;
+    width:230px;
+    padding:12px;
+    color:#34413d;
+    background:#fff;
+    border:1px solid #e1e8e5;
+    border-radius:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,.16);
+    font-size:11px;
+    line-height:1.45;
+}
+
+.delivery-fee-popover[hidden]{
+    display:none;
+}
+
+.delivery-fee-popover-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:7px;
+    color:var(--petrol);
+    font-size:12px;
+    font-weight:700;
+}
+
+.delivery-fee-popover-close{
+    border:0;
+    padding:0 2px;
+    color:#68716e;
+    background:transparent;
+    font-size:17px;
+    line-height:1;
+    cursor:pointer;
+}
+
+.delivery-fee-info-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:3px 0;
 }
 
 .coin-discount{
@@ -1242,6 +1299,7 @@ svg{
 
 
 </style>
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -1649,12 +1707,39 @@ svg{
 
                     Delivery fee
 
-                    <span
-                        class="info-icon"
-                        title="Delivery fee depends on distance">
-
-                        i
-
+                    <span class="delivery-info-wrap">
+                        <button
+                            type="button"
+                            class="info-icon"
+                            id="deliveryFeeInfoButton"
+                            aria-label="Show delivery distance and fee"
+                            aria-expanded="false"
+                            aria-controls="deliveryFeeInfo"
+                            onclick="toggleDeliveryFeeInfo(event)">
+                            i
+                        </button>
+                        <div
+                            class="delivery-fee-popover"
+                            id="deliveryFeeInfo"
+                            role="status"
+                            hidden>
+                            <div class="delivery-fee-popover-title">
+                                Delivery fee details
+                                <button
+                                    type="button"
+                                    class="delivery-fee-popover-close"
+                                    aria-label="Close delivery fee details"
+                                    onclick="toggleDeliveryFeeInfo(event)">×</button>
+                            </div>
+                            <div class="delivery-fee-info-row">
+                                <span>Distance</span>
+                                <strong id="deliveryFeeInfoDistance">—</strong>
+                            </div>
+                            <div class="delivery-fee-info-row">
+                                <span>Delivery fee</span>
+                                <strong id="deliveryFeeInfoAmount">—</strong>
+                            </div>
+                        </div>
                     </span>
 
                 </div>
@@ -3643,6 +3728,52 @@ function getDeliveryRule(distance){
             km <= rule.max
     ) || null;
 
+}
+
+function updateDeliveryFeeInfo(){
+
+    const distanceElement = document.getElementById("deliveryFeeInfoDistance");
+    const amountElement = document.getElementById("deliveryFeeInfoAmount");
+
+    if(!distanceElement || !amountElement){
+        return;
+    }
+
+    const shownDistance =
+        Math.round(Number(distanceKm || 0) * 10) / 10;
+
+    distanceElement.textContent = `${shownDistance.toFixed(1)} km`;
+
+    const rule = getDeliveryRule(distanceKm);
+    if(!rule || !deliveryAvailable){
+        amountElement.textContent = "Unavailable";
+        return;
+    }
+
+    amountElement.textContent = freeDelivery
+        ? `FREE (₹${formatMoney(rule.customer)} waived)`
+        : `₹${formatMoney(deliveryFee)}`;
+}
+
+function toggleDeliveryFeeInfo(event){
+
+    if(event){
+        event.stopPropagation();
+    }
+
+    const popover = document.getElementById("deliveryFeeInfo");
+    const button = document.getElementById("deliveryFeeInfoButton");
+    if(!popover || !button){
+        return;
+    }
+
+    const opening = popover.hidden;
+    if(opening){
+        updateDeliveryFeeInfo();
+    }
+
+    popover.hidden = !opening;
+    button.setAttribute("aria-expanded", String(opening));
 }
 
 function calculateDelivery(){

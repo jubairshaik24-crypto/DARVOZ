@@ -62,6 +62,23 @@ color:white;
 
 }
 
+.commission-field{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:16px;
+font-size:14px;
+font-weight:600;
+}
+
+.commission-field input{
+width:110px;
+padding:9px 10px;
+border:1px solid #ccd4d0;
+border-radius:8px;
+font:inherit;
+}
+
 </style>
 
 </head>
@@ -99,6 +116,19 @@ html+=`
 
 <p><b>Email:</b> ${partner.email}</p>
 
+<label class="commission-field" for="commission-${partner.id}">
+Restaurant commission
+<input
+type="number"
+id="commission-${partner.id}"
+min="0"
+max="100"
+step="0.1"
+placeholder="Enter %"
+required>
+<span>%</span>
+</label>
+
 <button
 class="approve"
 onclick="approve(${partner.id})">
@@ -127,17 +157,40 @@ document.getElementById("partners").innerHTML=html;
 
 async function approve(id){
 
-await fetch(
-`${API}/admin/approve-partner/${id}`,
-{
-
-method:"PUT"
-
+const input = document.getElementById(`commission-${id}`);
+const commissionPercent = Number(input?.value);
+if(
+    !input ||
+    input.value.trim() === "" ||
+    !Number.isFinite(commissionPercent) ||
+    commissionPercent < 0 ||
+    commissionPercent > 100
+){
+    alert("Enter a commission percentage from 0 to 100 before approving.");
+    input?.focus();
+    return;
 }
 
-);
-
-loadPartners();
+try{
+    const response = await fetch(
+        `${API}/admin/approve-partner/${id}`,
+        {
+            method:"PUT",
+            headers:{ "Content-Type":"application/json" },
+            body:JSON.stringify({ commission_percent: commissionPercent })
+        }
+    );
+    const result = await response.json();
+    if(!response.ok || !result.success){
+        alert(result.message || "Unable to approve partner.");
+        return;
+    }
+    await loadPartners();
+}
+catch(error){
+    console.error("PARTNER APPROVAL ERROR:", error);
+    alert("Unable to approve partner. Please try again.");
+}
 
 }
 

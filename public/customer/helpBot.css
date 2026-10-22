@@ -80,7 +80,7 @@
 
     border-radius:16px;
 
-    background:#ff5a00;
+    background:#004D5B;
     color:#fff;
 
     display:flex;
@@ -178,7 +178,7 @@
 
     border-radius:11px;
 
-    background:#ff5a00;
+    background:#004D5B;
     color:#fff;
 
     display:flex;
@@ -220,7 +220,7 @@
 .user-message .message-content{
     max-width:82%;
 
-    background:#ff5a00;
+    background:#004D5B;
     color:#fff;
 
     padding:12px 14px;
@@ -272,7 +272,7 @@
 }
 
 .bot-option i{
-    color:#ff5a00;
+    color:#004D5B;
 }
 
 .bot-option:hover{
@@ -421,7 +421,7 @@
 ========================================== */
 
 .human-support-message .support-avatar {
-    background: #ff5a00;
+    background: #004D5B;
 }
 
 .human-support-message .support-name {
@@ -459,8 +459,9 @@
 }
 
 .darvoz-customer-support-input input:focus {
-    border-color: #ff5a00;
+    border-color: #004D5B;
 }
+
 
 .darvoz-customer-support-input button {
     width: 42px;
@@ -469,7 +470,7 @@
     border: none;
     border-radius: 50%;
 
-    background: #ff5a00;
+    background: #004D5B;
     color: white;
 
     cursor: pointer;

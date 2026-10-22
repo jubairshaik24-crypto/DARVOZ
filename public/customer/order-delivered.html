@@ -1,255 +1,387 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#006B63">
+<title>Order Delivered - DARVOZ</title>
 
-    <title>Order Delivered - DARVOZ</title>
+<style>
+:root {
+    --petrol: #006B63;
+    --dark: #004D48;
+    --mint: #E7F8F3;
+    --text: #123F3A;
+}
 
-    <style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #FFFFFF;
+    color: var(--text);
+    min-height: 100vh;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #ffffff;
-            color: #222;
-            min-height: 100vh;
+.page {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 35px 22px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+/* SUCCESS CHECKMARK */
 
-        .page {
-            width: 100%;
-            max-width: 500px;
-            min-height: 100vh;
+.success-icon {
+    width: 92px;
+    height: 92px;
+    flex-shrink: 0;
+    background: linear-gradient(145deg, #08B99B, #00564F);
+    border: 7px solid #E1F8F2;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 25px rgba(0,107,99,.16);
+    margin-bottom: 23px;
+    animation: popIn .65s ease-out both;
+}
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+.success-icon svg {
+    width: 46px;
+    height: 46px;
+    fill: none;
+    stroke: #FFFFFF;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 
-            padding: 25px 20px;
-            text-align: center;
-        }
+/* HEADING */
 
-        /* SUCCESS ICON */
+h1 {
+    font-size: clamp(27px, 7vw, 36px);
+    line-height: 1.12;
+    font-weight: 850;
+    letter-spacing: -1px;
+    color: var(--dark);
+    margin-bottom: 12px;
+    animation: fadeUp .6s .1s both;
+}
 
-        .success-icon {
-            width: 85px;
-            height: 85px;
+h1 span {
+    color: #08A98F;
+}
 
-            background: #ff5a00;
-            border-radius: 50%;
+.thank-you {
+    color: #667D78;
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    animation: fadeUp .6s .2s both;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.heart {
+    color: var(--petrol);
+    display: inline-block;
+    animation: heartbeat 1.4s ease-in-out infinite;
+}
 
-            margin-bottom: 20px;
+/* BAG IMAGE */
 
-            box-shadow:
-                0 8px 25px rgba(255, 90, 0, 0.25);
-        }
+.bag-stage {
+    width: 100%;
+    max-width: 340px;
+    height: 360px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
 
-        .success-icon span {
-            color: white;
-            font-size: 48px;
-            font-weight: bold;
-        }
+.bag-glow {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(
+        circle,
+        rgba(15,190,157,.13),
+        rgba(15,190,157,0) 70%
+    );
+    border-radius: 50%;
+}
 
-        /* DELIVERY IMAGE */
+.bag-image {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    max-width: 330px;
+    height: 340px;
+    object-fit: contain;
+    animation: bagBounce 2.4s ease-in-out infinite;
+}
 
-        .delivery-image {
-            width: 260px;
-            max-width: 80%;
+/* SIMPLE FLOATING DECORATION */
 
-            margin-bottom: 20px;
-        }
+.decor {
+    position: absolute;
+    color: #0BAE96;
+    font-size: 25px;
+    pointer-events: none;
+    animation: float 3s ease-in-out infinite;
+}
 
-        /* TITLE */
+.decor.one {
+    top: 65px;
+    left: 12px;
+}
 
-        h1 {
-            color: #ff5a00;
-            font-size: 30px;
-            font-weight: 800;
+.decor.two {
+    top: 85px;
+    right: 12px;
+    animation-delay: .7s;
+}
 
-            margin-bottom: 12px;
-        }
+.decor.three {
+    bottom: 55px;
+    left: 25px;
+    animation-delay: 1.2s;
+}
 
-        .thank-you {
-            font-size: 18px;
-            color: #444;
+.decor.four {
+    bottom: 50px;
+    right: 25px;
+    animation-delay: .4s;
+}
 
-            margin-bottom: 25px;
-        }
+/* HAPPY MESSAGE */
 
-        .heart {
-            color: #ff5a00;
-        }
+.enjoy {
+    margin-top: 3px;
+    animation: fadeUp .6s .3s both;
+}
 
-        /* ENJOY */
+.enjoy h2 {
+    font-size: 27px;
+    font-weight: 850;
+    letter-spacing: -.5px;
+    color: var(--dark);
+    margin-bottom: 9px;
+}
 
-        .enjoy {
-            margin-top: 5px;
-        }
+.enjoy p {
+    font-size: 16px;
+    color: #6D827D;
+    line-height: 1.5;
+}
 
-        .smile {
-            font-size: 42px;
-            margin-bottom: 8px;
-        }
+/* HOME BUTTON */
 
-        .enjoy h2 {
-            color: #ff5a00;
-            font-size: 22px;
+.home-btn {
+    width: 100%;
+    max-width: 390px;
+    min-height: 64px;
+    margin-top: 29px;
+    padding: 15px 22px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(110deg, #009B87, #00534D);
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 750;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,107,99,.22);
+    transition: transform .2s, box-shadow .2s;
+    animation: fadeUp .6s .4s both;
+}
 
-            margin-bottom: 7px;
-        }
+.home-btn svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
 
-        .enjoy p {
-            color: #666;
-            font-size: 15px;
-        }
+.home-btn:active {
+    transform: scale(.97);
+    box-shadow: 0 5px 12px rgba(0,107,99,.18);
+}
 
-        /* BUTTON */
+/* ANIMATIONS */
 
-        .home-btn {
-            width: 100%;
-            max-width: 380px;
+@keyframes bagBounce {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+}
 
-            margin-top: 35px;
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(-8deg);
+        opacity: .65;
+    }
+    50% {
+        transform: translateY(-13px) rotate(10deg);
+        opacity: 1;
+    }
+}
 
-            padding: 16px;
+@keyframes popIn {
+    from { transform: scale(.3); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
 
-            border: none;
-            border-radius: 12px;
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-            background: #ff5a00;
-            color: white;
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
 
-            font-size: 17px;
-            font-weight: 700;
+/* SMALL MOBILE SCREENS */
 
-            cursor: pointer;
+@media (max-width: 380px) {
+    .page {
+        padding: 24px 18px;
+    }
 
-            box-shadow:
-                0 6px 18px rgba(255, 90, 0, 0.25);
-        }
+    .success-icon {
+        width: 76px;
+        height: 76px;
+        margin-bottom: 18px;
+    }
 
-        .home-btn:active {
-            transform: scale(0.98);
-        }
+    .success-icon svg {
+        width: 38px;
+        height: 38px;
+    }
 
-        /* MOBILE */
+    .thank-you {
+        font-size: 15px;
+    }
 
-        @media (max-width: 480px) {
+    .bag-stage {
+        height: 285px;
+    }
 
-            .page {
-                padding: 20px 18px;
-            }
+    .bag-image {
+        height: 275px;
+    }
 
-            .success-icon {
-                width: 75px;
-                height: 75px;
-            }
+    .enjoy h2 {
+        font-size: 23px;
+    }
 
-            .success-icon span {
-                font-size: 42px;
-            }
+    .enjoy p {
+        font-size: 14px;
+    }
 
-            .delivery-image {
-                width: 230px;
-            }
+    .home-btn {
+        min-height: 56px;
+        font-size: 16px;
+        margin-top: 22px;
+    }
+}
 
-            h1 {
-                font-size: 26px;
-            }
+/* REDUCED MOTION ACCESSIBILITY */
 
-            .thank-you {
-                font-size: 16px;
-            }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+</style>
 
-        }
-
-    </style>
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 <body>
 
-<div class="page">
+<main class="page">
 
-    <!-- SUCCESS -->
-
-    <div class="success-icon">
-        <span>✓</span>
+    <div class="success-icon" aria-label="Order delivered successfully">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m5 12 4.5 4.5L19 7"></path>
+        </svg>
     </div>
-
-
-    
-
-
-    <!-- TITLE -->
 
     <h1>
-        Your Order is Delivered
+        Your Order is<br>
+        <span>Delivered!</span>
     </h1>
 
-
-    <!-- THANK YOU -->
-
-    <div class="thank-you">
+    <p class="thank-you">
         Thank you for ordering Darvoz!
         <span class="heart">♥</span>
-    </div>
+    </p>
 
+    <section class="bag-stage" aria-label="DARVOZ thank you mascot">
+        <div class="bag-glow"></div>
 
-    <!-- ENJOY -->
+        <span class="decor one" aria-hidden="true">♥</span>
+        <span class="decor two" aria-hidden="true">♥</span>
+        <span class="decor three" aria-hidden="true">✦</span>
+        <span class="decor four" aria-hidden="true">✦</span>
 
-    <div class="enjoy">
+        <img
+            class="bag-image"
+            src="/customer/images/darvoz-happy-bag.png"
+            alt="DARVOZ bag mascot holding a Thank You sign"
+        >
+    </section>
 
-        <div class="smile">
-            😊
-        </div>
+    <section class="enjoy">
+        <h2>Enjoy And Be Happy</h2>
+        <p>Your satisfaction is our priority.</p>
+    </section>
 
-        <h2>
-            Enjoy And Be Happy
-        </h2>
-
-        <p>
-            Your satisfaction is our priority.
-        </p>
-
-    </div>
-
-
-    <!-- HOME -->
-
-    <button
-        class="home-btn"
-        onclick="goHome()">
-
-        🏠 &nbsp; Back to Home
-
+    <button class="home-btn" type="button" onclick="goHome()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 10 9-7 9 7"></path>
+            <path d="M5 9v12h14V9"></path>
+            <path d="M9 21v-7h6v7"></path>
+        </svg>
+        <span>Back to Home</span>
     </button>
 
-</div>
-
+</main>
 
 <script>
-
 function goHome() {
-
     window.location.href = "index.html";
-
 }
 
+// Log an image-loading issue without interrupting the customer.
+document.querySelector(".bag-image").addEventListener("error", function () {
+    console.error(
+        "DARVOZ image not found. Check customer/darvoz-happy-bag.png"
+    );
+});
 </script>
 
 </body>

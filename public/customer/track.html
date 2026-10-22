@@ -1661,6 +1661,7 @@
 
     </style>
 
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 
@@ -2397,25 +2398,32 @@ const socket =
 /* =====================================================
    URL ORDER ID
 ===================================================== */
-
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
-
+const params = new URLSearchParams(window.location.search);
+const storedCustomerId = localStorage.getItem("customerId");
 
 const orderId =
-    params.get("id");
+    params.get("id") ||
+    params.get("orderId") ||
+    params.get("order_id") ||
+    sessionStorage.getItem("currentOrderId") ||
+    localStorage.getItem("currentOrderId") ||
+    (storedCustomerId
+        ? localStorage.getItem(`lastOrderId_${storedCustomerId}`)
+        : null) ||
+    localStorage.getItem("lastOrderId") ||
+    localStorage.getItem("orderId");
 
-
-if(!orderId){
-
-    alert(
-        "Invalid Order ID"
-    );
-
+if (!orderId || !String(orderId).trim()) {
+    console.error("Tracking failed: Order ID is missing.");
+} else {
+    console.log("Tracking order ID:", orderId);
 }
 
+
+
+if (!orderId || !String(orderId).trim()) {
+    console.error("Tracking failed: Order ID is missing.");
+}
 
 
 /* =====================================================
@@ -3446,6 +3454,55 @@ function updateMap(order){
    CREATE MAP
 ===================================================== */
 
+function isUsableMapPoint(point){
+    if(!point) return false;
+    const lat = Number(point.lat);
+    const lng = Number(point.lng);
+    return Number.isFinite(lat) && Number.isFinite(lng) &&
+        lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180 &&
+        !(Math.abs(lat) < 0.000001 && Math.abs(lng) < 0.000001);
+}
+
+let geocodeAttemptedOrderKey = "";
+let geocodeInProgressOrderKey = "";
+
+function geocodeOrderDeliveryAddress(order){
+    const address = String(order.address || order.delivery_address || "").trim();
+    const key = `${order.id || orderId}:${address}`;
+    if(!address){
+        const eta = document.getElementById("eta");
+        const etaSub = document.getElementById("etaSubText");
+        if(eta) eta.innerText = "Unavailable";
+        if(etaSub) etaSub.innerText = "Delivery address is missing";
+        return;
+    }
+    if(key === geocodeAttemptedOrderKey || key === geocodeInProgressOrderKey){
+        return;
+    }
+    geocodeInProgressOrderKey = key;
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        address,
+        componentRestrictions:{country:"IN"},
+        region:"IN"
+    }, (results, status) => {
+        geocodeInProgressOrderKey = "";
+        geocodeAttemptedOrderKey = key;
+        const location = results?.[0]?.geometry?.location;
+        if(status === "OK" && location){
+            order.customer_lat = location.lat();
+            order.customer_lng = location.lng();
+            console.log("DELIVERY ADDRESS GEOCODED:", order.customer_lat, order.customer_lng);
+            createMap(order);
+            return;
+        }
+        console.warn("DELIVERY ADDRESS GEOCODE FAILED:", status, address);
+        const eta = document.getElementById("eta");
+        const etaSub = document.getElementById("etaSubText");
+        if(eta) eta.innerText = "Unavailable";
+        if(etaSub) etaSub.innerText = "Could not locate your delivery address";
+    });
+}
 function createMap(order){
 
     if(
@@ -3486,9 +3543,7 @@ function createMap(order){
     ============================================= */
 
     if(
-        riderLocation &&
-        Number.isFinite(Number(riderLocation.lat)) &&
-        Number.isFinite(Number(riderLocation.lng))
+        isUsableMapPoint(riderLocation)
     ){
 
         rider = {
@@ -3518,10 +3573,7 @@ function createMap(order){
             Number(order.longitude);
 
 
-        if(
-            Number.isFinite(lat) &&
-            Number.isFinite(lng)
-        ){
+        if(isUsableMapPoint({lat, lng})){
 
             rider = {
 
@@ -3537,30 +3589,19 @@ function createMap(order){
 
 
     /* =============================================
-       VALIDATE CUSTOMER
+       VALIDATE / RESOLVE CUSTOMER LOCATION
     ============================================= */
 
-    if(
-        !Number.isFinite(customer.lat) ||
-        !Number.isFinite(customer.lng)
-    ){
-
-        console.log(
-            "Invalid customer coordinates"
-        );
-
+    if(!isUsableMapPoint(customer)){
+        geocodeOrderDeliveryAddress(order);
         return;
-
     }
 
-
-    /* =============================================
+/* =============================================
        VALIDATE RESTAURANT
     ============================================= */
 
-    const validRestaurant =
-        Number.isFinite(restaurant.lat) &&
-        Number.isFinite(restaurant.lng);
+    const validRestaurant = isUsableMapPoint(restaurant);
 
 
     /* =============================================
@@ -3836,30 +3877,21 @@ function drawRoadRoute(
        VALIDATE RIDER LOCATION
     ============================================= */
 
-    const validRider =
-        rider &&
-        Number.isFinite(Number(rider.lat)) &&
-        Number.isFinite(Number(rider.lng));
+    const validRider = isUsableMapPoint(rider);
 
 
     /* =============================================
        VALIDATE RESTAURANT LOCATION
     ============================================= */
 
-    const validRestaurant =
-        restaurant &&
-        Number.isFinite(Number(restaurant.lat)) &&
-        Number.isFinite(Number(restaurant.lng));
+    const validRestaurant = isUsableMapPoint(restaurant);
 
 
     /* =============================================
        VALIDATE CUSTOMER LOCATION
     ============================================= */
 
-    const validCustomer =
-        customer &&
-        Number.isFinite(Number(customer.lat)) &&
-        Number.isFinite(Number(customer.lng));
+    const validCustomer = isUsableMapPoint(customer);
 
 
     if(!validCustomer){
@@ -4079,6 +4111,11 @@ function drawRoadRoute(
             travelMode:
                 google.maps.TravelMode.DRIVING,
 
+            drivingOptions:{
+                departureTime:new Date(),
+                trafficModel:google.maps.TrafficModel.BEST_GUESS
+            },
+
             provideRouteAlternatives:
                 false
 
@@ -4093,33 +4130,14 @@ function drawRoadRoute(
             );
 
 
-            if(
-                routeStatus !== "OK"
-            ){
-
-                console.error(
-                    "Directions error:",
-                    routeStatus
-                );
-
-
-                const etaElement =
-                    document.getElementById("eta");
-
-
-                if(etaElement){
-
-                    etaElement.innerText =
-                        "Calculating...";
-
-                }
-
-
+            if(routeStatus !== "OK"){
+                console.error("Directions error:", routeStatus);
+                const etaElement = document.getElementById("eta");
+                const etaSub = document.getElementById("etaSubText");
+                if(etaElement) etaElement.innerText = "Unavailable";
+                if(etaSub) etaSub.innerText = "Map could not find a driving route";
                 return;
-
             }
-
-
             directionsRenderer.setDirections(
                 result
             );
@@ -4166,6 +4184,8 @@ function drawRoadRoute(
                 route.legs[0];
 
 
+            const routeDuration = route.legs[0].duration_in_traffic || route.legs[0].duration;
+
             const etaElement =
                 document.getElementById("eta");
 
@@ -4178,9 +4198,9 @@ function drawRoadRoute(
 
             if(
                 etaElement &&
-                leg.duration &&
+                routeDuration &&
                 Number(
-                    leg.duration.value
+                    routeDuration.value
                 ) > 0
             ){
 
@@ -4191,7 +4211,7 @@ function drawRoadRoute(
 
                         Math.ceil(
                             Number(
-                                leg.duration.value
+                                routeDuration.value
                             ) / 60
                         )
 
@@ -4281,10 +4301,7 @@ socket.on(
             Number(data.longitude);
 
 
-        if(
-            !Number.isFinite(lat) ||
-            !Number.isFinite(lng)
-        ){
+        if(!isUsableMapPoint({lat, lng})){
 
             return;
 

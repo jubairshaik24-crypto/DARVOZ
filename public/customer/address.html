@@ -561,6 +561,155 @@ body{
     transform:scale(.98);
 }
 
+.map-picker{
+    position:fixed;
+    inset:0;
+    z-index:10001;
+    display:none;
+    background:#fff;
+    overflow:hidden;
+}
+
+.map-picker-header{
+    position:absolute;
+    z-index:3;
+    top:calc(12px + env(safe-area-inset-top));
+    left:16px;
+    right:16px;
+    display:flex;
+    gap:10px;
+}
+
+.map-picker-header button,
+.map-picker-actions button{
+    border:0;
+    cursor:pointer;
+    font:inherit;
+}
+
+.map-picker-header button{
+    flex:0 0 48px;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    color:#17252b;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.16);
+    font-size:20px;
+}
+
+.map-search-box{
+    height:52px;
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 15px;
+    border:1px solid #e4e7e8;
+    border-radius:16px;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.14);
+}
+
+.map-search-box i{
+    color:#718087;
+}
+
+.map-search-box input{
+    width:100%;
+    border:0;
+    outline:0;
+    background:transparent;
+    font:600 14px Poppins,Arial,sans-serif;
+}
+
+.pac-container{
+    z-index:10003 !important;
+}
+
+#locationMap{
+    position:absolute;
+    inset:0;
+    background:#eef0f2;
+}
+
+.map-picker-actions{
+    position:absolute;
+    z-index:2;
+    left:0;
+    right:0;
+    bottom:0;
+    padding:0 16px calc(16px + env(safe-area-inset-bottom));
+    pointer-events:none;
+}
+
+.map-selection-card{
+    padding:16px;
+    border-radius:24px;
+    background:#fff;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);
+    pointer-events:auto;
+}
+
+.map-selection-kicker{
+    margin:-16px -16px 15px;
+    padding:15px 18px 12px;
+    border-bottom:1px solid #edf0f1;
+    border-radius:24px 24px 0 0;
+    color:#56636a;
+    font-size:13px;
+    font-weight:700;
+}
+
+.map-selection-title{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin:0 0 7px;
+    color:#18252a;
+    font-size:18px;
+    line-height:1.3;
+    font-weight:800;
+}
+
+.map-selection-title i{
+    margin-top:3px;
+    color:var(--orange);
+}
+
+.map-selection-address{
+    margin:0 0 16px 27px;
+    color:#5c666b;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.map-picker-actions button{
+    min-height:50px;
+    border-radius:14px;
+    font-weight:800;
+}
+
+.map-recenter-btn{
+    position:absolute;
+    left:50%;
+    bottom:calc(100% + 14px);
+    transform:translateX(-50%);
+    min-width:190px;
+    padding:0 16px;
+    color:#3c4549;
+    background:#fff;
+    box-shadow:0 2px 12px rgba(0,0,0,.18);
+    white-space:nowrap;
+}
+
+.map-confirm-btn{
+    width:100%;
+    color:#fff;
+    background:var(--orange);
+    font-size:16px;
+}
+
 /* =========================================================
    MENU POPUP
 ========================================================= */
@@ -788,6 +937,7 @@ body{
 }
 </style>
 
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -973,6 +1123,36 @@ body{
     </div>
 
 
+    <div class="map-picker" id="mapPicker" aria-hidden="true">
+        <div class="map-picker-header">
+            <button type="button" onclick="closeLocationMap()" aria-label="Back">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <label class="map-search-box">
+                <input id="mapAddressSearch" type="search" placeholder="Search an area or address">
+                <i class="fa fa-search"></i>
+            </label>
+        </div>
+        <div id="locationMap" aria-label="Map to select delivery location"></div>
+        <div class="map-picker-actions">
+            <button type="button" class="map-recenter-btn" onclick="recenterLocationMap()">
+                <i class="fa fa-location-crosshairs"></i> Current location
+            </button>
+            <div class="map-selection-card">
+                <div class="map-selection-kicker">Order will be delivered here</div>
+                <h2 class="map-selection-title">
+                    <i class="fa fa-location-dot"></i>
+                    <span id="mapAreaName">Finding this location…</span>
+                </h2>
+                <p class="map-selection-address" id="mapFullAddress">Move the pin to adjust the delivery point.</p>
+                <button type="button" class="map-confirm-btn" onclick="confirmMapLocation()">
+                    Confirm &amp; proceed
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- ==========================
          MENU POPUP
     ========================== -->
@@ -1042,6 +1222,12 @@ body{
         let selectedAddress = {};
 
         let autocomplete = null;
+        let locationMap = null;
+        let locationMarker = null;
+        let mapAutocomplete = null;
+        let mapGeocoder = null;
+        let mapAddressRequest = 0;
+        let mapSelectedPlace = null;
 
 
         /* ==========================================
@@ -1472,171 +1658,285 @@ const selected =
 
         function currentLocation() {
 
-            if (
-                !navigator.geolocation
-            ) {
-
-                alert(
-                    "Location is not supported by this browser."
-                );
-
+            if (!navigator.geolocation) {
+                alert("Location is not supported by this browser.");
                 return;
-
             }
 
-
             navigator.geolocation.getCurrentPosition(
-
                 function (position) {
-
-                    latitude =
-                        position.coords.latitude;
-
-                    longitude =
-                        position.coords.longitude;
-
-
-                    console.log(
-                        " CURRENT GPS LOCATION"
+                    showLocationMap(
+                        position.coords.latitude,
+                        position.coords.longitude
                     );
-
-                    console.log(
-                        "Latitude:",
-                        latitude
-                    );
-
-                    console.log(
-                        "Longitude:",
-                        longitude
-                    );
-
-
-                    /*
-                     * IMPORTANT:
-                     *
-                     * User has intentionally chosen
-                     * their physical/current location.
-                     *
-                     * Therefore remove the old
-                     * manually selected location flag.
-                     */
-
-                    localStorage.removeItem(
-                        "manualLocationSelected"
-                    );
-
-
-                    if (
-                        typeof google === "undefined" ||
-                        !google.maps
-                    ) {
-
-                        alert(
-                            "Google Maps is not loaded."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const geocoder =
-                        new google.maps.Geocoder();
-
-
-                    const latlng = {
-
-                        lat: Number(latitude),
-
-                        lng: Number(longitude)
-
-                    };
-
-
-                    geocoder.geocode(
-
-                        {
-                            location: latlng
-                        },
-
-                        function (
-                            results,
-                            status
-                        ) {
-
-                            if (
-                                status !== "OK" ||
-                                !results ||
-                                !results[0]
-                            ) {
-
-                                alert(
-                                    "Unable to fetch address."
-                                );
-
-                                return;
-
-                            }
-
-
-                            fillAddressFromComponents(
-                                results[0]
-                                    .address_components || []
-                            );
-
-
-                            /*
-                             * Make sure the modal opens
-                             * with the GPS coordinates.
-                             */
-
-                            document
-                                .getElementById("modal")
-                                .style.display =
-                                "flex";
-
-
-                            document.getElementById(
-                                "modalTitle"
-                            ).textContent =
-                                "Add Current Location";
-
-                        }
-
-                    );
-
                 },
-
                 function (error) {
-
-                    console.error(
-                        "LOCATION ERROR:",
-                        error
-                    );
-
-
-                    alert(
-                        "Unable to get your current location. Please allow location access."
-                    );
-
+                    console.error("LOCATION ERROR:", error);
+                    alert("Unable to get your current location. Please allow location access.");
                 },
-
                 {
-
                     enableHighAccuracy: true,
-
                     timeout: 15000,
-
                     maximumAge: 0
-
                 }
-
             );
-
         }
 
+        function showLocationMap(lat, lng) {
+            if (typeof google === "undefined" || !google.maps) {
+                alert("Google Maps is not loaded.");
+                return;
+            }
 
-        /* ==========================================
+            const center = { lat: Number(lat), lng: Number(lng) };
+            const picker = document.getElementById("mapPicker");
+            picker.style.display = "block";
+            picker.setAttribute("aria-hidden", "false");
+            document.getElementById("mapAreaName").textContent = "Finding this location…";
+            document.getElementById("mapFullAddress").textContent = "Move the pin to adjust the delivery point.";
+
+            requestAnimationFrame(function () {
+                if (!locationMap) {
+                    locationMap = new google.maps.Map(
+                        document.getElementById("locationMap"),
+                        {
+                            center: center,
+                            zoom: 17,
+                            mapTypeControl: false,
+                            streetViewControl: false,
+                            fullscreenControl: false,
+                            gestureHandling: "greedy"
+                        }
+                    );
+                    locationMarker = new google.maps.Marker({
+                        position: center,
+                        map: locationMap,
+                        draggable: true,
+                        title: "Drag to adjust delivery location"
+                    });
+                    mapGeocoder = new google.maps.Geocoder();
+
+                    locationMarker.addListener("dragend", function (event) {
+                        updateMapSelection(event.latLng.lat(), event.latLng.lng());
+                    });
+                    locationMap.addListener("click", function (event) {
+                        updateMapSelection(event.latLng.lat(), event.latLng.lng());
+                    });
+
+                    const searchInput = document.getElementById("mapAddressSearch");
+                    mapAutocomplete = new google.maps.places.Autocomplete(searchInput, {
+                        componentRestrictions: { country: "in" },
+                        fields: ["formatted_address", "geometry", "address_components"]
+                    });
+                    mapAutocomplete.bindTo("bounds", locationMap);
+                    mapAutocomplete.addListener("place_changed", function () {
+                        const place = mapAutocomplete.getPlace();
+                        if (!place || !place.geometry || !place.geometry.location) {
+                            alert("Choose an address from the search suggestions.");
+                            return;
+                        }
+                        const placeLocation = place.geometry.location;
+                        locationMap.panTo(placeLocation);
+                        locationMap.setZoom(17);
+                        updateMapSelection(placeLocation.lat(), placeLocation.lng(), place);
+                    });
+                } else {
+                    locationMap.setCenter(center);
+                    locationMarker.setPosition(center);
+                }
+
+                google.maps.event.trigger(locationMap, "resize");
+                locationMap.setCenter(center);
+                updateMapSelection(center.lat, center.lng);
+            });
+        }
+
+        function updateMapSelection(lat, lng, placeResult) {
+            latitude = Number(lat);
+            longitude = Number(lng);
+            mapSelectedPlace = placeResult || null;
+            const point = { lat: latitude, lng: longitude };
+            locationMarker.setPosition(point);
+
+            if (placeResult && placeResult.address_components) {
+                renderMapAddress(placeResult);
+                return;
+            }
+
+            const requestId = ++mapAddressRequest;
+            document.getElementById("mapAreaName").textContent = "Finding this location…";
+            document.getElementById("mapFullAddress").textContent = "";
+
+            mapGeocoder.geocode({ location: point }, function (results, status) {
+                if (requestId !== mapAddressRequest) return;
+                if (status !== "OK" || !results || !results[0]) {
+                    document.getElementById("mapAreaName").textContent = "Selected map location";
+                    document.getElementById("mapFullAddress").textContent = "Address details unavailable. You can still confirm this pin.";
+                    return;
+                }
+                renderMapAddress(results[0]);
+            });
+        }
+
+        function renderMapAddress(result) {
+            const components = result.address_components || [];
+            const findPart = function (types) {
+                const component = components.find(function (item) {
+                    return types.some(function (type) { return item.types.includes(type); });
+                });
+                return component ? component.long_name : "";
+            };
+            const area = findPart(["sublocality", "sublocality_level_1", "neighborhood"]);
+            const city = findPart(["locality", "administrative_area_level_2"]);
+            const name = [area, city].filter(Boolean).join(", ") || city || area || "Selected map location";
+            document.getElementById("mapAreaName").textContent = name;
+            document.getElementById("mapFullAddress").textContent =
+                result.formatted_address || "Address details unavailable. You can still confirm this pin.";
+        }
+
+        function recenterLocationMap() {
+            if (!navigator.geolocation) {
+                alert("Location is not supported by this browser.");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const point = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    locationMap.panTo(point);
+                    locationMap.setZoom(17);
+                    updateMapSelection(point.lat, point.lng);
+                },
+                function (error) {
+                    console.error("LOCATION RECENTER ERROR:", error);
+                    alert("Unable to refresh your current location. Please allow location access.");
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
+        }
+
+        function closeLocationMap() {
+            const picker = document.getElementById("mapPicker");
+            picker.style.display = "none";
+            picker.setAttribute("aria-hidden", "true");
+        }
+
+        async function confirmMapLocation() {
+            if (!Number.isFinite(Number(latitude)) || !Number.isFinite(Number(longitude))) {
+                document.getElementById("mapFullAddress").textContent = "Please choose a valid point on the map.";
+                return;
+            }
+            if (!customerId) {
+                document.getElementById("mapFullAddress").textContent = "Please sign in before saving this delivery address.";
+                return;
+            }
+
+            const button = document.querySelector(".map-confirm-btn");
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = "Saving address…";
+
+            try {
+                const result = await new Promise(function (resolve, reject) {
+                    if (mapSelectedPlace && mapSelectedPlace.address_components) {
+                        resolve(mapSelectedPlace);
+                        return;
+                    }
+                    mapGeocoder.geocode(
+                        { location: { lat: Number(latitude), lng: Number(longitude) } },
+                        function (results, status) {
+                            if (status === "OK" && results && results[0]) resolve(results[0]);
+                            else reject(new Error("Could not find an address for this pin. Search for a place or move the pin and try again."));
+                        }
+                    );
+                });
+
+                const components = result.address_components || [];
+                const findPart = function (types) {
+                    const component = components.find(function (item) {
+                        return types.some(function (type) { return item.types.includes(type); });
+                    });
+                    return component ? component.long_name : "";
+                };
+                const house = findPart(["street_number"]);
+                const street = findPart(["route"]);
+                const area = findPart(["sublocality", "sublocality_level_1", "neighborhood"]);
+                const city = findPart(["locality", "postal_town", "administrative_area_level_3", "administrative_area_level_2"]);
+                const state = findPart(["administrative_area_level_1"]);
+                const pincode = findPart(["postal_code"]);
+                const addressParts = [house, street, area, city, state].filter(Boolean);
+                const fullAddress = (addressParts.join(", ") || result.formatted_address || "Selected location") +
+                    (pincode ? ` - ${pincode}` : "");
+                const locationName = [area, city].filter(Boolean).join(", ") || city || area || result.name || "Selected location";
+
+                let savedAddressId = null;
+                const addressResponse = await fetch(`${API}/address/${encodeURIComponent(customerId)}`);
+                const savedAddresses = addressResponse.ok ? await addressResponse.json() : [];
+                const radians = function (degrees) { return degrees * Math.PI / 180; };
+                const matchingAddress = (Array.isArray(savedAddresses) ? savedAddresses : []).find(function (saved) {
+                    const savedLat = Number(saved.latitude);
+                    const savedLng = Number(saved.longitude);
+                    if (!Number.isFinite(savedLat) || !Number.isFinite(savedLng)) return false;
+                    const dLat = radians(savedLat - Number(latitude));
+                    const dLng = radians(savedLng - Number(longitude));
+                    const a = Math.sin(dLat / 2) ** 2 +
+                        Math.cos(radians(Number(latitude))) * Math.cos(radians(savedLat)) *
+                        Math.sin(dLng / 2) ** 2;
+                    const meters = 6371000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return meters <= 60;
+                });
+
+                if (matchingAddress) {
+                    savedAddressId = matchingAddress.id;
+                } else {
+                    const saveResponse = await fetch(`${API}/address/add`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            customer_id: customerId,
+                            title: "Other",
+                            house,
+                            street,
+                            area,
+                            city,
+                            state,
+                            pincode,
+                            latitude: Number(latitude),
+                            longitude: Number(longitude)
+                        })
+                    });
+                    const saveResult = await saveResponse.json();
+                    if (!saveResponse.ok || !saveResult.success || !saveResult.addressId) {
+                        throw new Error(saveResult.message || "Unable to save this address.");
+                    }
+                    savedAddressId = saveResult.addressId;
+                }
+
+                localStorage.setItem("locationName", locationName);
+                localStorage.setItem("selectedAddress", fullAddress);
+                localStorage.setItem("latitude", String(latitude));
+                localStorage.setItem("longitude", String(longitude));
+                localStorage.setItem(`address_${customerId}`, fullAddress);
+                localStorage.setItem(`selectedAddress_${customerId}`, fullAddress);
+                localStorage.setItem(`latitude_${customerId}`, String(latitude));
+                localStorage.setItem(`longitude_${customerId}`, String(longitude));
+                localStorage.setItem("manualLocationSelected", "true");
+                localStorage.setItem("selectedAddressId", String(savedAddressId));
+
+                closeLocationMap();
+                const returnPage = localStorage.getItem("addressReturnPage");
+                localStorage.removeItem("addressReturnPage");
+                window.location.replace(returnPage || "index.html");
+            } catch (error) {
+                console.error("SAVE SELECTED MAP ADDRESS ERROR:", error);
+                document.getElementById("mapFullAddress").textContent = error.message || "Unable to save this address. Please try again.";
+                button.disabled = false;
+                button.textContent = originalText;
+            }
+        }        /* ==========================================
            GOOGLE ADDRESS COMPONENTS
         ========================================== */
 
@@ -2638,6 +2938,17 @@ async function saveAddress() {
                 "selectedAddress",
                 fullAddress
             );
+
+            if (customerId) {
+                localStorage.setItem(`selectedAddress_${customerId}`, fullAddress);
+                localStorage.setItem(`address_${customerId}`, fullAddress);
+                if (a.latitude !== "" && a.latitude !== null && a.latitude !== undefined) {
+                    localStorage.setItem(`latitude_${customerId}`, String(a.latitude));
+                }
+                if (a.longitude !== "" && a.longitude !== null && a.longitude !== undefined) {
+                    localStorage.setItem(`longitude_${customerId}`, String(a.longitude));
+                }
+            }
 
 
             /*

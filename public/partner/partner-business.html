@@ -364,6 +364,78 @@ input:focus{
 border-color:#ff6b00;
 }
 
+.password-input-wrap{
+position:relative;
+}
+
+.password-input-wrap input{
+padding-left:56px;
+}
+
+.password-toggle{
+position:absolute;
+left:8px;
+top:50%;
+transform:translateY(-50%);
+width:40px;
+height:40px;
+margin:0;
+padding:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:transparent;
+color:#777;
+border:0;
+border-radius:50%;
+font-size:16px;
+cursor:pointer;
+}
+
+.password-toggle:hover{
+background:#fff3eb;
+color:#ff6b00;
+}
+
+.password-requirements{
+margin:9px 0 0;
+padding:10px 12px;
+list-style:none;
+background:#fff8f2;
+border-radius:12px;
+color:#777;
+font-size:12px;
+line-height:1.8;
+}
+
+.password-requirements li::before{
+content:"○";
+display:inline-block;
+width:19px;
+color:#d97706;
+font-weight:700;
+}
+
+.password-requirements li.is-valid{
+color:#168348;
+}
+
+.password-requirements li.is-valid::before{
+content:"✓";
+color:#168348;
+}
+
+.password-feedback{
+margin-top:7px;
+color:#b54708;
+font-size:12px;
+line-height:1.5;
+}
+
+.password-feedback.is-valid{
+color:#168348;
+}
+
 
 
 button{
@@ -420,6 +492,7 @@ font-size:25px;
 
 </style>
 
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 <body>
 
@@ -505,18 +578,31 @@ placeholder="example@gmail.com">
 
 <label>Password</label>
 
+<div class="password-input-wrap">
+<button
+type="button"
+class="password-toggle"
+aria-label="Show password"
+aria-pressed="false"
+onclick="togglePasswordVisibility()">
+<i class="fa-solid fa-eye" id="passwordEyeIcon" aria-hidden="true"></i>
+</button>
 <input
 type="password"
 id="password"
-placeholder="Create Password">
-<div style="margin-top:8px;color:#666;font-size:13px;line-height:22px;">
-<b>Password Requirements:</b><br>
-✔ At least 8 characters<br>
-✔ One uppercase letter (A-Z)<br>
-✔ One lowercase letter (a-z)<br>
-✔ One number (0-9)<br>
-✔ One special character (@ # $ % & !)<br>
-Example: <b>Darvoz@123</b>
+placeholder="Create Password"
+autocomplete="new-password"
+aria-describedby="passwordRequirements passwordFeedback">
+</div>
+<ul class="password-requirements" id="passwordRequirements">
+<li data-password-rule="length">At least 8 characters</li>
+<li data-password-rule="uppercase">One uppercase letter (A-Z)</li>
+<li data-password-rule="lowercase">One lowercase letter (a-z)</li>
+<li data-password-rule="number">One number (0-9)</li>
+<li data-password-rule="special">One special character, such as # (@ # $ % &amp; !)</li>
+</ul>
+<div class="password-feedback" id="passwordFeedback" role="status" aria-live="polite">
+Add a special character such as #, along with the other requirements.
 </div>
 
 <label>Confirm Password</label>
@@ -824,6 +910,69 @@ updateSelectedCategories();
 }
 
 });
+
+function togglePasswordVisibility(){
+    const passwordInput = document.getElementById("password");
+    const toggle = document.querySelector(".password-toggle");
+    const icon = document.getElementById("passwordEyeIcon");
+    const showing = passwordInput.type === "password";
+
+    passwordInput.type = showing ? "text" : "password";
+    toggle.setAttribute("aria-label", showing ? "Hide password" : "Show password");
+    toggle.setAttribute("aria-pressed", String(showing));
+    icon.classList.toggle("fa-eye", !showing);
+    icon.classList.toggle("fa-eye-slash", showing);
+}
+
+function updatePasswordGuidance(){
+    const value = document.getElementById("password").value;
+    const rules = {
+        length: value.length >= 8,
+        uppercase: /[A-Z]/.test(value),
+        lowercase: /[a-z]/.test(value),
+        number: /\d/.test(value),
+        special: /[@#$%&!]/.test(value)
+    };
+    const names = {
+        length: "at least 8 characters",
+        uppercase: "an uppercase letter",
+        lowercase: "a lowercase letter",
+        number: "a number",
+        special: "a special character such as # (@ # $ % & !)"
+    };
+
+    Object.entries(rules).forEach(([name, valid]) => {
+        const item = document.querySelector(`[data-password-rule="${name}"]`);
+        item.classList.toggle("is-valid", valid);
+    });
+
+    const missing = Object.keys(rules).filter(name => !rules[name]);
+    const feedback = document.getElementById("passwordFeedback");
+
+    if (!value) {
+        feedback.textContent = "Add a special character such as #, along with the other requirements.";
+        feedback.classList.remove("is-valid");
+        return;
+    }
+
+    if (missing.length) {
+        feedback.textContent = `Please include ${missing.map(name => names[name]).join(", ")}.`;
+        feedback.classList.remove("is-valid");
+        return;
+    }
+
+    if (!/^[A-Za-z\d@#$%&!]+$/.test(value)) {
+        feedback.textContent = "Use only letters, numbers, and these special characters: @ # $ % & !.";
+        feedback.classList.remove("is-valid");
+        return;
+    }
+
+    feedback.textContent = "Password meets all requirements.";
+    feedback.classList.add("is-valid");
+}
+
+document.getElementById("password").addEventListener("input", updatePasswordGuidance);
+
 function nextPage(){
 
 const business=document.getElementById("businessName").value.trim();
@@ -863,7 +1012,9 @@ return;
 
 }
 if(!passwordRegex.test(password)){
-    alert("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character (@ # $ % & !).");
+    updatePasswordGuidance();
+    alert("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and a special character such as # (@ # $ % & !).");
+    document.getElementById("password").focus();
     return;
 }
 

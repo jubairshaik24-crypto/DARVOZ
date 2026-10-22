@@ -313,6 +313,7 @@ MOBILE
 
 </style>
 
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -1297,7 +1298,7 @@ function renderTransactions(data){
 
                         <strong>
 
-                            ${t.type || "Transaction"}
+                            ${t.transaction_type || t.type || "Transaction"}
 
                         </strong>
 

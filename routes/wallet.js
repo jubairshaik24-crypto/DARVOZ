@@ -18,6 +18,13 @@ router.get("/:userType/:userId", async (req, res) => {
 
     const { userType, userId } = req.params;
 
+    // Partner earnings are food order credits after commission. Keep rider
+    // earnings behavior unchanged and include the labels written by older
+    // partner credit paths so existing history remains visible.
+    const partnerEarningsFilter = userType === "partner"
+      ? "AND transaction_type IN ('Order Earning', 'Order Earnings', 'Order Payment')"
+      : "";
+
 
     // ==========================================
     // VALIDATE USER TYPE
@@ -68,7 +75,8 @@ router.get("/:userType/:userId", async (req, res) => {
        WHERE user_type=?
        AND user_id=?
        AND DATE(created_at)=CURDATE()
-       AND type='Credit'`,
+       AND type='Credit'
+       ${partnerEarningsFilter}`,
       [
         userType,
         userId
@@ -88,7 +96,8 @@ router.get("/:userType/:userId", async (req, res) => {
        AND user_id=?
        AND YEARWEEK(created_at,1)
            = YEARWEEK(CURDATE(),1)
-       AND type='Credit'`,
+       AND type='Credit'
+       ${partnerEarningsFilter}`,
       [
         userType,
         userId
@@ -108,7 +117,8 @@ router.get("/:userType/:userId", async (req, res) => {
        AND user_id=?
        AND MONTH(created_at)=MONTH(CURDATE())
        AND YEAR(created_at)=YEAR(CURDATE())
-       AND type='Credit'`,
+       AND type='Credit'
+       ${partnerEarningsFilter}`,
       [
         userType,
         userId
@@ -126,7 +136,8 @@ router.get("/:userType/:userId", async (req, res) => {
        FROM wallet_transactions
        WHERE user_type=?
        AND user_id=?
-       AND type='Credit'`,
+       AND type='Credit'
+       ${partnerEarningsFilter}`,
       [
         userType,
         userId
@@ -754,7 +765,7 @@ router.get(
                      WHERE user_type=?
                      AND user_id=?
                      AND type='Credit'
-AND transaction_type='Order Earnings'`,
+                    AND transaction_type IN ('Order Earning', 'Order Earnings', 'Order Payment')`,
 
                     [
                         userType,
@@ -778,7 +789,7 @@ AND transaction_type='Order Earnings'`,
                      AND user_id=?
                      AND DATE(created_at)=CURDATE()
                      AND type='Credit'
-AND transaction_type='Order Earnings'`,
+                     AND transaction_type IN ('Order Earning', 'Order Earnings', 'Order Payment')`,
 
                     [
                         userType,
@@ -803,7 +814,7 @@ AND transaction_type='Order Earnings'`,
                      AND YEARWEEK(created_at,1)
                          = YEARWEEK(CURDATE(),1)
                      AND type='Credit'
-AND transaction_type='Order Earnings'`,
+                     AND transaction_type IN ('Order Earning', 'Order Earnings', 'Order Payment')`,
 
                     [
                         userType,
@@ -828,7 +839,7 @@ AND transaction_type='Order Earnings'`,
                      AND MONTH(created_at)=MONTH(CURDATE())
                      AND YEAR(created_at)=YEAR(CURDATE())
                      AND type='Credit'
-AND transaction_type='Order Earnings'`,
+                     AND transaction_type IN ('Order Earning', 'Order Earnings', 'Order Payment')`,
 
                     [
                         userType,

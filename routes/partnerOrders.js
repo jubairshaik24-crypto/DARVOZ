@@ -1314,6 +1314,13 @@ router.put(
             const order =
                 orders[0];
 
+            if (order.status === "Cancelled") {
+                await connection.rollback();
+                return res.status(400).json({
+                    success: false,
+                    message: "A cancelled order cannot be picked up or credited."
+                });
+            }
 
             // ===========================================
             // VERIFY PARTNER
@@ -1439,25 +1446,25 @@ router.put(
                     order.commission_percent || 0
                 );
 
+            const gstAmount =
+                Number(order.platform_fee || 0);
+
 
             // Admin commission
             const adminCommission =
                 Number(
-
-                    (
-                        foodTotal *
-                        commissionPercent
-                    ) / 100
-
+                    (foodTotal * commissionPercent / 100).toFixed(2)
                 );
+
+            const adminTotal =
+                Number((adminCommission + gstAmount).toFixed(2));
 
 
             // Partner receives food amount
             // after DARVOZ commission
             const partnerEarning =
                 Number(
-                    foodTotal -
-                    adminCommission
+                    (foodTotal - adminCommission).toFixed(2)
                 );
 
 
@@ -1681,7 +1688,7 @@ router.put(
                     ?,
                     ?,
                     'Credit',
-                    'Order Earning'
+                    'Order Earnings'
                 )`,
 
                 [
@@ -1760,7 +1767,7 @@ router.put(
                         [
 
                             adminUserId,
-                            adminCommission
+                            adminTotal
 
                         ]
 
@@ -1772,7 +1779,7 @@ router.put(
 
 
                 adminNewBalance =
-                    adminCommission;
+                    adminTotal;
 
             }
 
@@ -1796,7 +1803,7 @@ router.put(
 
                 adminNewBalance =
                     oldAdminBalance +
-                    adminCommission;
+                    adminTotal;
 
 
                 await connection.query(
@@ -1810,7 +1817,7 @@ router.put(
 
                     [
 
-                        adminCommission,
+                        adminTotal,
                         adminWalletId
 
                     ]
@@ -1843,7 +1850,7 @@ router.put(
                     ?,
                     ?,
                     'Credit',
-                    'Restaurant Commission'
+                    'Order Commission'
                 )`,
 
                 [
@@ -1855,6 +1862,22 @@ router.put(
                 ]
 
             );
+
+            if (gstAmount > 0) {
+                await connection.query(
+                    `INSERT INTO wallet_transactions
+                    (
+                        user_type,
+                        user_id,
+                        order_id,
+                        amount,
+                        type,
+                        transaction_type
+                    )
+                    VALUES ('admin', ?, ?, ?, 'Credit', 'Order GST')`,
+                    [adminUserId, orderId, gstAmount]
+                );
+            }
 
 
             // ===========================================

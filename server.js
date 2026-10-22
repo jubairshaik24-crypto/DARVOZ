@@ -6,7 +6,12 @@ require("dotenv").config();
 
 const admin = require("./config/firebaseAdmin");
 
+
+
 const express = require("express");
+const textToSpeech = require("@google-cloud/text-to-speech");
+
+const ttsClient = new textToSpeech.TextToSpeechClient();
 const cors = require("cors");
 const path = require("path");
 const http = require("http");
@@ -168,6 +173,98 @@ app.use(
 );
 
 
+/* ==============================
+   DARVOZ TELUGU TEXT-TO-SPEECH
+============================== */
+
+app.post("/api/tts/telugu", async (req, res) => {
+    try {
+        const orderId = String(req.body?.orderId || "")
+            .replace(/[^a-zA-Z0-9-]/g, "")
+            .slice(0, 30);
+
+        const total = Number(req.body?.total);
+
+        if (!orderId || !Number.isFinite(total) || total < 0 || total > 1000000) {
+            return res.status(400).json({
+                success: false,
+                message: "Valid order ID and total are required"
+            });
+        }
+
+      
+const items = Array.isArray(req.body?.items)
+    ? req.body.items.slice(0, 30)
+    : [];
+
+
+const itemText = items
+    .filter(item =>
+        typeof (item.product_name || item.name) === "string" &&
+        (item.product_name || item.name).trim()
+    )
+    .map(item => {
+        const name = (item.product_name || item.name)
+            .trim()
+            .slice(0, 100);
+
+        const quantity = Number(item.quantity ?? item.qty);
+
+        if (
+            !Number.isInteger(quantity) ||
+            quantity < 1 ||
+            quantity > 999
+        ) {
+            return null;
+        }
+
+        return `${name}, quantity ${quantity}`;
+    })
+    .filter(Boolean)
+    .join(". ");
+
+
+
+const requestedText = String(req.body?.text || "").trim();
+
+const text = requestedText
+    ? requestedText.slice(0, 1000)
+    : itemText
+        ? `కొత్త ఆర్డర్ వచ్చింది. ఆర్డర్ నంబర్ ${orderId}. ${itemText}. మొత్తం ${Math.round(total)} రూపాయలు.`
+        : `కొత్త ఆర్డర్ వచ్చింది. ఆర్డర్ నంబర్ ${orderId}. మొత్తం ${Math.round(total)} రూపాయలు.`;
+
+
+
+        const [response] = await ttsClient.synthesizeSpeech({
+            input: { text },
+            voice: {
+                languageCode: "te-IN"
+            },
+            audioConfig: {
+                audioEncoding: "MP3"
+            }
+        });
+
+        if (!response.audioContent) {
+            throw new Error("Google TTS returned no audio");
+        }
+
+        res.json({
+            success: true,
+            audioContent: Buffer.from(response.audioContent).toString("base64")
+        });
+    } catch (error) {
+        console.error("DARVOZ Telugu TTS error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Telugu voice is temporarily unavailable"
+        });
+    }
+});
+
+
+
 // ==============================
 // ROUTES
 // ==============================
@@ -298,6 +395,8 @@ app.use(
     "/admin",
     adminRoutes
 );
+
+
 
 
 app.use(

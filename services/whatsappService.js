@@ -4,7 +4,6 @@ const sendWhatsAppOTP = async (phone, otp) => {
     try {
         console.log("SENDING OTP TO:", phone);
         console.log("USING TEMPLATE: darvoz_otp");
-        console.log("OTP:", otp);
 
         const response = await axios.post(
             `https://graph.facebook.com/v23.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
@@ -81,98 +80,64 @@ language: { code: "en" },
 // SEND WHATSAPP SUPPORT MESSAGE
 // ==============================
 
-const sendWhatsAppMessage = async (
-    phone,
-    message
-) => {
 
+const sendWhatsAppMessage = async (phone, message) => {
     try {
+        const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+        const accessToken = process.env.WHATSAPP_ACCESS_TOKEN;
 
-        console.log(
-            "📤 SENDING WHATSAPP MESSAGE TO:",
-            phone
-        );
-
-        const response =
-            await axios.post(
-
-                `https://graph.facebook.com/v23.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,
-
-                {
-                    messaging_product: "whatsapp",
-
-                    to: phone,
-
-                    type: "text",
-
-                    text: {
-                        body: message
-                    }
-                },
-
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,
-
-                        "Content-Type":
-                            "application/json"
-                    }
-                }
-
+        if (!phone || !phoneNumberId || !accessToken) {
+            throw new Error(
+                "Missing recipient number, WHATSAPP_PHONE_NUMBER_ID, or WHATSAPP_ACCESS_TOKEN"
             );
+        }
 
+        // WhatsApp recipient format: country code + number, digits only.
+        const recipient = String(phone).replace(/\D/g, "");
+
+        console.log("📤 Support WhatsApp request starting");
+        console.log("Recipient:", recipient);
+        console.log("Phone Number ID configured:", Boolean(phoneNumberId));
+        console.log("Access token configured:", Boolean(accessToken));
+
+        const response = await axios.post(
+            `https://graph.facebook.com/v23.0/${phoneNumberId}/messages`,
+            {
+                messaging_product: "whatsapp",
+                recipient_type: "individual",
+                to: recipient,
+                type: "text",
+                text: {
+                    preview_url: false,
+                    body: message
+                }
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                timeout: 15000
+            }
+        );
 
         console.log(
-            "✅ WHATSAPP MESSAGE SENT:",
-            JSON.stringify(
-                response.data,
-                null,
-                2
-            )
+            "✅ WhatsApp API accepted request:",
+            JSON.stringify(response.data, null, 2)
         );
 
+        return { success: true, data: response.data };
 
-        return {
-            success: true,
-            data: response.data
-        };
+    } catch (error) {
+        const details = error.response?.data || error.message;
 
+        console.error(
+            "❌ WhatsApp support notification failed:",
+            JSON.stringify(details, null, 2)
+        );
 
+        return { success: false, error: details };
     }
-    catch (error) {
-
-        console.error(
-            "================================="
-        );
-
-        console.error(
-            "❌ WHATSAPP SEND ERROR:"
-        );
-
-        console.error(
-            JSON.stringify(
-                error.response?.data ||
-                error.message,
-                null,
-                2
-            )
-        );
-
-        console.error(
-            "================================="
-        );
-
-
-        return {
-            success: false,
-            error:
-                error.response?.data ||
-                error.message
-        };
-
-    }
-
 };
 
 

@@ -397,6 +397,57 @@ textarea{
 
 }
 
+.password-reset-help{
+    color:#777;
+    font-size:12px;
+    line-height:1.6;
+    margin:-3px 0 14px;
+}
+
+.password-reset-step{
+    display:grid;
+    gap:8px;
+    margin-top:14px;
+}
+
+.password-reset-step label{
+    color:#444;
+    font-size:11px;
+    font-weight:600;
+}
+
+.password-reset-step input{
+    width:100%;
+    min-width:0;
+    border:1px solid #ddd;
+    border-radius:9px;
+    padding:11px 12px;
+    outline:none;
+    font-size:13px;
+}
+
+.password-reset-step input:focus{
+    border-color:#ff6b00;
+    box-shadow:0 0 0 3px rgba(255,107,0,.12);
+}
+
+.password-reset-button{
+    min-height:42px;
+    padding:10px 14px;
+    border:0;
+    border-radius:9px;
+    background:#ff6b00;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.password-reset-button:disabled{
+    opacity:.6;
+    cursor:wait;
+}
+
 
 /* =====================================================
    PROFILE ROW
@@ -1134,8 +1185,155 @@ textarea{
 
 }
 
+/* =====================================================
+   DESKTOP LAYOUT
+===================================================== */
+
+@media(min-width:900px){
+
+    body{
+        padding-bottom:20px;
+    }
+
+    .header{
+        padding:0 32px;
+    }
+
+    .container{
+        width:calc(100% - 280px);
+        max-width:1320px;
+        margin:0 24px 0 256px;
+        padding:28px 24px 40px;
+    }
+
+    .page-title{
+        margin:0 0 22px;
+    }
+
+    .page-title h2{
+        font-size:28px;
+    }
+
+    .page-title p{
+        font-size:13px;
+    }
+
+    #profileContent{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        align-items:start;
+        gap:18px;
+    }
+
+    .profile-card{
+        grid-column:1/-1;
+        display:flex;
+        align-items:center;
+        justify-content:flex-start;
+        gap:22px;
+        text-align:left;
+        padding:24px 30px;
+        margin-bottom:0;
+    }
+
+    .logo-wrap,
+    .logo-image,
+    .logo-placeholder{
+        width:88px;
+        height:88px;
+        flex:0 0 88px;
+    }
+
+    .profile-card h2{
+        margin:0;
+        font-size:22px;
+    }
+
+    .owner-name,
+    .partner-id,
+    .profile-card .status{
+        align-self:center;
+    }
+
+    .profile-card .status{
+        margin-left:auto;
+    }
+
+    .card{
+        height:100%;
+        padding:22px;
+        margin:0;
+    }
+
+    .card-title{
+        font-size:17px;
+        margin-bottom:16px;
+    }
+
+    .profile-row{
+        min-height:70px;
+    }
+
+    .row-label{
+        font-size:11px;
+    }
+
+    .display-value{
+        font-size:14px;
+    }
+
+    .image-preview,
+    .image-empty{
+        height:190px;
+    }
+
+    .image-title{
+        font-size:13px;
+    }
+
+    .change-image{
+        height:40px;
+        font-size:12px;
+    }
+
+    .bottom-nav{
+        top:64px;
+        right:auto;
+        bottom:0;
+        width:220px;
+        height:auto;
+        padding:20px 14px;
+        flex-direction:column;
+        align-items:stretch;
+        justify-content:flex-start;
+        gap:8px;
+        box-shadow:2px 0 12px rgba(0,0,0,.06);
+    }
+
+    .bottom-nav a{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:13px 14px;
+        border-radius:10px;
+        text-align:left;
+        font-size:13px;
+    }
+
+    .bottom-nav a i{
+        width:20px;
+        margin:0;
+        font-size:16px;
+    }
+
+    .bottom-nav a.active{
+        background:#fff2e9;
+    }
+
+}
+
 </style>
 
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 
 
@@ -1165,11 +1363,6 @@ textarea{
     </div>
 
 
-    <div class="notify">
-
-        <i class="fa-solid fa-bell"></i>
-
-    </div>
 
 </header>
 
@@ -2039,173 +2232,33 @@ textarea{
             </div>
 
         </section>
-
-
-
-        <!-- =================================================
-             LOCATION
-        ================================================= -->
-
-        <section class="card">
-
+        <section class="card password-reset-card">
             <div class="card-title">
-
-                <i class="fa-solid fa-map-location-dot"></i>
-
-                Store Location
-
+                <i class="fa-solid fa-shield-halved"></i>
+                Change Password
             </div>
-
-
-            <!-- LATITUDE -->
-
-            <div class="profile-row">
-
-                <div class="row-icon">
-
-                    <i class="fa-solid fa-crosshairs"></i>
-
-                </div>
-
-
-                <div class="row-content">
-
-                    <span class="row-label">
-                        Latitude
-                    </span>
-
-
-                    <div
-                        id="latitudeDisplay"
-                        class="display-value"
-                    >
-                        -
-                    </div>
-
-
-                    <div
-                        id="latitudeEdit"
-                        class="edit-box"
-                    >
-
-                        <input
-                            id="latitudeInput"
-                            type="text"
-                        >
-
-                        <button
-                            class="edit-save"
-                            onclick="saveField('latitude','latitude')"
-                        >
-
-                            <i class="fa-solid fa-check"></i>
-
-                        </button>
-
-
-                        <button
-                            class="edit-cancel"
-                            onclick="cancelEdit('latitude')"
-                        >
-
-                            <i class="fa-solid fa-xmark"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="pencil"
-                    onclick="openEdit('latitude')"
-                >
-
-                    <i class="fa-solid fa-pen"></i>
-
-                </button>
-
+            <p class="password-reset-help">
+                Verify your registered mobile number to set a new password.
+                WhatsApp OTP will be sent to <strong id="passwordResetPhone">your registered number</strong>.
+            </p>
+            <button class="password-reset-button" id="sendPartnerPasswordOtp" type="button" onclick="sendPartnerPasswordOtp()">
+                <i class="fa-brands fa-whatsapp"></i> Send OTP on WhatsApp
+            </button>
+            <div id="partnerPasswordOtpStep" class="password-reset-step" style="display:none;">
+                <label for="partnerPasswordOtp">WhatsApp verification code</label>
+                <input id="partnerPasswordOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit OTP">
+                <button class="password-reset-button" type="button" onclick="verifyPartnerPasswordOtp()">Verify mobile number</button>
             </div>
-
-
-
-            <!-- LONGITUDE -->
-
-            <div class="profile-row">
-
-                <div class="row-icon">
-
-                    <i class="fa-solid fa-location-arrow"></i>
-
-                </div>
-
-
-                <div class="row-content">
-
-                    <span class="row-label">
-                        Longitude
-                    </span>
-
-
-                    <div
-                        id="longitudeDisplay"
-                        class="display-value"
-                    >
-                        -
-                    </div>
-
-
-                    <div
-                        id="longitudeEdit"
-                        class="edit-box"
-                    >
-
-                        <input
-                            id="longitudeInput"
-                            type="text"
-                        >
-
-                        <button
-                            class="edit-save"
-                            onclick="saveField('longitude','longitude')"
-                        >
-
-                            <i class="fa-solid fa-check"></i>
-
-                        </button>
-
-
-                        <button
-                            class="edit-cancel"
-                            onclick="cancelEdit('longitude')"
-                        >
-
-                            <i class="fa-solid fa-xmark"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="pencil"
-                    onclick="openEdit('longitude')"
-                >
-
-                    <i class="fa-solid fa-pen"></i>
-
-                </button>
-
+            <div id="partnerPasswordChangeStep" class="password-reset-step" style="display:none;">
+                <label for="partnerNewPassword">New password</label>
+                <input id="partnerNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="At least 8 characters">
+                <label for="partnerConfirmPassword">Confirm new password</label>
+                <input id="partnerConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="Re-enter new password">
+                <button class="password-reset-button" type="button" onclick="resetPartnerPassword()">Save new password</button>
             </div>
-
         </section>
 
-
-
-        <!-- =================================================
+<!-- =================================================
              FSSAI / GST
              READ ONLY
         ================================================= -->
@@ -2675,6 +2728,9 @@ if(!partner){
 let currentProfile =
     null;
 
+let partnerPasswordResetToken =
+    null;
+
 
 /* =====================================================
    HELPERS
@@ -2722,6 +2778,106 @@ function showToast(message){
 
 }
 
+async function sendPartnerPasswordOtp(){
+    if(!currentProfile || !partner.id || !currentProfile.mobile){
+        showToast("Registered mobile number is unavailable.");
+        return;
+    }
+
+    const button = el("sendPartnerPasswordOtp");
+    button.disabled = true;
+    try{
+        const response = await fetch(`${API}/partner/password/send-otp`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({partnerId:partner.id, mobile:currentProfile.mobile})
+        });
+        const data = await response.json();
+        if(!response.ok || !data.success) throw new Error(data.message || "Could not send WhatsApp OTP.");
+
+        partnerPasswordResetToken = null;
+        el("partnerPasswordOtp").value = "";
+        el("partnerNewPassword").value = "";
+        el("partnerConfirmPassword").value = "";
+        el("partnerPasswordOtpStep").style.display = "grid";
+        el("partnerPasswordChangeStep").style.display = "none";
+        showToast("OTP sent to your registered WhatsApp number.");
+    }catch(error){
+        showToast(error.message || "Unable to send OTP.");
+    }finally{
+        button.disabled = false;
+    }
+}
+
+async function verifyPartnerPasswordOtp(){
+    const otp = el("partnerPasswordOtp").value.trim();
+    if(!/^\d{6}$/.test(otp)){
+        showToast("Enter the 6-digit WhatsApp OTP.");
+        return;
+    }
+
+    try{
+        const response = await fetch(`${API}/partner/password/verify-otp`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({partnerId:partner.id, mobile:currentProfile.mobile, otp})
+        });
+        const data = await response.json();
+        if(!response.ok || !data.success) throw new Error(data.message || "OTP verification failed.");
+
+        partnerPasswordResetToken = data.resetToken;
+        el("partnerPasswordOtpStep").style.display = "none";
+        el("partnerPasswordChangeStep").style.display = "grid";
+        showToast("Mobile verified. Enter your new password.");
+    }catch(error){
+        showToast(error.message || "Unable to verify OTP.");
+    }
+}
+
+async function resetPartnerPassword(){
+    const password = el("partnerNewPassword").value;
+    const confirmation = el("partnerConfirmPassword").value;
+    if(!partnerPasswordResetToken){
+        showToast("Verify your mobile number first.");
+        return;
+    }
+    if(password.length < 8){
+        showToast("Password must contain at least 8 characters.");
+        return;
+    }
+    if(password !== confirmation){
+        showToast("The passwords do not match.");
+        return;
+    }
+
+    const button = el("partnerPasswordChangeStep").querySelector("button");
+    button.disabled = true;
+    try{
+        const response = await fetch(`${API}/partner/password/reset`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                partnerId:partner.id,
+                mobile:currentProfile.mobile,
+                resetToken:partnerPasswordResetToken,
+                password
+            })
+        });
+        const data = await response.json();
+        if(!response.ok || !data.success) throw new Error(data.message || "Unable to change password.");
+
+        partnerPasswordResetToken = null;
+        el("partnerNewPassword").value = "";
+        el("partnerConfirmPassword").value = "";
+        el("partnerPasswordChangeStep").style.display = "none";
+        showToast("Password changed successfully.");
+    }catch(error){
+        showToast(error.message || "Unable to change password.");
+    }finally{
+        button.disabled = false;
+    }
+}
+
 
 /* =====================================================
    LOAD PROFILE
@@ -2766,7 +2922,7 @@ async function loadProfile(){
             "none";
 
         el("profileContent").style.display =
-            "block";
+            "grid";
 
 
     }catch(error){
@@ -2862,13 +3018,8 @@ function renderProfile(data){
     el("pincodeDisplay").textContent =
         safeValue(data.pincode);
 
-
-    el("latitudeDisplay").textContent =
-        safeValue(data.latitude);
-
-
-    el("longitudeDisplay").textContent =
-        safeValue(data.longitude);
+    el("passwordResetPhone").textContent =
+        safeValue(data.mobile);
 
 
     /* ================================================
@@ -3198,18 +3349,6 @@ const fieldConfig = {
         edit:"pincodeEdit",
         display:"pincodeDisplay"
     },
-
-    latitude: {
-        input:"latitudeInput",
-        edit:"latitudeEdit",
-        display:"latitudeDisplay"
-    },
-
-    longitude: {
-        input:"longitudeInput",
-        edit:"longitudeEdit",
-        display:"longitudeDisplay"
-    }
 
 };
 

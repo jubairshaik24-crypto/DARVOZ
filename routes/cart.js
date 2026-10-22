@@ -7,13 +7,15 @@ const db = require("../config/db");
    ADD TO CART
 ========================================================= */
 
-router.post("/add", (req, res) => {
 
+router.post("/add", (req, res) => {
     const {
         customer_id,
         partner_id,
         product_id,
-        quantity
+        quantity,
+        weight = null,
+        price = null
     } = req.body;
 
     if (!customer_id || !partner_id || !product_id) {
@@ -24,126 +26,121 @@ router.post("/add", (req, res) => {
     }
 
     const qty = Number(quantity || 1);
+    const selectedWeight =
+        weight == null || String(weight).trim() === ""
+            ? null
+            : String(weight).trim();
 
-    if (qty <= 0) {
+    const selectedPrice =
+        price == null || price === ""
+            ? null
+            : Number(price);
+
+    if (!Number.isInteger(qty) || qty <= 0) {
         return res.status(400).json({
             success: false,
             message: "Invalid quantity"
         });
     }
 
+    if (
+        selectedPrice !== null &&
+        (!Number.isFinite(selectedPrice) || selectedPrice < 0)
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid price"
+        });
+    }
 
-    /*
-     * Existing cart row for this customer,
-     * partner and product.
-     */
     db.query(
-        `
-        SELECT id, quantity
-        FROM cart
-        WHERE customer_id = ?
-          AND partner_id = ?
-          AND product_id = ?
-        LIMIT 1
-        `,
+        `SELECT id, quantity
+         FROM cart
+         WHERE customer_id = ?
+           AND partner_id = ?
+           AND product_id = ?
+           AND weight <=> ?
+         LIMIT 1`,
         [
             customer_id,
             partner_id,
-            product_id
+            product_id,
+            selectedWeight
         ],
-        (err, result) => {
-
+        (err, rows) => {
             if (err) {
                 console.error("CART ADD SELECT ERROR:", err);
-
                 return res.status(500).json({
-                    success: false
+                    success: false,
+                    message: "Failed to check cart"
                 });
             }
 
-
-            /* Existing item */
-            if (result.length > 0) {
-
+            if (rows.length > 0) {
                 db.query(
-                    `
-                    UPDATE cart
-                    SET quantity = quantity + ?
-                    WHERE id = ?
-                    `,
+                    `UPDATE cart
+                     SET quantity = quantity + ?,
+                         price = COALESCE(?, price)
+                     WHERE id = ? AND customer_id = ?`,
                     [
                         qty,
-                        result[0].id
+                        selectedPrice,
+                        rows[0].id,
+                        customer_id
                     ],
-                    (err) => {
-
-                        if (err) {
+                    (updateErr) => {
+                        if (updateErr) {
                             console.error(
-                                "CART QUANTITY UPDATE ERROR:",
-                                err
+                                "CART UPDATE ERROR:",
+                                updateErr
                             );
-
                             return res.status(500).json({
-                                success: false
+                                success: false,
+                                message: "Failed to update cart"
                             });
                         }
 
                         return res.json({
                             success: true,
                             message: "Quantity Updated",
-                            cart_id: result[0].id
+                            cart_id: rows[0].id
                         });
-
                     }
                 );
-
                 return;
             }
 
-
-            /* New item */
             db.query(
-                `
-                INSERT INTO cart
-                (
-                    customer_id,
-                    partner_id,
-                    product_id,
-                    quantity
-                )
-                VALUES (?, ?, ?, ?)
-                `,
+                `INSERT INTO cart
+                    (customer_id, partner_id, product_id,
+                     quantity, weight, price)
+                 VALUES (?, ?, ?, ?, ?, ?)`,
                 [
                     customer_id,
                     partner_id,
                     product_id,
-                    qty
+                    qty,
+                    selectedWeight,
+                    selectedPrice
                 ],
-                (err, insertResult) => {
-
-                    if (err) {
-                        console.error(
-                            "CART INSERT ERROR:",
-                            err
-                        );
-
+                (insertErr, result) => {
+                    if (insertErr) {
+                        console.error("CART INSERT ERROR:", insertErr);
                         return res.status(500).json({
-                            success: false
+                            success: false,
+                            message: "Failed to add item to cart"
                         });
                     }
 
                     return res.json({
                         success: true,
                         message: "Added To Cart",
-                        cart_id: insertResult.insertId
+                        cart_id: result.insertId
                     });
-
                 }
             );
-
         }
     );
-
 });
 
 
@@ -406,72 +403,63 @@ router.get("/:customerId", (req, res) => {
         UNION ALL
 
 
-        SELECT
-            c.id,
-            c.customer_id,
-            c.partner_id,
-            c.product_id,
-            c.quantity,
-            c.created_at,
+        
+SELECT
+    c.id,
+    c.customer_id,
+    c.partner_id,
+    c.product_id,
+    c.quantity,
+    c.created_at,
+    gp.product_name,
 
-            gp.product_name,
+    CASE
+        WHEN c.price IS NOT NULL THEN c.price
+        ELSE COALESCE(
+            (
+                SELECT pgv.price
+                FROM partner_grocery_variants pgv
+                WHERE pgv.partner_product_id = gp.id
+                  AND pgv.status = 'Available'
+                ORDER BY pgv.id ASC
+                LIMIT 1
+            ),
+            0
+        )
+    END AS price,
 
-            /*
-             * For a normal grocery product,
-             * use its first/default available price.
-             */
-            COALESCE(
-                (
-                    SELECT
-                        pgv.price
+    CASE
+        WHEN c.price IS NOT NULL THEN 0
+        ELSE COALESCE(
+            (
+                SELECT pgv.offer_price
+                FROM partner_grocery_variants pgv
+                WHERE pgv.partner_product_id = gp.id
+                  AND pgv.status = 'Available'
+                ORDER BY pgv.id ASC
+                LIMIT 1
+            ),
+            0
+        )
+    END AS offer_price,
 
-                    FROM partner_grocery_variants pgv
+    gp.image,
+    r.restaurant_name,
+    'grocery' AS item_type,
+    c.weight AS weight
 
-                    WHERE pgv.partner_product_id = gp.id
-                      AND pgv.status = 'Available'
+FROM cart c
 
-                    ORDER BY pgv.id ASC
+INNER JOIN partner_grocery_products gp
+    ON gp.id = c.product_id
+   AND gp.partner_id = c.partner_id
 
-                    LIMIT 1
-                ),
-                0
-            ) AS price,
+INNER JOIN restaurants r
+    ON r.id = c.partner_id
 
-            COALESCE(
-                (
-                    SELECT
-                        pgv.offer_price
+WHERE c.customer_id = ?
 
-                    FROM partner_grocery_variants pgv
 
-                    WHERE pgv.partner_product_id = gp.id
-                      AND pgv.status = 'Available'
-
-                    ORDER BY pgv.id ASC
-
-                    LIMIT 1
-                ),
-                0
-            ) AS offer_price,
-
-            gp.image,
-
-            r.restaurant_name,
-
-            'grocery' AS item_type,
-
-            NULL AS weight
-
-        FROM cart c
-
-        INNER JOIN partner_grocery_products gp
-            ON gp.id = c.product_id
-           AND gp.partner_id = c.partner_id
-
-        INNER JOIN restaurants r
-            ON r.id = c.partner_id
-
-        WHERE c.customer_id = ?
 
         ORDER BY created_at DESC
 
