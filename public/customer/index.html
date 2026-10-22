@@ -26,7 +26,7 @@ rel="stylesheet">
 
 <script
 async
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFSLc0npyYLrB-JMhkaCg6Q1xlPNE8TfQ&amp;libraries=routes">
 </script>
 
 <link rel="stylesheet"
@@ -2578,10 +2578,79 @@ body{
 
 </style>
 
+<link rel="stylesheet" href="/customer/home-search.css">
+
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 
 <body>
+
+
+<!-- DARVOZ LOCATION POPUP -->
+<div id="locationPopup" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:20000;
+    background:rgba(0,0,0,.55);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+">
+    <div style="
+        width:100%;
+        max-width:380px;
+        background:#fff;
+        border-radius:20px;
+        padding:24px 20px;
+        text-align:center;
+        box-shadow:0 12px 40px rgba(0,0,0,.2);
+    ">
+        <div style="
+            width:58px;
+            height:58px;
+            margin:0 auto 14px;
+            border-radius:50%;
+            background:#e8f2f3;
+            color:#004D5B;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:25px;
+        ">
+            <i class="fa-solid fa-location-dot"></i>
+        </div>
+
+        <h2 style="font-size:20px;color:#004D5B;">
+            Where should we deliver?
+        </h2>
+
+        <p style="font-size:13px;color:#777;margin:10px 0 20px;">
+            Choose your delivery address to explore DARVOZ near you.
+        </p>
+
+        <button type="button"
+            onclick="window.location.href='address.html'"
+            style="
+                width:100%;
+                padding:14px;
+                background:#004D5B;
+                color:#fff;
+                border:0;
+                border-radius:12px;
+                font-family:inherit;
+                font-size:14px;
+                font-weight:600;
+                cursor:pointer;
+            ">
+            <i class="fa-solid fa-location-crosshairs"></i>
+            Choose Delivery Location
+        </button>
+    </div>
+</div>
+<!-- END DARVOZ LOCATION POPUP -->
+
 
 
 <div class="app">
@@ -2687,23 +2756,43 @@ body{
         <input
     type="text"
     id="searchInput"
-    placeholder="Search Darvoz..."
+    placeholder="Search Darvoz Items..."
     readonly
 >
 
-        <button class="filter-btn">
-
-            <i class="fa-solid fa-sliders"></i>
-
-        </button>
+        
 
     </div>
 
 
 </header>
 
+<section id="darvozHomeSearch" role="dialog" aria-modal="true" aria-label="Search dishes and restaurants" aria-hidden="true">
+    <div class="dh-search-top">
+        <button type="button" class="dh-search-back" id="dhSearchBack" aria-label="Close search">‹</button>
+        <div class="dh-search-label">Search dishes &amp; restaurants</div>
+    </div>
+    <label class="dh-search-input-wrap">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input id="dhSearchInput" type="search" autocomplete="off" placeholder="Search for biryani, pizza...">
+        <button type="button" class="dh-search-clear" id="dhSearchClear" aria-label="Clear search">×</button>
+    </label>
+    <div class="dh-search-scroll" id="dhSearchResults" aria-live="polite">
+        <div class="dh-search-caption">Popular searches</div>
+        <div class="dh-search-chips">
+            <button type="button" class="dh-search-chip">Biryani</button>
+            <button type="button" class="dh-search-chip">Chicken</button>
+            <button type="button" class="dh-search-chip">Pizza</button>
+            <button type="button" class="dh-search-chip">Burger</button>
+        </div>
+    </div>
+</section>
 
-
+    <button type="button" id="dhSearchCart" class="dh-search-cart-bubble" aria-label="View cart" hidden>
+        <span class="dh-search-cart-icon"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i></span>
+        <span class="dh-search-cart-label">View cart</span>
+        <span class="dh-search-cart-count" id="dhSearchCartCount">0</span>
+    </button>
 <!-- =====================================================
      CONTENT
 ===================================================== -->
@@ -3056,203 +3145,116 @@ Sandwich
 
 
 
+<div class="section-header grocery-category-header">
+    <h2>Order Groceries</h2>
+    <a href="grocery-categories.html">See All</a>
+</div>
 
+
+<div
+    class="grocery-category-scroll"
+    id="groceryCategoryScroll"
+>
+<div style="padding:10px;text-align:center;">
+        Loading grocery categories...
+    </div>
+    
+</div>
 <!-- =====================================================
      GROCERY CATEGORIES
 ===================================================== -->
 
-<section class="grocery-category-section" id="groceryCategorySection">
+    
 
-    <div class="section-header grocery-category-header">
+<script>
+async function loadGroceryCategoriesOnIndex() {
+    const container = document.getElementById("groceryCategoryScroll");
+    if (!container) return;
 
-        <h2>
-            Order Groceries 
-        </h2>
+    try {
+        const response = await fetch("/partner/grocery-categories/0", {
+            method: "GET",
+            cache: "no-store"
+        });
 
-        <a href="grocery-categories.html">
-            See All
-        </a>
+        if (!response.ok) {
+            throw new Error("Could not load categories");
+        }
 
-    </div>
+        const result = await response.json();
 
-    <div
-        class="grocery-category-scroll"
-        id="groceryCategoryScroll"
-    >
+        // Accept common API response formats.
+        const categories = Array.isArray(result)
+            ? result
+            : result.categories || result.data || [];
 
-        <!-- Rice & Atta -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('rice-atta')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/rice-atta.png"
-                    alt="Rice & Atta"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Rice &amp; Atta
-            </div>
-        </div>
+        container.replaceChildren();
 
-        <!-- Dals & Pulses -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('dals-pulses')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/dals-pulses.png"
-                    alt="Dals & Pulses"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Dals &amp; Pulses
-            </div>
-        </div>
+        if (!categories.length) {
+            container.innerHTML =
+                '<p style="padding:12px;">No grocery categories available.</p>';
+            return;
+        }
 
-        <!-- Oil & Ghee -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('oil-ghee')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/oil-ghee.png"
-                    alt="Oil & Ghee"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Oil &amp; Ghee
-            </div>
-        </div>
+        categories.forEach(category => {
+            const name = category.name || category.category_name || category.title;
+            if (!name) return;
 
-        <!-- Salt & Sugar -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('salt-sugar')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/salt-sugar.png"
-                    alt="Salt & Sugar"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Salt &amp; Sugar
-            </div>
-        </div>
+            const image = category.image_url ||
+                          category.image ||
+                          category.imageUrl ||
+                          "images/categories/groceries.png";
 
-        <!-- Spices -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('spices')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/spices.png"
-                    alt="Spices"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Spices
-            </div>
-        </div>
+            const item = document.createElement("div");
+            item.className = "grocery-category-item";
+            item.style.cursor = "pointer";
 
-        <!-- Biscuits & Snacks -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('biscuits-snacks')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/biscuits-snacks.png"
-                    alt="Biscuits & Snacks"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Biscuits &amp; Snacks
-            </div>
-        </div>
+            const imageBox = document.createElement("div");
+            imageBox.className = "grocery-category-image";
 
-        <!-- Beverages -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('beverages')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/beverages.png"
-                    alt="Beverages"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Beverages
-            </div>
-        </div>
+            const img = document.createElement("img");
+            img.src = image;
+            img.alt = name;
+            img.onerror = function () {
+                this.onerror = null;
+                this.src = "images/categories/groceries.png";
+            };
 
-        <!-- Dairy -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('dairy')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/dairy.png"
-                    alt="Dairy"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Dairy
-            </div>
-        </div>
+            const label = document.createElement("div");
+            label.className = "grocery-category-name";
+            label.textContent = name;
 
-        <!-- Personal Care -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('personal-care')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/personal-care.png"
-                    alt="Personal Care"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Personal Care
-            </div>
-        </div>
+            imageBox.appendChild(img);
+            item.append(imageBox, label);
 
-        <!-- Home Care -->
-        <div
-            class="grocery-category-item"
-            onclick="openGroceryCategory('home-care')"
-        >
-            <div class="grocery-category-image">
-                <img
-                    src="images/categories/home-care.png"
-                    alt="Home Care"
-                    onerror="this.onerror=null;this.src='images/categories/groceries.png';"
-                >
-            </div>
-            <div class="grocery-category-name">
-                Home Care
-            </div>
-        </div>
+            item.addEventListener("click", () => {
+                const id = category.id || category.category_id;
+                const slug = category.slug;
 
-    </div>
+                if (typeof window.openGroceryCategory === "function") {
+                    window.openGroceryCategory(slug || id || name);
+                } else {
+                    window.location.href =
+                        "groceries.html?category=" +
+                        encodeURIComponent(id || slug || name);
+                }
+            });
 
-</section>
+            container.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error("Grocery category loading failed:", error);
+        container.textContent = "Unable to load grocery categories. Please refresh.";
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadGroceryCategoriesOnIndex);
+} else {
+    loadGroceryCategoriesOnIndex();
+}
+</script>
 
 
 
@@ -3522,11 +3524,6 @@ const API = window.location.origin;
 
 const customerId =
 localStorage.getItem("customerId");
-
-
-/* =========================================
-   DARVOZ COINS
-========================================= */
 
 /* =========================================
    DARVOZ REAL COINS
@@ -3804,7 +3801,7 @@ async function loadCustomerOffers(){
 
                 <div
                     class="offer-card"
-                    onclick="openCustomerOffer('${offerId}')"
+            
                 >
 
                     <img
@@ -4384,16 +4381,6 @@ function openCategory(category){
 
 const searchInput =
     document.getElementById("searchInput");
-
-if(searchInput){
-
-    searchInput.addEventListener("click", function(){
-
-        window.location.href = "search.html";
-
-    });
-
-}
 
 
 /* =====================================================
@@ -5756,6 +5743,85 @@ function openHomeGrocery(
    LOAD REAL RESTAURANTS
 ===================================================== */
 
+async function applyRestaurantRoadDistances(restaurants, originLatitude, originLongitude){
+
+    const origin = {
+        lat: Number(originLatitude),
+        lng: Number(originLongitude)
+    };
+
+    const destinations = restaurants
+        .map(restaurant => ({
+            restaurant,
+            location: {
+                lat: restaurant.latitude == null || restaurant.latitude === "" ? NaN : Number(restaurant.latitude),
+                lng: restaurant.longitude == null || restaurant.longitude === "" ? NaN : Number(restaurant.longitude)
+            }
+        }))
+        .filter(item =>
+            Number.isFinite(item.location.lat) &&
+            Number.isFinite(item.location.lng)
+        );
+
+    restaurants.forEach(restaurant => {
+        restaurant.roadDistanceKm = null;
+    });
+
+    if(
+        !Number.isFinite(origin.lat) ||
+        !Number.isFinite(origin.lng) ||
+        destinations.length === 0
+    ){
+        return;
+    }
+
+    try{
+        const RouteMatrix = google.maps.routes?.RouteMatrix;
+        if(!RouteMatrix){
+            throw new Error("Google Routes library is unavailable.");
+        }
+
+        const { matrix } = await RouteMatrix.computeRouteMatrix({
+            origins: [origin],
+            destinations: destinations.map(item => item.location),
+            travelMode: "DRIVING",
+            fields: ["distanceMeters", "condition"]
+        });
+
+        const routeItems = matrix?.rows?.[0]?.items || [];
+        destinations.forEach((item, index) => {
+            const route = routeItems[index];
+            if(
+                route?.condition === "ROUTE_EXISTS" &&
+                Number.isFinite(Number(route.distanceMeters))
+            ){
+                item.restaurant.roadDistanceKm = Number(route.distanceMeters) / 1000;
+            }
+        });
+    }
+    catch(matrixError){
+        console.warn("ROUTE MATRIX UNAVAILABLE; TRYING GOOGLE DIRECTIONS:", matrixError);
+        if(!google.maps.DirectionsService){
+            throw matrixError;
+        }
+
+        const directionsService = new google.maps.DirectionsService();
+        await Promise.all(destinations.map(item => new Promise(resolve => {
+            directionsService.route({
+                origin,
+                destination: item.location,
+                travelMode: google.maps.TravelMode.DRIVING
+            }, (result, status) => {
+                const meters = result?.routes?.[0]?.legs?.[0]?.distance?.value;
+                if(status === "OK" && Number.isFinite(Number(meters))){
+                    item.restaurant.roadDistanceKm = Number(meters) / 1000;
+                }
+                resolve();
+            });
+        })));
+    }
+}
+
 async function loadRestaurants(){
 
     const restaurantsBox =
@@ -5981,6 +6047,21 @@ async function loadRestaurants(){
 
         }
 
+        const visibleRestaurants = data.slice(0, 10);
+        try{
+            await applyRestaurantRoadDistances(
+                visibleRestaurants,
+                latitude,
+                longitude
+            );
+        }
+        catch(routeError){
+            console.error("RESTAURANT ROAD DISTANCE ERROR:", routeError);
+            visibleRestaurants.forEach(restaurant => {
+                restaurant.roadDistanceKm = null;
+            });
+        }
+
 
         /*
            Build REAL restaurant cards.
@@ -5989,8 +6070,7 @@ async function loadRestaurants(){
         let html = "";
 
 
-        data
-        .slice(0,10)
+        visibleRestaurants
         .forEach(r => {
 
 
@@ -6057,10 +6137,13 @@ if(!restaurantImage){
 
             let distanceText = "";
 
-            if(r.distance != null){
-
+            if(r.roadDistanceKm != null){
                 distanceText =
-                    `${Number(r.distance).toFixed(1)} km`;
+                    `${Number(r.roadDistanceKm).toFixed(1)} km`;
+
+            }
+            else{
+                distanceText = "Road distance unavailable";
 
             }
 
@@ -6769,41 +6852,38 @@ async function startDarvoz(){
         }
     }
 
-    /* Only when there is NO saved/manual location may GPS run. */
-if(!locationState){
 
-    console.warn(
-        "⚠️ NO SAVED LOCATION FOUND"
-    );
+if (!locationState) {
+
+    console.warn("⚠️ NO SAVED LOCATION FOUND");
 
     const locationElement =
-        document.getElementById(
-            "currentLocation"
-        );
+        document.getElementById("currentLocation");
 
-    if(locationElement){
-
-        locationElement.textContent =
-            "Select Location";
-
+    if (locationElement) {
+        locationElement.textContent = "Select Location";
     }
 
-    showOutOfServiceMessage();
+    // Show the location popup inside index.html
+    const locationPopup =
+        document.getElementById("locationPopup");
 
+    if (locationPopup) {
+        locationPopup.style.display = "flex";
+    } else {
+        console.error("Location popup HTML is missing.");
+    }
+
+    hideHomeContent();
     return;
 
-}
-else{
+} else {
 
-    console.log(
-        "✅ USING SAVED DELIVERY LOCATION"
-    );
-
-    console.log(
-        "📍 GPS WILL NOT RUN FROM INDEX.HTML"
-    );
+    console.log("✅ USING SAVED DELIVERY LOCATION");
+    console.log("📍 GPS WILL NOT RUN FROM INDEX.HTML");
 
 }
+
     /* =========================================
        CHECK LOCATION BEFORE LOADING
     ========================================= */
@@ -7258,6 +7338,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
+
+<script src="/customer/home-search.js"></script>
 
 </body>
 

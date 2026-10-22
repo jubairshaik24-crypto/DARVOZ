@@ -108,7 +108,12 @@ router.post("/place", async (req, res) => {
 
         connection =
             await db.promise().getConnection();
-
+connection.query = new Proxy(connection.query, {
+    apply(target, thisArg, args) {
+        console.log("SQL BEING EXECUTED:", JSON.stringify(args[0]));
+        return Reflect.apply(target, thisArg, args);
+    }
+});
         /*=========================================
             START TRANSACTION
         =========================================*/
@@ -119,35 +124,59 @@ router.post("/place", async (req, res) => {
             GET CART PRODUCTS
         =========================================*/
 
-        console.log("==================================");
-        console.log("Customer ID Received :", customer_id);
-        console.log("Partner ID Received  :", partner_id);
-        console.log("==================================");
+const [cart] = await connection.query(
+    `
+    SELECT
+        c.product_id,
+        c.partner_id,
+        c.quantity,
+        m.product_name,
+        m.price,
+        m.offer_price
+    FROM cart c
+    INNER JOIN menu_items m
+        ON m.id = c.product_id
+       AND m.partner_id = c.partner_id
+    WHERE c.customer_id = ?
+      AND c.partner_id = ?
 
-        const [cart] = await connection.query(
+    UNION ALL
 
-            `SELECT
+    SELECT
+        c.product_id,
+        c.partner_id,
+        c.quantity,
+        gp.product_name,
+        CASE
+            WHEN c.price IS NOT NULL THEN c.price
+            ELSE COALESCE(gv.price, 0)
+        END AS price,
+        CASE
+            WHEN c.price IS NOT NULL THEN 0
+            ELSE COALESCE(gv.offer_price, 0)
+        END AS offer_price
+    FROM cart c
+    INNER JOIN partner_grocery_products gp
+        ON gp.id = c.product_id
+       AND gp.partner_id = c.partner_id
+    LEFT JOIN partner_grocery_variants gv
+        ON gv.id = (
+            SELECT v.id
+            FROM partner_grocery_variants v
+            WHERE v.partner_product_id = gp.id
+              AND v.status = 'Available'
+            ORDER BY v.id ASC
+            LIMIT 1
+        )
+    WHERE c.customer_id = ?
+      AND c.partner_id = ?
+    `,
+    [customer_id, partner_id, customer_id, partner_id]
+);
 
-                cart.product_id,
-                cart.quantity,
+console.log("Cart Data:", cart);
+console.log("Cart Length:", cart.length);
 
-                menu_items.product_name,
-                menu_items.price,
-                menu_items.offer_price
-
-            FROM cart
-
-            JOIN menu_items
-            ON cart.product_id = menu_items.id
-
-            WHERE cart.customer_id=?`,
-
-            [customer_id]
-
-        );
-
-        console.log("Cart Data :", cart);
-        console.log("Cart Length :", cart.length);
 
         /*=========================================
             CHECK CART
@@ -276,41 +305,91 @@ router.post("/place", async (req, res) => {
 
         food_total =
             Number(food_total.toFixed(2));
+ 
+/*=========================================
+    DELIVERY FEE + GST
+=========================================*/
 
-        /*=========================================
-            DELIVERY FEE
-        =========================================*/
+const deliveryDistance = Number(req.body.delivery_distance_km);
 
-        const delivery_fee =
-            food_total >= 299
-                ? 0
-                : 1;
+const DELIVERY_RULES = [
+    { min: 0, max: 2.0, customer: 25, rider: 25, admin: 0 },
+    { min: 2.1, max: 2.2, customer: 30, rider: 25, admin: 5 },
+    { min: 2.3, max: 2.4, customer: 32, rider: 27, admin: 5 },
+    { min: 2.5, max: 2.6, customer: 34, rider: 29, admin: 5 },
+    { min: 2.7, max: 2.8, customer: 36, rider: 31, admin: 5 },
+    { min: 2.9, max: 3.0, customer: 38, rider: 33, admin: 5 },
+    { min: 3.1, max: 3.2, customer: 40, rider: 35, admin: 5 },
+    { min: 3.3, max: 3.4, customer: 42, rider: 37, admin: 5 },
+    { min: 3.5, max: 3.6, customer: 44, rider: 39, admin: 5 },
+    { min: 3.7, max: 3.8, customer: 46, rider: 41, admin: 5 },
+    { min: 3.9, max: 4.0, customer: 48, rider: 43, admin: 5 },
+    { min: 4.1, max: 4.2, customer: 50, rider: 45, admin: 5 },
+    { min: 4.3, max: 4.4, customer: 51, rider: 46, admin: 5 },
+    { min: 4.5, max: 4.6, customer: 52, rider: 47, admin: 5 },
+    { min: 4.7, max: 4.8, customer: 53, rider: 48, admin: 5 },
+    { min: 4.9, max: 5.0, customer: 54, rider: 49, admin: 5 },
+    { min: 5.1, max: 5.2, customer: 55, rider: 50, admin: 5 },
+    { min: 5.3, max: 5.4, customer: 56, rider: 51, admin: 5 },
+    { min: 5.5, max: 5.6, customer: 57, rider: 52, admin: 5 },
+    { min: 5.7, max: 5.8, customer: 58, rider: 58, admin: 0 },
+    { min: 5.9, max: 6.0, customer: 59, rider: 59, admin: 0 },
+    { min: 6.1, max: 6.5, customer: 59, rider: 59, admin: 0 },
+    { min: 6.6, max: 7.0, customer: 60, rider: 60, admin: 0 }
+];
 
-        /*=========================================
-            PLATFORM FEE
-        =========================================*/
+if (!Number.isFinite(deliveryDistance) || deliveryDistance < 0) {
+    await connection.rollback();
+    return res.status(400).json({
+        success: false,
+        message: "Invalid delivery distance."
+    });
+}
 
-        const platform_fee =
-            Math.round(
-                food_total * 0.05
-            );
+const distanceKm = Math.round(deliveryDistance * 10) / 10;
 
-        /*=========================================
-            GRAND TOTAL
-        =========================================*/
+if (distanceKm > 7) {
+    await connection.rollback();
+    return res.status(400).json({
+        success: false,
+        message: "Delivery is unavailable beyond 7 km."
+    });
+}
 
-        const grand_total =
-            Number(
-                (
-                    food_total +
-                    delivery_fee +
-                    platform_fee
-                ).toFixed(2)
-            );
+const deliveryRule = DELIVERY_RULES.find(
+    rule => distanceKm >= rule.min && distanceKm <= rule.max
+);
 
-        /*=========================================
+if (!deliveryRule) {
+    await connection.rollback();
+    return res.status(400).json({
+        success: false,
+        message: "Delivery is unavailable for this distance."
+    });
+}
+
+/* Free delivery above ₹399, matching checkout */
+const delivery_fee =
+    food_total > 399 ? 0 : deliveryRule.customer;
+const delivery_rider_earning = Number((deliveryRule.rider + (distanceKm > 6 ? 10 : 0)).toFixed(2));
+const admin_delivery_fee = food_total > 399 ? 0 : deliveryRule.admin;
+const delivery_subsidy = Number(Math.max(0, delivery_rider_earning + admin_delivery_fee - delivery_fee).toFixed(2));
+
+/* GST calculation: 5% */
+const gst_fee = Number((food_total * 0.05).toFixed(2));
+
+/* Keep existing DB column name for compatibility */
+const platform_fee = gst_fee;
+
+/* Grand total before coupons and coins */
+const grand_total = Number(
+    (food_total + delivery_fee + gst_fee).toFixed(2)
+);
+        
+
+/*=========================================
             CALCULATE COMMISSION PREVIEW
-        =========================================*/
+=========================================*/
 
         const commissionAmount =
             Number(
@@ -412,6 +491,9 @@ router.post("/place", async (req, res) => {
 
             food_total,
             delivery_fee,
+            delivery_rider_earning,
+            admin_delivery_fee,
+            delivery_subsidy,
             platform_fee,
             commission_percent,
             grand_total,
@@ -425,7 +507,7 @@ router.post("/place", async (req, res) => {
             ?,?,?,?,?,?,
             ?,?,
             ?,?,?,
-            ?,?,?,?,?,
+            ?,?,?,?,?,?,?,?,
             ?,?
         )`,
 
@@ -450,6 +532,9 @@ router.post("/place", async (req, res) => {
 
             food_total,
             delivery_fee,
+            delivery_rider_earning,
+            admin_delivery_fee,
+            delivery_subsidy,
             platform_fee,
             commission_percent,
             grand_total,
@@ -581,38 +666,26 @@ if (!socketIO) {
 
     } else {
 
-        const orderPayload = {
+       
+const orderPayload = {
+    id: orderId,
+    customer_name: customer_name || "",
+    mobile: mobile || "",
+    food_total: food_total,
+    delivery_fee: delivery_fee,
+    platform_fee: platform_fee,
+    grand_total: grand_total,
+    commission_percent: commission_percent,
+    payment: payment || "",
 
-            id: orderId,
+    // 🔊 Product names and quantities for Telugu voice
+    items: cart.map(item => ({
+        product_name: item.product_name,
+        quantity: Number(item.quantity)
+    })),
 
-            customer_name:
-                customer_name || "",
-
-            mobile:
-                mobile || "",
-
-            food_total:
-                food_total,
-
-            delivery_fee:
-                delivery_fee,
-
-            platform_fee:
-                platform_fee,
-
-            grand_total:
-                grand_total,
-
-            commission_percent:
-                commission_percent,
-
-            payment:
-                payment || "",
-
-            status:
-                "Pending"
-
-        };
+    status: "Pending"
+};
 
         console.log(
             "📤 EMITTING EVENT: newOrder"

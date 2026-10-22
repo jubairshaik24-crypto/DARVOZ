@@ -143,6 +143,7 @@ background:#e85d00;
 
 </style>
 
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -180,32 +181,29 @@ Enter your bank account details to receive payments from DARVOZ.
 <label>Account Holder Name</label>
 <input
 type="text"
-id="accountName"
-placeholder="Shaik Jubair">
+id="accountName">
 
 <label>Bank Name</label>
 <input
 type="text"
-id="bankName"
-placeholder="State Bank of India">
+id="bankName">
 
 <label>Account Number</label>
 <input
 type="text"
-id="accountNumber"
-placeholder="123456789012">
+id="accountNumber">
 
 <label>IFSC Code</label>
 <input
 type="text"
-id="ifsc"
-placeholder="SBIN0001234">
+id="ifsc">
 
-<label>UPI ID (Optional)</label>
+<label>UPI ID (Required)</label>
 <input
 type="text"
 id="upi"
-placeholder="jubair@upi">
+required
+autocomplete="off">
 
 <button onclick="nextPage()">
 Continue
@@ -233,9 +231,10 @@ if(
 accountName==="" ||
 bankName==="" ||
 accountNumber==="" ||
-ifsc===""){
+ifsc==="" ||
+upi===""){
 
-alert("Please fill all required bank details.");
+alert("Please fill all bank details, including your UPI ID.");
 
 return;
 

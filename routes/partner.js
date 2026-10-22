@@ -5,8 +5,150 @@ const router = express.Router();
 
 const db = require("../config/db");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const multer = require("multer");
 const cloudinary = require("../config/cloudinary");
+const { sendWhatsAppOTP } = require("../services/whatsappService");
+
+const partnerPasswordOtps = new Map();
+const partnerPasswordResetTokens = new Map();
+
+function normalizePartnerPhone(phone) {
+    let normalized = String(phone || "").replace(/\D/g, "");
+    if (normalized.startsWith("91") && normalized.length === 12) {
+        normalized = normalized.slice(2);
+    }
+    return normalized;
+}
+
+function readPartnerPasswordRequest(req) {
+    const partnerId = String(req.body.partnerId || "").trim();
+    const mobile = normalizePartnerPhone(req.body.mobile);
+    return {
+        partnerId,
+        mobile,
+        valid: /^[a-zA-Z0-9_-]{1,32}$/.test(partnerId) && /^\d{10}$/.test(mobile)
+    };
+}
+
+// Password reset OTP is tied to the partner ID and the registered mobile.
+router.post("/password/send-otp", async (req, res) => {
+    const request = readPartnerPasswordRequest(req);
+    if (!request.valid) {
+        return res.status(400).json({ success: false, message: "Partner and registered mobile are required." });
+    }
+
+    try {
+        const [partners] = await db.promise().query(
+            "SELECT id, mobile, status FROM restaurants WHERE id=? OR restaurant_id=? LIMIT 1",
+            [/^\d+$/.test(request.partnerId) ? Number(request.partnerId) : -1, request.partnerId]
+        );
+        const partner = partners[0];
+        if (!partner || normalizePartnerPhone(partner.mobile) !== request.mobile) {
+            return res.status(400).json({ success: false, message: "The mobile number does not match this partner account." });
+        }
+
+        const now = Date.now();
+        const existing = partnerPasswordOtps.get(request.partnerId);
+        if (existing && now - existing.sentAt < 60_000) {
+            return res.status(429).json({ success: false, message: "Please wait one minute before requesting another OTP." });
+        }
+
+        const otp = crypto.randomInt(100000, 1000000).toString();
+        partnerPasswordOtps.set(request.partnerId, {
+            partnerId: partner.id,
+            mobile: request.mobile,
+            otp,
+            sentAt: now,
+            expiresAt: now + 5 * 60_000,
+            attempts: 0
+        });
+
+        const result = await sendWhatsAppOTP(request.mobile, otp);
+        if (!result.success) {
+            partnerPasswordOtps.delete(request.partnerId);
+            console.error("Partner password reset WhatsApp OTP delivery failed.");
+            return res.status(502).json({ success: false, message: "Could not send the WhatsApp OTP. Please try again." });
+        }
+
+        return res.json({ success: true, message: "OTP sent to the registered WhatsApp number." });
+    } catch (error) {
+        console.error("PARTNER PASSWORD OTP SEND ERROR:", error.message);
+        return res.status(500).json({ success: false, message: "Unable to send the password reset OTP." });
+    }
+});
+
+router.post("/password/verify-otp", (req, res) => {
+    const request = readPartnerPasswordRequest(req);
+    const otp = String(req.body.otp || "").trim();
+    if (!request.valid || !/^\d{6}$/.test(otp)) {
+        return res.status(400).json({ success: false, message: "Enter the six-digit OTP." });
+    }
+
+    const saved = partnerPasswordOtps.get(request.partnerId);
+    if (!saved || saved.mobile !== request.mobile) {
+        return res.status(400).json({ success: false, message: "Request a new OTP first." });
+    }
+    if (Date.now() > saved.expiresAt) {
+        partnerPasswordOtps.delete(request.partnerId);
+        return res.status(400).json({ success: false, message: "OTP expired. Request a new one." });
+    }
+    if (saved.otp !== otp) {
+        saved.attempts += 1;
+        if (saved.attempts >= 5) partnerPasswordOtps.delete(request.partnerId);
+        return res.status(400).json({ success: false, message: saved.attempts >= 5 ? "Too many attempts. Request a new OTP." : "That OTP is incorrect." });
+    }
+
+    partnerPasswordOtps.delete(request.partnerId);
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    partnerPasswordResetTokens.set(resetToken, {
+        partnerId: saved.partnerId,
+        partnerKey: request.partnerId,
+        mobile: request.mobile,
+        expiresAt: Date.now() + 5 * 60_000
+    });
+    return res.json({ success: true, resetToken, message: "Mobile verified. You can now set a new password." });
+});
+
+router.post("/password/reset", async (req, res) => {
+    const request = readPartnerPasswordRequest(req);
+    const resetToken = String(req.body.resetToken || "");
+    const password = String(req.body.password || "");
+    const tokenData = partnerPasswordResetTokens.get(resetToken);
+
+    if (!request.valid || !tokenData || tokenData.partnerKey !== request.partnerId || tokenData.mobile !== request.mobile || Date.now() > tokenData.expiresAt) {
+        if (resetToken) partnerPasswordResetTokens.delete(resetToken);
+        return res.status(400).json({ success: false, message: "Verify your mobile number again before changing the password." });
+    }
+    if (password.length < 8 || password.length > 128) {
+        return res.status(400).json({ success: false, message: "Password must be between 8 and 128 characters." });
+    }
+
+    try {
+        const hash = await bcrypt.hash(password, 10);
+        const [partners] = await db.promise().query(
+            "SELECT mobile FROM restaurants WHERE id=? LIMIT 1",
+            [tokenData.partnerId]
+        );
+        const registeredMobile = partners[0]?.mobile;
+        if (!registeredMobile || normalizePartnerPhone(registeredMobile) !== request.mobile) {
+            partnerPasswordResetTokens.delete(resetToken);
+            return res.status(400).json({ success: false, message: "The registered mobile number has changed. Verify it again." });
+        }
+        const [result] = await db.promise().query(
+            "UPDATE restaurants SET password=? WHERE id=? AND mobile=?",
+            [hash, tokenData.partnerId, registeredMobile]
+        );
+        if (result.affectedRows !== 1) {
+            return res.status(400).json({ success: false, message: "Partner account not found." });
+        }
+        partnerPasswordResetTokens.delete(resetToken);
+        return res.json({ success: true, message: "Password changed successfully." });
+    } catch (error) {
+        console.error("PARTNER PASSWORD RESET ERROR:", error.message);
+        return res.status(500).json({ success: false, message: "Unable to change the password right now." });
+    }
+});
 
 
 // =====================================================
@@ -389,13 +531,14 @@ router.post(
             if (
                 !email ||
                 !password ||
-                !mobile
+                !mobile ||
+                !upi
             ) {
 
                 return res.json({
                     success: false,
                     message:
-                        "Email, mobile and password are required"
+                        "Email, mobile, password and UPI ID are required"
                 });
             }
 
@@ -478,7 +621,7 @@ router.post(
                             ?,?,
                             ?,?,
                             ?,?,
-                            ?,?,?,?,?,?,?
+                            ?,?,?,?,?,?
                         )
 
                     `;
@@ -766,12 +909,19 @@ router.get(
 
             (
                 SELECT IFNULL(
-                    SUM(grand_total),
+                    SUM(amount),
                     0
                 )
-                FROM orders
-                WHERE partner_id=?
-                AND status='Completed'
+                FROM wallet_transactions
+                WHERE user_type='partner'
+                AND user_id=?
+                AND DATE(created_at)=CURDATE()
+                AND type='Credit'
+                AND transaction_type IN (
+                    'Order Earning',
+                    'Order Earnings',
+                    'Order Payment'
+                )
             ) AS todayRevenue,
 
             (
@@ -785,7 +935,7 @@ router.get(
                 SELECT COUNT(*)
                 FROM orders
                 WHERE partner_id=?
-                AND status='Completed'
+                AND LOWER(status) IN ('delivered', 'completed')
             ) AS completedOrders
 
         `;
@@ -839,7 +989,10 @@ router.get(
             SELECT
                 id,
                 customer_name,
+                food_total,
+                commission_percent,
                 grand_total,
+                payment,
                 status
             FROM orders
             WHERE partner_id=?
@@ -872,6 +1025,15 @@ router.get(
 
                         customer_name:
                             order.customer_name,
+
+                        food_total:
+                            order.food_total,
+
+                        commission_percent:
+                            order.commission_percent,
+
+                        payment:
+                            order.payment,
 
                         total:
                             order.grand_total,

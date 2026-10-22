@@ -393,6 +393,8 @@ router.put("/delivered/:id", async (req, res) => {
                 delivery_partner_id,
                 customer_id,
                 delivery_fee,
+                delivery_rider_earning,
+                admin_delivery_fee,
                 status
              FROM orders
              WHERE id=?
@@ -421,7 +423,10 @@ router.put("/delivered/:id", async (req, res) => {
             order.delivery_partner_id;
 
         const amount =
-            Number(order.delivery_fee || 0);
+            Number(order.delivery_rider_earning == null
+                ? order.delivery_fee || 0
+                : order.delivery_rider_earning || 0);
+        const adminDeliveryShare = Number(order.admin_delivery_fee || 0);
 
         if (!deliveryId) {
 
@@ -512,6 +517,29 @@ router.put("/delivered/:id", async (req, res) => {
             ]
 
         );
+
+        if (adminDeliveryShare > 0) {
+            await connection.query(`
+                INSERT INTO wallets (user_type, user_id, balance)
+                VALUES ('admin', 1, 0)
+                ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)
+            `);
+            await connection.query(`
+                UPDATE wallets SET balance=balance+?
+                WHERE user_type='admin' AND user_id=1
+            `, [adminDeliveryShare]);
+            await connection.query(`
+                INSERT INTO wallet_transactions
+                    (user_type, user_id, order_id, amount, type, transaction_type)
+                VALUES ('admin', 1, ?, ?, 'Credit', 'Delivery Fee Share')
+            `, [orderId, adminDeliveryShare]);
+        }
+        await connection.query(`
+            UPDATE orders
+            SET delivery_wallet_credited=1,
+                admin_delivery_wallet_credited=?
+            WHERE id=?
+        `, [adminDeliveryShare > 0 ? 1 : 0, orderId]);
 
         // ======================================
         // SAVE TRANSACTION

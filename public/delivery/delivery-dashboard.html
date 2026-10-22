@@ -12,6 +12,9 @@
 
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -1250,6 +1253,71 @@ button{
    REACHED RESTAURANT
 ===================================== */
 
+.pickup-confirmation-page{position:fixed;inset:0;z-index:100000;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;background:#f3f6f7;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);}
+.pickup-confirmation-page .pickup-stage-card{width:100%;min-height:100%;box-sizing:border-box;justify-content:flex-start;gap:14px;padding:22px 18px 24px;border:0;border-radius:0;background:#f3f6f7;}
+.pickup-confirmation-page .pickup-stage-hero{min-height:252px;box-sizing:border-box;flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:24px 20px 26px;border-radius:0 0 24px 24px;margin:-22px -18px 2px;text-align:center;}
+.pickup-confirmation-page .pickup-stage-bag-image{display:block;width:112px;height:112px;flex:0 0 112px;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,55,37,.2));}.pickup-confirmation-page .pickup-stage-hero strong{font-size:23px;}
+.pickup-confirmation-page .pickup-stage-hero span{font-size:14px;}
+.pickup-confirmation-page .pickup-stage-order{padding:17px 18px;}
+.pickup-confirmation-page .pickup-stage-order strong{font-size:34px;}
+.pickup-confirmation-page .pickup-stage-items,.pickup-confirmation-page .pickup-stage-partner{padding:17px;border-radius:18px;}
+.pickup-confirmation-page .pickup-complete-button{margin-top:auto;min-height:56px;font-size:17px;}
+.pickup-stage-card{display:flex;flex-direction:column;gap:14px;padding:16px 14px 18px;background:#f6f8f8;border:1px solid #e8eeee;border-radius:20px;color:#17232e;}
+.pickup-stage-hero{display:flex;align-items:center;gap:12px;padding:15px;border-radius:16px;background:#139b5b;color:#fff;}
+.pickup-stage-hero-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.18);font-size:22px;}
+.pickup-stage-hero strong{display:block;font-size:18px;font-weight:850;line-height:1.2;}
+.pickup-stage-hero span{display:block;margin-top:5px;font-size:12px;line-height:1.35;opacity:.95;}
+.pickup-stage-order{padding:13px 14px;border-radius:14px;background:#fff;border:1px solid #e9edef;}
+.pickup-stage-order small{display:block;color:#74808d;font-size:12px;font-weight:700;}
+.pickup-stage-order strong{display:block;margin-top:2px;color:#111b29;font-size:28px;font-weight:900;letter-spacing:.01em;}
+.pickup-stage-waiting{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:14px;background:#fff7e6;color:#654914;font-size:13px;font-weight:750;line-height:1.35;}
+.pickup-stage-waiting i{flex:0 0 auto;color:#e59a00;font-size:20px;}
+.pickup-stage-confirmed{background:#e7f8ee;color:#17663c;}
+.pickup-stage-confirmed i{color:#16944e;}
+.pickup-stage-items,.pickup-stage-partner{padding:14px;border-radius:16px;background:#fff;border:1px solid #e9edef;}
+.pickup-stage-items>strong,.pickup-stage-partner>strong{display:block;margin-bottom:9px;font-size:15px;font-weight:850;color:#17232e;}
+.pickup-stage-items .new-order-items-list{display:grid;gap:0;}
+.pickup-stage-items .new-order-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #edf0f1;font-size:14px;}
+.pickup-stage-items .new-order-item:last-child{border-bottom:0;padding-bottom:0;}
+.pickup-stage-items .new-order-item-qty{min-width:34px;color:#657583;font-weight:750;}
+.pickup-stage-partner-name{font-size:16px;font-weight:850;color:#17232e;}
+.pickup-stage-partner-address{display:flex;gap:8px;margin-top:6px;color:#687889;font-size:13px;line-height:1.4;}
+.pickup-stage-partner-address i{flex:0 0 auto;margin-top:2px;color:#718091;}
+.pickup-complete-button{width:100%;min-height:52px;border:0;border-radius:14px;background:#f45113;color:#fff;font-size:16px;font-weight:850;box-shadow:0 5px 12px rgba(244,81,19,.16);}
+.pickup-complete-button:disabled{background:#d8dde1;color:#687782;box-shadow:none;cursor:not-allowed;}
+.pickup-stage-hint{text-align:center;margin-top:-7px;color:#718091;font-size:12px;}
+.customer-payment-page{position:fixed;inset:0;z-index:100001;display:none;flex-direction:column;overflow:hidden;background:#f4f6f7;color:#15232c;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);font-family:inherit;}
+.customer-payment-header{height:64px;flex:0 0 64px;display:flex;align-items:center;gap:14px;padding:0 18px;background:#005b57;color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.12);}
+.customer-payment-header button{width:38px;height:38px;border:0;border-radius:50%;background:transparent;color:#fff;font-size:20px;}
+.customer-payment-header strong{font-size:19px;font-weight:850;}.customer-payment-header small{display:block;font-size:11px;opacity:.82;}
+.customer-payment-scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px 16px 24px;}
+.customer-payment-inner{width:min(100%,480px);margin:0 auto;display:flex;flex-direction:column;gap:13px;}
+.customer-payment-title{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}.customer-payment-title h2{margin:0;font-size:22px;color:#17232e;}.customer-payment-title p{margin:4px 0 0;color:#718091;font-size:13px;}.customer-payment-order-id{white-space:nowrap;background:#e5f5f1;color:#006d62;padding:8px 11px;border-radius:20px;font-size:13px;font-weight:850;}
+.customer-payment-card{padding:14px;border:1px solid #e7ecee;border-radius:16px;background:#fff;box-shadow:0 2px 6px rgba(21,42,54,.04);}
+.customer-payment-card-title{display:block;margin-bottom:8px;font-weight:850;font-size:15px;}.customer-payment-customer{font-size:14px;font-weight:800;}.customer-payment-address{margin-top:4px;color:#687889;font-size:13px;line-height:1.4;}
+.customer-payment-items{display:grid;gap:7px;font-size:14px;}.customer-payment-item{display:flex;justify-content:space-between;gap:12px;}.customer-payment-item span:first-child{color:#536675;}
+.customer-razorpay-card{border-color:#ffe4bc;background:#fffaf1;text-align:center;}.customer-payment-qr-frame{display:grid;width:176px;height:176px;place-items:center;margin:8px auto;}.customer-payment-qr{display:block;box-sizing:border-box;width:176px;height:176px;object-fit:contain;padding:8px;border:1px solid #e8e8e8;border-radius:12px;background:#fff;}.customer-payment-qr-frame-provider{position:relative;overflow:hidden;border:1px solid #e8e8e8;border-radius:12px;background:#fff;}.customer-payment-qr-frame-isolated{background:#fff;}.customer-payment-qr-provider{position:absolute;left:0;top:0;width:100%;height:100%;max-width:none;object-fit:contain;transform:scale(2.6);transform-origin:center 55%;padding:0;border:0;border-radius:0;}.customer-payment-qr-frame-isolated .customer-payment-qr-provider{transform:none;}.customer-payment-qr-placeholder{width:176px;height:176px;margin:8px auto;display:grid;place-items:center;border:1px dashed #d5dde0;border-radius:12px;background:#fff;color:#718091;font-size:13px;}.customer-payment-amount{font-size:16px;font-weight:800;}.customer-payment-hint{margin:5px 0 10px;color:#718091;font-size:12px;}.customer-payment-status{min-height:20px;margin:7px 0;color:#ad6800;font-size:13px;font-weight:750;}
+.customer-payment-action{width:100%;min-height:46px;padding:10px 14px;border:0;border-radius:12px;background:#f45113;color:#fff;font-size:15px;font-weight:850;}.customer-payment-action:disabled{opacity:.55;}.customer-payment-secondary{background:#eaf6f4;color:#006d62;}
+.customer-payment-or{display:flex;align-items:center;gap:12px;color:#87939d;font-weight:800;font-size:13px;}.customer-payment-or:before,.customer-payment-or:after{content:"";height:1px;flex:1;background:#d8dfe2;}
+.customer-cash-row{display:flex;align-items:center;gap:11px;}.customer-cash-row input{width:22px;height:22px;accent-color:#f45113;}.customer-cash-copy{flex:1;}.customer-cash-copy strong{display:block;font-size:15px;}.customer-cash-copy span{display:block;margin-top:3px;color:#718091;font-size:13px;}
+.customer-payment-footer{flex:0 0 auto;padding:10px 16px calc(12px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #e8edef;}.customer-payment-footer .customer-payment-inner{gap:8px;}.customer-payment-footer-note{text-align:center;color:#718091;font-size:11px;}
+.customer-payment-page .customer-payment-error{color:#b42318;}
+.customer-otp-inner{padding-bottom:20px;}.customer-otp-payment-status{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:14px;background:#e8f7ef;color:#087346;font-size:14px;font-weight:800;}.customer-otp-payment-status i{font-size:19px;}.customer-otp-card{text-align:center;padding:24px 18px;}.customer-otp-lock{width:54px;height:54px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:#e9f7f2;color:#00786d;font-size:23px;}.customer-otp-card h3{margin:0;color:#17232e;font-size:19px;}.customer-otp-card p{margin:6px 0 18px;color:#718091;font-size:13px;}.customer-otp-input{width:min(100%,260px);height:60px;border:1.5px solid #cdd8dc;border-radius:14px;background:#fbfcfc;color:#17232e;text-align:center;font-size:28px;font-weight:850;letter-spacing:12px;padding-left:18px;outline:none;}.customer-otp-input:focus{border-color:#00877c;box-shadow:0 0 0 3px rgba(0,135,124,.12);}.customer-otp-card .customer-payment-status{min-height:20px;margin:12px 0 0;}
+.delivery-success-header{box-shadow:none;}
+.delivery-success-brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#fff;color:#005b57;font-size:24px;font-weight:900;}
+.delivery-success-content{width:min(100%,480px);flex:1;align-self:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow-y:auto;padding:28px 22px 32px;text-align:center;}
+.delivery-success-check{width:76px;height:76px;display:grid;place-items:center;border-radius:50%;background:#e3f7ee;color:#0c9b5a;font-size:34px;box-shadow:0 0 0 10px rgba(12,155,90,.06);}
+.delivery-success-eyebrow{margin:10px 0 0;color:#008176;font-size:12px;font-weight:850;letter-spacing:1.2px;}
+.delivery-success-content h1{margin:0;color:#142b2b;font-size:25px;line-height:1.2;font-weight:900;}
+.delivery-success-subtitle{max-width:300px;margin:0 0 8px;color:#6d7b86;font-size:14px;line-height:1.5;}
+.delivery-success-receipt{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 16px;border:1px solid #dcece7;border-radius:20px;background:#fff;box-shadow:0 7px 24px rgba(18,54,48,.07);}
+.delivery-success-receipt-label{color:#6c7c85;font-size:14px;font-weight:700;}
+.delivery-success-receipt>strong{color:#102b2a;font-size:38px;line-height:1.1;font-weight:900;}
+.delivery-success-method{display:flex;align-items:center;gap:7px;color:#087c64;font-size:13px;font-weight:800;}
+.delivery-success-earned{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-radius:15px;background:#eaf6f3;color:#405b5a;font-size:14px;font-weight:750;}
+.delivery-success-earned strong{color:#00685f;font-size:18px;font-weight:900;}
+.delivery-success-thanks{margin-top:4px;color:#7b8991;font-size:13px;}
+.delivery-success-done{min-height:52px;border-radius:14px;background:#00796f;}
 .reached-restaurant-btn{
 
     background:#fff4eb;
@@ -1799,6 +1867,141 @@ button{
 
 }
 
+/* DARVOZ rider home refresh */
+:root{
+    --darvoz-teal:#00545c;
+    --darvoz-teal-dark:#003f46;
+    --darvoz-mint:#e4f7ef;
+}
+body{background:#f2f7f6;color:#12232d;padding-bottom:92px;}
+.header{background:linear-gradient(115deg,var(--darvoz-teal),var(--darvoz-teal-dark));color:#fff;padding:14px 18px;border:0;box-shadow:0 8px 24px rgba(0,63,70,.16);}
+.menu-btn,.notification{color:#fff;}
+.logo-area h1{color:#fff;font-size:25px;letter-spacing:.4px;}
+.logo-area p{color:rgba(255,255,255,.76);font-weight:500;}
+.profile-circle{border:2px solid rgba(255,255,255,.65);}
+.wallet-header-btn{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2);}
+.container{max-width:760px;padding:16px 14px 22px;}
+.online-card{background:#fff;border:1px solid #e4eeeb;border-radius:24px;padding:17px 18px;margin-bottom:12px;box-shadow:0 8px 26px rgba(0,56,61,.07);}
+.online-title{font-size:17px;color:#142b35;}
+.online-subtitle{color:#73818a;}
+.online-dot.online{box-shadow:0 0 0 5px rgba(27,166,114,.12);}
+.switch{width:66px;height:38px;}
+.slider:before{width:30px;height:30px;}
+.switch input:checked + .slider{background:#078e7d;}
+.switch input:checked + .slider:before{transform:translateX(28px);}
+.online-controls{display:flex;align-items:center;gap:13px;}
+.search-state-pill{display:flex;align-items:center;gap:7px;padding:9px 13px;border-radius:18px;background:#f1f4f4;color:#73818a;font-size:13px;font-weight:800;white-space:nowrap;}
+.search-state-pill i{font-size:10px;}
+.search-state-pill.is-searching{background:#e4f7ef;color:#087853;}
+.search-state-pill.is-active{background:#e4f7ef;color:#087853;}
+.search-state-pill.is-searching i{animation:searchPulseIcon 1.2s linear infinite;}
+.search-state-pill.has-order{background:#fff1e8;color:#d94d00;}
+@keyframes searchPulseIcon{to{transform:rotate(360deg);}}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;background:#fff;border:1px solid #e4eeeb;border-radius:22px;padding:14px 6px;margin:14px 0;box-shadow:0 8px 26px rgba(0,56,61,.06);}
+.stat{border-right:1px solid #e5ecea;padding:5px 4px;text-align:center;}
+.stat:last-child{border-right:0;}
+.stat:nth-child(4){display:none;}
+.stat-icon{width:38px;height:38px;margin:0 auto 6px;background:#e5f6f0;color:var(--darvoz-teal);border-radius:13px;}
+.stat-value{font-size:20px;color:#12232d;}
+.stat-label{font-size:11px;color:#6e7b84;}
+.searching-card{display:none;position:relative;overflow:hidden;padding:0 0 20px;background:#fff;border:1px solid #e4eeeb;border-radius:24px;text-align:center;box-shadow:0 8px 26px rgba(0,56,61,.07);margin:0 0 16px;}
+.searching-map-stage{height:clamp(285px,42vh,430px);position:relative;overflow:hidden;background-color:#edf4f2;background-image:linear-gradient(24deg,transparent 43%,rgba(255,255,255,.95) 44%,rgba(255,255,255,.95) 47%,transparent 48%),linear-gradient(112deg,transparent 34%,rgba(255,255,255,.9) 35%,rgba(255,255,255,.9) 39%,transparent 40%),linear-gradient(162deg,transparent 58%,rgba(255,255,255,.92) 59%,rgba(255,255,255,.92) 62%,transparent 63%),linear-gradient(70deg,transparent 72%,rgba(255,255,255,.9) 73%,rgba(255,255,255,.9) 76%,transparent 77%),linear-gradient(135deg,#edf4f2,#f8fbfa);background-size:100% 100%;}
+#searchingMap{position:absolute;inset:0;width:100%;height:100%;}
+.searching-map-stage.map-unavailable #searchingMap{display:none;}
+.searching-map-stage:not(.map-ready) #searchingMap{opacity:0;}
+.search-map-pin{position:absolute;z-index:2;left:50%;top:50%;width:72px;height:72px;transform:translate(-50%,-50%);border:5px solid #fff;border-radius:50%;display:grid;place-items:center;background:var(--darvoz-teal);color:#fff;font-size:27px;box-shadow:0 7px 22px rgba(0,65,71,.25);pointer-events:none;}
+.search-map-pin:before,.search-map-pin:after{content:"";position:absolute;inset:-18px;border:2px solid rgba(0,137,126,.24);border-radius:50%;animation:searchPulse 2s ease-out infinite;}
+.search-map-pin:after{animation-delay:1s;}
+@keyframes searchPulse{0%{transform:scale(.72);opacity:.85;}100%{transform:scale(1.55);opacity:0;}}
+.search-map-label{position:absolute;z-index:3;top:16px;left:16px;padding:9px 13px;border-radius:24px;background:#e1f6eb;color:#087853;font-size:13px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+.search-map-label i{margin-right:6px;}
+.search-map-label.new-order-map-label{background:#fff1e8;color:#d94d00;}
+.searching-copy{padding:17px 14px 0;}
+.search-icon{display:none;}
+.searching-card h3{margin-top:0;color:#12232d;font-size:21px;}
+.searching-card p{color:#71808a;font-size:14px;}
+.spinner{display:none;}
+.new-order{position:relative;z-index:1100;display:none;background:#fff;border:1px solid #e4eeeb;border-radius:24px;padding:16px;margin-bottom:16px;box-shadow:0 8px 28px rgba(0,56,61,.1);}
+.new-order-header{margin-bottom:11px;}
+.new-order-title{font-size:17px;color:#087853;}
+.timer{padding:8px 12px;border-radius:18px;background:#e4f7ef;color:#087853;}
+.order-box{border-radius:18px;padding:0;background:#fff;}
+.location-row{gap:12px;margin-bottom:13px;}
+.location-name{font-size:18px;color:#142b35;}
+.location-label,.location-address{color:#71808a;}
+.order-info{background:#eaf8f2;border-radius:16px;grid-template-columns:1fr;margin-top:10px;padding:13px 15px;}
+.info-box:first-child{border:0;text-align:left;}
+.info-label{text-align:left;color:#47615c;}
+.info-value{text-align:left;color:#00545c;font-size:24px;}
+.info-box:nth-child(2){display:none;}
+.new-order-items{margin-top:12px;padding:13px 15px;border-radius:16px;background:#f4f7f8;color:#263943;}
+.new-order-items h4{font-size:14px;margin-bottom:8px;}
+.new-order-items-list{display:grid;gap:6px;font-size:14px;}
+.new-order-item{display:flex;gap:8px;}
+.new-order-item-qty{color:#64757e;min-width:32px;}
+.order-buttons{grid-template-columns:.8fr 1.3fr;gap:10px;margin-top:14px;}
+.reject-btn,.accept-btn{height:52px;border-radius:14px;}
+.accept-btn{background:var(--darvoz-teal);}
+.bottom-nav{height:76px;border-radius:22px 22px 0 0;box-shadow:0 -5px 22px rgba(0,55,63,.1);}
+.bottom-nav a.active{color:var(--darvoz-teal);}
+body.has-new-order:before{content:"";position:fixed;inset:0;z-index:1090;background:rgba(5,27,32,.34);backdrop-filter:blur(2px);}
+
+/* Full-screen map while the rider is online and waiting for an order. */
+body.delivery-searching-mode{min-height:100dvh;height:100dvh;overflow:hidden;padding:0;background:#e9f0ee;}
+body.delivery-searching-mode .header{position:fixed;top:0;left:0;right:0;z-index:1005;height:66px;padding:10px 18px;}
+body.delivery-searching-mode .container{position:static;width:auto;max-width:none;height:100dvh;padding:0;margin:0;}
+body.delivery-searching-mode .online-card{position:fixed;z-index:1004;top:76px;left:50%;transform:translateX(-50%);width:min(760px,calc(100% - 28px));margin:0;padding:15px 18px;border-radius:22px;background:rgba(255,255,255,.96);box-shadow:0 10px 30px rgba(0,44,51,.16);}
+body.delivery-searching-mode .stats{position:fixed;z-index:1003;left:50%;bottom:88px;transform:translateX(-50%);width:min(760px,calc(100% - 28px));margin:0;padding:10px 6px;border-radius:22px;background:rgba(255,255,255,.96);box-shadow:0 10px 30px rgba(0,44,51,.18);}
+body.delivery-searching-mode .stats .stat{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+body.delivery-searching-mode .stats .stat-icon{margin:0 auto 6px;}
+body.delivery-searching-mode .stats .stat-value,body.delivery-searching-mode .stats .stat-label{width:100%;text-align:center;}
+body.delivery-searching-mode .searching-card{display:block!important;position:fixed;z-index:1;inset:0;width:100%;height:100dvh;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden;}
+body.delivery-searching-mode .searching-map-stage{position:absolute;inset:0;width:100%;height:100%;background-color:#e9f0ee;}
+body.delivery-searching-mode #searchingMap{position:absolute;inset:0;width:100%;height:100%;}
+body.delivery-searching-mode .search-map-pin{top:50%;width:76px;height:76px;}
+body.delivery-searching-mode .search-map-label{top:190px;left:20px;}
+body.delivery-searching-mode .searching-copy{display:none;}
+body.delivery-searching-mode .searching-card h3{margin:0 0 7px;font-size:clamp(23px,4vw,30px);font-weight:900;line-height:1.2;color:#092b34;text-shadow:0 1px 1px rgba(255,255,255,.9);}
+body.delivery-searching-mode .searching-card p{margin:0;font-size:clamp(14px,2.5vw,18px);font-weight:700;line-height:1.4;color:#344f59;}
+body.delivery-searching-mode .bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:1002;}
+body.delivery-searching-mode.has-new-order .searching-card{display:block!important;}
+
+@media(max-width:600px){
+    body{padding-bottom:82px;}
+    .header{padding:12px 15px;}
+    .header-left{gap:10px;}
+    .logo-area h1{font-size:23px;line-height:24px;}
+    .logo-area p{font-size:11px;}
+    .header-right{gap:15px;}
+    .wallet-header-btn{height:38px;padding:0 10px;}
+    .wallet-header-btn span{display:none;}
+    .container{padding:12px 12px 18px;}
+    .online-card{padding:15px;border-radius:20px;}
+    .online-title{font-size:16px;}
+    .online-subtitle{font-size:12px;}
+    .online-controls{gap:8px;}
+    .search-state-pill{padding:8px 10px;font-size:11px;}
+    .searching-map-stage{height:clamp(300px,43vh,430px);}
+    .searching-copy{padding:18px 12px 0;}
+    .searching-card h3{font-size:20px;}
+    .new-order{position:fixed;left:0;right:0;bottom:0;z-index:1100;width:min(100%,640px);max-height:78vh;overflow:auto;margin:0 auto;padding:16px 16px max(18px,env(safe-area-inset-bottom));border-radius:26px 26px 0 0;box-shadow:0 -12px 42px rgba(0,35,40,.2);}
+    .new-order:before{content:"";display:block;width:42px;height:5px;margin:0 auto 14px;border-radius:10px;background:#c9d3d5;}
+    .new-order-title{font-size:16px;}
+    .order-box{padding:0;}
+    .location-name{font-size:17px;}
+    .new-order-items-list{font-size:13px;}
+    .order-buttons{position:sticky;bottom:0;background:#fff;padding-top:10px;}
+    .stats{margin:12px 0;padding:12px 3px;border-radius:18px;}
+    .stat{padding:4px 2px;}
+    .stat-icon{width:34px;height:34px;font-size:16px;}
+    .stat-value{font-size:18px;}
+    .stat-label{font-size:10px;}
+    body.delivery-searching-mode .header{height:62px;padding:9px 14px;}
+    body.delivery-searching-mode .online-card{top:70px;width:calc(100% - 24px);padding:13px 14px;border-radius:19px;}
+    body.delivery-searching-mode .stats{bottom:84px;width:calc(100% - 24px);padding:9px 3px;border-radius:18px;}
+    body.delivery-searching-mode .search-map-label{top:174px;left:14px;}
+}
+
 </style>
 
 </head>
@@ -1908,15 +2111,16 @@ button{
     </div>
 
 
-    <label class="switch">
-
-        <input
-            type="checkbox"
-            id="onlineToggle">
-
-        <span class="slider"></span>
-
-    </label>
+    <div class="online-controls">
+        <div class="search-state-pill" id="searchStatePill">
+            <i class="fa-solid fa-circle"></i>
+            <span>Offline</span>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="onlineToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
 
 </div>
 
@@ -2018,31 +2222,6 @@ button{
 
     <!-- DISTANCE -->
 
-    <div class="stat">
-
-        <div class="stat-icon">
-
-            <i class="fa-solid fa-route"></i>
-
-        </div>
-
-
-        <div
-            class="stat-value"
-            id="distance">
-
-            0 km
-
-        </div>
-
-
-        <div class="stat-label">
-
-            Distance
-
-        </div>
-
-    </div>
 
 </div>
 
@@ -2056,29 +2235,21 @@ button{
     class="searching-card"
     id="searchingCard">
 
-
-    <div class="search-icon">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
+    <div class="searching-map-stage" id="searchingMapStage">
+        <div id="searchingMap" aria-label="Map around your current location"></div>
+        <div class="search-map-label" id="searchMapLabel">
+            <i class="fa-solid fa-rotate fa-spin"></i>
+            <span>Searching...</span>
+        </div>
+        <div class="search-map-pin" aria-hidden="true">
+            <i class="fa-solid fa-motorcycle"></i>
+        </div>
     </div>
 
-
-    <h3 id="searchTitle">
-
-        Searching for orders...
-
-    </h3>
-
-
-    <p id="searchText">
-
-        Looking for nearby delivery orders
-
-    </p>
-
-
-    <div class="spinner"></div>
+    <div class="searching-copy">
+        <h3 id="searchTitle">Searching for Orders</h3>
+        <p id="searchText">We’ll notify you when a new order is available</p>
+    </div>
 
 </div>
 
@@ -2253,7 +2424,7 @@ button{
 
                 <div class="info-label">
 
-                    Delivery Fee
+                    Your Earning
 
                 </div>
 
@@ -2274,7 +2445,7 @@ button{
 
                 <div class="info-label">
 
-                    Order Total
+                    Delivery
 
                 </div>
 
@@ -2289,6 +2460,11 @@ button{
 
             </div>
 
+        </div>
+
+        <div class="new-order-items" id="newOrderItems">
+            <h4>Items</h4>
+            <div class="new-order-items-list" id="newOrderItemsList">Loading items…</div>
         </div>
 
 
@@ -3127,6 +3303,20 @@ button{
 <!-- =====================================
      SOCKET.IO
 ===================================== -->
+
+<template id="darvozNavigationTemplate">
+<div class="darvoz-nav-header"><strong id="darvozNavOrderId">Order ID: #--</strong></div>
+<div id="darvozGoogleMap" class="darvoz-google-map" aria-label="Live route map"></div>
+<section class="darvoz-next-turn" aria-live="polite"><span id="darvozTurnIcon" class="darvoz-turn-icon">↑</span><div class="darvoz-turn-details"><div id="darvozTurnInstruction" class="darvoz-turn-instruction">Finding your route…</div><div id="darvozTurnDistance" class="darvoz-turn-distance">Waiting for GPS</div><div id="darvozTurnThen" class="darvoz-turn-then" style="display:none"></div></div></section>
+<div class="darvoz-map-controls"><button type="button" id="darvozOverviewControl" class="darvoz-map-control" aria-label="Show route overview" onclick="showDarvozRouteOverview()"><i class="fa-solid fa-route"></i></button><button type="button" id="darvozVoiceControl" class="darvoz-map-control" aria-label="Mute voice guidance" onclick="toggleDarvozVoice()"><i class="fa-solid fa-volume-high"></i></button><button type="button" id="darvozLayerControl" class="darvoz-map-control" aria-label="Switch map layer" onclick="toggleDarvozMapLayer()"><i class="fa-solid fa-layer-group"></i></button><button type="button" class="darvoz-map-control" aria-label="Recenter and follow route" onclick="recenterDarvozNavigationMap()"><i class="fa-solid fa-location-crosshairs"></i></button></div>
+<section class="darvoz-nav-bottom"><div class="darvoz-nav-handle"></div><div class="darvoz-nav-ready"><div class="darvoz-nav-ready-icon"><i id="darvozNavReadyIcon" class="fa-solid fa-circle-check"></i></div><div class="darvoz-nav-ready-copy"><strong id="darvozNavReadyTitle">Ready for pickup!</strong><span id="darvozNavReadyText">Follow the route to the restaurant.</span></div></div>
+<div class="darvoz-nav-place-card"><div class="darvoz-nav-place-icon"><i id="darvozNavPlaceIcon" class="fa-solid fa-store"></i></div><div class="darvoz-nav-place-copy"><span id="darvozNavPlaceLabel">Pickup from</span><strong id="darvozNavDestination">Restaurant</strong><span id="darvozNavAddress" class="darvoz-nav-address"><i class="fa-solid fa-location-dot"></i><span>Address loading…</span></span></div><button type="button" id="darvozStartGuidance" class="darvoz-nav-route-button" onclick="startDarvozGuidance()"><i class="fa-solid fa-turn-up"></i><span>Route</span></button></div>
+<a id="darvozNavCall" class="darvoz-nav-call" href="#" style="display:none"><i class="fa-solid fa-phone"></i><span>Call Restaurant</span></a>
+<button type="button" id="darvozReachedRestaurant" class="darvoz-reached-btn darvoz-nav-reached-restaurant" style="display:none"><i class="fa-solid fa-location-dot"></i><span>Reached Restaurant</span></button>
+<button type="button" class="darvoz-guidance-exit" aria-label="Back to restaurant order" onclick="exitDarvozGuidance()"><i class="fa-solid fa-xmark"></i></button>
+<div class="darvoz-nav-summary darvoz-google-summary"><strong id="darvozNavTime">--</strong><span><span id="darvozNavDistance">--</span><span class="darvoz-google-summary-dot"> · </span><span id="darvozArrivalTime">Arrive --</span></span></div>
+<button id="darvozReachedCustomer" class="darvoz-reached-btn darvoz-reached-primary" style="display:none"><i class="fa-solid fa-location-dot"></i><span>Reached customer location</span></button>
+</section></template>
 
 <script src="/socket.io/socket.io.js"></script>
 

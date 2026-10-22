@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#06463f">
+  <title>DARVOZ | Partner Order</title>
+
+  <style>
+    :root {
+      --petrol: #06463f;
+      --petrol-dark: #003c35;
+      --green: #007a5e;
+      --mint: #e9f7f2;
+      --white: #fff;
+      --ink: #17211f;
+      --muted: #687571;
+      --line: #e5eeeb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #edf3f1;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .topbar {
+      background: linear-gradient(130deg, #087a68, var(--petrol-dark));
+      color: white;
+      padding: 22px 16px 66px;
+    }
+
+    .topbar-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .back {
+      color: white;
+      text-decoration: none;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #ffffff17;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .brandmark {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: white;
+      color: var(--petrol);
+      font-size: 29px;
+      font-weight: 900;
+    }
+
+    .brand {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(20px, 4vw, 27px);
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: #d6eee8;
+      font-size: 14px;
+    }
+
+    .new-badge {
+      white-space: nowrap;
+      border: 1px solid #17d69c;
+      color: #baffdf;
+      padding: 9px 12px;
+      border-radius: 30px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .page {
+      width: min(780px, 100%);
+      margin: -46px auto 0;
+      padding: 0 14px 28px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 24px;
+      padding: 21px;
+      box-shadow: 0 8px 30px #123b3010;
+      margin-bottom: 13px;
+    }
+
+    .order-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .eyebrow,
+    .order-date {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .eyebrow {
+      margin-bottom: 6px;
+    }
+
+    .order-number {
+      font-size: clamp(19px, 4.5vw, 27px);
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .order-date {
+      margin-top: 7px;
+    }
+
+    .timer {
+      background: var(--mint);
+      color: var(--petrol);
+      border-radius: 17px;
+      padding: 14px;
+      min-width: 130px;
+      text-align: center;
+    }
+
+    .timer strong {
+      display: block;
+      font-size: 23px;
+      margin-top: 4px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Each item gets its own card */
+
+    .items-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .item-card {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr) auto;
+      gap: 13px;
+      align-items: center;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .item-image,
+    .image-fallback {
+      width: 100px;
+      height: 100px;
+      border-radius: 13px;
+      background: #eaf1ef;
+      display: block;
+    }
+
+    .item-image {
+      object-fit: cover;
+    }
+
+    .image-fallback {
+      display: grid;
+      place-items: center;
+      background: var(--mint);
+      font-size: 35px;
+    }
+
+    .item-name {
+      font-size: 17px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .item-subtitle {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .item-price {
+      margin-top: 9px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .item-qty {
+      min-width: 85px;
+      background: var(--mint);
+      border-radius: 14px;
+      padding: 12px 9px;
+      text-align: center;
+      color: var(--petrol);
+    }
+
+    .item-qty strong {
+      display: block;
+      font-size: 20px;
+    }
+
+    .item-qty span {
+      display: block;
+      color: #425a53;
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 17px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--mint);
+    }
+
+    .total-label {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .total-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .total-amount {
+      color: var(--petrol);
+      font-size: clamp(25px, 5vw, 34px);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    /* Telugu voice controls */
+
+    .voice-panel {
+      background: #f7faf9;
+    }
+
+    .voice-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .speaker-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #e1f0eb;
+      color: var(--petrol);
+      display: grid;
+      place-items: center;
+      font-size: 25px;
+      flex-shrink: 0;
+    }
+
+    .voice-heading h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .voice-heading p {
+      color: var(--muted);
+      margin: 5px 0 0;
+      line-height: 1.45;
+      font-size: 13px;
+    }
+
+    .voice-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    .voice-btn {
+      min-height: 52px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 1.5px solid var(--petrol);
+      background: white;
+      color: var(--petrol);
+    }
+
+    .voice-btn.primary {
+      background: var(--petrol);
+      color: white;
+    }
+
+    .voice-btn:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .address-row {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .pin {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--mint);
+      font-size: 23px;
+    }
+
+    .address-title {
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .address-text {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .message-box {
+      display: none;
+      padding: 13px 14px;
+      border-radius: 12px;
+      margin: 0 0 13px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message-box.show {
+      display: block;
+    }
+
+    .message-box.error {
+      background: #fff0f0;
+      color: #a52e2e;
+    }
+
+    .message-box.success {
+      background: #e7f8ef;
+      color: #075b3f;
+    }
+
+    .accept-button {
+      width: 100%;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 0;
+      border-radius: 18px;
+      background: linear-gradient(100deg, #078468, var(--petrol-dark));
+      color: white;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .accept-button:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
+    .accept-button.accepted {
+    background: #dc2626;
+    color: #ffffff;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.accept-button.accepted .check {
+    border-color: #ffffff;
+}
+
+    .check {
+      width: 27px;
+      height: 27px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 35px 12px;
+      color: var(--muted);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 520px) {
+      .topbar {
+        padding: 16px 12px 62px;
+      }
+
+      .topbar-inner {
+        gap: 9px;
+      }
+
+      .brandmark {
+        width: 39px;
+        height: 39px;
+        font-size: 24px;
+      }
+
+      .brand p {
+        font-size: 12px;
+      }
+
+      .new-badge {
+        padding: 7px 8px;
+        font-size: 9px;
+      }
+
+      .page {
+        padding: 0 10px 20px;
+      }
+
+      .panel {
+        padding: 15px;
+        border-radius: 20px;
+      }
+
+      .order-meta {
+        align-items: flex-start;
+      }
+
+      .timer {
+        min-width: 88px;
+        padding: 10px 7px;
+        font-size: 11px;
+      }
+
+      .timer strong {
+        font-size: 19px;
+      }
+
+      .item-card {
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 10px;
+        padding: 9px;
+      }
+
+      .item-image,
+      .image-fallback {
+        width: 76px;
+        height: 76px;
+      }
+
+      .item-name {
+        font-size: 15px;
+      }
+
+      .item-subtitle {
+        font-size: 12px;
+      }
+
+      .item-price {
+        font-size: 13px;
+        margin-top: 6px;
+      }
+
+      .item-qty {
+        grid-column: 2;
+        justify-self: start;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        min-width: 0;
+      }
+
+      .item-qty strong {
+        font-size: 14px;
+      }
+
+      .item-qty span {
+        margin: 0;
+        font-size: 12px;
+      }
+
+      .total-row {
+        padding: 14px;
+      }
+
+      .voice-btn {
+        min-height: 49px;
+        font-size: 14px;
+      }
+
+      .accept-button {
+        min-height: 58px;
+        font-size: 16px;
+      }
+    }
+
+    
+  </style>
+<script src="/partner/beautiful-alerts.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="back" href="javascript:history.back()" aria-label="Go back">‹</a>
+      <div class="brandmark" aria-hidden="true">D</div>
+      <div class="brand">
+        <h1>DARVOZ</h1>
+        <p>Partner Order</p>
+      </div>
+      <span class="new-badge" id="orderBadge">NEW ORDER</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="panel order-meta">
+      <div>
+        <div class="eyebrow">Order #</div>
+        <div class="order-number" id="orderNumber">Loading...</div>
+        <div class="order-date" id="orderDate"></div>
+      </div>
+
+      <div class="timer">
+        <span>Order status</span>
+        <strong id="statusText">New</strong>
+      </div>
+    </section>
+
+    <div id="loading" class="panel loading">
+      Loading order details...
+    </div>
+
+    <div id="orderDetails" hidden>
+      <section class="panel">
+        <div class="section-heading">
+          <h2>Items (<span id="itemKinds">0</span>)</h2>
+          <span class="muted">
+            Total quantity: <strong id="totalQuantity">0</strong>
+          </span>
+        </div>
+
+        <div class="items-list" id="itemsList"></div>
+
+        <div class="total-row">
+          <div>
+            <div class="total-label">Your Earning</div>
+            <div class="total-note">After restaurant commission</div>
+          </div>
+          <div class="total-amount" id="orderTotal">₹0.00</div>
+        </div>
+      </section>
+
+      <section class="panel voice-panel">
+        <div class="voice-heading">
+          <div class="speaker-icon" aria-hidden="true">🔊</div>
+          <div>
+            <h2>తెలుగులో వినండి</h2>
+            <p id="voiceMessage">ఈ ఆర్డర్ వివరాలను తెలుగులో వినండి.</p>
+          </div>
+        </div>
+
+        <div class="voice-actions">
+          <button class="voice-btn primary" id="replayButton"
+                  type="button" onclick="playVoice()">🔊 Replay</button>
+          <button class="voice-btn" type="button"
+                  onclick="stopVoice()">■ Stop</button>
+        </div>
+      </section>
+
+      <section class="panel" id="addressPanel" hidden>
+        <div class="address-row">
+          <div class="pin" aria-hidden="true">📍</div>
+          <div>
+            <div class="address-title">Delivery Address</div>
+            <div class="address-text" id="deliveryAddress"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div id="messageBox" class="message-box"
+             role="status" aria-live="polite"></div>
+
+        <button id="acceptButton" class="accept-button"
+                type="button" onclick="acceptCurrentOrder()">
+          <span class="check">✓</span>
+          <span id="buttonText">Accept Order</span>
+        </button>
+      </section>
+    </div>
+  </main>
+  <script>
+const API = window.location.origin;
+const params = new URLSearchParams(window.location.search);
+const suppliedOrderId = params.get("id");
+
+let currentOrder = null;
+let currentItems = [];
+let currentDatabaseId = null;
+let isAccepting = false;
+let activeAudio = null;
+let voiceRequestId = 0;
+
+const $ = id => document.getElementById(id);
+
+function toDatabaseId(value) {
+  if (value == null) return null;
+
+  const str = String(value).trim();
+
+  if (/^ORD\d+$/i.test(str)) {
+    return String(parseInt(str.slice(3), 10));
+  }
+
+  return str;
+}
+
+function formatOrderId(order) {
+  const raw = order.order_id ?? order.orderId ??
+              order.id ?? suppliedOrderId;
+
+  const str = String(raw ?? "—");
+
+  if (/^ORD\d+$/i.test(str)) return str.toUpperCase();
+
+  if (/^\d+$/.test(str)) {
+    return "ORD" + str.padStart(5, "0");
+  }
+
+  return str;
+}
+
+function money(value) {
+  const number = Number(value);
+  return "₹" + (Number.isFinite(number) ? number : 0).toFixed(2);
+}
+
+function showMessage(message, type = "") {
+  const box = $("messageBox");
+  box.textContent = message;
+  box.className = "message-box show " + type;
+}
+
+function imageURL(path) {
+  if (!path) return "";
+
+  const value = String(path).trim();
+
+  if (/^https?:\/\//i.test(value) || value.startsWith("data:")) {
+    return value;
+  }
+
+  if (value.startsWith("/")) return API + value;
+
+  return API + "/" + value.replace(/^\.?\//, "");
+}
+
+function getProductImage(item) {
+  return item.image_url ||
+         item.product_image ||
+         item.image ||
+         item.imageUrl ||
+         item.productImage ||
+         item.photo ||
+         item.thumbnail ||
+         "";
+}
+
+function getProductName(item) {
+  return item.product_name ||
+         item.productName ||
+         item.name ||
+         item.item_name ||
+         item.title ||
+         "Product";
+}
+
+function getQuantity(item) {
+  const quantity = Number(item.qty ?? item.quantity ?? 1);
+
+  return Number.isFinite(quantity) && quantity > 0
+    ? quantity
+    : 1;
+}
+
+function getUnitPrice(item) {
+  return Number(
+    item.unit_price ??
+    item.price ??
+    item.product_price ??
+    item.amount ??
+    0
+  ) || 0;
+}
+
+function getItemTotal(item) {
+  const hasExplicitTotal =
+    item.item_total != null ||
+    item.line_total != null ||
+    item.subtotal != null;
+
+  if (hasExplicitTotal) {
+    const explicit = Number(
+      item.item_total ?? item.line_total ?? item.subtotal
+    );
+
+    if (Number.isFinite(explicit)) return explicit;
+  }
+
+  return getUnitPrice(item) * getQuantity(item);
+}
+
+function getTotal(order, items) {
+  const total =
+    order.grand_total ??
+    order.total_amount ??
+    order.total ??
+    order.total_price;
+
+  if (total != null && Number.isFinite(Number(total))) {
+    return Number(total);
+  }
+
+  return items.reduce((sum, item) => {
+    return sum + getItemTotal(item);
+  }, 0);
+}
+
+function getPartnerEarning(order, items) {
+  const foodTotalValue = order.food_total ?? order.foodTotal;
+  const foodTotal = foodTotalValue != null && Number.isFinite(Number(foodTotalValue))
+    ? Number(foodTotalValue)
+    : items.reduce((sum, item) => sum + getItemTotal(item), 0);
+  const commissionPercent = Number(order.commission_percent ?? order.commissionPercent ?? 0);
+  const commission = Number((foodTotal * commissionPercent / 100).toFixed(2));
+
+  return Number((foodTotal - commission).toFixed(2));
+}
+
+/* Build a separate product card for each ordered item. */
+function createItemCard(item, index) {
+  const card = document.createElement("article");
+  card.className = "item-card";
+
+  const imagePath = getProductImage(item);
+
+  if (imagePath) {
+    const img = document.createElement("img");
+
+    img.className = "item-image";
+    img.alt = getProductName(item);
+    img.loading = index > 1 ? "lazy" : "eager";
+    img.src = imageURL(imagePath);
+
+    img.onerror = () => {
+      const fallback = document.createElement("div");
+      fallback.className = "image-fallback";
+      fallback.textContent = "🛍️";
+      img.replaceWith(fallback);
+    };
+
+    card.appendChild(img);
+  } else {
+    const fallback = document.createElement("div");
+    fallback.className = "image-fallback";
+    fallback.textContent = "🛍️";
+    card.appendChild(fallback);
+  }
+
+  const details = document.createElement("div");
+
+  const name = document.createElement("div");
+  name.className = "item-name";
+  name.textContent = getProductName(item);
+  details.appendChild(name);
+
+  const subtitle = document.createElement("div");
+  subtitle.className = "item-subtitle";
+  subtitle.textContent =
+    item.variant_name || item.variant ||
+    item.description || "Order item";
+  details.appendChild(subtitle);
+
+  const price = document.createElement("div");
+  price.className = "item-price";
+  price.textContent = money(getUnitPrice(item)) + " each";
+  details.appendChild(price);
+
+  card.appendChild(details);
+
+  const quantity = document.createElement("div");
+  quantity.className = "item-qty";
+
+  const quantityValue = document.createElement("strong");
+  quantityValue.textContent =
+    String(getQuantity(item)) + (item.unit ? " " + item.unit : "");
+
+  const lineTotal = document.createElement("span");
+  lineTotal.textContent = money(getItemTotal(item));
+
+  quantity.append(quantityValue, lineTotal);
+  card.appendChild(quantity);
+
+  return card;
+}
+
+function updateAcceptButton(accepted) {
+    const button = $("acceptButton");
+    const symbol = button.querySelector(".check");
+
+    if (accepted) {
+        button.classList.add("accepted");
+        button.disabled = true;
+        symbol.textContent = "✕";
+        $("buttonText").textContent = "Already Accepted";
+    } else {
+        button.classList.remove("accepted");
+        button.disabled = false;
+        symbol.textContent = "✓";
+        $("buttonText").textContent = "Accept Order";
+    }
+}
+
+function renderOrder(order, items) {
+  currentOrder = order;
+  currentItems = Array.isArray(items) ? items : [];
+
+  currentDatabaseId = toDatabaseId(
+    order.id ?? order.order_id ?? suppliedOrderId
+  );
+
+  $("orderNumber").textContent = formatOrderId(order);
+
+  $("orderDate").textContent =
+    order.created_at || order.createdAt || order.order_date || "";
+
+  const status = String(order.status || "Pending");
+
+  const alreadyAccepted = /^(accepted|confirmed)$/i.test(status.trim());
+updateAcceptButton(alreadyAccepted);
+
+  $("orderBadge").textContent =
+    /pending|new/i.test(status) ? "NEW ORDER" : status.toUpperCase();
+
+  $("statusText").textContent =
+    /pending|new/i.test(status) ? "New" : status;
+
+  const list = $("itemsList");
+  list.replaceChildren();
+
+  if (currentItems.length) {
+    currentItems.forEach((item, index) => {
+      list.appendChild(createItemCard(item || {}, index));
+    });
+  } else {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent =
+      "Item details were not returned by the server.";
+    list.appendChild(empty);
+  }
+
+  $("itemKinds").textContent = currentItems.length;
+
+  $("totalQuantity").textContent = currentItems.reduce(
+    (sum, item) => sum + getQuantity(item),
+    0
+  );
+
+  $("orderTotal").textContent = money(getPartnerEarning(order, currentItems));
+
+  const address =
+    order.delivery_address ||
+    order.address ||
+    order.customer_address ||
+    order.shipping_address ||
+    "";
+
+  if (address) {
+    $("deliveryAddress").textContent =
+      typeof address === "string"
+        ? address
+        : [
+            address.name,
+            address.house_no,
+            address.street,
+            address.area,
+            address.city,
+            address.state,
+            address.pincode
+          ].filter(Boolean).join(", ");
+
+    $("addressPanel").hidden = false;
+  } else {
+    $("addressPanel").hidden = true;
+  }
+
+  $("loading").hidden = true;
+  $("orderDetails").hidden = false;
+  $("voiceMessage").textContent =
+    "ఈ ఆర్డర్ వివరాలను తెలుగులో వినండి.";
+}
+
+async function loadOrder() {
+  if (!suppliedOrderId) {
+    $("loading").textContent =
+      "Order ID is missing. Open this page with ?id=ORD00084.";
+    return;
+  }
+
+  const apiId = toDatabaseId(suppliedOrderId);
+
+  try {
+    const response = await fetch(
+      `${API}/partner-orders/order/${encodeURIComponent(apiId)}`,
+      {
+        headers: { Accept: "application/json" },
+        credentials: "same-origin"
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Unable to load order.");
+    }
+
+    const order =
+      data.order || data.data?.order || data.data;
+
+    const items =
+      data.items || data.order?.items || data.data?.items || [];
+
+    if (!order || typeof order !== "object") {
+      throw new Error("Order details were not returned by the server.");
+    }
+
+    renderOrder(order, items);
+  } catch (error) {
+    console.error("DARVOZ order load error:", error);
+
+    $("loading").textContent =
+      (error.message || "Unable to load order.") +
+      " Please check the order ID and backend API.";
+  }
+}
+
+/* Telugu-only announcement containing every item. */
+function buildTeluguAnnouncement() {
+    const products = currentItems.map(item => {
+        const name = getProductName(item);
+        const quantity = getQuantity(item);
+        return `${name}, quantity ${quantity}`;
+    });
+    const partnerEarning = getPartnerEarning(currentOrder, currentItems);
+    return `${products.join(". ")}. మీరు పొందే మొత్తం ${partnerEarning.toFixed(2)} రూపాయలు`;
+}
+
+async function playVoice() {
+  if (!currentOrder) return;
+
+  stopVoice();
+
+  const requestId = voiceRequestId;
+  const button = $("replayButton");
+
+  button.disabled = true;
+
+  $("voiceMessage").textContent =
+    "తెలుగు వాయిస్ సిద్ధమవుతోంది...";
+
+  try {
+    const response = await fetch(`${API}/api/tts/telugu`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+  orderId: currentDatabaseId,
+  total: getPartnerEarning(currentOrder, currentItems),
+  text: buildTeluguAnnouncement(),
+  items: currentItems.map(item => ({
+    product_name: getProductName(item),
+    quantity: getQuantity(item),
+    unit: item.unit || "",
+    price: getItemTotal(item)
+  }))
+})
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "తెలుగు వాయిస్ తయారు కాలేదు.");
+    }
+
+    if (requestId !== voiceRequestId) return;
+
+    const base64 =
+      data.audioContent ||
+      data.audio ||
+      data.audioBase64 ||
+      data.data?.audioContent;
+
+    if (!base64) {
+      throw new Error("సర్వర్ నుంచి ఆడియో రాలేదు. TTS API response చూడండి.");
+    }
+
+    activeAudio = new Audio(
+      `data:audio/mp3;base64,${base64}`
+    );
+
+    activeAudio.onended = () => {
+      if (requestId === voiceRequestId) {
+        $("voiceMessage").textContent =
+          "ప్రకటన పూర్తయింది. మళ్లీ వినడానికి Replay నొక్కండి.";
+      }
+    };
+
+    activeAudio.onerror = () => {
+      if (requestId === voiceRequestId) {
+        $("voiceMessage").textContent =
+          "ఆడియో ప్లే కాలేదు. Replay నొక్కండి.";
+      }
+    };
+
+    await activeAudio.play();
+
+    $("voiceMessage").textContent =
+      "ఆర్డర్ వివరాలు తెలుగులో వినిపిస్తున్నాయి...";
+  } catch (error) {
+    if (requestId === voiceRequestId) {
+      console.error("DARVOZ Telugu TTS error:", error);
+
+      $("voiceMessage").textContent =
+        "తెలుగు వాయిస్ ప్లే కాలేదు. Replay నొక్కి మళ్లీ ప్రయత్నించండి.";
+
+      showMessage(
+        error.message || "Unable to play Telugu voice.",
+        "error"
+      );
+    }
+  } finally {
+    if (requestId === voiceRequestId) {
+      button.disabled = false;
+    }
+  }
+}
+
+function stopVoice() {
+  voiceRequestId++;
+
+  if (activeAudio) {
+    activeAudio.pause();
+    activeAudio.currentTime = 0;
+    activeAudio.src = "";
+    activeAudio = null;
+  }
+
+  if ($("replayButton")) {
+    $("replayButton").disabled = false;
+  }
+}
+
+/* Keep the existing partner order-accept endpoint and payload. */
+async function acceptCurrentOrder() {
+  if (isAccepting || !currentOrder) return;
+
+  if (!currentDatabaseId || currentDatabaseId === "NaN") {
+    showMessage("The database order ID is missing.", "error");
+    return;
+  }
+
+  let partner;
+
+  try {
+    partner = JSON.parse(
+      localStorage.getItem("partner") || "null"
+    );
+  } catch {
+    partner = null;
+  }
+
+  const partnerId = partner?.id ?? partner?.partnerId;
+
+  if (!partnerId) {
+    showMessage(
+      "Partner login information was not found. Please log in again.",
+      "error"
+    );
+    return;
+  }
+
+  if (!confirm("Accept order " + formatOrderId(currentOrder) + "?")) {
+    return;
+  }
+
+  isAccepting = true;
+  $("acceptButton").disabled = true;
+  $("buttonText").textContent = "Accepting order...";
+
+  try {
+    const response = await fetch(
+      `${API}/partner-orders/partner-accept/${encodeURIComponent(currentDatabaseId)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          partnerId: Number(partnerId)
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Unable to accept this order."
+      );
+    }
+
+    stopVoice();
+
+    showMessage("Order accepted successfully!", "success");
+
+$("orderBadge").textContent = "ACCEPTED";
+$("statusText").textContent = "Accepted";
+updateAcceptButton(true);
+
+    // Payment, wallet, and delivery logic remain untouched.
+  } catch (error) {
+    console.error("DARVOZ accept order error:", error);
+
+    showMessage(
+      error.message || "Server error while accepting order.",
+      "error"
+    );
+
+    $("buttonText").textContent = "Accept Order";
+  } finally {
+    isAccepting = false;
+
+    $("acceptButton").disabled =
+    $("acceptButton").classList.contains("accepted");
+
+  }
+}
+
+window.addEventListener("pagehide", stopVoice);
+loadOrder();
+</script>
+
+</body>
+</html>

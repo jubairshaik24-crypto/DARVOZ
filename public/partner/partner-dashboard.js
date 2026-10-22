@@ -4,6 +4,18 @@
 
 const API = window.location.origin;
 
+function getPartnerOrderEarning(order) {
+    const foodTotal = Number(order?.food_total);
+    const commissionPercent = Number(order?.commission_percent);
+
+    if (!Number.isFinite(foodTotal) || !Number.isFinite(commissionPercent)) {
+        return 0;
+    }
+
+    const commission = Number((foodTotal * commissionPercent / 100).toFixed(2));
+    return Number((foodTotal - commission).toFixed(2));
+}
+
 
 // =====================================================
 // CHECK LOGIN
@@ -755,10 +767,26 @@ async function loadOrders() {
             }
 
 
+            if (
+                method === "UPI" ||
+                method === "RAZORPAY" ||
+                method === "ONLINE" ||
+                method === "ONLINE PAYMENT"
+            ){
+
+                return {
+                    text:"UPI Payment",
+                    icon:"fa-credit-card",
+                    className:"upi"
+                };
+
+            }
+
+
             return {
-                text:"UPI Payment",
-                icon:"fa-credit-card",
-                className:"upi"
+                text:"Payment method unavailable",
+                icon:"fa-circle-question",
+                className:""
             };
 
         }
@@ -861,12 +889,7 @@ async function loadOrders() {
                     "";
 
 
-                const amount =
-                    Number(
-                        order.total ||
-                        order.grand_total ||
-                        0
-                    );
+                const amount = getPartnerOrderEarning(order);
 
 
                 const status =
@@ -926,7 +949,7 @@ async function loadOrders() {
 
                             <span class="total">
 
-                                ₹${amount.toFixed(2)}
+                                Your earning: ₹${amount.toFixed(2)}
 
                             </span>
 
@@ -1035,6 +1058,46 @@ async function loadOrders() {
 
 let currentPopupOrder = null;
 
+async function speakPartnerNewOrder(order) {
+    const orderId = order.orderId || order.id;
+    const items = (order.items || order.order_items || []).map(item => {
+        const name = item.product_name || item.name || item.title || "Product";
+        const quantity = Number(item.quantity || item.qty || 1);
+        return `${name}, quantity ${quantity}`;
+    });
+    const earning = getPartnerOrderEarning(order);
+
+    try {
+        const response = await fetch("/api/tts/telugu", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                orderId,
+                total: earning,
+                text: `${items.join(". ")}. మీరు పొందే మొత్తం ${earning.toFixed(2)} రూపాయలు.`
+            })
+        });
+
+        if (!response.ok) throw new Error("Telugu voice request failed");
+
+        const data = await response.json();
+        if (!data.success || !data.audioContent) {
+            throw new Error("No Telugu audio received");
+        }
+
+        const audio = new Audio("data:audio/mpeg;base64," + data.audioContent);
+        const playbackFinished = new Promise(resolve => {
+            audio.addEventListener("ended", resolve, { once: true });
+            audio.addEventListener("error", resolve, { once: true });
+        });
+
+        await audio.play();
+        await playbackFinished;
+    } catch (error) {
+        console.error("Partner new-order voice:", error.message);
+    }
+}
+
 
 socket.on(
     "newOrder",
@@ -1079,9 +1142,7 @@ socket.on(
 
         const amount =
             Number(
-                order.grand_total ||
-                order.total ||
-                0
+                getPartnerOrderEarning(order)
             );
 
 
@@ -1171,23 +1232,14 @@ socket.on(
             );
 
 
-        if (sound) {
+        speakPartnerNewOrder(order).finally(() => {
+            if (!sound) return;
 
             sound.currentTime = 0;
-
-            sound.play()
-                .catch(
-                    (error) => {
-
-                        console.log(
-                            "Audio blocked:",
-                            error
-                        );
-
-                    }
-                );
-
-        }
+            sound.play().catch(error => {
+                console.log("Audio blocked:", error);
+            });
+        });
 
 
         // -----------------------------------------
@@ -1231,7 +1283,7 @@ socket.on(
                     {
 
                         body:
-                            `${customerName} placed an order • ₹${amount.toFixed(2)}`,
+                            `${customerName} placed an order • Your earning: ₹${amount.toFixed(2)}`,
 
                         icon:
                             "/icons/icon-192.png"

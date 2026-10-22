@@ -1111,6 +1111,7 @@ header{
 
 </style>
 
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -1366,29 +1367,84 @@ async function enableOrderSound() {
     }
 }
 
-async function showNewOrderAlert(order) {
-
-    // 🔊 Play ringing sound
-if (soundEnabled) {
+async function speakTeluguNewOrder(order) {
     try {
-        for (let i = 0; i < 3; i++) {
-            newOrderSound.currentTime = 0;
+        const items = (order.items || order.order_items || []).map(item => ({
+            name: item.product_name || item.name || item.title || "Product",
+            quantity: Number(item.quantity || item.qty || 1)
+        }));
 
-            await newOrderSound.play();
+        const response = await fetch("/api/tts/telugu", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                orderId: order.id,
+                total: getPartnerOrderEarning(order),
+                text: `కొత్త ఆర్డర్ వచ్చింది. ఆర్డర్ నంబర్ ${order.id}. ${items.map(item => `${item.name}, quantity ${item.quantity}`).join(". ")}. మీకు వచ్చే ఆదాయం ${Math.round(getPartnerOrderEarning(order))} రూపాయలు.`,
+                items
+            })
+        });
 
-            await new Promise(resolve => {
-                newOrderSound.onended = resolve;
-            });
+        if (!response.ok) {
+            throw new Error("Telugu voice request failed");
         }
 
-        console.log("🔊 DARVOZ ORDER RING PLAYED 3 TIMES");
+        const data = await response.json();
 
+        if (!data.success || !data.audioContent) {
+            throw new Error("No Telugu audio received");
+        }
+
+        const audio = new Audio(
+            "data:audio/mpeg;base64," + data.audioContent
+        );
+
+        await audio.play();
     } catch (error) {
-        console.warn("⚠️ Sound playback failed:", error);
+        console.error("DARVOZ Telugu voice:", error.message);
     }
-} else {
-    console.warn("⚠️ ORDER SOUND IS OFF");
 }
+
+function getPartnerOrderEarning(order) {
+    const foodTotal = Number(order?.food_total);
+    const commissionPercent = Number(order?.commission_percent);
+
+    if (!Number.isFinite(foodTotal) || !Number.isFinite(commissionPercent)) {
+        return 0;
+    }
+
+    const commission = Number((foodTotal * commissionPercent / 100).toFixed(2));
+    return Number((foodTotal - commission).toFixed(2));
+}
+
+
+
+async function showNewOrderAlert(order) {
+    // 🔊 Telugu voice + ringing sound
+    if (soundEnabled) {
+        await speakTeluguNewOrder(order);
+
+        try {
+            for (let i = 0; i < 3; i++) {
+                newOrderSound.currentTime = 0;
+                await newOrderSound.play();
+
+                await new Promise(resolve => {
+                    newOrderSound.onended = resolve;
+                });
+            }
+
+            console.log("🔊 DARVOZ ORDER RING PLAYED 3 TIMES");
+        } catch (error) {
+            console.warn("⚠️ Sound playback failed:", error);
+        }
+    } else {
+        console.warn("⚠️ ORDER SOUND IS OFF");
+    }
+
+    // Keep your existing browser/mobile notification code below
 
     // 🔔 Browser / mobile notification
     if ("Notification" in window) {
@@ -1413,7 +1469,7 @@ if (soundEnabled) {
                         body:
                             `New Order #${order.id}\n` +
                             `Customer: ${order.customer_name || "-"}\n` +
-                            `Total: ₹${order.grand_total || 0}`,
+                            `Your earning: ₹${getPartnerOrderEarning(order).toFixed(2)}`,
 
                         icon:
                             "/partner/icons/partner-notification.png",
@@ -1516,13 +1572,17 @@ socket.on(
 
         }
 
-        if (
-            data.status ===
-            "Picked Up"
-        ) {
+        const updatedStatus = String(data.status || "")
+            .trim()
+            .toLowerCase()
+            .replace(/[\s_-]+/g, "");
 
+        // The delivery completion endpoint emits "Delivered" after the
+        // rider submits the OTP. Refresh the partner list for both pickup
+        // and final delivery transitions so completed orders leave their
+        // previous tab immediately.
+        if (["pickedup", "delivered", "completed"].includes(updatedStatus)) {
             loadOrders();
-
         }
 
     }
@@ -1927,6 +1987,11 @@ function renderOrderSection(
 
 }
 
+window.openPartnerOrder = function(orderId) {
+    window.location.href =
+        `partner-order.html?id=${encodeURIComponent(orderId)}`;
+};
+
 function renderOrderCard(order,type){
 
     const orderId =
@@ -1949,10 +2014,7 @@ function renderOrderCard(order,type){
         order.address || "-";
 
 
-    const total =
-        Number(
-            order.grand_total || 0
-        );
+    const total = getPartnerOrderEarning(order);
 
 
     const status =
@@ -2176,13 +2238,14 @@ const itemsButton = `
     <button
         type="button"
         class="view-items-btn"
-        onclick="toggleOrderItems(event, ${orderId})"
+        onclick="openPartnerOrder(${orderId})"
         data-items-order-id="${orderId}"
     >
         👀 View Items
     </button>
 
 `;
+
     return `
 
         <div class="card ${cardClass}">
@@ -2277,7 +2340,7 @@ const itemsButton = `
             <div class="order-total">
 
                 <label>
-                    Order Total
+             Your Earning
                 </label>
 
                 <strong>

@@ -1,6 +1,88 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const crypto = require("crypto");
+const Razorpay = require("razorpay");
+const QRCode = require("qrcode");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { sendWhatsAppOTP } = require("../services/whatsappService");
+
+const codRazorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+const deliveryPasswordOtps = new Map();
+const deliveryPasswordResetTokens = new Map();
+
+const DELIVERY_GEOFENCE_RADIUS_METERS = Math.max(
+    30,
+    Math.min(500, Number(process.env.DELIVERY_GEOFENCE_RADIUS_METERS || 150))
+);
+const DELIVERY_MAX_GPS_ACCURACY_METERS = 100;
+const DELIVERY_MAX_GPS_AGE_MS = 30 * 1000;
+
+function requireDeliveryAuth(req, res, next) {
+    const bearer = String(req.headers.authorization || "").match(/^Bearer\s+(.+)$/i);
+    if (!bearer || !process.env.JWT_SECRET) {
+        return res.status(401).json({ success: false, message: "Please sign in again to continue." });
+    }
+    try {
+        const payload = jwt.verify(bearer[1], process.env.JWT_SECRET);
+        const deliveryId = Number(payload?.sub);
+        if (payload?.role !== "delivery_partner" || !Number.isInteger(deliveryId) || deliveryId <= 0) {
+            return res.status(401).json({ success: false, message: "Your delivery session is invalid. Please sign in again." });
+        }
+        const requestedId = req.body?.deliveryId;
+        if (requestedId != null && Number(requestedId) !== deliveryId) {
+            return res.status(403).json({ success: false, message: "This action belongs to another rider." });
+        }
+        req.deliveryPartnerId = deliveryId;
+        req.body = { ...(req.body || {}), deliveryId };
+        next();
+    } catch (error) {
+        return res.status(401).json({ success: false, message: "Your delivery session expired. Please sign in again." });
+    }
+}
+
+function validateArrivalGps({ latitude, longitude, accuracy, timestamp }) {
+    const lat = Number(latitude);
+    const lng = Number(longitude);
+    const gpsAccuracy = Number(accuracy);
+    const gpsTimestamp = Number(timestamp);
+    if (!Number.isFinite(lat) || lat < -90 || lat > 90 || !Number.isFinite(lng) || lng < -180 || lng > 180) {
+        return { valid: false, message: "We could not read your GPS position. Refresh your location and try again." };
+    }
+    if (!Number.isFinite(gpsAccuracy) || gpsAccuracy <= 0 || gpsAccuracy > DELIVERY_MAX_GPS_ACCURACY_METERS) {
+        return { valid: false, message: "Your GPS accuracy is too weak. Move to an open area and wait for a more accurate location." };
+    }
+    const age = Date.now() - gpsTimestamp;
+    if (!Number.isFinite(gpsTimestamp) || age > DELIVERY_MAX_GPS_AGE_MS || age < -10000) {
+        return { valid: false, message: "Your GPS location is out of date. Refresh your location and try again." };
+    }
+    return { valid: true, latitude: lat, longitude: lng };
+}
+
+router.get("/maps-config", (req, res) => {
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+    if (!apiKey) return res.status(503).json({ success: false, message: "Map service is not configured." });
+    res.set("Cache-Control", "no-store");
+    return res.json({ success: true, apiKey });
+});
+
+function normalizeDeliveryPhone(phone) {
+    let normalized = String(phone || "").replace(/\D/g, "");
+    if (normalized.startsWith("91") && normalized.length === 12) {
+        normalized = normalized.slice(2);
+    }
+    return normalized;
+}
+
+function readDeliveryPasswordRequest(req) {
+    const mobile = normalizeDeliveryPhone(req.body?.mobile);
+    return { mobile, valid: /^\d{10}$/.test(mobile) };
+}
 
 const multer = require("multer");
 const path = require("path");
@@ -427,6 +509,114 @@ router.post(
 // DELIVERY PARTNER LOGIN
 // =======================================
 
+router.post("/password/send-otp", async (req, res) => {
+    const request = readDeliveryPasswordRequest(req);
+    if (!request.valid) {
+        return res.status(400).json({ success: false, message: "Enter your registered 10-digit mobile number." });
+    }
+
+    try {
+        const [partners] = await db.promise().query(
+            "SELECT id, mobile FROM delivery_partners WHERE mobile=? LIMIT 1",
+            [request.mobile]
+        );
+        const partner = partners[0];
+        if (!partner || normalizeDeliveryPhone(partner.mobile) !== request.mobile) {
+            return res.status(400).json({ success: false, message: "No delivery account matches that mobile number." });
+        }
+
+        const now = Date.now();
+        const existing = deliveryPasswordOtps.get(request.mobile);
+        if (existing && now - existing.sentAt < 60_000) {
+            return res.status(429).json({ success: false, message: "Please wait one minute before requesting another OTP." });
+        }
+
+        const otp = crypto.randomInt(100000, 1000000).toString();
+        deliveryPasswordOtps.set(request.mobile, {
+            partnerId: partner.id,
+            mobile: request.mobile,
+            otp,
+            sentAt: now,
+            expiresAt: now + 5 * 60_000,
+            attempts: 0
+        });
+
+        const result = await sendWhatsAppOTP(request.mobile, otp);
+        if (!result.success) {
+            deliveryPasswordOtps.delete(request.mobile);
+            console.error("Delivery password reset WhatsApp OTP delivery failed.");
+            return res.status(502).json({ success: false, message: "Could not send the WhatsApp OTP. Please try again." });
+        }
+        return res.json({ success: true, message: "OTP sent to your registered WhatsApp number." });
+    } catch (error) {
+        console.error("DELIVERY PASSWORD OTP SEND ERROR:", error.message);
+        return res.status(500).json({ success: false, message: "Unable to send the password reset OTP." });
+    }
+});
+
+router.post("/password/verify-otp", (req, res) => {
+    const request = readDeliveryPasswordRequest(req);
+    const otp = String(req.body?.otp || "").trim();
+    if (!request.valid || !/^\d{6}$/.test(otp)) {
+        return res.status(400).json({ success: false, message: "Enter the six-digit OTP." });
+    }
+
+    const saved = deliveryPasswordOtps.get(request.mobile);
+    if (!saved) {
+        return res.status(400).json({ success: false, message: "Request a new OTP first." });
+    }
+    if (Date.now() > saved.expiresAt) {
+        deliveryPasswordOtps.delete(request.mobile);
+        return res.status(400).json({ success: false, message: "OTP expired. Request a new one." });
+    }
+    if (saved.otp !== otp) {
+        saved.attempts += 1;
+        if (saved.attempts >= 5) deliveryPasswordOtps.delete(request.mobile);
+        return res.status(400).json({ success: false, message: saved.attempts >= 5 ? "Too many attempts. Request a new OTP." : "That OTP is incorrect." });
+    }
+
+    deliveryPasswordOtps.delete(request.mobile);
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    deliveryPasswordResetTokens.set(resetToken, {
+        partnerId: saved.partnerId,
+        mobile: request.mobile,
+        expiresAt: Date.now() + 5 * 60_000
+    });
+    return res.json({ success: true, resetToken, message: "Mobile verified. You can now set a new password." });
+});
+
+router.post("/password/reset", async (req, res) => {
+    const request = readDeliveryPasswordRequest(req);
+    const resetToken = String(req.body?.resetToken || "");
+    const password = String(req.body?.password || "");
+    const tokenData = deliveryPasswordResetTokens.get(resetToken);
+
+    if (!request.valid || !tokenData || tokenData.mobile !== request.mobile || Date.now() > tokenData.expiresAt) {
+        if (resetToken) deliveryPasswordResetTokens.delete(resetToken);
+        return res.status(400).json({ success: false, message: "Verify your mobile number again before changing the password." });
+    }
+    if (password.length < 8 || password.length > 128) {
+        return res.status(400).json({ success: false, message: "Password must be between 8 and 128 characters." });
+    }
+
+    try {
+        const hash = await bcrypt.hash(password, 10);
+        const [result] = await db.promise().query(
+            "UPDATE delivery_partners SET password=? WHERE id=? AND mobile=?",
+            [hash, tokenData.partnerId, request.mobile]
+        );
+        if (result.affectedRows !== 1) {
+            deliveryPasswordResetTokens.delete(resetToken);
+            return res.status(400).json({ success: false, message: "Delivery account not found. Verify your mobile again." });
+        }
+        deliveryPasswordResetTokens.delete(resetToken);
+        return res.json({ success: true, message: "Password changed successfully." });
+    } catch (error) {
+        console.error("DELIVERY PASSWORD RESET ERROR:", error.message);
+        return res.status(500).json({ success: false, message: "Unable to change the password right now." });
+    }
+});
+
 router.post(
     "/login",
     (req, res) => {
@@ -511,10 +701,13 @@ router.post(
                 // PASSWORD
                 // ===================================
 
-                if (
-                    partner.password !==
-                    password
-                ) {
+                const storedPassword = String(partner.password || "");
+                const isBcryptPassword = /^\$2[aby]\$/.test(storedPassword);
+                const passwordMatches = isBcryptPassword
+                    ? bcrypt.compareSync(password, storedPassword)
+                    : storedPassword === password;
+
+                if (!passwordMatches) {
 
                     return res.json({
 
@@ -570,9 +763,16 @@ router.post(
                 // SUCCESS
                 // ===================================
 
+                if (!process.env.JWT_SECRET) {
+                    return res.status(503).json({ success: false, message: "Secure delivery sign-in is not configured. Contact support." });
+                }
+                const token = jwt.sign({ sub: String(partner.id), role: "delivery_partner" }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
                 return res.json({
 
                     success: true,
+
+                    token,
 
                     partner: {
 
@@ -1592,12 +1792,21 @@ router.get(
 
                 r.latitude AS restaurant_lat,
 
-                r.longitude AS restaurant_lng
+                r.longitude AS restaurant_lng,
+
+                c.method AS cod_collected_method,
+
+                c.collected_at AS cod_collected_at,
+
+                c.amount AS cod_collected_amount
 
              FROM orders o
 
              LEFT JOIN restaurants r
                 ON r.id = o.partner_id
+
+             LEFT JOIN delivery_cod_collections c
+                ON c.order_id = o.id AND c.status='collected'
 
              WHERE
                 o.delivery_partner_id=?
@@ -2310,7 +2519,7 @@ router.put(
                         success: false,
 
                         message:
-                            `You are ${Math.round(distance)} meters away from the restaurant. Please move closer.`,
+                            `You are ${distance >= 1000 ? `${(distance / 1000).toFixed(1)} km` : `${Math.round(distance)} m`} from the restaurant. Please move closer to within ${allowedDistance} m to mark arrival.`,
 
                         distance:
                             Math.round(distance)
@@ -2513,7 +2722,9 @@ router.put(
         const {
             deliveryId,
             latitude,
-            longitude
+            longitude,
+            customerLatitude,
+            customerLongitude
         } = req.body;
 
 
@@ -2590,7 +2801,7 @@ router.put(
                 deliveryId
             ],
 
-            (err, result) => {
+            async (err, result) => {
 
                 if (err) {
 
@@ -2667,27 +2878,53 @@ router.put(
                 // CUSTOMER GPS
                 // ===================================
 
-                const customerLat =
-                    order.customer_lat;
+                const validCoordinatePair = (lat, lng) =>
+                    lat !== null && lat !== undefined && lat !== "" &&
+                    lng !== null && lng !== undefined && lng !== "" &&
+                    Number.isFinite(Number(lat)) && Number.isFinite(Number(lng)) &&
+                    Number(lat) >= -90 && Number(lat) <= 90 &&
+                    Number(lng) >= -180 && Number(lng) <= 180;
 
-                const customerLng =
-                    order.customer_lng;
+                let customerLat = order.customer_lat;
+                let customerLng = order.customer_lng;
 
+                if (!validCoordinatePair(customerLat, customerLng) && validCoordinatePair(customerLatitude, customerLongitude)) {
+                    customerLat = Number(customerLatitude);
+                    customerLng = Number(customerLongitude);
+                    await db.promise().query(
+                        `UPDATE orders SET customer_lat=?, customer_lng=? WHERE id=? AND delivery_partner_id=?`,
+                        [customerLat, customerLng, orderId, deliveryId]
+                    );
+                }
 
-                if (
-                    customerLat == null ||
-                    customerLng == null
-                ) {
-
-                    return res.json({
-
-                        success: false,
-
-                        message:
-                            "Customer GPS location is not available."
-
-                    });
-
+                if (!validCoordinatePair(customerLat, customerLng)) {
+                    const mapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+                    const rawCustomerAddress = String(order.address || order.customer_address || order.delivery_address || order.full_address || "").trim();
+                    const customerAddress = /\b(India|भारत)\b/i.test(rawCustomerAddress)
+                        ? rawCustomerAddress
+                        : `${rawCustomerAddress}, India`;
+                    if (!mapsApiKey || !rawCustomerAddress) {
+                        return res.json({ success: false, message: "Customer address or map service is not available." });
+                    }
+                    try {
+                        const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(customerAddress)}&key=${encodeURIComponent(mapsApiKey)}`;
+                        const geocodeResponse = await fetch(geocodeUrl);
+                        const geocodeData = await geocodeResponse.json();
+                        const point = geocodeData.status === "OK" ? geocodeData.results?.[0]?.geometry?.location : null;
+                        if (!geocodeResponse.ok || !point || !Number.isFinite(Number(point.lat)) || !Number.isFinite(Number(point.lng))) {
+                            console.error("CUSTOMER ADDRESS GEOCODE FAILED:", geocodeData.status, customerAddress);
+                            return res.json({ success: false, message: "Could not locate the customer address on the map." });
+                        }
+                        customerLat = Number(point.lat);
+                        customerLng = Number(point.lng);
+                        await db.promise().query(
+                            `UPDATE orders SET customer_lat=?, customer_lng=? WHERE id=? AND delivery_partner_id=?`,
+                            [customerLat, customerLng, orderId, deliveryId]
+                        );
+                    } catch (geocodeError) {
+                        console.error("CUSTOMER ADDRESS GEOCODE ERROR:", geocodeError);
+                        return res.json({ success: false, message: "Unable to locate the customer address right now." });
+                    }
                 }
 
 
@@ -2738,7 +2975,7 @@ router.put(
                         success: false,
 
                         message:
-                            `You are ${Math.round(distance)} meters away from the customer. Please move closer.`,
+                            `You are ${distance >= 1000 ? `${(distance / 1000).toFixed(1)} km` : `${Math.round(distance)} m`} from the customer. Move closer to mark arrival.`,
 
                         distance:
                             Math.round(distance)
@@ -3185,6 +3422,438 @@ router.put(
 );
 
 // =======================================
+// CREATE THE ORDER-SPECIFIC RAZORPAY UPI QR
+// =======================================
+router.post("/create-cod-payment/:orderId", async (req, res) => {
+    const orderId = Number(req.params.orderId);
+    const deliveryId = Number(req.body?.deliveryId);
+    let connection;
+    if (!Number.isInteger(orderId) || orderId <= 0 || !Number.isInteger(deliveryId) || deliveryId <= 0) {
+        return res.status(400).json({ success: false, message: "A valid order and rider are required." });
+    }
+    try {
+        connection = await db.promise().getConnection();
+        await connection.beginTransaction();
+        const [rows] = await connection.query(
+            `SELECT * FROM orders WHERE id=? AND delivery_partner_id=? FOR UPDATE`,
+            [orderId, deliveryId]
+        );
+        if (!rows.length) {
+            await connection.rollback();
+            return res.status(403).json({ success: false, message: "This order is not assigned to this rider." });
+        }
+        const order = rows[0];
+        if (String(order.payment || "").trim().toUpperCase() !== "COD" || String(order.delivery_status || "").trim().toLowerCase().replace(/[\s_-]+/g, "") !== "reachedcustomer") {
+            await connection.rollback();
+            return res.status(409).json({ success: false, message: "COD UPI payment is available after reaching the customer." });
+        }
+        const amount = Number(order.grand_total || 0);
+        if (!Number.isFinite(amount) || amount <= 0 || !process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+            await connection.rollback();
+            return res.status(503).json({ success: false, message: "Razorpay is not configured for delivery collection." });
+        }
+        const [existing] = await connection.query(
+            `SELECT id, status, method, amount, razorpay_order_id FROM delivery_cod_collections WHERE order_id=? FOR UPDATE`,
+            [orderId]
+        );
+        if (existing.some(row => row.status === "collected")) {
+            await connection.rollback();
+            return res.status(409).json({ success: false, message: "Payment is already recorded for this order." });
+        }
+        const expectedPaise = Math.round(amount * 100);
+        const activeCollection = existing.find(row => row.status === "pending" && row.method === "razorpay_upi" && Number(row.amount) === amount);
+        if (activeCollection?.razorpay_order_id) {
+            if (String(activeCollection.razorpay_order_id).startsWith("qr_")) {
+                const activeQr = await codRazorpay.qrCode.fetch(activeCollection.razorpay_order_id);
+                if (activeQr.status === "active" && activeQr.image_url) {
+                    await connection.commit();
+                    return res.json({ success: true, qr_code: { id: activeQr.id, image_url: activeQr.image_url, payment_amount: activeQr.payment_amount, close_by: activeQr.close_by }, amount });
+                }
+            } else if (String(activeCollection.razorpay_order_id).startsWith("plink_")) {
+                const activeLink = await codRazorpay.paymentLink.fetch(activeCollection.razorpay_order_id);
+                if (activeLink.status === "paid" && Number(activeLink.amount_paid) === expectedPaise) {
+                    const linkPayments = Array.isArray(activeLink.payments) ? activeLink.payments : [];
+                    const paid = linkPayments.find(payment => payment.status === "captured" && Number(payment.amount) === expectedPaise);
+                    if (paid?.payment_id) {
+                        await connection.query(
+                            `UPDATE delivery_cod_collections SET status='collected', razorpay_payment_id=?, collected_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'`,
+                            [paid.payment_id, activeCollection.id]
+                        );
+                        await connection.commit();
+                        return res.json({ success: true, paid: true, method: "razorpay_upi", amount });
+                    }
+                }
+                if (["created", "issued"].includes(String(activeLink.status)) && activeLink.short_url) {
+                    const imageUrl = await QRCode.toDataURL(activeLink.short_url, { width: 240, margin: 2 });
+                    await connection.commit();
+                    return res.json({ success: true, qr_code: { id: activeLink.id, image_url: imageUrl, payment_amount: expectedPaise, close_by: activeLink.expire_by }, payment_url: activeLink.short_url, amount });
+                }
+            }
+        }
+
+        let qrCode;
+        let paymentUrl = null;
+        try {
+            qrCode = await codRazorpay.qrCode.create({
+                type: "upi_qr",
+                name: `DARVOZ Order #${orderId}`,
+                usage: "single_use",
+                fixed_amount: true,
+                payment_amount: expectedPaise,
+                description: `COD payment for DARVOZ order #${orderId}`,
+                close_by: Math.floor(Date.now() / 1000) + (2 * 60 * 60),
+                notes: { order_id: String(orderId), delivery_partner_id: String(deliveryId), payment_type: "COD_UPI_QR" }
+            });
+        } catch (qrError) {
+            const qrDescription = String(qrError?.error?.description || qrError?.message || "");
+            if (!/requested url was not found|not enabled|on.?demand|feature/i.test(qrDescription)) throw qrError;
+
+            // Some Razorpay accounts do not have the QR Codes API activated.
+            // Fall back to a single-use UPI Payment Link and render its URL as a
+            // local QR image. Payment is still verified against Razorpay below.
+            const link = await codRazorpay.paymentLink.create({
+                amount: expectedPaise,
+                currency: "INR",
+                accept_partial: false,
+                reference_id: `COD-${orderId}-${Date.now()}`,
+                description: `COD payment for DARVOZ order #${orderId}`,
+                upi_link: true,
+                notify: { sms: false, email: false },
+                reminder_enable: false,
+                expire_by: Math.floor(Date.now() / 1000) + (2 * 60 * 60),
+                notes: { order_id: String(orderId), delivery_partner_id: String(deliveryId), payment_type: "COD_UPI_LINK" }
+            });
+            if (!link.id || !link.short_url) throw new Error("Razorpay did not return a usable UPI payment link.");
+            paymentUrl = link.short_url;
+            qrCode = {
+                id: link.id,
+                image_url: await QRCode.toDataURL(link.short_url, { width: 240, margin: 2 }),
+                payment_amount: expectedPaise,
+                close_by: link.expire_by
+            };
+        }
+        await connection.query(
+            `INSERT INTO delivery_cod_collections
+                (order_id, delivery_partner_id, amount, method, status, razorpay_order_id, razorpay_payment_id)
+             VALUES (?, ?, ?, 'razorpay_upi', 'pending', ?, NULL)
+             ON DUPLICATE KEY UPDATE delivery_partner_id=VALUES(delivery_partner_id), amount=VALUES(amount),
+                method='razorpay_upi', status='pending', razorpay_order_id=VALUES(razorpay_order_id), razorpay_payment_id=NULL`,
+            [orderId, deliveryId, amount, qrCode.id]
+        );
+        await connection.commit();
+        return res.json({
+            success: true,
+            qr_code: { id: qrCode.id, image_url: qrCode.image_url, payment_amount: qrCode.payment_amount, close_by: qrCode.close_by },
+            payment_url: paymentUrl,
+            amount
+        });
+    } catch (error) {
+        if (connection) await connection.rollback().catch(() => {});
+        // Razorpay's SDK error shape varies by API response/version. Preserve the
+        // provider's useful diagnostic instead of hiding it behind a generic QR error.
+        const providerError = error?.error || error?.response?.body?.error || {};
+        const description = String(
+            providerError.description ||
+            error?.description ||
+            error?.message ||
+            (typeof error === "string" ? error : "")
+        ).trim();
+        const code = String(providerError.code || providerError.type || error?.code || "").trim();
+        console.error("CREATE COD RAZORPAY QR ERROR:", { code, description });
+
+        let message = description || "Razorpay did not return an error description. Check the server log for CREATE COD RAZORPAY QR ERROR.";
+        if (/qr.?code|feature|not enabled|on.?demand|not available for this account|requested url was not found/i.test(description)) {
+            message = "Razorpay QR API is unavailable for these account keys. Ask Razorpay Support to activate UPI QR Codes for this account, then retry; cash collection is available meanwhile.";
+        } else if (/authentication|invalid.*key|unauthorized|credential/i.test(`${code} ${description}`)) {
+            message = "Razorpay rejected the API credentials. Check RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET on the server.";
+        } else if (!message) {
+            message = "Could not create the Razorpay payment QR. Please try again or collect cash.";
+        }
+        return res.status(503).json({ success: false, message });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
+// Re-render the payload decoded from Razorpay's QR as a plain, unbranded QR.
+// The payload is unchanged, so Razorpay still associates scans with the original QR entity.
+router.post("/render-cod-qr/:orderId", async (req, res) => {
+    const orderId = Number(req.params.orderId);
+    const deliveryId = Number(req.body?.deliveryId);
+    const payload = String(req.body?.payload || "").trim();
+    if (!Number.isInteger(orderId) || orderId <= 0 || !Number.isInteger(deliveryId) || deliveryId <= 0 || payload.length > 2048) {
+        return res.status(400).json({ success: false, message: "A valid order, rider and UPI QR payload are required." });
+    }
+    let upiUrl;
+    try {
+        upiUrl = new URL(payload);
+    } catch {
+        return res.status(400).json({ success: false, message: "The Razorpay QR did not contain a valid UPI payment payload." });
+    }
+    const payeeVpa = String(upiUrl.searchParams.get("pa") || "").trim().toLowerCase();
+    const expectedVpa = String(process.env.RAZORPAY_UPI_VPA || "darvoz2325166.rxp@rxairtel").trim().toLowerCase();
+    const payloadAmount = Number(upiUrl.searchParams.get("am"));
+    if (upiUrl.protocol.toLowerCase() !== "upi:" || upiUrl.hostname.toLowerCase() !== "pay" || payeeVpa !== expectedVpa || !Number.isFinite(payloadAmount) || upiUrl.searchParams.get("cu")?.toUpperCase() !== "INR") {
+        return res.status(400).json({ success: false, message: "The QR payload does not match the DARVOZ Razorpay UPI account." });
+    }
+    try {
+        const [rows] = await db.promise().query(
+            `SELECT o.grand_total, o.payment, o.delivery_status, c.amount, c.status, c.method, c.razorpay_order_id
+             FROM orders o JOIN delivery_cod_collections c ON c.order_id=o.id
+             WHERE o.id=? AND o.delivery_partner_id=? AND c.delivery_partner_id=? LIMIT 1`,
+            [orderId, deliveryId, deliveryId]
+        );
+        if (!rows.length || String(rows[0].payment || "").trim().toUpperCase() !== "COD" ||
+            String(rows[0].delivery_status || "").trim().toLowerCase().replace(/[\s_-]+/g, "") !== "reachedcustomer" ||
+            rows[0].status !== "pending" || rows[0].method !== "razorpay_upi" || !String(rows[0].razorpay_order_id || "").startsWith("qr_")) {
+            return res.status(409).json({ success: false, message: "There is no active Razorpay QR for this order." });
+        }
+        const expectedAmount = Number(rows[0].amount || rows[0].grand_total || 0);
+        if (Math.round(payloadAmount * 100) !== Math.round(expectedAmount * 100)) {
+            return res.status(400).json({ success: false, message: "The UPI QR amount does not match this order." });
+        }
+        const imageUrl = await QRCode.toDataURL(payload, { width: 480, margin: 4, errorCorrectionLevel: "M" });
+        return res.json({ success: true, image_url: imageUrl });
+    } catch (error) {
+        console.error("RENDER CLEAN COD QR ERROR:", error);
+        return res.status(500).json({ success: false, message: "Could not prepare the plain UPI QR image." });
+    }
+});
+
+// Verify a single-use COD QR with Razorpay before marking the collection paid.
+router.post("/verify-cod-qr/:orderId", async (req, res) => {
+    const orderId = Number(req.params.orderId);
+    const deliveryId = Number(req.body?.deliveryId);
+    let connection;
+    if (!Number.isInteger(orderId) || orderId <= 0 || !Number.isInteger(deliveryId) || deliveryId <= 0) {
+        return res.status(400).json({ success: false, message: "A valid order and rider are required." });
+    }
+    try {
+        connection = await db.promise().getConnection();
+        const [rows] = await connection.query(
+            `SELECT o.payment, o.delivery_status, o.grand_total,
+                    c.id AS collection_id, c.amount AS collection_amount,
+                    c.status AS collection_status, c.method, c.razorpay_order_id AS qr_code_id
+             FROM orders o
+             JOIN delivery_cod_collections c ON c.order_id=o.id
+             WHERE o.id=? AND o.delivery_partner_id=? AND c.delivery_partner_id=? LIMIT 1`,
+            [orderId, deliveryId, deliveryId]
+        );
+        if (!rows.length) return res.status(404).json({ success: false, message: "No Razorpay QR payment was found for this order." });
+        const row = rows[0];
+        if (String(row.payment || "").trim().toUpperCase() !== "COD" || String(row.delivery_status || "").trim().toLowerCase().replace(/[\s_-]+/g, "") !== "reachedcustomer") {
+            return res.status(409).json({ success: false, message: "Customer arrival must be verified before checking payment." });
+        }
+        if (row.collection_status === "collected") return res.json({ success: true, paid: true, method: row.method });
+        if (row.method !== "razorpay_upi" || !/^(qr_|plink_)/.test(String(row.qr_code_id || ""))) {
+            return res.status(409).json({ success: false, message: "There is no active Razorpay payment request for this order." });
+        }
+
+        const expectedPaise = Math.round(Number(row.collection_amount || row.grand_total || 0) * 100);
+        let paidPayment;
+        if (String(row.qr_code_id).startsWith("qr_")) {
+            const payments = await codRazorpay.qrCode.fetchAllPayments(row.qr_code_id, { count: 100 });
+            paidPayment = (payments.items || []).find(payment =>
+                payment.status === "captured" && payment.captured === true && Number(payment.amount) === expectedPaise
+            );
+        } else {
+            const paymentLink = await codRazorpay.paymentLink.fetch(row.qr_code_id);
+            const linkPayments = Array.isArray(paymentLink.payments) ? paymentLink.payments : [];
+            const linkPayment = linkPayments.find(payment => payment.status === "captured" && Number(payment.amount) === expectedPaise);
+            if (paymentLink.status === "paid" && Number(paymentLink.amount_paid) === expectedPaise && linkPayment?.payment_id) {
+                const fetchedPayment = await codRazorpay.payments.fetch(linkPayment.payment_id);
+                if (fetchedPayment.status === "captured" && fetchedPayment.captured === true && Number(fetchedPayment.amount) === expectedPaise) {
+                    paidPayment = fetchedPayment;
+                }
+            }
+        }
+        if (!paidPayment) return res.json({ success: true, paid: false, message: "Payment has not been received yet." });
+
+        await connection.beginTransaction();
+        const [locked] = await connection.query(
+            `SELECT id, status, razorpay_order_id FROM delivery_cod_collections
+             WHERE id=? AND order_id=? AND delivery_partner_id=? FOR UPDATE`,
+            [row.collection_id, orderId, deliveryId]
+        );
+        if (!locked.length || locked[0].razorpay_order_id !== row.qr_code_id) {
+            await connection.rollback();
+            return res.status(409).json({ success: false, message: "The payment QR changed. Refresh and check the active QR." });
+        }
+        if (locked[0].status !== "collected") {
+            await connection.query(
+                `UPDATE delivery_cod_collections SET status='collected', razorpay_payment_id=?, collected_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'`,
+                [paidPayment.id, row.collection_id]
+            );
+        }
+        await connection.commit();
+        return res.json({ success: true, paid: true, method: "razorpay_upi", amount: expectedPaise / 100 });
+    } catch (error) {
+        if (connection) await connection.rollback().catch(() => {});
+        console.error("VERIFY COD QR ERROR:", error);
+        return res.status(503).json({ success: false, message: "Could not verify the Razorpay QR payment right now." });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
+// =======================================
+// RECORD COD COLLECTION AT CUSTOMER
+// A COD order may be settled with cash or Razorpay UPI.
+// UPI is verified against Razorpay before it is recorded.
+// =======================================
+router.post("/collect-cod/:orderId", async (req, res) => {
+    const orderId = Number(req.params.orderId);
+    const deliveryId = Number(req.body?.deliveryId);
+    const method = String(req.body?.method || "").toLowerCase();
+    let connection;
+
+    if (!Number.isInteger(orderId) || orderId <= 0 || !Number.isInteger(deliveryId) || deliveryId <= 0 || !["cash", "razorpay_upi"].includes(method)) {
+        return res.status(400).json({ success: false, message: "A valid order, rider, and COD payment method are required." });
+    }
+
+    try {
+        connection = await db.promise().getConnection();
+        await connection.beginTransaction();
+        const [rows] = await connection.query(
+            `SELECT * FROM orders WHERE id=? AND delivery_partner_id=? FOR UPDATE`,
+            [orderId, deliveryId]
+        );
+        if (!rows.length) {
+            await connection.rollback();
+            return res.status(403).json({ success: false, message: "This order is not assigned to this rider." });
+        }
+        const order = rows[0];
+        if (String(order.payment || "").trim().toUpperCase() !== "COD") {
+            await connection.rollback();
+            return res.status(400).json({ success: false, message: "This order is not Cash on Delivery." });
+        }
+        if (String(order.delivery_status || "").trim().toLowerCase().replace(/[\s_-]+/g, "") !== "reachedcustomer") {
+            await connection.rollback();
+            return res.status(409).json({ success: false, message: "Reach the customer location before collecting payment." });
+        }
+
+        const amount = Number(order.grand_total || 0);
+        let razorpayOrderId = null;
+        let razorpayPaymentId = null;
+        if (method === "razorpay_upi") {
+            const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body || {};
+            if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !process.env.RAZORPAY_KEY_SECRET) {
+                await connection.rollback();
+                return res.status(400).json({ success: false, message: "Razorpay payment verification details are missing." });
+            }
+            const expected = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+                .update(`${razorpay_order_id}|${razorpay_payment_id}`).digest("hex");
+            const supplied = Buffer.from(String(razorpay_signature));
+            const expectedBuffer = Buffer.from(expected);
+            if (supplied.length !== expectedBuffer.length || !crypto.timingSafeEqual(supplied, expectedBuffer)) {
+                await connection.rollback();
+                return res.status(400).json({ success: false, message: "Razorpay payment signature is invalid." });
+            }
+            const payment = await codRazorpay.payments.fetch(razorpay_payment_id);
+            const expectedPaise = Math.round(amount * 100);
+            if (payment.order_id !== razorpay_order_id || Number(payment.amount) !== expectedPaise || payment.status !== "captured") {
+                await connection.rollback();
+                return res.status(400).json({ success: false, message: "Razorpay has not confirmed the full order payment." });
+            }
+            razorpayOrderId = razorpay_order_id;
+            razorpayPaymentId = razorpay_payment_id;
+        }
+
+        const [existing] = await connection.query(
+            `SELECT id, delivery_partner_id, method, amount, status, razorpay_order_id
+             FROM delivery_cod_collections WHERE order_id=? FOR UPDATE`,
+            [orderId]
+        );
+        if (existing.some(row => row.status === "collected")) {
+            await connection.rollback();
+            return res.status(409).json({ success: false, message: "Payment has already been recorded for this order." });
+        }
+        if (method === "cash") {
+            const pendingQr = existing.find(row => row.status === "pending" && /^(qr_|plink_)/.test(String(row.razorpay_order_id || "")));
+            if (pendingQr) {
+                const expectedPaise = Math.round(amount * 100);
+                let alreadyPaid;
+                if (String(pendingQr.razorpay_order_id).startsWith("qr_")) {
+                    const qrPayments = await codRazorpay.qrCode.fetchAllPayments(pendingQr.razorpay_order_id, { count: 100 });
+                    alreadyPaid = (qrPayments.items || []).find(payment =>
+                        payment.status === "captured" && payment.captured === true && Number(payment.amount) === expectedPaise
+                    );
+                } else {
+                    const paymentLink = await codRazorpay.paymentLink.fetch(pendingQr.razorpay_order_id);
+                    const linkPayments = Array.isArray(paymentLink.payments) ? paymentLink.payments : [];
+                    const linkPayment = linkPayments.find(payment => payment.status === "captured" && Number(payment.amount) === expectedPaise);
+                    if (paymentLink.status === "paid" && Number(paymentLink.amount_paid) === expectedPaise && linkPayment?.payment_id) {
+                        const fetchedPayment = await codRazorpay.payments.fetch(linkPayment.payment_id);
+                        if (fetchedPayment.status === "captured" && fetchedPayment.captured === true && Number(fetchedPayment.amount) === expectedPaise) alreadyPaid = fetchedPayment;
+                    }
+                }
+                if (alreadyPaid) {
+                    await connection.query(
+                        `UPDATE delivery_cod_collections
+                         SET method='razorpay_upi', status='collected', razorpay_payment_id=?, collected_at=CURRENT_TIMESTAMP
+                         WHERE id=? AND status='pending'`,
+                        [alreadyPaid.id, pendingQr.id]
+                    );
+                    await connection.commit();
+                    return res.json({ success: true, message: "Razorpay QR payment was already received.", amount, method: "razorpay_upi" });
+                }
+                try {
+                    if (String(pendingQr.razorpay_order_id).startsWith("qr_")) {
+                        const qrStatus = await codRazorpay.qrCode.fetch(pendingQr.razorpay_order_id);
+                        if (qrStatus.status === "active") await codRazorpay.qrCode.close(pendingQr.razorpay_order_id);
+                    } else {
+                        const linkStatus = await codRazorpay.paymentLink.fetch(pendingQr.razorpay_order_id);
+                        if (["created", "issued"].includes(String(linkStatus.status))) {
+                            await codRazorpay.paymentLink.cancel(pendingQr.razorpay_order_id);
+                        }
+                    }
+                } catch (qrCloseError) {
+                    await connection.rollback();
+                    console.error("CLOSE COD QR BEFORE CASH ERROR:", qrCloseError);
+                    return res.status(503).json({ success: false, message: "Could not safely close the Razorpay QR. Check payment status before collecting cash." });
+                }
+            }
+        }
+        if (method === "razorpay_upi") {
+            const pending = existing.find(row => row.status === "pending");
+            if (!pending || Number(pending.delivery_partner_id) !== deliveryId || pending.razorpay_order_id !== razorpayOrderId || Number(pending.amount) !== amount) {
+                await connection.rollback();
+                return res.status(409).json({ success: false, message: "This UPI payment was not started for this order. Create a fresh payment request." });
+            }
+            await connection.query(
+                `UPDATE delivery_cod_collections
+                 SET status='collected', razorpay_payment_id=?, collected_at=CURRENT_TIMESTAMP
+                 WHERE id=? AND status='pending'`,
+                [razorpayPaymentId, pending.id]
+            );
+        } else if (existing.length) {
+            await connection.query(
+                `UPDATE delivery_cod_collections
+                 SET delivery_partner_id=?, amount=?, method='cash', status='collected',
+                     razorpay_order_id=NULL, razorpay_payment_id=NULL, collected_at=CURRENT_TIMESTAMP
+                 WHERE id=? AND status='pending'`,
+                [deliveryId, amount, existing[0].id]
+            );
+        } else {
+            await connection.query(
+                `INSERT INTO delivery_cod_collections
+                    (order_id, delivery_partner_id, amount, method, status, razorpay_order_id, razorpay_payment_id)
+                 VALUES (?, ?, ?, 'cash', 'collected', NULL, NULL)`,
+                [orderId, deliveryId, amount]
+            );
+        }
+        await connection.commit();
+        return res.json({ success: true, message: "COD payment recorded. Verify the customer OTP to complete delivery.", amount, method });
+    } catch (error) {
+        if (connection) await connection.rollback().catch(() => {});
+        console.error("COD COLLECTION ERROR:", error);
+        return res.status(500).json({ success: false, message: "Could not record payment. Check the COD collection database setup." });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
+// =======================================
 // VERIFY DELIVERY OTP
 // COMPLETE DELIVERY + CREDIT RIDER WALLET
 // =======================================
@@ -3376,6 +4045,21 @@ router.put(
 
             }
 
+            if (String(order.payment || "").trim().toUpperCase() === "COD") {
+                const [collections] = await connection.query(
+                    `SELECT id FROM delivery_cod_collections
+                     WHERE order_id=? AND delivery_partner_id=? AND status='collected' LIMIT 1`,
+                    [orderId, deliveryId]
+                );
+                if (!collections.length) {
+                    await connection.rollback();
+                    return res.status(409).json({
+                        success: false,
+                        message: "Record the COD payment before completing this delivery."
+                    });
+                }
+            }
+
 
             // ===================================
             // CHECK OTP
@@ -3417,8 +4101,11 @@ router.put(
 
             const earning =
                 Number(
-                    order.delivery_fee || 0
+                    order.delivery_rider_earning == null
+                        ? order.delivery_fee || 0
+                        : order.delivery_rider_earning || 0
                 );
+            const adminDeliveryShare = Number(order.admin_delivery_fee || 0);
 
 
             console.log(
@@ -3638,6 +4325,30 @@ router.put(
                 ]
 
             );
+
+            if (adminDeliveryShare > 0) {
+                await connection.query(`
+                    INSERT INTO wallets (user_type, user_id, balance)
+                    VALUES ('admin', 1, 0)
+                    ON DUPLICATE KEY UPDATE user_id=VALUES(user_id)
+                `);
+                await connection.query(`
+                    UPDATE wallets SET balance=balance+?
+                    WHERE user_type='admin' AND user_id=1
+                `, [adminDeliveryShare]);
+                await connection.query(`
+                    INSERT INTO wallet_transactions
+                        (user_type, user_id, order_id, amount, type, transaction_type)
+                    VALUES ('admin', 1, ?, ?, 'Credit', 'Delivery Fee Share')
+                `, [orderId, adminDeliveryShare]);
+            }
+
+            await connection.query(`
+                UPDATE orders
+                SET delivery_wallet_credited=1,
+                    admin_delivery_wallet_credited=?
+                WHERE id=?
+            `, [adminDeliveryShare > 0 ? 1 : 0, orderId]);
 
 
             // ===================================

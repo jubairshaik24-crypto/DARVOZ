@@ -530,6 +530,46 @@ input:focus{
 
 }
 
+.forgot-modal{
+    position:fixed;
+    inset:0;
+    z-index:5000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    background:rgba(16,24,40,.58);
+}
+
+.forgot-modal.active{display:flex;}
+
+.forgot-card{
+    position:relative;
+    width:min(100%,460px);
+    max-height:92vh;
+    overflow:auto;
+    padding:26px;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 18px 60px rgba(0,0,0,.24);
+}
+
+.forgot-card h3{font-size:21px;margin-bottom:6px;color:#202733;}
+.forgot-card p{font-size:12px;line-height:1.6;color:#737b88;margin-bottom:16px;}
+.forgot-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:0;border-radius:50%;background:#f2f3f5;color:#555;font-size:18px;cursor:pointer;}
+.forgot-field{display:grid;gap:6px;margin:12px 0;}
+.forgot-field label{font-size:12px;font-weight:600;color:#333;}
+.forgot-field input{width:100%;height:44px;border:1px solid #d8dce2;border-radius:9px;padding:0 12px;font:inherit;font-size:13px;outline:none;}
+.forgot-field input:focus{border-color:#ff6b00;box-shadow:0 0 0 3px rgba(255,107,0,.12);}
+.forgot-action{width:100%;min-height:44px;border:0;border-radius:9px;background:linear-gradient(90deg,#ff5200,#ff7900);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px;}
+.forgot-action:disabled{opacity:.6;cursor:wait;}
+.forgot-step{display:none;margin-top:15px;}
+.forgot-status{min-height:18px;margin:12px 0 0!important;color:#d45110!important;font-size:12px!important;}
+
+@media(max-width:480px){
+    .forgot-card{padding:24px 18px;border-radius:15px;}
+}
+
 
 /* ================================
    ERROR
@@ -888,6 +928,7 @@ input:focus{
 
 </style>
 
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 
 
@@ -1029,8 +1070,9 @@ input:focus{
 
 
                     <a
-                    href="partner-forgot-password.html"
-                    class="forgot-password">
+                    href="#"
+                    class="forgot-password"
+                    onclick="openForgotPassword(event)">
 
                         Forgot Password?
 
@@ -1168,10 +1210,186 @@ input:focus{
 </div>
 
 
+<div class="forgot-modal" id="forgotPasswordModal" role="dialog" aria-modal="true" aria-labelledby="forgotPasswordTitle" onclick="closeForgotPasswordOnBackdrop(event)">
+    <section class="forgot-card">
+        <button class="forgot-close" type="button" aria-label="Close" onclick="closeForgotPassword()">&times;</button>
+        <h3 id="forgotPasswordTitle">Reset your password</h3>
+        <p>Verify the mobile number registered to your partner account. We’ll send a code on WhatsApp.</p>
+
+        <div class="forgot-field">
+            <label for="forgotPartnerId">Partner ID</label>
+            <input id="forgotPartnerId" type="text" autocomplete="username" placeholder="Enter Partner ID">
+        </div>
+        <div class="forgot-field">
+            <label for="forgotMobile">Registered mobile number</label>
+            <input id="forgotMobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="Enter registered mobile number">
+        </div>
+        <button class="forgot-action" id="forgotSendOtpButton" type="button" onclick="sendForgotPasswordOtp()">Send OTP on WhatsApp</button>
+
+        <div class="forgot-step" id="forgotOtpStep">
+            <div class="forgot-field">
+                <label for="forgotOtp">WhatsApp verification code</label>
+                <input id="forgotOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit OTP">
+            </div>
+            <button class="forgot-action" id="forgotVerifyOtpButton" type="button" onclick="verifyForgotPasswordOtp()">Verify mobile number</button>
+        </div>
+
+        <div class="forgot-step" id="forgotNewPasswordStep">
+            <div class="forgot-field">
+                <label for="forgotNewPassword">New password</label>
+                <input id="forgotNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="At least 8 characters">
+            </div>
+            <div class="forgot-field">
+                <label for="forgotConfirmPassword">Confirm new password</label>
+                <input id="forgotConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="Re-enter new password">
+            </div>
+            <button class="forgot-action" id="forgotResetPasswordButton" type="button" onclick="submitForgotPasswordReset()">Save new password</button>
+        </div>
+
+        <p class="forgot-status" id="forgotPasswordStatus" aria-live="polite"></p>
+    </section>
+</div>
+
+
 <script>
 
 
 const API = window.location.origin;
+let forgotPasswordResetToken = null;
+
+function openForgotPassword(event){
+    if(event) event.preventDefault();
+    document.getElementById("forgotPartnerId").value =
+        document.getElementById("partnerId").value.trim();
+    document.getElementById("forgotMobile").value = "";
+    document.getElementById("forgotOtp").value = "";
+    document.getElementById("forgotNewPassword").value = "";
+    document.getElementById("forgotConfirmPassword").value = "";
+    document.getElementById("forgotOtpStep").style.display = "none";
+    document.getElementById("forgotNewPasswordStep").style.display = "none";
+    document.getElementById("forgotSendOtpButton").style.display = "block";
+    document.getElementById("forgotPasswordStatus").textContent = "";
+    forgotPasswordResetToken = null;
+    document.getElementById("forgotPasswordModal").classList.add("active");
+    document.getElementById("forgotMobile").focus();
+}
+
+function closeForgotPassword(){
+    document.getElementById("forgotPasswordModal").classList.remove("active");
+    forgotPasswordResetToken = null;
+}
+
+function closeForgotPasswordOnBackdrop(event){
+    if(event.target.id === "forgotPasswordModal") closeForgotPassword();
+}
+
+function setForgotPasswordStatus(message, success=false){
+    const status = document.getElementById("forgotPasswordStatus");
+    status.textContent = message;
+    status.style.color = success ? "#168b48" : "#d45110";
+}
+
+function getForgotPasswordIdentity(){
+    return {
+        partnerId:document.getElementById("forgotPartnerId").value.trim(),
+        mobile:document.getElementById("forgotMobile").value.trim()
+    };
+}
+
+async function sendForgotPasswordOtp(){
+    const identity = getForgotPasswordIdentity();
+    if(!identity.partnerId || !/^\+?[0-9\s()-]{10,16}$/.test(identity.mobile)){
+        setForgotPasswordStatus("Enter your Partner ID and registered mobile number.");
+        return;
+    }
+
+    const button = document.getElementById("forgotSendOtpButton");
+    button.disabled = true;
+    setForgotPasswordStatus("Sending WhatsApp OTP...");
+    try{
+        const response = await fetch(`${API}/partner/password/send-otp`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(identity)
+        });
+        const data = await response.json();
+        if(!response.ok || !data.success) throw new Error(data.message || "Could not send OTP.");
+        document.getElementById("forgotOtpStep").style.display = "block";
+        setForgotPasswordStatus("OTP sent to the registered WhatsApp number.", true);
+    }catch(error){
+        setForgotPasswordStatus(error.message || "Unable to send OTP.");
+    }finally{
+        button.disabled = false;
+    }
+}
+
+async function verifyForgotPasswordOtp(){
+    const identity = getForgotPasswordIdentity();
+    const otp = document.getElementById("forgotOtp").value.trim();
+    if(!/^\d{6}$/.test(otp)){
+        setForgotPasswordStatus("Enter the 6-digit OTP.");
+        return;
+    }
+
+    const button = document.getElementById("forgotVerifyOtpButton");
+    button.disabled = true;
+    try{
+        const response = await fetch(`${API}/partner/password/verify-otp`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({...identity, otp})
+        });
+        const data = await response.json();
+        if(!response.ok || !data.success) throw new Error(data.message || "OTP verification failed.");
+        forgotPasswordResetToken = data.resetToken;
+        document.getElementById("forgotOtpStep").style.display = "none";
+        document.getElementById("forgotNewPasswordStep").style.display = "block";
+        setForgotPasswordStatus("Mobile verified. Set your new password.", true);
+    }catch(error){
+        setForgotPasswordStatus(error.message || "Unable to verify OTP.");
+    }finally{
+        button.disabled = false;
+    }
+}
+
+async function submitForgotPasswordReset(){
+    const identity = getForgotPasswordIdentity();
+    const password = document.getElementById("forgotNewPassword").value;
+    const confirmation = document.getElementById("forgotConfirmPassword").value;
+    if(!forgotPasswordResetToken){
+        setForgotPasswordStatus("Verify your mobile number first.");
+        return;
+    }
+    if(password.length < 8){
+        setForgotPasswordStatus("Password must contain at least 8 characters.");
+        return;
+    }
+    if(password !== confirmation){
+        setForgotPasswordStatus("The passwords do not match.");
+        return;
+    }
+
+    const button = document.getElementById("forgotResetPasswordButton");
+    button.disabled = true;
+    try{
+        const response = await fetch(`${API}/partner/password/reset`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({...identity, resetToken:forgotPasswordResetToken, password})
+        });
+        const data = await response.json();
+        if(!response.ok || !data.success) throw new Error(data.message || "Unable to change password.");
+        forgotPasswordResetToken = null;
+        document.getElementById("password").value = "";
+        document.getElementById("forgotNewPasswordStep").style.display = "none";
+        document.getElementById("forgotSendOtpButton").style.display = "none";
+        setForgotPasswordStatus("Password changed. You can now log in with your new password.", true);
+    }catch(error){
+        setForgotPasswordStatus(error.message || "Unable to change password.");
+    }finally{
+        button.disabled = false;
+    }
+}
 
 
 /* ================================

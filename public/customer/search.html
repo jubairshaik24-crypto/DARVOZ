@@ -54,6 +54,18 @@
             gap:10px;
         }
 
+        .header-title-row{
+            margin-bottom:12px;
+        }
+
+        .search-page-title{
+            flex:1;
+            padding-right:40px;
+            text-align:center;
+            font-size:17px;
+            font-weight:700;
+        }
+
         .back-btn{
             width:40px;
             height:40px;
@@ -234,7 +246,10 @@
 
         #results{
             display:none;
+            position:relative;
             width:100%;
+            margin:0 auto;
+            padding:0 0 28px;
             visibility:visible;
             opacity:1;
         }
@@ -392,12 +407,23 @@
             border-top:1px solid #eee;
         }
 
+        .food-result-list{
+            background:transparent;
+        }
+
+        .food-source{
+            color:#737b86;
+            font-size:12px;
+            margin-top:4px;
+        }
+
         .food-item{
             display:flex;
             align-items:center;
             gap:11px;
-            padding:11px 13px;
+            padding:13px 4px;
             border-bottom:1px solid #f0f0f0;
+            cursor:pointer;
         }
 
         .food-item:last-child{
@@ -405,9 +431,9 @@
         }
 
         .food-image{
-            width:82px;
-            height:82px;
-            border-radius:12px;
+            width:68px;
+            height:68px;
+            border-radius:50%;
             object-fit:cover;
             background:#eee;
             flex:none;
@@ -416,6 +442,37 @@
         .food-details{
             flex:1;
             min-width:0;
+        }
+
+        .restaurant-suggestion{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:13px 4px;
+            border-bottom:1px solid #f0f0f0;
+            cursor:pointer;
+        }
+
+        .restaurant-suggestion-image{
+            width:68px;
+            height:68px;
+            flex:none;
+            border-radius:16px;
+            object-fit:cover;
+            background:#f2f2f2;
+        }
+
+        .restaurant-suggestion-name{
+            font-size:15px;
+            font-weight:700;
+            line-height:1.35;
+        }
+
+        .restaurant-suggestion-meta{
+            margin-top:4px;
+            color:#737b86;
+            font-size:12px;
+            line-height:1.4;
         }
 
         .food-name{
@@ -560,13 +617,20 @@
 
         .empty{
             text-align:center;
-            padding:60px 20px;
+            min-height:260px;
+            margin-top:12px;
+            padding:38px 20px;
             color:#777;
+            background:#fff;
+            border:1px solid #f0f0f0;
+            border-radius:18px;
+            box-shadow:0 3px 14px rgba(0,0,0,.045);
         }
 
         .empty-icon{
             font-size:45px;
             margin-bottom:12px;
+            color:#ff6500;
         }
 
         .empty-title{
@@ -578,6 +642,20 @@
 
         .empty-text{
             font-size:13px;
+            line-height:1.5;
+        }
+
+        .search-suggestion{
+            display:block;
+            margin:16px auto 0;
+            padding:10px 16px;
+            border:1px solid #ff6500;
+            border-radius:22px;
+            background:#fff7f1;
+            color:#e85c00;
+            font-size:14px;
+            font-weight:700;
+            cursor:pointer;
         }
 
         /* =====================================================
@@ -641,6 +719,7 @@
 
     </style>
 
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -651,7 +730,7 @@
 
 <header class="header">
 
-    <div class="top-row">
+    <div class="top-row header-title-row">
 
         <button
             class="back-btn"
@@ -659,7 +738,11 @@
             ‹
         </button>
 
-        <div class="search-box">
+        <div class="search-page-title">Search for dishes &amp; restaurants</div>
+
+    </div>
+
+    <div class="search-box">
 
             <span class="search-icon">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -668,7 +751,7 @@
             <input
                 id="searchInput"
                 type="text"
-                placeholder="Search food, groceries..."
+                placeholder="Search dishes, restaurants, groceries..."
                 autocomplete="off"
                 autofocus
             >
@@ -679,8 +762,6 @@
                 onclick="clearSearch()">
                 ×
             </button>
-
-        </div>
 
     </div>
 
@@ -1004,6 +1085,16 @@ const categoryView =
 const results =
     document.getElementById("results");
 
+function positionResultsPanel(){
+    // Results flow beneath the sticky search header; no fixed overlay positioning.
+    results.style.top = "auto";
+    results.style.left = "auto";
+    results.style.right = "auto";
+    results.style.bottom = "auto";
+}
+
+window.addEventListener("resize", positionResultsPanel);
+
 
 /* =====================================================
    SEARCH STATE
@@ -1011,11 +1102,14 @@ const results =
 
 let searchData = {
     restaurants: [],
+    restaurantMatches: [],
+    foodProducts: [],
     groceries: [],
     query: ""
 };
 
 let searchTimer = null;
+let searchRequestController = null;
 
 
 /* =====================================================
@@ -1175,6 +1269,13 @@ async function performSearch(query){
         return;
     }
 
+    // Cancel an older keystroke search so it cannot overwrite newer results.
+    if(searchRequestController){
+        searchRequestController.abort();
+    }
+    searchRequestController = new AbortController();
+    const requestSignal = searchRequestController.signal;
+
 
     /*
      * SHOW RESULTS AREA
@@ -1191,6 +1292,8 @@ async function performSearch(query){
 
     results.style.opacity =
         "1";
+
+    positionResultsPanel();
 
 
     /*
@@ -1239,8 +1342,13 @@ async function performSearch(query){
             await fetch(
                 `${API}/search?q=${
                     encodeURIComponent(query)
-                }`
+                }`,
+                { signal: requestSignal }
             );
+
+        if(requestSignal.aborted){
+            return;
+        }
 
 
         if(!response.ok){
@@ -1258,6 +1366,10 @@ async function performSearch(query){
 
         const data =
             await response.json();
+
+        if(requestSignal.aborted){
+            return;
+        }
 
 
         console.log(
@@ -1293,6 +1405,16 @@ async function performSearch(query){
                     ? data.restaurants
                     : [],
 
+            restaurantMatches:
+                Array.isArray(data.restaurantMatches)
+                    ? data.restaurantMatches
+                    : [],
+
+            foodProducts:
+                Array.isArray(data.foodProducts)
+                    ? data.foodProducts
+                    : [],
+
             groceries:
                 Array.isArray(
                     data.groceries
@@ -1301,6 +1423,15 @@ async function performSearch(query){
                     : []
 
         };
+
+        console.info("DARVOZ SEARCH RESULTS RECEIVED", {
+            query: searchData.query,
+            dishes: searchData.foodProducts.length ||
+                searchData.restaurants.reduce((count, restaurant) =>
+                    count + (Array.isArray(restaurant.items) ? restaurant.items.length : 0), 0),
+            restaurants: searchData.restaurantMatches.length,
+            groceries: searchData.groceries.length
+        });
 
 
         /*
@@ -1311,6 +1442,10 @@ async function performSearch(query){
 
     }
     catch(error){
+
+        if(error.name === "AbortError"){
+            return;
+        }
 
         console.error(
             "DARVOZ SEARCH ERROR:",
@@ -1326,6 +1461,8 @@ async function performSearch(query){
 
         results.style.opacity =
             "1";
+
+        positionResultsPanel();
 
 
         results.innerHTML = `
@@ -1362,14 +1499,49 @@ function renderResults(){
     const restaurants =
         searchData.restaurants || [];
 
+    const restaurantMatches =
+        searchData.restaurantMatches || [];
+
     const groceries =
         searchData.groceries || [];
+
+    const groupedFoodProducts = restaurants.flatMap(
+        function(restaurant){
+            return (Array.isArray(restaurant.items) ? restaurant.items : [])
+                .map(function(item){
+                    return {
+                        ...item,
+                        restaurant: item.restaurant || {
+                            restaurant_id: restaurant.restaurant_id || restaurant.id,
+                            restaurant_name: restaurant.restaurant_name || "Restaurant",
+                            restaurant_image: restaurant.restaurant_image || "",
+                            logo: restaurant.logo || "",
+                            city: restaurant.city || "",
+                            rating: restaurant.rating ?? null,
+                            delivery_time: restaurant.delivery_time ?? null
+                        }
+                    };
+                });
+        }
+    );
+
+    const foodProducts = searchData.foodProducts.length
+        ? searchData.foodProducts
+        : groupedFoodProducts;
+
+    // Keep the results panel in document flow and always reveal it after a response.
+    results.style.display = "block";
+    results.style.visibility = "visible";
+    results.style.opacity = "1";
+    positionResultsPanel();
 
 
     console.log(
         "RENDERING:",
         {
             restaurants,
+            restaurantMatches,
+            foodProductCount: foodProducts.length,
             groceries
         }
     );
@@ -1380,9 +1552,14 @@ function renderResults(){
      */
 
     if(
-        restaurants.length === 0 &&
+        foodProducts.length === 0 &&
+        restaurantMatches.length === 0 &&
         groceries.length === 0
     ){
+
+        const correctedQuery = /briyani|biriyani/i.test(searchData.query)
+            ? searchData.query.replace(/briyani|biriyani/ig, "Biryani")
+            : "";
 
         results.style.display =
             "block";
@@ -1392,6 +1569,8 @@ function renderResults(){
 
         results.style.opacity =
             "1";
+
+        positionResultsPanel();
 
 
         results.innerHTML = `
@@ -1412,6 +1591,12 @@ function renderResults(){
                 <div class="empty-text">
                     Try another food or grocery item.
                 </div>
+
+                ${correctedQuery ? `
+                    <button class="search-suggestion" onclick="performSearch('Biryani')">
+                        Search for Biryani
+                    </button>
+                ` : ""}
 
             </div>
 
@@ -1440,10 +1625,10 @@ function renderResults(){
 
 
     /*
-     * RESTAURANTS
+     * MATCHING FOOD PRODUCTS
      */
 
-    if(restaurants.length > 0){
+    if(foodProducts.length > 0){
 
         html += `
 
@@ -1452,23 +1637,33 @@ function renderResults(){
                 <div class="section-head">
 
                     <div class="section-title-result">
-                        Restaurants
+                        Dishes
                     </div>
 
                 </div>
 
-                ${restaurants.map(
-                    function(restaurant){
-
-                        return renderRestaurant(
-                            restaurant
-                        );
-
-                    }
-                ).join("")}
+                <div class="food-result-list">
+                    ${foodProducts.map(renderFoodProduct).join("")}
+                </div>
 
             </section>
 
+        `;
+
+    }
+
+
+    if(restaurantMatches.length > 0){
+
+        html += `
+            <section class="grocery-section">
+                <div class="section-head">
+                    <div class="section-title-result">Restaurants</div>
+                </div>
+                <div class="food-result-list">
+                    ${restaurantMatches.map(renderRestaurantSuggestion).join("")}
+                </div>
+            </section>
         `;
 
     }
@@ -1531,6 +1726,60 @@ function renderResults(){
         results.innerHTML.length
     );
 
+}
+
+
+function renderFoodProduct(item){
+
+    const restaurant = item.restaurant || {};
+    const price = item.offer_price != null ? item.offer_price : item.price;
+    const image = item.image || restaurant.restaurant_image || restaurant.logo || "";
+    const productName = item.product_name || "Food";
+    const productId = Number(item.product_id);
+    const restaurantId = Number(restaurant.restaurant_id);
+    const oldPrice = item.offer_price != null && item.price != null &&
+        Number(item.offer_price) < Number(item.price)
+        ? `<span class="old-price">₹${Number(item.price).toFixed(0)}</span>`
+        : "";
+
+    return `
+        <div class="food-item" role="button" tabindex="0"
+            onclick="openRestaurant(${restaurantId}, ${productId})"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRestaurant(${restaurantId}, ${productId})}">
+            ${image ? `<img class="food-image" src="${safeUrl(image)}" alt="${escapeHtml(productName)}" onerror="this.style.display='none'">` : ""}
+            <div class="food-details">
+                <div class="food-name">${escapeHtml(productName)}</div>
+                <div class="food-source">Dish${restaurant.restaurant_name ? ` · ${escapeHtml(restaurant.restaurant_name)}` : ""}</div>
+                <div class="food-price">₹${Number(price || 0).toFixed(0)} ${oldPrice}</div>
+            </div>
+            <button class="add-food" aria-label="View ${escapeHtml(productName)}"
+                onclick="event.stopPropagation();openRestaurant(${restaurantId}, ${productId})">›</button>
+        </div>
+    `;
+}
+
+
+function renderRestaurantSuggestion(restaurant){
+    const id = Number(restaurant.restaurant_id);
+    const name = restaurant.restaurant_name || "Restaurant";
+    const image = restaurant.logo || restaurant.restaurant_image || "";
+    const meta = [
+        restaurant.rating != null ? `★ ${restaurant.rating}` : "Restaurant",
+        restaurant.delivery_time ? `${restaurant.delivery_time} mins` : "",
+        restaurant.city || ""
+    ].filter(Boolean).join(" · ");
+
+    return `
+        <div class="restaurant-suggestion" role="button" tabindex="0"
+            onclick="openRestaurant(${id})"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRestaurant(${id})}">
+            ${image ? `<img class="restaurant-suggestion-image" src="${safeUrl(image)}" alt="${escapeHtml(name)}" onerror="this.style.display='none'">` : `<div class="restaurant-suggestion-image"></div>`}
+            <div class="food-details">
+                <div class="restaurant-suggestion-name">${escapeHtml(name)}</div>
+                <div class="restaurant-suggestion-meta">${escapeHtml(meta)}</div>
+            </div>
+        </div>
+    `;
 }
 
 

@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DARVOZ | Order Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+:root {
+  --petrol: #004D5B;
+  --petrol-dark: #013640;
+  --green: #159765;
+  --red: #d64545;
+  --text: #172329;
+  --muted: #788188;
+  --bg: #f4f6f7;
+  --border: #e5e9eb;
+  --white: #fff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Poppins, sans-serif; color: var(--text); background: var(--bg); }
+button { font-family: inherit; cursor: pointer; }
+header {
+  background: white; display: flex; align-items: center; gap: 12px;
+  padding: 14px 17px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 5;
+}
+.back {
+  border: 0; background: transparent; color: var(--petrol);
+  font-size: 21px; padding: 5px;
+}
+.header-info { flex: 1; min-width: 0; }
+.header-info h1 { font-size: 16px; overflow-wrap: anywhere; }
+.header-info p { font-size: 11px; color: var(--muted); }
+.help-top { border: 0; color: var(--petrol); background: transparent; font-weight: 700; }
+main { max-width: 650px; margin: auto; padding-bottom: 90px; }
+.section { background: white; padding: 21px 20px; margin-bottom: 9px; }
+.section-title {
+  font-size: 12px; letter-spacing: 1px; color: #656e73;
+  font-weight: 700; margin-bottom: 17px;
+}
+.location-row { display: flex; gap: 14px; }
+.location-icon { width: 27px; color: var(--petrol); font-size: 20px; text-align: center; }
+.location-content { flex: 1; min-width: 0; }
+.location-content h3 { font-size: 14px; }
+.location-content p { font-size: 12px; color: var(--muted); line-height: 1.55; overflow-wrap: anywhere; }
+.connector { height: 24px; border-left: 1px dashed #b7c2c6; margin: 7px 0 7px 13px; }
+.delivery-state {
+  margin-top: 20px; border-top: 1px solid var(--border); padding-top: 17px;
+  display: flex; align-items: flex-start; gap: 11px;
+}
+.delivery-state i { color: var(--green); font-size: 19px; margin-top: 3px; }
+.delivery-state p { font-size: 12px; color: var(--muted); }
+.delivery-state strong { color: var(--text); }
+.status-pill {
+  display: inline-block; border-radius: 20px; padding: 5px 10px;
+  font-size: 11px; font-weight: 700; background: #e4f5ec; color: var(--green);
+}
+.status-pill.active { background: #e7f0f2; color: var(--petrol); }
+.status-pill.cancelled { background: #fff0ef; color: var(--red); }
+.item-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 13px 0; border-bottom: 1px solid var(--border);
+}
+.item-symbol { color: var(--green); margin-top: 3px; }
+.item-info { flex: 1; min-width: 0; }
+.item-info h3 { font-size: 13px; font-weight: 500; overflow-wrap: anywhere; }
+.item-info p { color: var(--muted); font-size: 11px; margin-top: 3px; }
+.item-price { font-size: 13px; font-weight: 600; white-space: nowrap; }
+.bill-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  font-size: 12px; margin: 14px 0;
+}
+.bill-row span:first-child { color: var(--muted); }
+.bill-row span:last-child { text-align: right; }
+.bill-total {
+  border-top: 1px solid var(--border); padding-top: 16px; margin-top: 17px;
+  display: flex; justify-content: space-between; gap: 10px;
+  font-size: 14px; font-weight: 700;
+}
+.bill-total strong { color: var(--petrol); font-size: 17px; }
+.payment-method { background: #f5f8f9; border-radius: 12px; padding: 13px; font-size: 12px; }
+.payment-method i { color: var(--petrol); margin-right: 8px; }
+.help-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.help-row:last-child { border-bottom: 0; }
+.help-row button { border: 0; background: transparent; color: var(--petrol); font-size: 12px; font-weight: 600; }
+.actions {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 4;
+  display: flex; gap: 10px; padding: 12px max(14px, calc((100vw - 620px)/2));
+  background: white; border-top: 1px solid var(--border);
+}
+.actions button {
+  flex: 1; padding: 13px 8px; border-radius: 11px; font-size: 12px; font-weight: 700;
+}
+.primary { background: var(--petrol); color: white; border: 1px solid var(--petrol); }
+.secondary { background: white; color: var(--petrol); border: 1px solid var(--petrol); }
+.loading, .error { padding: 45px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+.error { color: var(--red); }
+@media (min-width: 650px) {
+  body { padding-top: 15px; }
+  header { border-radius: 14px 14px 0 0; }
+  .section { border-radius: 12px; }
+}
+</style>
+<script src="/customer/beautiful-alerts.js"></script>
+</head>
+
+<body>
+<header>
+  <button class="back" onclick="history.length > 1 ? history.back() : location.href='customer-order.html'" aria-label="Go back">
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+  <div class="header-info">
+    <h1 id="headerOrder">ORDER DETAILS</h1>
+    <p id="headerSummary">Loading order...</p>
+  </div>
+  <button class="help-top" onclick="openHelp()">HELP</button>
+</header>
+
+<main id="content">
+  <div class="loading">Loading order details...</div>
+</main>
+
+<div class="actions" id="actions" style="display:none"></div>
+
+<script>
+const API = location.origin;
+const customerId = localStorage.getItem("customerId");
+const params = new URLSearchParams(location.search);
+const orderId = params.get("id") || params.get("orderId");
+
+let currentOrder = null;
+let currentItems = [];
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[c]);
+}
+function money(value) {
+  const n = Number(value);
+  return "₹" + (Number.isFinite(n) ? n.toLocaleString("en-IN", { maximumFractionDigits: 2 }) : "0");
+}
+function normalizedStatus(value) {
+  return String(value || "Pending").trim().toLowerCase();
+}
+function titleStatus(value) {
+  return String(value || "Pending").trim().replace(/\b\w/g, c => c.toUpperCase());
+}
+function isActive(order) {
+  return [
+    "pending", "processing", "accepted", "preparing",
+    "delivery assigned", "picked up", "out for delivery",
+    "reached customer"
+  ].includes(normalizedStatus(order.status));
+}
+function isCancelled(order) {
+  return ["cancelled", "canceled", "rejected", "failed"].includes(normalizedStatus(order.status));
+}
+function formatDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toLocaleString("en-IN", {
+    day: "numeric", month: "long", hour: "numeric", minute: "2-digit"
+  });
+}
+
+async function loadDetails() {
+  const root = document.getElementById("content");
+
+  if (!customerId) {
+    root.innerHTML = '<div class="error">Please log in to view your order.</div>';
+    return;
+  }
+  if (!orderId || !/^\d+$/.test(orderId)) {
+    root.innerHTML = '<div class="error">A valid Order ID was not provided.</div>';
+    return;
+  }
+
+  try {
+    // Fetch the order through the existing order-tracking API.
+    const [orderResponse, itemsResponse] = await Promise.all([
+      fetch(`${API}/orders/track/${encodeURIComponent(orderId)}`),
+      fetch(`${API}/orders/items/${encodeURIComponent(orderId)}`)
+    ]);
+
+    const orderData = await orderResponse.json();
+    const itemsData = await itemsResponse.json();
+
+    if (!orderResponse.ok || !orderData.success || !orderData.order) {
+      throw new Error(orderData.message || "Unable to load this order.");
+    }
+
+    currentOrder = orderData.order;
+    currentItems = itemsData.success && Array.isArray(itemsData.items)
+      ? itemsData.items : [];
+
+    // Do not show another customer's order if the API returns customer_id.
+    if (currentOrder.customer_id != null &&
+        String(currentOrder.customer_id) !== String(customerId)) {
+      throw new Error("This order does not belong to the signed-in customer.");
+    }
+
+    renderDetails();
+  } catch (error) {
+    console.error("DARVOZ order details:", error);
+    root.innerHTML = `<div class="error">${safe(error.message || "Unable to load order details.")}<br><br><button class="secondary" onclick="loadDetails()">Try Again</button></div>`;
+  }
+}
+
+function renderDetails() {
+  const o = currentOrder;
+  const active = isActive(o);
+  const cancelled = isCancelled(o);
+  const statusClass = active ? "active" : cancelled ? "cancelled" : "";
+  const id = o.id ?? orderId;
+
+  document.getElementById("headerOrder").textContent = `ORDER #${id}`;
+  document.getElementById("headerSummary").textContent =
+    `${titleStatus(o.status)} · ${currentItems.length} item${currentItems.length === 1 ? "" : "s"} · ${money(o.grand_total)}`;
+
+  const restaurant = o.restaurant_name || "DARVOZ Restaurant";
+  const restaurantAddress = o.restaurant_address || o.partner_address || "Address not available";
+  const customerName = o.customer_name || "Delivery Address";
+  const customerAddress = o.address || o.delivery_address || "Address not available";
+
+  const itemsHTML = currentItems.length
+    ? currentItems.map(item => {
+        const qty = Number(item.qty) || 1;
+        const price = Number(item.price) || 0;
+        return `
+          <div class="item-row">
+            <i class="fa-regular fa-circle-dot item-symbol"></i>
+            <div class="item-info">
+              <h3>${safe(item.product_name || "Item")}</h3>
+              <p>${qty} × ${money(price)}</p>
+            </div>
+            <span class="item-price">${money(qty * price)}</span>
+          </div>`;
+      }).join("")
+    : '<p style="font-size:12px;color:#788188;padding:10px 0">Item details are unavailable.</p>';
+
+  const statusMessage = active
+    ? "Your order is being processed. Check tracking for the latest progress."
+    : cancelled
+      ? "This order was cancelled or failed."
+      : `Order status: ${titleStatus(o.status)}${o.updated_at ? " · Updated " + formatDate(o.updated_at) : ""}`;
+
+  document.getElementById("content").innerHTML = `
+    <section class="section">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:22px">
+        <div>
+          <div style="font-size:16px;font-weight:700">${safe(restaurant)}</div>
+          <div style="font-size:11px;color:#788188">Order #${safe(id)}</div>
+        </div>
+        <span class="status-pill ${statusClass}">${safe(titleStatus(o.status))}</span>
+      </div>
+
+      <div class="location-row">
+        <div class="location-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="location-content">
+          <h3>${safe(restaurant)}</h3>
+          
+
+        </div>
+      </div>
+      <div class="connector"></div>
+      <div class="location-row">
+        <div class="location-icon"><i class="fa-solid fa-location-arrow"></i></div>
+        <div class="location-content">
+          <h3>${safe(customerName)}</h3>
+          <p>${safe(customerAddress)}</p>
+        </div>
+      </div>
+
+      <div class="delivery-state">
+        <i class="fa-solid ${active ? "fa-clock" : cancelled ? "fa-circle-xmark" : "fa-circle-check"}"></i>
+        <div>
+          <strong style="font-size:12px">${safe(statusMessage)}</strong>
+          <p>${o.created_at ? "Order placed " + safe(formatDate(o.created_at)) : ""}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">ITEM DETAILS</h2>
+      ${itemsHTML}
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">BILL DETAILS</h2>
+      <div class="bill-row"><span>Item Total</span><span>${money(o.food_total)}</span></div>
+      ${o.restaurant_packaging != null ? `<div class="bill-row"><span>Restaurant Packaging</span><span>${money(o.restaurant_packaging)}</span></div>` : ""}
+      ${o.platform_fee != null ? `<div class="bill-row"><span>GST</span><span>${money(o.platform_fee)}</span></div>` : ""}
+      ${o.delivery_fee != null ? `<div class="bill-row"><span>Delivery Fee</span><span>${money(o.delivery_fee)}</span></div>` : ""}
+    ${o.gst != null
+  ? `<div class="bill-row">
+       <span>GST</span>
+       <span>${money(o.gst)}</span>
+     </div>`
+  : ""}
+      ${o.coupon_discount != null && Number(o.coupon_discount) > 0 ? `<div class="bill-row"><span>Coupon Discount</span><span>−${money(o.coupon_discount)}</span></div>` : ""}
+      ${o.coins_discount != null && Number(o.coins_discount) > 0 ? `<div class="bill-row"><span>DARVOZ Coins</span><span>−${money(o.coins_discount)}</span></div>` : ""}
+      <div class="bill-total"><span>Bill Total</span><strong>${money(o.grand_total)}</strong></div>
+      <div style="height:15px"></div>
+      <div class="payment-method"><i class="fa-solid fa-wallet"></i> Paid via ${safe(o.payment || "Payment method not available")}</div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">HELP & SUPPORT</h2>
+      <div class="help-row">
+        <div>
+          <strong style="font-size:13px">Need help with this order?</strong>
+          <p style="font-size:11px;color:#788188">Contact DARVOZ support</p>
+        </div>
+        <button onclick="openHelp()">GET HELP <i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>`;
+
+  const actions = document.getElementById("actions");
+  actions.style.display = "flex";
+  actions.innerHTML = `
+    ${active ? `<button class="primary" onclick="trackOrder()">TRACK ORDER</button>` : ""}
+    <button class="secondary" onclick="reorder()">REORDER</button>`;
+}
+
+function trackOrder() {
+  if (!currentOrder) return;
+  location.href = `track.html?id=${encodeURIComponent(currentOrder.id ?? orderId)}`;
+}
+function openHelp() {
+  if (!orderId) {
+    location.href = "help.html";
+    return;
+  }
+  location.href = `help.html?orderId=${encodeURIComponent(orderId)}`;
+}
+function reorder() {
+  // Safe fallback until a verified add-to-cart/reorder API is connected.
+  alert("Reorder is not connected yet. Please add the items to your cart from the menu.");
+  location.href = "index.html";
+}
+
+loadDetails();
+</script>
+</body>
+</html>

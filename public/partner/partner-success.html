@@ -1,90 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Registration Successful</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff7f0">
+  <title>Registration Successful | DARVOZ Partner</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, Poppins, Arial, sans-serif;
+      color: #17252b;
+      background: #fff7f0;
+      font-synthesis: none;
+    }
 
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f7fb;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
+    * { box-sizing: border-box; }
 
-.card{
-    width:420px;
-    background:#fff;
-    padding:40px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
-    text-align:center;
-}
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px 16px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(255, 107, 0, .10), transparent 28%),
+        linear-gradient(145deg, #fffaf5, #f3f8f7);
+    }
 
-.tick{
-    font-size:70px;
-    color:#28a745;
-}
+    .success-card {
+      width: min(100%, 440px);
+      padding: 32px 26px 28px;
+      border: 1px solid rgba(23, 37, 43, .06);
+      border-radius: 26px;
+      background: #fff;
+      box-shadow: 0 18px 55px rgba(23, 37, 43, .12);
+      text-align: center;
+    }
 
-h1{
-    color:#28a745;
-    margin:15px 0;
-}
+    .brand {
+      margin-bottom: 26px;
+      color: #064e52;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
 
-.partner{
-    background:#f3f3f3;
-    padding:15px;
-    border-radius:10px;
-    font-size:24px;
-    font-weight:bold;
-    margin:20px 0;
-}
+    .success-icon {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e8f7ef;
+      color: #15945b;
+      font-size: 38px;
+      font-weight: 800;
+    }
 
-button{
-    padding:12px 25px;
-    border:none;
-    background:#ff6b00;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-}
-</style>
+    h1 {
+      margin: 0;
+      color: #14272b;
+      font-size: clamp(25px, 7vw, 32px);
+      line-height: 1.2;
+    }
 
+    .intro {
+      max-width: 330px;
+      margin: 12px auto 24px;
+      color: #607076;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .partner-id {
+      padding: 17px 16px;
+      border: 1px dashed #ffb77f;
+      border-radius: 17px;
+      background: #fff8f2;
+    }
+
+    .partner-id-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #8a5a39;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    #partnerId {
+      display: block;
+      color: #e65f00;
+      font-size: clamp(25px, 8vw, 34px);
+      font-weight: 800;
+      letter-spacing: .04em;
+      overflow-wrap: anywhere;
+    }
+
+    .approval-note {
+      margin: 18px 0 24px;
+      color: #607076;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 15px;
+      background: linear-gradient(100deg, #ff7900, #f05b00);
+      color: #fff;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(255, 107, 0, .22);
+      cursor: pointer;
+    }
+
+    .login-button:focus-visible {
+      outline: 3px solid #064e52;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 360px) {
+      .success-card { padding: 28px 20px 22px; }
+      .brand { margin-bottom: 22px; }
+    }
+  </style>
+<script src="/partner/beautiful-alerts.js"></script>
 </head>
 <body>
+  <main class="success-card">
+    <div class="brand">DARVOZ <span aria-hidden="true">PARTNER</span></div>
+    <div class="success-icon" aria-hidden="true">✓</div>
+    <h1>Registration complete!</h1>
+    <p class="intro">Your DARVOZ Partner account has been created successfully.</p>
 
-<div class="card">
+    <div class="partner-id" aria-live="polite">
+      <span class="partner-id-label">Your Partner ID</span>
+      <strong id="partnerId">Loading…</strong>
+    </div>
 
-<div class="tick">✅</div>
+    <p class="approval-note">Keep this ID safe. You can log in after your account is approved by the admin.</p>
+    <a class="login-button" href="partner-login.html">Go to Login</a>
+  </main>
 
-<h1>Congratulations!</h1>
-
-<p>Your DARVOZ Partner account has been created successfully.</p>
-
-<div class="partner">
-Partner ID<br>
-<span id="partnerId"></span>
-</div>
-
-<p>
-Please take a screenshot of this page.<br>
-Your Partner ID is required to login after Admin Approval.
-</p>
-
-<button onclick="location.href='partner-login.html'">
-Go to Login
-</button>
-
-</div>
-
-<script>
-document.getElementById("partnerId").innerHTML=
-localStorage.getItem("partnerId");
-</script>
-
+  <script>
+    const partnerId = localStorage.getItem("partnerId");
+    document.getElementById("partnerId").textContent = partnerId || "Not available";
+  </script>
 </body>
 </html>

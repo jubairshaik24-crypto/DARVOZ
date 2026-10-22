@@ -1049,6 +1049,10 @@ onclick="closeSidebar()">
             📦 Orders
         </li>
 
+        <li onclick="showCODCollections()">
+            💵 COD Collections
+        </li>
+
         <li onclick="showCustomerLookup()">
     🔎 Customer / Order Lookup
 </li>
@@ -1551,6 +1555,16 @@ EDIT RESTAURANT MODAL
                 max="5"
                 id="editRating">
 
+            <label>Restaurant Commission (%)</label>
+
+            <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="100"
+                id="editCommissionPercent"
+                required>
+
         </div>
 
         <div class="modal-footer">
@@ -1920,6 +1934,9 @@ if (!r) {
         document.getElementById("editRating").value =
         r.rating || "";
 
+        document.getElementById("editCommissionPercent").value =
+        r.commission_percent ?? "";
+
         document.getElementById("editRestaurantModal")
         .style.display = "flex";
 
@@ -1995,7 +2012,9 @@ async function saveRestaurant(){
 
         delivery_time: document.getElementById("editDeliveryTime").value.trim(),
 
-        rating: document.getElementById("editRating").value
+        rating: document.getElementById("editRating").value,
+
+        commission_percent: document.getElementById("editCommissionPercent").value.trim()
 
     };
 
@@ -2013,6 +2032,18 @@ async function saveRestaurant(){
 
         return;
 
+    }
+
+    const commissionPercent = Number(data.commission_percent);
+    if(
+        data.commission_percent === "" ||
+        !Number.isFinite(commissionPercent) ||
+        commissionPercent < 0 ||
+        commissionPercent > 100
+    ){
+        alert("Enter a commission percentage from 0 to 100.");
+        document.getElementById("editCommissionPercent").focus();
+        return;
     }
 
     try{
@@ -2513,6 +2544,46 @@ async function deleteRestaurant(id){
 // ORDERS PAGE
 // =======================================
 
+async function showCODCollections(){
+    document.getElementById("dashboardPage").style.display="none";
+    document.getElementById("pageContent").innerHTML=`
+        <div class="content">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+                <h2>💵 COD Collections by Rider</h2>
+                <button class="blue" onclick="showCODCollections()">↻ Refresh</button>
+            </div>
+            <div style="overflow:auto">
+                <table>
+                    <thead><tr><th>Rider</th><th>Rider ID</th><th>Cash</th><th>Razorpay UPI</th><th>Total Collected</th><th>Orders</th></tr></thead>
+                    <tbody id="codRidersTable"><tr><td colspan="6">Loading collections…</td></tr></tbody>
+                </table>
+            </div>
+            <h3 style="margin:28px 0 12px">Collection Details</h3>
+            <div style="overflow:auto">
+                <table>
+                    <thead><tr><th>Order</th><th>Rider</th><th>Customer</th><th>Restaurant</th><th>Method</th><th>Amount</th><th>Collected at</th><th>Payment reference</th></tr></thead>
+                    <tbody id="codDetailsTable"><tr><td colspan="8">Loading collections…</td></tr></tbody>
+                </table>
+            </div>
+        </div>`;
+    closeSidebar();
+    try{
+        const response=await fetch("/admin/cod-collections");
+        const data=await response.json();
+        if(!response.ok||!data.success) throw new Error(data.message||"Unable to load collections.");
+        const money=value=>`₹${Number(value||0).toFixed(2)}`;
+        const riderBody=document.getElementById("codRidersTable");
+        const detailBody=document.getElementById("codDetailsTable");
+        if(!data.riders?.length){riderBody.innerHTML='<tr><td colspan="6">No COD collections recorded yet.</td></tr>';}
+        else riderBody.innerHTML=data.riders.map(r=>`<tr><td>${r.rider_name||"Rider"}</td><td>${r.delivery_partner_id}</td><td>${money(r.cash_total)}</td><td>${money(r.upi_total)}</td><td><b>${money(r.total_collected)}</b></td><td>${r.order_count}</td></tr>`).join("");
+        if(!data.collections?.length){detailBody.innerHTML='<tr><td colspan="8">No collection details yet.</td></tr>';}
+        else detailBody.innerHTML=data.collections.map(c=>`<tr><td>#${c.order_id}</td><td>${c.rider_name||"Rider"} (#${c.delivery_partner_id})</td><td>${c.customer_name||"-"}</td><td>${c.restaurant_name||"-"}</td><td>${c.method==="cash"?"Cash":"Razorpay UPI"}</td><td>${money(c.amount)}</td><td>${c.collected_at?new Date(c.collected_at).toLocaleString():"-"}</td><td>${c.razorpay_payment_id||"-"}</td></tr>`).join("");
+    }catch(error){
+        document.getElementById("codRidersTable").innerHTML=`<tr><td colspan="6">${error.message}</td></tr>`;
+        document.getElementById("codDetailsTable").innerHTML='<tr><td colspan="8">Apply the included COD collection database update, then refresh.</td></tr>';
+    }
+}
+
 function showOrders(){
 
     document.getElementById("dashboardPage").style.display="none";
@@ -2899,6 +2970,8 @@ async function viewOrder(id){
         <br>
 
         <p><b>Payment :</b> ${order.payment}</p>
+
+        ${order.cod_collection ? `<p><b>COD collected :</b> ₹${Number(order.cod_collection.amount || 0).toFixed(2)} · ${order.cod_collection.method === "cash" ? "Cash" : "Razorpay UPI"} · Rider #${order.cod_collection.delivery_partner_id}${order.cod_collection.razorpay_payment_id ? ` · Ref ${order.cod_collection.razorpay_payment_id}` : ""}</p>` : (String(order.payment || "").toUpperCase() === "COD" ? `<p><b>COD collected :</b> Not collected yet</p>` : "")}
 
 
         

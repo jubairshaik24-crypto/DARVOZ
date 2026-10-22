@@ -1570,6 +1570,7 @@ body.is-grocery .grocery-content.no-categories
 
 .target-product-highlight{
     animation: productHighlight 2.5s ease;
+    border:2px solid #ff5a1f !important;
 }
 
 @keyframes productHighlight{
@@ -2359,6 +2360,7 @@ body.is-grocery .grocery-price-line s.onwards{
 }
 </style>
 
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 
 <body>
@@ -6758,7 +6760,6 @@ function displayGroceryMenu(
         return;
     }
 
-
     container.innerHTML = "";
 
     currentGroceryItems =
@@ -7347,123 +7348,100 @@ function closePackPopup(){
    ADD PACK
 ========================================================= */
 
-function addPackToCart(
-    productId,
-    packIndex
-){
 
-    const product =
-        partnerGroceryMenu.find(
-            item =>
-                item.id == productId
-        );
+async function addPackToCart(productId, packIndex) {
+    const product = partnerGroceryMenu.find(
+        item => String(item.id) === String(productId)
+    );
 
+    if (!product) return;
 
-    if(!product){
+    const weights = getWeights(product);
+    const selectedPack = weights[packIndex];
+
+    if (!selectedPack) return;
+
+    const selectedPrice = Number(
+        selectedPack.offer_price || selectedPack.price || 0
+    );
+
+    if (!Number.isFinite(selectedPrice) || selectedPrice < 0) {
+        console.error("Invalid grocery pack price");
         return;
     }
 
+    const selectedWeight = String(
+        selectedPack.weight || ""
+    ).trim();
 
-    const weights =
-        getWeights(product);
-
-
-    const selectedPack =
-        weights[packIndex];
-
-
-    if(!selectedPack){
+    if (!selectedWeight) {
+        console.error("Grocery pack weight is missing");
         return;
     }
-
 
     checkRestaurantCart(
         restaurantId,
         currentRestaurantName,
+        async function () {
+            const response = await fetch(`${API}/cart/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    customer_id: customerId,
+                    partner_id: restaurantId,
+                    product_id: product.id,
+                    quantity: 1,
+                    weight: selectedWeight,
+                    price: selectedPrice
+                })
+            });
 
-        function(){
+            const data = await response.json().catch(() => null);
 
-            const cartId =
-                `${product.id}_${String(
-                    selectedPack.weight
-                )
-                .trim()
-                .replace(/\s+/g,"_")}`;
-
-
-            const existing =
-                cart.find(
-                    item =>
-                        item.cart_id === cartId &&
-
-                        String(
-                            item.partner_id
-                        ) === String(
-                            restaurantId
-                        )
-                );
-
-
-            if(existing){
-
-                existing.quantity++;
-
+            if (!response.ok || !data || !data.success) {
+                console.error("GROCERY PACK ADD FAILED:", data);
+                alert("Unable to add this pack. Please try again.");
+                return;
             }
-            else{
 
+            const cartId = `${product.id}_${selectedWeight
+                .replace(/\s+/g, "_")}`;
+
+            const existing = cart.find(item =>
+                item.cart_id === cartId &&
+                String(item.partner_id) === String(restaurantId)
+            );
+
+            if (existing) {
+                existing.quantity = Number(existing.quantity || 1) + 1;
+            } else {
                 cart.push({
-
-                    cart_id:
-                        cartId,
-
-                    product_id:
-                        product.id,
-
-                    quantity:
-                        1,
-
-                    product_name:
-                        product.product_name ||
-                        product.name,
-
-                    weight:
-                        selectedPack.weight,
-
-                    price:
-                        Number(
-                            selectedPack.offer_price ||
-                            selectedPack.price ||
-                            0
-                        ),
-
-                    image:
-                        getProductImage(product),
-
-                    partner_id:
-                        restaurantId,
-
-                    restaurant_name:
-                        currentRestaurantName,
-
-                    item_type:
-                        "grocery"
-
+                    cart_id: cartId,
+                    server_cart_id: data.cart_id,
+                    product_id: product.id,
+                    quantity: 1,
+                    product_name: product.product_name || product.name,
+                    weight: selectedWeight,
+                    price: selectedPrice,
+                    image: getProductImage(product),
+                    partner_id: restaurantId,
+                    restaurant_name: currentRestaurantName,
+                    item_type: "grocery"
                 });
-
             }
-
 
             saveCart();
-
-
             closePackPopup();
-
-
+            await loadCart();
             refreshCurrentView();
-
         }
     );
 }
+
+
+
 /* =========================================================
    SORT
 ========================================================= */
@@ -7575,9 +7553,17 @@ async function loadCart(){
          * for grocery pack/variant items.
          */
         cart = [
-            ...mysqlCart,
-            ...localPackItems
-        ];
+    ...mysqlCart,
+    ...localPackItems.filter(localItem =>
+        !mysqlCart.some(serverItem =>
+            String(serverItem.product_id) === String(localItem.product_id) &&
+            String(serverItem.partner_id) === String(localItem.partner_id) &&
+            String(serverItem.weight || "").trim() ===
+                String(localItem.weight || "").trim()
+        )
+    )
+];
+        
 
 
         localStorage.setItem(
@@ -8657,20 +8643,22 @@ function scrollToTargetProduct(){
         return;
     }
 
-    const productElement =
-        document.getElementById(
-            `product-${targetProductId}`
-        );
-
-    if(!productElement){
-        console.log(
-            "TARGET PRODUCT NOT FOUND:",
-            targetProductId
-        );
-        return;
-    }
-
+    // Grocery category selection re-renders the cards. Look up the product
+    // after that render so the highlight attaches to the visible card.
     setTimeout(() => {
+
+        const productElement =
+            document.getElementById(
+                `product-${targetProductId}`
+            );
+
+        if(!productElement){
+            console.log(
+                "TARGET PRODUCT NOT FOUND:",
+                targetProductId
+            );
+            return;
+        }
 
         productElement.scrollIntoView({
             behavior:"smooth",
@@ -8681,18 +8669,20 @@ function scrollToTargetProduct(){
             "target-product-highlight"
         );
 
-        setTimeout(() => {
+        // Keep the searched grocery item outlined while its category is open.
+        if(document.body.classList.contains("is-grocery")){
+            return;
+        }
 
+        setTimeout(() => {
             productElement.classList.remove(
                 "target-product-highlight"
             );
-
         }, 2500);
 
-    }, 500);
+    }, 700);
 
 }
-
 function hidePageLoader(){
 
     const loader =
@@ -8811,30 +8801,24 @@ if(loader){
 
     let categoryToOpen = "";
 
+    const normalizeBusinessTypeKey = value =>
+        String(value || "")
+            .trim()
+            .toLowerCase()
+            .replace(/\bgroceries\b/g, "grocery")
+            .replace(/[^a-z0-9]+/g, " ")
+            .trim();
 
-    if(
-        requestedCategory &&
-        partnerBusinessTypes.some(
-            type =>
-                String(type)
-                .trim()
-                .toLowerCase() ===
-                String(requestedCategory)
-                .trim()
-                .toLowerCase()
-        )
-    ){
+    const requestedBusinessTypeKey =
+        normalizeBusinessTypeKey(requestedCategory);
 
-        categoryToOpen =
-            partnerBusinessTypes.find(
-                type =>
-                    String(type)
-                    .trim()
-                    .toLowerCase() ===
-                    String(requestedCategory)
-                    .trim()
-                    .toLowerCase()
-            );
+    if(requestedBusinessTypeKey){
+        categoryToOpen = partnerBusinessTypes.find(type => {
+            const typeKey = normalizeBusinessTypeKey(type);
+            return typeKey === requestedBusinessTypeKey ||
+                typeKey.startsWith(`${requestedBusinessTypeKey} `) ||
+                requestedBusinessTypeKey.startsWith(`${typeKey} `);
+        }) || "";
     }
 
 
@@ -8949,8 +8933,18 @@ const urlParams = new URLSearchParams(
     window.location.search
 );
 
-const requestedGroceryCategoryId =
+let requestedGroceryCategoryId =
     urlParams.get("categoryId");
+
+// Search links may only include the product ID. Resolve its grocery category from the loaded store catalog.
+if(!requestedGroceryCategoryId && targetProductId){
+    const searchedGroceryProduct = partnerGroceryMenu.find(item =>
+        String(item.id) === String(targetProductId)
+    );
+    if(searchedGroceryProduct){
+        requestedGroceryCategoryId = getCategoryId(searchedGroceryProduct);
+    }
+}
 
 if (
     requestedGroceryCategoryId &&

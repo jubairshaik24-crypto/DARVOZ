@@ -54,6 +54,7 @@
 }
 
 </style>
+<script src="/customer/beautiful-alerts.js"></script>
 </head>
 <body>
 <div class="app">
@@ -211,6 +212,48 @@
 </main>
 </div>
 <div id="couponModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle"><div class="coupon-modal"><div class="modal-head"><h2 id="couponModalTitle">Available coupons</h2><button id="closeCoupons" class="icon-btn" type="button" aria-label="Close coupons">×</button></div><div id="couponList"></div></div></div>
+
+<div id="codConfirmModal" class="modal-backdrop hidden"
+     role="dialog" aria-modal="true"
+     aria-labelledby="codConfirmTitle">
+  <div class="coupon-modal">
+    <div class="modal-head">
+      <h2 id="codConfirmTitle">Confirm your COD order</h2>
+      <button id="closeCodConfirm" class="icon-btn"
+              type="button" aria-label="Close">×</button>
+    </div>
+
+    <div style="text-align:center;padding:12px 4px">
+      <div style="font-size:42px">📦</div>
+      <h3 style="color:var(--petrol);margin:8px 0">
+        Pay after delivery!
+      </h3>
+      <p class="muted">
+        Your order will be delivered to your doorstep.
+        Please pay the amount below when you receive it.
+      </p>
+
+      <div style="background:var(--soft);padding:16px;border-radius:12px;margin:16px 0">
+        <div class="muted">Amount to pay on delivery</div>
+        <div id="codConfirmAmount"
+             style="font-size:27px;font-weight:800;color:var(--petrol)">
+          ₹0
+        </div>
+        <div class="small">Payment method: Cash on Delivery</div>
+      </div>
+
+      <button id="confirmCodOrder" class="btn"
+              type="button" style="width:100%;padding:14px">
+        Yes, Place My Order
+      </button>
+
+      <button id="cancelCodOrder" class="btn btn-outline"
+              type="button" style="width:100%;margin-top:9px;padding:12px">
+        No, Go Back
+      </button>
+    </div>
+  </div>
+</div>
 <div class="footer"><div class="footerinner"><div class="payamount"><small>Amount to pay</small><strong id="footerTotal">₹0</strong></div><button id="payNow" class="btn pay" type="button">Pay now</button></div></div>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
@@ -222,6 +265,9 @@ const getLS = (k, fallback=null) => { try { const v=localStorage.getItem(k); ret
 const parse = (v, fallback) => { try { return JSON.parse(v); } catch { return fallback; } };
 const money = n => '₹' + (Number(n)||0).toLocaleString('en-IN',{minimumFractionDigits:0,maximumFractionDigits:2});
 let cart = [], subtotal=0, deliveryFee=0, gstFee=0, couponDiscount=0, coinDiscount=0, grandTotal=0;
+
+let pendingCodOrderPayload = null;
+
 let distanceKm = Number(getLS(key('deliveryDistance'), getLS('deliveryDistance', 'NaN')));
 let riderBaseEarning=0, riderExtraEarning=0, riderTotalEarning=0, adminDeliveryShare=0, freeDeliverySubsidy=0;
 let freeDelivery=false, deliveryAvailable=true, availableCoins=0, coinsEnabled=false, partnerId=null, restaurantName='Your order', savedAddress='';
@@ -230,21 +276,56 @@ let availableCouponList = [];
 let activeCoupon = null;
 const FREE_DELIVERY_THRESHOLD=399, GST_RATE=.05, COINS_PER_RUPEE=100, MAX_COINS_PER_ORDER=1000;
 /* Exact V1 rules from the provided DARVOZ pricing source. */
+
+/* Existing DARVOZ V1 delivery prices — aligned with cart.html.
+   Do not change these prices without changing the pricing source. */
+
 const DELIVERY_RULES = [
-{min:0.0,max:2.0,customer:25,rider:25,admin:0,cashback:0},
-{min:2.1,max:2.2,customer:30,rider:25,admin:5,cashback:0},
-{min:2.3,max:2.4,customer:32,rider:27,admin:5,cashback:0},
-{min:2.5,max:2.6,customer:34,rider:29,admin:5,cashback:0},
-{min:2.7,max:2.8,customer:36,rider:31,admin:5,cashback:0},
-{min:2.9,max:3.0,customer:38,rider:33,admin:5,cashback:0},
-{min:3.1,max:3.2,customer:40,rider:35,admin:5,cashback:0},
-{min:3.3,max:3.4,customer:42,rider:37,admin:5,cashback:0},
-{min:3.5,max:3.6,customer:44,rider:39,admin:5,cashback:0},
-{min:3.7,max:3.8,customer:46,rider:41,admin:5,cashback:0},
-{min:3.9,max:4.0,customer:48,rider:43,admin:5,cashback:0},
-{min:4.1,max:4.2,customer:50,rider:45,admin:5,cashback:0},
-{min:4.3,max:4.4,customer:51,rider:46,admin:5,cashback:0}
+  {min:0.0,max:2.0,customer:25,rider:25,admin:0,cashback:0},
+  {min:2.1,max:2.2,customer:30,rider:25,admin:5,cashback:0},
+  {min:2.3,max:2.4,customer:32,rider:27,admin:5,cashback:0},
+  {min:2.5,max:2.6,customer:34,rider:29,admin:5,cashback:0},
+  {min:2.7,max:2.8,customer:36,rider:31,admin:5,cashback:0},
+  {min:2.9,max:3.0,customer:38,rider:33,admin:5,cashback:0},
+  {min:3.1,max:3.2,customer:40,rider:35,admin:5,cashback:0},
+  {min:3.3,max:3.4,customer:42,rider:37,admin:5,cashback:0},
+  {min:3.5,max:3.6,customer:44,rider:39,admin:5,cashback:0},
+  {min:3.7,max:3.8,customer:46,rider:41,admin:5,cashback:0},
+  {min:3.9,max:4.0,customer:48,rider:43,admin:5,cashback:0},
+  {min:4.1,max:4.2,customer:50,rider:45,admin:5,cashback:0},
+  {min:4.3,max:4.4,customer:51,rider:46,admin:5,cashback:0},
+  {min:4.5,max:4.6,customer:52,rider:47,admin:5,cashback:0},
+  {min:4.7,max:4.8,customer:53,rider:48,admin:5,cashback:0},
+  {min:4.9,max:5.0,customer:54,rider:49,admin:5,cashback:0},
+  {min:5.1,max:5.2,customer:55,rider:50,admin:5,cashback:10},
+  {min:5.3,max:5.4,customer:56,rider:51,admin:5,cashback:10},
+  {min:5.5,max:5.6,customer:57,rider:52,admin:5,cashback:10},
+  {min:5.7,max:5.8,customer:58,rider:58,admin:0,cashback:10},
+  {min:5.9,max:6.0,customer:59,rider:59,admin:0,cashback:10},
+  {min:6.1,max:6.5,customer:59,rider:59,admin:0,cashback:10},
+  {min:6.6,max:7.0,customer:60,rider:60,admin:0,cashback:10}
 ];
+
+function getDeliveryRule(distance) {
+  if (!Number.isFinite(distance) || distance < 0) {
+    return null;
+  }
+
+  const km = Math.round(distance * 10) / 10;
+
+  if (km > 7) {
+    return null;
+  }
+
+  if (km <= 2) {
+    return DELIVERY_RULES[0];
+  }
+
+  return DELIVERY_RULES.find(
+    rule => km >= rule.min && km <= rule.max
+  ) || null;
+}
+
 function getDeliveryRule(distance){if(!Number.isFinite(distance)||distance<0)return null;const km=Math.round(distance*10)/10;if(km>7)return null;if(km<=2)return DELIVERY_RULES[0];return DELIVERY_RULES.find(r=>km>=r.min&&km<=r.max)||null;}
 function showError(msg){const el=document.getElementById('error');el.textContent=msg;el.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
 function clearError(){document.getElementById('error').style.display='none';}
@@ -315,7 +396,7 @@ async function loadData(){
  if(!Array.isArray(cart))cart=[];
  restaurantName=getLS(key('restaurantName'),getLS('restaurantName','Your order'))||'Your order';
  document.getElementById('restaurant').textContent=restaurantName;
- savedAddress=getLS(key('address'),getLS('selectedAddress',getLS('deliveryAddress',''))) || '';
+ savedAddress=getLS(`selectedAddress_${customerId}`,getLS(`address_${customerId}`,getLS(key('address'),getLS('selectedAddress',getLS('deliveryAddress',''))))) || '';
  document.getElementById('address').textContent=savedAddress||'No saved address found. Please add your delivery address.';
  document.getElementById('addressEdit').value=savedAddress;
  availableCoins=Math.max(0,Number(getLS(key('coins'),getLS(key('availableCoins'),getLS('availableCoins','0'))))||0);
@@ -342,7 +423,26 @@ document.getElementById('editAddress').addEventListener('click', () => {
 });
 
 
-document.getElementById('saveAddress').addEventListener('click',()=>{const val=document.getElementById('addressEdit').value.trim();if(!val){showError('Please enter a complete delivery address.');return;}savedAddress=val;document.getElementById('address').textContent=val;document.getElementById('addressEdit').classList.add('hidden');document.getElementById('saveAddress').classList.add('hidden');document.getElementById('editAddress').classList.remove('hidden');try{localStorage.setItem(key('address'),val);localStorage.setItem('deliveryAddress',val);localStorage.setItem('selectedAddress',val);}catch{}});
+document.getElementById('saveAddress').addEventListener('click',()=>{
+ const val=document.getElementById('addressEdit').value.trim();
+ if(!val){showError('Please enter a complete delivery address.');return;}
+ const changed=val!==savedAddress;
+ savedAddress=val;
+ document.getElementById('address').textContent=val;
+ document.getElementById('addressEdit').classList.add('hidden');
+ document.getElementById('saveAddress').classList.add('hidden');
+ document.getElementById('editAddress').classList.remove('hidden');
+ try{
+  localStorage.setItem(key('address'),val);
+  localStorage.setItem(`selectedAddress_${customerId}`,val);
+  localStorage.setItem(`address_${customerId}`,val);
+  localStorage.setItem('deliveryAddress',val);
+  localStorage.setItem('selectedAddress',val);
+  if(changed){
+   for(const coordinateKey of [`latitude_${customerId}`,`longitude_${customerId}`,key('customerLatitude'),key('customerLongitude'),'latitude','longitude','customer_lat','customer_lng','customerLatitude','customerLongitude'])localStorage.removeItem(coordinateKey);
+  }
+ }catch{}
+});
 function readCouponArray(){
  const candidates=[getLS(key('availableCoupons'),null),getLS('availableCoupons',null),getLS(key('coupons'),null),getLS('coupons',null)];
  for(const raw of candidates){const parsed=Array.isArray(raw)?raw:parse(raw,[]);if(Array.isArray(parsed)&&parsed.length)return parsed;}
@@ -411,6 +511,8 @@ async function payNow(){
  if(!Number.isFinite(distanceKm)){showError('Delivery distance is missing. Please select an address with a calculated delivery distance.');return;}
  const method=document.querySelector('input[name="paymentMethod"]:checked')?.value||'upi';
  const button=document.getElementById('payNow');button.disabled=true;
+ const selectedLat=getLS(`latitude_${customerId}`,getLS('latitude',getLS(key('customerLatitude'),getLS('customer_lat',getLS('customerLatitude','')))));
+ const selectedLng=getLS(`longitude_${customerId}`,getLS('longitude',getLS(key('customerLongitude'),getLS('customer_lng',getLS('customerLongitude','')))));
  const orderPayload={customer_id:Number(customerId),partner_id:Number(
   getLS(`partnerId_${customerId}`, getLS('partnerId', '0'))
 )||null,restaurant_name:restaurantName,customer_name:getLS('customerName','Customer'),mobile:getLS('customerMobile',getLS('mobile','')),address:savedAddress,customer_lat:Number(getLS(key('customerLatitude'),getLS('customer_lat',getLS('customerLatitude',''))))||null,customer_lng:Number(getLS(key('customerLongitude'),getLS('customer_lng',getLS('customerLongitude',''))))||null,payment:method==='cod'?'COD':'Razorpay',amount:grandTotal,subtotal,delivery_fee:deliveryFee,gst:gstFee,gst_fee:gstFee,discount:couponDiscount,coupon_discount:couponDiscount,coin_discount:coinDiscount,coins_used:Math.round(coinDiscount*COINS_PER_RUPEE),free_delivery:freeDelivery,delivery_distance_km:distanceKm,items:cart.map(item=>({product_id:item.product_id||item.id||null,product_name:item.product_name||item.name||item.title||'Product',price:Number(Number(item.offer_price)>0?item.offer_price:item.price)||0,quantity:Number(item.quantity)||1,weight:item.weight||''}))};
@@ -418,7 +520,7 @@ async function payNow(){
   button.textContent='Placing order…';
   try{
    const placed=await fetchJSON(`${API}/orders/place`,{method:'POST',body:JSON.stringify({...orderPayload,payment_id:null,payment_order_id:null})});
-   const data=placed.order||placed.data||placed;const finalOrderId = data.order_id ?? data.orderId ?? data.id ?? placed.order_id ?? placed.orderId;
+   const data=placed.order||placed.data||placed;const finalOrderId=data.order_id||data.id||placed.order_id;
    try{if(finalOrderId!=null){localStorage.setItem('lastOrderId',String(finalOrderId));localStorage.setItem(key('lastOrderId'),String(finalOrderId));}localStorage.setItem(key('lastPaymentMethod'),'COD');}catch{}
    location.href='order-success.html';
   }catch(e){showError(`Cash on Delivery order failed: ${e.message}`);button.disabled=false;button.textContent='Place order · COD';}
@@ -460,6 +562,81 @@ const finalOrderId =
   const rzp=new Razorpay(options);rzp.on('payment.failed',response=>{showError(response.error?.description||'Payment failed. Please try again.');button.disabled=false;button.textContent='Pay now securely';});rzp.open();
  }catch(e){showError(e.message||'Unable to start payment.');button.disabled=false;button.textContent='Pay now securely';}
 }
+const codModal = document.getElementById('codConfirmModal');
+const codConfirmButton = document.getElementById('confirmCodOrder');
+
+function closeCodConfirmation() {
+    codModal.classList.add('hidden');
+    pendingCodOrderPayload = null;
+}
+
+document.getElementById('closeCodConfirm')
+    .addEventListener('click', closeCodConfirmation);
+
+document.getElementById('cancelCodOrder')
+    .addEventListener('click', closeCodConfirmation);
+
+codModal.addEventListener('click', function (event) {
+    if (event.target === codModal) {
+        closeCodConfirmation();
+    }
+});
+
+codConfirmButton.addEventListener('click', async function () {
+    if (!pendingCodOrderPayload) return;
+
+    const payload = pendingCodOrderPayload;
+    const originalText = codConfirmButton.textContent;
+
+    codConfirmButton.disabled = true;
+    codConfirmButton.textContent = 'Placing your order…';
+
+    try {
+        const placed = await fetchJSON(`${API}/orders/place`, {
+            method: 'POST',
+            body: JSON.stringify({
+                ...payload,
+                payment: 'COD',
+                payment_id: null,
+                payment_order_id: null
+            })
+        });
+
+        const data = placed.order || placed.data || placed;
+
+        const finalOrderId =
+            data.order_id ??
+            data.orderId ??
+            data.id ??
+            placed.order_id ??
+            placed.orderId;
+
+        if (finalOrderId == null) {
+            throw new Error(
+                'Order response did not include an order ID. Please contact support before retrying.'
+            );
+        }
+
+    localStorage.setItem('lastOrderId', String(finalOrderId));
+localStorage.setItem(key('lastOrderId'), String(finalOrderId));
+
+localStorage.setItem('lastPaymentMethod', 'COD');
+localStorage.setItem('customer_lastPaymentMethod', 'COD');
+localStorage.setItem(key('lastPaymentMethod'), 'COD');
+
+pendingCodOrderPayload = null;
+location.href = 'order-success.html';
+
+        pendingCodOrderPayload = null;
+        location.href = 'order-success.html';
+
+    } catch (error) {
+        showError(`COD order failed: ${error.message}`);
+        codConfirmButton.disabled = false;
+        codConfirmButton.textContent = originalText;
+    }
+});
+
 document.getElementById('payNow').addEventListener('click',payNow);
 loadData();
 </script>
