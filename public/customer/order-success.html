@@ -345,77 +345,46 @@ font-size:40px;
 
 
 <script>
+const customerId = localStorage.getItem("customerId");
+const params = new URLSearchParams(window.location.search);
 
-const orderId = localStorage.getItem("orderId");
+const orderId =
+    params.get("orderId") ||
+    params.get("id") ||
+    localStorage.getItem(`lastOrderId_${customerId}`) ||
+    localStorage.getItem("lastOrderId") ||
+    localStorage.getItem("orderId");
 
-console.log("================================");
-console.log("DARVOZ ORDER SUCCESS PAGE");
+console.log("DARVOZ ORDER SUCCESS");
+console.log("Customer ID:", customerId);
 console.log("Order ID:", orderId);
-console.log("Cart:", localStorage.getItem("cart"));
-console.log("Last Order:", localStorage.getItem("lastOrder"));
-console.log("================================");
 
+const orderIdElement = document.getElementById("orderId");
 
-/* ==============================
-   SHOW ORDER ID
-============================== */
+orderIdElement.textContent = orderId ? "#" + orderId : "Not available";
 
-document.getElementById("orderId").innerText =
-    orderId
-        ? "#" + orderId
-        : "------";
-
-
-/* ==============================
-   TRACK ORDER
-============================== */
-
-function trackOrder(){
-
-    if(!orderId){
-
-        alert("Order ID not found.");
-
+function trackOrder() {
+    if (!orderId) {
+        alert("Order ID not found. Please contact DARVOZ support before placing another order.");
         return;
-
     }
 
-    window.location.href =
-        "track.html?id=" + orderId;
-
+    window.location.href = "track.html?id=" + encodeURIComponent(orderId);
 }
 
-
-/* ==============================
-   HOME
-============================== */
-
-function goHome(){
-
-    window.location.href =
-        "index.html";
-
+function goHome() {
+    window.location.href = "index.html";
 }
 
-
-/* ==============================
-   AUTO REDIRECT
-============================== */
-
-setTimeout(() => {
-
-    if(orderId){
-
+// Don't redirect automatically when the Order ID is missing.
+if (orderId) {
+    setTimeout(() => {
         window.location.href =
-            "track.html?id=" + orderId;
-
-    }
-
-}, 15000);
-
-
-
+            "track.html?id=" + encodeURIComponent(orderId);
+    }, 15000);
+}
 </script>
+
 
 </body>
 

@@ -6,6 +6,12 @@
 
     <title>DARVOZ</title>
 
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#004D5B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DARVOZ">
+
     <style>
         *{
             margin:0;
@@ -161,9 +167,9 @@ const isLoggedIn =
     localStorage.getItem("customerLoggedIn") === "true";
 
 if (isLoggedIn) {
-    window.location.href = "index.html";
+    window.location.href = "/customer/index.html";
 } else {
-    window.location.href = "customer-login.html";
+    window.location.href = "/customer/customer-login.html";
 }
 
     }, 1200);

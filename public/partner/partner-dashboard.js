@@ -137,22 +137,17 @@ socket.on("connect", () => {
     );
 
 
-    if (
-        partner &&
-        partner.id
-    ) {
+    const partnerId =
+        partner?.id ?? partner?.partnerId ?? partner?.partner_id;
 
-        socket.emit(
-            "joinPartner",
-            partner.id
-        );
+    if (partnerId != null && Number.isFinite(Number(partnerId))) {
 
+        socket.emit("joinPartner", Number(partnerId));
 
-        console.log(
-            "Joined Room:",
-            "partner_" + partner.id
-        );
+        console.log("Joined Room:", "partner_" + Number(partnerId));
 
+    } else {
+        console.error("Partner ID missing from login data:", partner);
     }
 
 });
